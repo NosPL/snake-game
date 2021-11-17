@@ -4,9 +4,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox prefHeight="839.0" prefWidth="1116.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.game.online.client.OnlineClientController">
+<HBox prefHeight="860.0" prefWidth="1116.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.game.online.client.OnlineClientController">
    <children>
-       <fx:include fx:id="gameOptions" source="../online-game-options-view.fxml" />
+      <VBox prefHeight="200.0" prefWidth="100.0">
+         <children>
+             <fx:include fx:id="lobbySeats" source="../lobby-seats-view.fxml" />
+             <fx:include fx:id="gameOptions" source="../online-game-options-view.fxml" />
+         </children>
+      </VBox>
       <VBox fx:id="mainVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="563.0">
           <fx:include fx:id="joinServer" source="join-server-view.fxml" />
          <HBox minHeight="164.0" minWidth="560.0" prefHeight="164.0" prefWidth="563.0">

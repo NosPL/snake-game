@@ -10,9 +10,9 @@
    <children>
       <AnchorPane prefHeight="92.0" prefWidth="602.0">
          <children>
-            <TextField fx:id="ipv4TextField" layoutX="32.0" layoutY="33.0" prefHeight="24.0" prefWidth="130.0" text="888.888.888.888" />
-            <TextField fx:id="portTextField" layoutX="178.0" layoutY="33.0" prefHeight="24.0" prefWidth="60.0" text="255" />
-            <Button fx:id="joinServerButton" layoutX="276.0" layoutY="33.0" mnemonicParsing="false" text="JOIN SERVER" />
+            <TextField fx:id="ipv4TextField" layoutX="32.0" layoutY="33.0" prefHeight="24.0" prefWidth="130.0" text="127.0.0.1" />
+            <TextField fx:id="portTextField" layoutX="178.0" layoutY="33.0" prefHeight="24.0" prefWidth="60.0" text="8080" />
+            <Button fx:id="joinServerButton" layoutX="276.0" layoutY="33.0" mnemonicParsing="false" onAction="#joinServer" text="JOIN SERVER" />
             <Label fx:id="ipv4Label" layoutX="34.0" layoutY="14.0" prefHeight="16.0" prefWidth="101.0" text="IPv4 address" />
             <Label fx:id="clientMessageLabel" layoutX="276.0" layoutY="14.0" prefHeight="16.0" prefWidth="286.0" />
             <Label fx:id="portLabel" layoutX="178.0" layoutY="14.0" prefHeight="16.0" prefWidth="60.0" text="port" />

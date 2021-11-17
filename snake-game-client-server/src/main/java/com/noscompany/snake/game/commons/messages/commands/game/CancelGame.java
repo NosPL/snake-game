@@ -7,5 +7,5 @@ import lombok.Value;
 @Value(staticConstructor = "of")
 @NoArgsConstructor(force = true)
 public class CancelGame implements MessageDto {
-    MessageType messageType = MessageType.RESUME_GAME;
+    MessageType messageType = MessageType.CANCEL_GAME;
 }

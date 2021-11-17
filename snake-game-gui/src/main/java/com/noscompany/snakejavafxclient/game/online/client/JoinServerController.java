@@ -11,7 +11,7 @@ import java.util.function.BiConsumer;
 
 public class JoinServerController extends AbstractController {
     @FXML
-    private TextField ipTextField;
+    private TextField ipv4TextField;
     @FXML
     private TextField portTextField;
     @FXML
@@ -33,7 +33,7 @@ public class JoinServerController extends AbstractController {
 
     @FXML
     public void joinServer() {
-        var ip = ipTextField.getText();
+        var ip = ipv4TextField.getText();
         var port = portTextField.getText();
         joinServerAction.accept(ip, port);
     }

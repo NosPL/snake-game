@@ -2,6 +2,7 @@ package com.noscompany.snakejavafxclient.game.online;
 
 import com.noscompany.snakejavafxclient.commons.Stages;
 import com.noscompany.snakejavafxclient.commons.AbstractController;
+import com.noscompany.snakejavafxclient.game.online.client.SnakeOnlineClientConfiguration;
 import com.noscompany.snakejavafxclient.game.online.server.SnakeOnlineServerConfiguration;
 import javafx.fxml.FXML;
 import lombok.SneakyThrows;
@@ -22,7 +23,7 @@ public class OnlineModeSelectionController extends AbstractController {
     @FXML
     public void joinGame() {
         Stages.getOnlineModeSelectionStage().close();
-        Stages.getSnakeOnlineClientStage().show();
+        SnakeOnlineClientConfiguration.run(UUID.randomUUID().toString());
     }
 
     @Override

@@ -26,7 +26,7 @@ public class SnakeOnlineClientConfiguration {
         snakeClientStage.getScene().setOnKeyPressed(e -> new KeyPressedHandler(snakeOnlineClient));
         snakeClientStage.setOnCloseRequest(e -> {
             snakeOnlineClient.disconnect();
-            Stages.removeSnakeOnlineServerStage();
+            Stages.removeSnakeOnlineClientStage();
             Stages.getGameModeSelectionStage().show();
         });
     }
