@@ -18,7 +18,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Value
 @NoArgsConstructor(force = true, access = PRIVATE)
 @AllArgsConstructor
-public class TimeLeftToGameStartHasChanged implements GameEvent{
+public class TimeLeftToGameStartHasChanged implements GameEvent, MessageDto{
     MessageDto.MessageType messageType = TIME_LEFT_TO_GAME_START_CHANGED;
     int secondsLeft;
     Collection<SnakeDto> snakes;

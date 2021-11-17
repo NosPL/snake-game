@@ -19,7 +19,7 @@ import java.util.Map;
 import static com.noscompany.snake.game.server.local.api.StartingServerError.*;
 
 @Slf4j
-class RunningServerCreator {
+class RunningServerStateCreator {
 
     static Option<SnakeServer> create(String ipAddress,
                                       int port,
@@ -77,7 +77,7 @@ class RunningServerCreator {
         atmosphereEndpoint.set(gameLobby);
         atmosphereEndpoint.set(connectedUsers);
         atmosphereEndpoint.set(eventHandler);
-        return new RunningServer(gameLobby, eventHandler, messageSender, connectedUsers, nettosphere);
+        return new RunningServerState(gameLobby, eventHandler, messageSender, connectedUsers, nettosphere);
     }
 
     private static BroadcasterFactory getBroadcasterFactory(Nettosphere nettosphere) {

@@ -14,7 +14,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Value
 @NoArgsConstructor(force = true, access = PRIVATE)
 @AllArgsConstructor
-public class GameContinues implements GameEvent {
+public class GameContinues implements GameEvent, MessageDto {
     MessageDto.MessageType messageType = GAME_CONTINUES;
     GridSize gridSize;
     Point foodPoint;

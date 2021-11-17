@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import snake.game.core.dto.*;
 
 @AllArgsConstructor
-class NotRunningServer implements SnakeServer {
+class NotRunningServerState implements SnakeServer {
     private final SnakeServerEventHandler eventHandler;
 
     @Override
@@ -21,7 +21,7 @@ class NotRunningServer implements SnakeServer {
 
     @Override
     public SnakeServer startServer(String ipv4Address, String port) {
-        return RunningServerCreator
+        return RunningServerStateCreator
                 .create(ipv4Address, port, eventHandler)
                 .peek(runningServer -> eventHandler.serverStarted())
                 .getOrElse(this);

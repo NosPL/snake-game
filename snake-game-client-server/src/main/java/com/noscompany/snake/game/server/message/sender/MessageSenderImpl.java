@@ -41,7 +41,7 @@ class MessageSenderImpl implements MessageSender {
         try {
             r.write(message);
         } catch (Exception e) {
-            log.warn("failed to send message: " + message + " to resource: " + r.uuid());
+            log.error("failed to send message: " + message + " to resource: " + r.uuid(), e);
         }
     }
 

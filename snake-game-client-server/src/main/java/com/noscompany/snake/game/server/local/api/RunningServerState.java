@@ -9,7 +9,7 @@ import org.atmosphere.nettosphere.Nettosphere;
 import snake.game.core.dto.*;
 
 @AllArgsConstructor
-class RunningServer implements SnakeServer {
+class RunningServerState implements SnakeServer {
     private final GameLobby gameLobby;
     private final SnakeServerEventHandler eventHandler;
     private final MessageSender messageSender;
@@ -110,7 +110,7 @@ class RunningServer implements SnakeServer {
             eventHandler.serverClosed();
         } catch (Exception e) {
         }
-        return new NotRunningServer(eventHandler);
+        return new NotRunningServerState(eventHandler);
     }
 
     @Override

@@ -14,7 +14,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Value
 @NoArgsConstructor(force = true, access = PRIVATE)
 @AllArgsConstructor
-public class GameFinished implements GameEvent {
+public class GameFinished implements GameEvent, MessageDto {
     MessageDto.MessageType messageType = GAME_FINISHED;
     Collection<SnakeDto> snakes;
     GridSize gridSize;

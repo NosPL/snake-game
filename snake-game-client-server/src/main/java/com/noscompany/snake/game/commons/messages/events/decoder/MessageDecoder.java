@@ -3,7 +3,6 @@ package com.noscompany.snake.game.commons.messages.events.decoder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.noscompany.snake.game.commons.MessageDto;
-import com.noscompany.snake.game.commons.messages.events.game.*;
 import com.noscompany.snake.game.commons.messages.events.lobby.*;
 import io.vavr.control.Option;
 import lombok.SneakyThrows;
@@ -21,56 +20,49 @@ public class MessageDecoder {
     public void onGameCancelled(String json, Consumer<GameCancelled> consumer) {
         messageType(json)
                 .filter(messageType -> messageType == GAME_CANCELLED)
-                .map(msgType -> getGameCancelled(json, GameCancelledDto.class))
-                .map(GameCancelledDto::toGameEvent)
+                .map(msgType -> getGameCancelled(json, GameCancelled.class))
                 .peek(consumer::accept);
     }
 
     public void onGameContinues(String json, Consumer<GameContinues> consumer) {
         messageType(json)
                 .filter(messageType -> messageType == GAME_CONTINUES)
-                .map(msgType -> getGameCancelled(json, GameContinuesDto.class))
-                .map(GameContinuesDto::toGameEvent)
+                .map(msgType -> getGameCancelled(json, GameContinues.class))
                 .peek(consumer::accept);
     }
 
     public void onGameFinished(String json, Consumer<GameFinished> consumer) {
         messageType(json)
                 .filter(messageType -> messageType == GAME_FINISHED)
-                .map(msgType -> getGameCancelled(json, GameFinishedDto.class))
-                .map(GameFinishedDto::toGameEvent)
+                .map(msgType -> getGameCancelled(json, GameFinished.class))
                 .peek(consumer::accept);
     }
 
     public void onGamePaused(String json, Consumer<GamePaused> consumer) {
         messageType(json)
                 .filter(messageType -> messageType == GAME_PAUSED)
-                .map(msgType -> getGameCancelled(json, GamePausedDto.class))
-                .map(GamePausedDto::toGameEvent)
+                .map(msgType -> getGameCancelled(json, GamePaused.class))
                 .peek(consumer::accept);
     }
 
     public void onGameResumed(String json, Consumer<GameResumed> consumer) {
         messageType(json)
                 .filter(messageType -> messageType == GAME_RESUMED)
-                .map(msgType -> getGameCancelled(json, GameResumedDto.class))
-                .map(GameResumedDto::toGameEvent)
+                .map(msgType -> getGameCancelled(json, GameResumed.class))
                 .peek(consumer::accept);
     }
 
     public void onGameStarted(String json, Consumer<GameStarted> consumer) {
         messageType(json)
                 .filter(messageType -> messageType == GAME_STARTED)
-                .map(msgType -> getGameCancelled(json, GameStartedDto.class))
-                .map(GameStartedDto::toGameEvent)
+                .map(msgType -> getGameCancelled(json, GameStarted.class))
                 .peek(consumer::accept);
     }
 
     public void onTimeLeftToGameStartHasChanged(String json, Consumer<TimeLeftToGameStartHasChanged> consumer) {
         messageType(json)
                 .filter(messageType -> messageType == TIME_LEFT_TO_GAME_START_CHANGED)
-                .map(msgType -> getGameCancelled(json, TimeLeftToGameStartHasChangedDto.class))
-                .map(TimeLeftToGameStartHasChangedDto::toGameEvent)
+                .map(msgType -> getGameCancelled(json, TimeLeftToGameStartHasChanged.class))
                 .peek(consumer::accept);
     }
 

@@ -17,7 +17,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Value
 @NoArgsConstructor(force = true, access = PRIVATE)
 @AllArgsConstructor
-public class GameCancelled implements GameEvent {
+public class GameCancelled implements GameEvent, MessageDto {
     MessageDto.MessageType messageType = GAME_CANCELLED;
     Collection<SnakeDto> snakes;
     GridSize gridSize;
