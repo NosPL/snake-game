@@ -104,6 +104,7 @@ public class GuiGameEventHandler implements SnakeGameEventHandler {
         Platform.runLater(() -> {
             gameGridController.initializeGrid(gameState.getGridSize());
             gameGridController.updateGrid(gameState.getSnakes());
+            scoreboardController.print(gameState.getScore());
         });
     }
 
