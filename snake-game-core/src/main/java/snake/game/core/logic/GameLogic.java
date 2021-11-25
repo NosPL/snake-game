@@ -11,8 +11,6 @@ public interface GameLogic {
 
     void changeSnakeDirection(SnakeNumber snakeNumber, Direction newDirection);
 
-    void changeSnakeDirection(Direction newDirection);
-
     GameState getCurrentState();
 
     Either<GameFinished, GameContinues> move();

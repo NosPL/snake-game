@@ -6,13 +6,11 @@ import snake.game.core.dto.SnakeNumber;
 
 public interface SnakeGame {
 
-    void start();
-
     void changeSnakeDirection(SnakeNumber snakeNumber, Direction direction);
 
-    void changeSnakesDirection(Direction direction);
+    GameState getGameState();
 
-    boolean isRunning();
+    void start();
 
     void cancel();
 
@@ -20,5 +18,5 @@ public interface SnakeGame {
 
     void resume();
 
-    GameState getGameState();
+    boolean isRunning();
 }

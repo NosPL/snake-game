@@ -15,23 +15,18 @@ class SnakeGameImpl implements SnakeGame {
     private final GameRunner gameRunner;
 
     @Override
-    public void changeSnakesDirection(Direction direction) {
-        gameLogic.changeSnakeDirection(direction);
-    }
-
-    @Override
     public void changeSnakeDirection(SnakeNumber snakeNumber, Direction direction) {
         gameLogic.changeSnakeDirection(snakeNumber, direction);
     }
 
     @Override
-    public void start() {
-        gameRunner.start();
+    public GameState getGameState() {
+        return gameLogic.getCurrentState();
     }
 
     @Override
-    public boolean isRunning() {
-        return gameRunner.isRunning();
+    public void start() {
+        gameRunner.start();
     }
 
     @Override
@@ -50,7 +45,7 @@ class SnakeGameImpl implements SnakeGame {
     }
 
     @Override
-    public GameState getGameState() {
-        return gameLogic.getCurrentState();
+    public boolean isRunning() {
+        return gameRunner.isRunning();
     }
 }

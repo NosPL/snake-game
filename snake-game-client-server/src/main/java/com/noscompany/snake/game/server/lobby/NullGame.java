@@ -22,11 +22,6 @@ class NullGame implements SnakeGame {
     }
 
     @Override
-    public void changeSnakesDirection(Direction direction) {
-
-    }
-
-    @Override
     public boolean isRunning() {
         return false;
     }

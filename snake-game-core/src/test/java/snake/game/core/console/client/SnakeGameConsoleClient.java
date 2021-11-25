@@ -6,6 +6,7 @@ import snake.game.core.SnakeGame;
 import snake.game.core.console.client.input.ConsoleInput;
 import snake.game.core.console.client.output.ConsoleEventHandler;
 import snake.game.core.dto.CountdownTime;
+import snake.game.core.dto.SnakeNumber;
 
 import java.util.Scanner;
 
@@ -34,11 +35,12 @@ class SnakeGameConsoleClient {
         System.out.println("Press ENTER to start");
         consoleInput.waitForEnterPress();
         var snakeGame = createGame(gameSettings);
+        var snakeNumber = gameSettings.getSnakeNumber();
         snakeGame.start();
         while (snakeGame.isRunning()) {
             consoleInput
                     .getUserCommand()
-                    .onDirectionChange(snakeGame::changeSnakesDirection)
+                    .onDirectionChange(direction -> snakeGame.changeSnakeDirection(snakeNumber, direction))
                     .onExit(snakeGame::cancel)
                     .onPause(snakeGame::pause)
                     .onResume(snakeGame::resume)

@@ -1,6 +1,7 @@
 package snake.game.core.logic;
 
 import io.vavr.control.Either;
+import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import snake.game.core.dto.Direction;
 import snake.game.core.dto.GameState;
@@ -12,6 +13,7 @@ import snake.game.core.logic.collision.detection.CollisionDetector;
 import snake.game.core.logic.food.Food;
 import snake.game.core.logic.food.FoodCreator;
 import snake.game.core.logic.scoreboard.ScoreBoard;
+import snake.game.core.logic.snakes.SnakeConsumedFood;
 import snake.game.core.logic.snakes.Snakes;
 
 import static snake.game.core.events.GameContinues.gameContinues;
@@ -27,16 +29,7 @@ class GameLogicImpl implements GameLogic {
     private GameFinished gameFinished;
 
     @Override
-    public synchronized void changeSnakeDirection(Direction newDirection) {
-        if (gameIsFinished())
-            return;
-        snakes.changeDirection(newDirection);
-    }
-
-    @Override
     public synchronized void changeSnakeDirection(SnakeNumber snakeNumber, Direction newDirection) {
-        if (gameIsFinished())
-            return;
         snakes.changeDirection(snakeNumber, newDirection);
     }
 
@@ -49,23 +42,23 @@ class GameLogicImpl implements GameLogic {
     public synchronized Either<GameFinished, GameContinues> move() {
         if (gameIsFinished())
             return Either.left(gameFinished);
+        return makeMove().peekLeft(this::save);
+    }
+
+    private Either<GameFinished, GameContinues> makeMove() {
         snakes.removeKilledSnakes();
-        snakes.moveAndConsume(food)
-                .peek(scoreBoard::update);
+        Option<SnakeConsumedFood> event = snakes.moveAndConsume(food);
+        event.peek(scoreBoard::update);
         updateFood();
         killCollidedSnakes();
-        if (snakes.areAllKilled()) {
-            var gameFinished = gameFinished(getCurrentState());
-            save(gameFinished);
-            return Either.left(gameFinished);
-        }
+        if (snakes.areAllKilled())
+            return Either.left(gameFinished(getCurrentState()));
         else
             return Either.right(gameContinues(getCurrentState()));
     }
 
-    private GameFinished save(GameFinished gameFinished) {
+    private void save(GameFinished gameFinished) {
         this.gameFinished = gameFinished;
-        return gameFinished;
     }
 
     private void killCollidedSnakes() {
