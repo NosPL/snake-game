@@ -6,7 +6,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import snake.game.core.dto.Point;
 
-import static com.noscompany.snakejavafxclient.game.grid.controller.Signs.EMPTY_CELL;
+import static com.noscompany.snakejavafxclient.game.grid.controller.GameGridSigns.EMPTY_CELL;
 
 class Cell extends Label {
     private static final String FONT_FAMILY = "Serif";

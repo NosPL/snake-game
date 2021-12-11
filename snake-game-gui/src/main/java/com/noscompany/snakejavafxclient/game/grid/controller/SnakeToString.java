@@ -10,28 +10,28 @@ class SnakeToString {
 
     static String headToString(SnakeDto snakeDto) {
         if (!snakeDto.isAlive())
-            return Signs.DEAD_HEAD;
+            return GameGridSigns.DEAD_HEAD;
         else if (snakeDto.getHead().isWithFood())
-            return Signs.HEAD_WITH_FOOD;
+            return GameGridSigns.HEAD_WITH_FOOD;
         else {
             Direction direction = snakeDto.getHead().getDirection();
             if (direction == UP)
-                return Signs.HEAD_DOWN;
+                return GameGridSigns.HEAD_DOWN;
             else if (direction == DOWN)
-                return Signs.HEAD_UP;
+                return GameGridSigns.HEAD_UP;
             else if (direction == LEFT)
-                return Signs.HEAD_LEFT;
+                return GameGridSigns.HEAD_LEFT;
             else
-                return Signs.HEAD_RIGHT;
+                return GameGridSigns.HEAD_RIGHT;
         }
     }
 
     static String bodyPartToString(SnakeDto snake, Part part) {
         if (!snake.isAlive())
-            return Signs.DEAD_BODY;
+            return GameGridSigns.DEAD_BODY;
         else if (part.isWithFood())
-            return Signs.ALIVE_BODY_WITH_FOOD;
+            return GameGridSigns.ALIVE_BODY_WITH_FOOD;
         else
-            return Signs.ALIVE_BODY;
+            return GameGridSigns.ALIVE_BODY;
     }
 }

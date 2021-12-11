@@ -1,6 +1,6 @@
 package com.noscompany.snakejavafxclient.game.grid.controller;
 
-class Signs {
+class GameGridSigns {
     static final String EMPTY_CELL           = "    ";
     static final String FOOD                 = "F ";
     static final String DEAD_BODY            = "x ";

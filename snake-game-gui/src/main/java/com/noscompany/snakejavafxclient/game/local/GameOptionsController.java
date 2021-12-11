@@ -1,6 +1,7 @@
 package com.noscompany.snakejavafxclient.game.local;
 
 import com.noscompany.snakejavafxclient.commons.AbstractController;
+import com.noscompany.snakejavafxclient.game.SnakesColors;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
@@ -63,6 +64,10 @@ public class GameOptionsController extends AbstractController {
 
     @Override
     protected void doInitialize(URL location, ResourceBundle resources) {
+        playerNumber1.setTextFill(SnakesColors.get(SnakeNumber._1));
+        playerNumber2.setTextFill(SnakesColors.get(SnakeNumber._2));
+        playerNumber3.setTextFill(SnakesColors.get(SnakeNumber._3));
+        playerNumber4.setTextFill(SnakesColors.get(SnakeNumber._4));
     }
 
     public  void set(LocalSnakeGame localSnakeGame) {
