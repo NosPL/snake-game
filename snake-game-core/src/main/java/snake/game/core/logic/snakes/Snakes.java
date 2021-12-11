@@ -34,6 +34,7 @@ public class Snakes {
     public Option<SnakeConsumedFood> moveAndConsume(Food food) {
         var result = snakesMap
                 .values().stream()
+                .filter(Snake::isAlive)
                 .map(snake -> snake.moveAndConsume(food))
                 .flatMap(Option::toJavaStream)
                 .collect(toList());

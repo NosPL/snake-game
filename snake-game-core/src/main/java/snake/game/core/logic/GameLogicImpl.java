@@ -46,7 +46,6 @@ class GameLogicImpl implements GameLogic {
     }
 
     private Either<GameFinished, GameContinues> makeMove() {
-        snakes.removeKilledSnakes();
         Option<SnakeConsumedFood> event = snakes.moveAndConsume(food);
         event.peek(scoreBoard::update);
         updateFood();
