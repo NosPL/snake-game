@@ -16,7 +16,8 @@ public class LocalSnakeGame {
     public void start() {
         if (snakeGame.isRunning())
             return;
-        snakeGame.start();
+        createNewGame()
+                .peek(SnakeGame::start);
     }
 
     public void updateGameView() {
