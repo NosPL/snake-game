@@ -6,7 +6,7 @@ import com.noscompany.snake.game.server.local.api.StartingServerError;
 import com.noscompany.snakejavafxclient.commons.Controllers;
 import com.noscompany.snakejavafxclient.game.ButtonsController;
 import com.noscompany.snakejavafxclient.game.MessageController;
-import com.noscompany.snakejavafxclient.game.ScoreboardController;
+import com.noscompany.snakejavafxclient.game.scoreboard.controller.ScoreboardController;
 import com.noscompany.snakejavafxclient.game.grid.controller.GameGridController;
 import com.noscompany.snakejavafxclient.game.online.*;
 import javafx.application.Platform;

@@ -3,6 +3,7 @@ package com.noscompany.snakejavafxclient.game;
 import com.noscompany.snakejavafxclient.commons.Controllers;
 import com.noscompany.snakejavafxclient.game.grid.controller.GameGridController;
 import com.noscompany.snakejavafxclient.game.local.GameOptionsController;
+import com.noscompany.snakejavafxclient.game.scoreboard.controller.ScoreboardController;
 import javafx.application.Platform;
 import lombok.AllArgsConstructor;
 import snake.game.core.SnakeGameConfiguration;
@@ -26,7 +27,7 @@ public class GuiGameEventHandler implements SnakeGameEventHandler {
             gameGridController.updateGrid(event.getSnakes(), event.getFoodPoint());
             gameOptionsController.disable();
             messageController.printSecondsLeftToStart(event.getSecondsLeft());
-            scoreboardController.reset();
+            scoreboardController.print(event.getScore());
             buttonsController.disableStart();
             buttonsController.enableCancel();
             buttonsController.enablePause();
@@ -113,7 +114,7 @@ public class GuiGameEventHandler implements SnakeGameEventHandler {
         Platform.runLater(() -> {
             GridSize gridSize = gameOptionsController.gridSize();
             gameGridController.initializeGrid(gridSize);
-            scoreboardController.reset();
+            scoreboardController.clear();
             messageController.print(error);
         });
     }

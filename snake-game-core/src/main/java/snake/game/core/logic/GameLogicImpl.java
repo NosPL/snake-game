@@ -10,9 +10,10 @@ import snake.game.core.dto.SnakeNumber;
 import snake.game.core.events.GameContinues;
 import snake.game.core.events.GameFinished;
 import snake.game.core.logic.collision.detection.CollisionDetector;
+import snake.game.core.logic.collision.detection.Collisions;
 import snake.game.core.logic.food.Food;
 import snake.game.core.logic.food.FoodCreator;
-import snake.game.core.logic.scoreboard.ScoreBoard;
+import snake.game.core.logic.scoring.ScoringSystem;
 import snake.game.core.logic.snakes.SnakeConsumedFood;
 import snake.game.core.logic.snakes.Snakes;
 
@@ -24,7 +25,7 @@ class GameLogicImpl implements GameLogic {
     private final GridSize gridSize;
     private final Snakes snakes;
     private final CollisionDetector collisionDetector;
-    private final ScoreBoard scoreBoard;
+    private final ScoringSystem scoringSystem;
     private Food food;
     private GameFinished gameFinished;
 
@@ -35,7 +36,7 @@ class GameLogicImpl implements GameLogic {
 
     @Override
     public synchronized GameState getCurrentState() {
-        return new GameState(snakes.toDto(), gridSize, food.getPoint(), scoreBoard.getCurrentScore());
+        return new GameState(snakes.toDto(), gridSize, food.getPoint(), scoringSystem.getCurrentScore());
     }
 
     @Override
@@ -47,24 +48,18 @@ class GameLogicImpl implements GameLogic {
 
     private Either<GameFinished, GameContinues> makeMove() {
         Option<SnakeConsumedFood> event = snakes.moveAndConsume(food);
-        event.peek(scoreBoard::update);
-        updateFood();
-        killCollidedSnakes();
+        event.peek(scoringSystem::handle);
+        Collisions collisions = collisionDetector.detectCollisions(snakes.toDto());
+        snakes.handle(collisions);
+        scoringSystem.handle(collisions);
         if (snakes.areAllKilled())
             return Either.left(gameFinished(getCurrentState()));
-        else
-            return Either.right(gameContinues(getCurrentState()));
+        updateFood();
+        return Either.right(gameContinues(getCurrentState()));
     }
 
     private void save(GameFinished gameFinished) {
         this.gameFinished = gameFinished;
-    }
-
-    private void killCollidedSnakes() {
-        collisionDetector
-                .detectCollisions(snakes.toDto())
-                .getKilledSnakesNumbers()
-                .forEach(snakes::kill);
     }
 
     private void updateFood() {

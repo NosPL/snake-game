@@ -6,6 +6,7 @@ import snake.game.core.dto.*;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 @AllArgsConstructor
 class NullGame implements SnakeGame {
@@ -47,6 +48,6 @@ class NullGame implements SnakeGame {
                 new LinkedList<>(),
                 gridSize,
                 Point.point(-1, -1),
-                new Score(new HashMap<>()));
+                new Score(List.of()));
     }
 }

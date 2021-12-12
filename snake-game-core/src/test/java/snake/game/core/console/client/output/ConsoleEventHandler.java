@@ -6,6 +6,7 @@ import snake.game.core.dto.*;
 import snake.game.core.events.*;
 
 import java.util.Collection;
+import java.util.Set;
 
 public class ConsoleEventHandler implements SnakeGameEventHandler {
     private final PointToSignMapper mapper = new PointToSignMapper();
@@ -67,9 +68,12 @@ public class ConsoleEventHandler implements SnakeGameEventHandler {
     }
 
     private void printScore(Score score) {
-        score
-                .toMap()
-                .forEach(this::printScore);
+        score.getSnakes()
+                .forEach(this::print);
+    }
+
+    private void print(Score.Snake snake) {
+        printScore(snake.getSnakeNumber(), snake.getScore());
     }
 
     private void printScore(SnakeNumber snakeNumber, Integer score) {

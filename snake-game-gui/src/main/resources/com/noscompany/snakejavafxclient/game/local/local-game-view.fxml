@@ -4,11 +4,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox prefHeight="772.0" prefWidth="781.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<HBox prefHeight="772.0" prefWidth="877.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
        <fx:include fx:id="gameOptions" source="local-game-options-view.fxml" />
-      <VBox fx:id="mainVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="563.0">
-         <HBox minHeight="164.0" minWidth="560.0" prefHeight="164.0" prefWidth="563.0">
+      <VBox fx:id="mainVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="652.0">
+         <HBox minHeight="164.0" minWidth="560.0" prefHeight="164.0" prefWidth="586.0">
             <children>
                 <fx:include fx:id="buttons" source="../game-buttons-view.fxml" />
                 <fx:include fx:id="scoreboard" source="../scoreboard-view.fxml" />

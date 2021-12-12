@@ -3,7 +3,7 @@ package com.noscompany.snakejavafxclient.game.online;
 import com.noscompany.snake.game.commons.messages.events.lobby.*;
 import com.noscompany.snakejavafxclient.game.ButtonsController;
 import com.noscompany.snakejavafxclient.game.MessageController;
-import com.noscompany.snakejavafxclient.game.ScoreboardController;
+import com.noscompany.snakejavafxclient.game.scoreboard.controller.ScoreboardController;
 import com.noscompany.snakejavafxclient.game.grid.controller.GameGridController;
 import javafx.application.Platform;
 import lombok.AllArgsConstructor;
@@ -102,7 +102,7 @@ public class GuiLobbyEventHandler implements LobbyEventHandler, SnakeGameEventHa
             gameGridController.updateGrid(event.getSnakes(), event.getFoodPoint());
             onlineGameOptionsController.disable();
             messageController.printSecondsLeftToStart(event.getSecondsLeft());
-            scoreboardController.reset();
+            scoreboardController.clear();
             buttonsController.disableStart();
             buttonsController.enableCancel();
             buttonsController.enablePause();

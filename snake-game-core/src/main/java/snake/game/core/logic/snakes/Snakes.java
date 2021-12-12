@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import snake.game.core.dto.Direction;
 import snake.game.core.dto.SnakeDto;
 import snake.game.core.dto.SnakeNumber;
+import snake.game.core.logic.collision.detection.Collisions;
 import snake.game.core.logic.food.Food;
 
 import java.util.List;
@@ -80,5 +81,10 @@ public class Snakes {
         snakesMap
                 .values()
                 .forEach(snake -> snake.changeDirectionTo(newDirection));
+    }
+
+    public void handle(Collisions collisions) {
+        collisions.getKilledSnakesNumbers()
+                .forEach(this::kill);
     }
 }

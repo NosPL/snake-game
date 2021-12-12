@@ -4,10 +4,7 @@ import com.noscompany.snake.game.commons.MessageDto;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
-import snake.game.core.dto.GameState;
-import snake.game.core.dto.GridSize;
-import snake.game.core.dto.Point;
-import snake.game.core.dto.SnakeDto;
+import snake.game.core.dto.*;
 
 import java.util.Collection;
 
@@ -24,12 +21,14 @@ public class TimeLeftToGameStartHasChanged implements GameEvent, MessageDto{
     Collection<SnakeDto> snakes;
     GridSize gridSize;
     Point foodPoint;
+    Score score;
 
     public static TimeLeftToGameStartHasChanged countdownEvent(int secondsLeft, GameState currentState) {
         return new TimeLeftToGameStartHasChanged(
                 secondsLeft,
                 currentState.getSnakes(),
                 currentState.getGridSize(),
-                currentState.getFoodPoint());
+                currentState.getFoodPoint(),
+                currentState.getScore());
     }
 }

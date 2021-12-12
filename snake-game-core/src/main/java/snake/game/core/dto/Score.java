@@ -1,42 +1,39 @@
 package snake.game.core.dto;
 
+import io.vavr.collection.Vector;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
-import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PRIVATE;
 
 @Value
 @NoArgsConstructor(force = true, access = PRIVATE)
 @AllArgsConstructor
 public class Score {
-    Map<SnakeNumber, Integer> scoreMap;
+    List<Entry> entries;
 
-    public Map<SnakeNumber, Integer> toMap() {
-        return new HashMap<>(scoreMap);
+    public Set<Snake> getSnakes() {
+        return Vector.ofAll(entries)
+                .flatMap(Entry::getSnakes)
+                .toJavaSet();
     }
 
-    public List<SnakeNumber> getLeaders() {
-        Integer highestScore = getHighestScore();
-        return scoreMap
-                .entrySet()
-                .stream()
-                .filter(entry -> entry.getValue().equals(highestScore))
-                .map(Map.Entry::getKey)
-                .collect(toList());
+    @Value
+    public static class Entry {
+        int place;
+        int score;
+        List<Snake> snakes;
     }
 
-    private Integer getHighestScore() {
-        return scoreMap
-                .values()
-                .stream()
-                .mapToInt(i -> i)
-                .max()
-                .orElse(0);
+    @Value
+    public static class Snake {
+        SnakeNumber snakeNumber;
+        int place;
+        int score;
+        boolean alive;
     }
 }

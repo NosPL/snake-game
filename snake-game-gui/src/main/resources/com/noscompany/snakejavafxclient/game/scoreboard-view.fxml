@@ -6,20 +6,22 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="214.0" prefWidth="334.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.game.ScoreboardController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="214.0" prefWidth="394.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.game.scoreboard.controller.ScoreboardController">
    <children>
       <AnchorPane prefHeight="173.0" prefWidth="289.0">
          <children>
-            <Label fx:id="scoreboardLabel" prefHeight="36.0" prefWidth="274.0" text="Scoreboard">
-               <font>
-                  <Font size="30.0" />
-               </font>
-            </Label>
-            <Label fx:id="scoresLabel" alignment="TOP_LEFT" graphicTextGap="0.0" layoutY="43.0" prefHeight="131.0" prefWidth="296.0">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Label>
+            <VBox fx:id="vBox" prefHeight="174.0" prefWidth="354.0">
+               <children>
+                  <Label fx:id="scoreboardLabel" prefHeight="55.0" prefWidth="197.0" text="SCOREBOARD" underline="true">
+                     <font>
+                        <Font size="27.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+               </children>
+            </VBox>
          </children>
       </AnchorPane>
    </children>
