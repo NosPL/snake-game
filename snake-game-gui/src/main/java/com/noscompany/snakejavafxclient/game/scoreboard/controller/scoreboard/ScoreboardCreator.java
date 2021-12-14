@@ -8,7 +8,6 @@ public class ScoreboardCreator {
 
     public static Scoreboard create() {
         var scoreBoard = new ScoreboardImpl();
-        scoreBoard.setGridLinesVisible(true);
         scoreBoard.setHeaders(PLACE_HEADER, SCORE_HEADER, SNAKES_HEADER);
         for (int rowIndex = 1; rowIndex < 5; rowIndex++) {
             scoreBoard.addRowOfSize(rowIndex, ROW_SIZE);
