@@ -10,6 +10,7 @@ import snake.game.core.SnakeGameConfiguration;
 import snake.game.core.SnakeGameEventHandler;
 import snake.game.core.dto.GameState;
 import snake.game.core.dto.GridSize;
+import snake.game.core.dto.SnakeNumber;
 import snake.game.core.events.*;
 
 @AllArgsConstructor
@@ -113,7 +114,7 @@ public class GuiGameEventHandler implements SnakeGameEventHandler {
             gameGridController.initializeGrid(gameState.getGridSize());
             gameGridController.updateGrid(gameState.getSnakes());
             scoreboardController.print(gameState.getScore());
-            messageController.clear();
+            messageController.printPressStartWhenReady();
         });
     }
 

@@ -10,14 +10,14 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 @NoArgsConstructor(force = true, access = PRIVATE)
 public enum GameSpeed {
-    x1(1000),
-    x2(500),
-    x3(250),
-    x4(125),
-    x5(62),
-    x6(32),
-    x7(16),
-    x8(8);
+    x1(300),
+    x2(200),
+    x3(120),
+    x4(70),
+    x5(70),
+    x6(70),
+    x7(70),
+    x8(70);
 
     final int pauseTimeInMillis;
 

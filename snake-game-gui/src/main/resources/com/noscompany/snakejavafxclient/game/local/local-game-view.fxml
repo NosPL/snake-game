@@ -4,23 +4,23 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox prefHeight="772.0" prefWidth="877.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<HBox prefHeight="715.0" prefWidth="910.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-       <fx:include fx:id="gameOptions" source="local-game-options-view.fxml" />
-      <VBox fx:id="mainVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="652.0">
-         <HBox minHeight="164.0" minWidth="560.0" prefHeight="164.0" prefWidth="586.0">
-            <children>
-                <fx:include fx:id="buttons" source="../game-buttons-view.fxml" />
-                <fx:include fx:id="scoreboard" source="../scoreboard-view.fxml" />
-            </children>
-         </HBox>
+      <VBox prefHeight="744.0" prefWidth="309.0">
+         <children>
+             <fx:include fx:id="gameOptions" source="local-game-options-view.fxml" />
+             <fx:include fx:id="buttons" source="../game-buttons-view.fxml" />
+         </children>
+      </VBox>
+      <VBox fx:id="mainVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="541.0">
+          <fx:include fx:id="scoreboard" source="../scoreboard-view.fxml" />
           <fx:include fx:id="message" source="../game-message-view.fxml" />
           <fx:include fx:id="gameGrid" source="../game-grid-view.fxml" />
          <opaqueInsets>
             <Insets bottom="3.0" />
          </opaqueInsets>
          <HBox.margin>
-            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            <Insets bottom="30.0" left="30.0" right="30.0" />
          </HBox.margin>
       </VBox>
    </children>

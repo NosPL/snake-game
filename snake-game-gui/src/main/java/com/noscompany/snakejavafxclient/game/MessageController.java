@@ -61,4 +61,8 @@ public class MessageController extends AbstractController {
     public void clear() {
         messageLabel.setText("");
     }
+
+    public void printPressStartWhenReady() {
+        messageLabel.setText("PRESS START WHEN READY");
+    }
 }
