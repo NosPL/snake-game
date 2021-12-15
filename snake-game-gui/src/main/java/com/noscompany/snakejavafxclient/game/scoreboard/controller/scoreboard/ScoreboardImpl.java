@@ -13,15 +13,16 @@ class ScoreboardImpl extends Scoreboard {
         rows.values().forEach(Row::clear);
     }
 
-    public void update(Score score) {
+    @Override
+    public void update(Collection<Entry> scoreEntries) {
         clear();
-        score.getEntries().forEach(this::print);
+        scoreEntries.forEach(this::print);
     }
 
-    private void print(Score.Entry entry) {
+    private void print(Scoreboard.Entry entry) {
         Row row = rows.get(entry.getPlace());
         if (row != null)
-            row.update(entry);
+            row.update(entry.getPlace(), entry.getScore(), entry.getPlayers());
     }
 
     void setHeaders(String...headers) {

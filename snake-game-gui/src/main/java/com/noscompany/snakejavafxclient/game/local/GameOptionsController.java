@@ -2,9 +2,11 @@ package com.noscompany.snakejavafxclient.game.local;
 
 import com.noscompany.snakejavafxclient.commons.AbstractController;
 import com.noscompany.snakejavafxclient.game.SnakesColors;
+import com.noscompany.snakejavafxclient.game.local.edit.snake.name.EditSnakeNameConfiguration;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import snake.game.core.dto.GameSpeed;
 import snake.game.core.dto.GridSize;
@@ -19,7 +21,6 @@ import java.util.Set;
 public class GameOptionsController extends AbstractController {
     @FXML
     private VBox vBox;
-
     @FXML
     private CheckBox playerNumber1;
     @FXML
@@ -77,6 +78,26 @@ public class GameOptionsController extends AbstractController {
     @FXML
     public void gameOptionsChanged() {
         localSnakeGame.updateGameView();
+    }
+
+    @FXML
+    public void editPlayer1() {
+        EditSnakeNameConfiguration.run(SnakeNumber._1, playerNumber1.getText());
+    }
+
+    @FXML
+    public void editPlayer2() {
+        EditSnakeNameConfiguration.run(SnakeNumber._2, playerNumber2.getText());
+    }
+    @FXML
+    public void editPlayer3() {
+        EditSnakeNameConfiguration.run(SnakeNumber._3, playerNumber3.getText());
+    }
+
+    @FXML
+    public void editPlayer4() {
+        EditSnakeNameConfiguration.run(SnakeNumber._4
+                , playerNumber4.getText());
     }
 
     public void disable() {
@@ -138,5 +159,21 @@ public class GameOptionsController extends AbstractController {
         if (wallsOn.isSelected())
             return Walls.ON;
         throw new IllegalStateException("Non of walls radio buttons is selected");
+    }
+
+    public void snakeNameUpdated(SnakeNumber snakeNumber, String newName) {
+        CheckBox player = getCheckBox(snakeNumber);
+        player.setText(newName);
+    }
+
+    private CheckBox getCheckBox(SnakeNumber snakeNumber) {
+        if (snakeNumber == SnakeNumber._1)
+            return playerNumber1;
+        if (snakeNumber == SnakeNumber._2)
+            return playerNumber2;
+        if (snakeNumber == SnakeNumber._3)
+            return playerNumber3;
+        else
+            return playerNumber4;
     }
 }

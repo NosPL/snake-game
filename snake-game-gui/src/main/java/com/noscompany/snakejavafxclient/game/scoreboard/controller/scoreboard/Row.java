@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import snake.game.core.dto.Score;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -13,12 +14,6 @@ import java.util.stream.Stream;
 @Getter
 class Row {
     private final Cell[] cells;
-
-    public static Row createFor(Score.Entry entry) {
-        Row row = Row.ofSize(entry.getSnakes().size() + 2);
-        row.update(entry);
-        return row;
-    }
 
     public static Row ofSize(int size) {
         return new Row(
@@ -39,27 +34,35 @@ class Row {
             cell.clear();
     }
 
-    void update(Score.Entry scoreEntry) {
+    public void update(int place, int score, Collection<Scoreboard.Player> players) {
         clear();
-        print(scoreEntry.getPlace(), scoreEntry.getScore(), scoreEntry.getSnakes());
+        printPlace(place);
+        printScore(score);
+        print(players);
     }
 
-    private void print(int place, int score, List<Score.Snake> snakes) {
-        cells[0].set(place);
-        cells[1].set(score);
-        print(snakes);
+    private void printScore(int score) {
+        cells[1].setText(String.valueOf(score));
     }
 
-    private void print(List<Score.Snake> snakes) {
+    private void printPlace(int place) {
+        cells[0].setText(String.valueOf(place));
+    }
+
+    private void print(Collection<Scoreboard.Player> players) {
         int cell = 2;
-        for (var snake : snakes) {
-            print(cell, snake);
+        for (var player : players) {
+            print(cell, player);
             cell++;
         }
     }
 
-    private void print(int cellNumber, Score.Snake snake) {
-        if (cellNumber < cells.length)
-            cells[cellNumber].set(snake);
+    private void print(int cellNumber, Scoreboard.Player player) {
+        if (cellNumber < cells.length) {
+            Cell cell = cells[cellNumber];
+            cell.setText(player.getName());
+            cell.setTextFill(player.getColor());
+            cell.setStrikethrough(player.isDead());
+        }
     }
 }

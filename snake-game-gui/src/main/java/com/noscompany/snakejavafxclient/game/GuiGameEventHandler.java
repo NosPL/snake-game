@@ -101,6 +101,13 @@ public class GuiGameEventHandler implements SnakeGameEventHandler {
         });
     }
 
+    public void snakeNameUpdated(SnakeNumber snakeNumber, String newName) {
+        Platform.runLater(() -> {
+            gameOptionsController.snakeNameUpdated(snakeNumber, newName);
+            scoreboardController.snakeNameUpdated(snakeNumber, newName);
+        });
+    }
+
     public void gameCreated(GameState gameState) {
         Platform.runLater(() -> {
             gameGridController.initializeGrid(gameState.getGridSize());
