@@ -96,11 +96,11 @@ class GameGrid extends GridPane {
 
         private static int calculatePadding(GridSize gridSize) {
             if (gridSize == GridSize._10x10)
-                return 100;
-            else if (gridSize == GridSize._15x15)
                 return 75;
-            else if (gridSize == GridSize._20x20)
+            else if (gridSize == GridSize._15x15)
                 return 50;
+            else if (gridSize == GridSize._20x20)
+                return 25;
             else
                 return 0;
         }
