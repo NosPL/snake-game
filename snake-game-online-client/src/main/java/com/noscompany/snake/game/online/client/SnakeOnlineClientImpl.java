@@ -1,4 +1,4 @@
-package com.noscompany.snake.game.client;
+package com.noscompany.snake.game.online.client;
 
 import lombok.AllArgsConstructor;
 import snake.game.core.dto.*;
@@ -8,8 +8,14 @@ class SnakeOnlineClientImpl implements SnakeOnlineClient {
     private SnakeOnlineClient snakeOnlineClient;
 
     @Override
-    public SnakeOnlineClient connect(String ip, String port) {
-        snakeOnlineClient = snakeOnlineClient.connect(ip, port);
+    public SnakeOnlineClient connect(String roomName) {
+        snakeOnlineClient = snakeOnlineClient.connect(roomName);
+        return this;
+    }
+
+    @Override
+    public SnakeOnlineClient enterTheRoom(String userName) {
+        snakeOnlineClient = snakeOnlineClient.enterTheRoom(userName);
         return this;
     }
 

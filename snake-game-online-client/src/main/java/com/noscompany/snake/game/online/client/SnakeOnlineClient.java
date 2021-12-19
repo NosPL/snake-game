@@ -1,10 +1,12 @@
-package com.noscompany.snake.game.client;
+package com.noscompany.snake.game.online.client;
 
 import snake.game.core.dto.*;
 
 public interface SnakeOnlineClient {
 
-    SnakeOnlineClient connect(String ip, String port);
+    SnakeOnlineClient connect(String roomName);
+
+    SnakeOnlineClient enterTheRoom(String userName);
 
     SnakeOnlineClient takeASeat(SnakeNumber snakeNumberNumber);
 

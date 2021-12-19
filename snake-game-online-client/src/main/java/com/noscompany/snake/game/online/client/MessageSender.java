@@ -1,8 +1,8 @@
-package com.noscompany.snake.game.client;
+package com.noscompany.snake.game.online.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.noscompany.snake.game.commons.MessageDto;
+import com.noscompany.snake.game.commons.OnlineMessage;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import org.atmosphere.wasync.Socket;
@@ -14,9 +14,9 @@ class MessageSender {
     private final Socket socket;
     private final ObjectMapper objectMapper;
 
-    Option<ClientError> send(MessageDto messageDto) {
+    Option<ClientError> send(OnlineMessage onlineMessage) {
         try {
-            socket.fire(asJson(messageDto));
+            socket.fire(asJson(onlineMessage));
             return Option.none();
         } catch (JsonProcessingException je) {
             return Option.of(ClientError.FAILED_TO_SERIALIZE_MESSAGE);
@@ -25,8 +25,8 @@ class MessageSender {
         }
     }
 
-    private String asJson(MessageDto messageDto) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(messageDto);
+    private String asJson(OnlineMessage onlineMessage) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(onlineMessage);
     }
 
     void closeSocket() {

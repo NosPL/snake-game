@@ -1,11 +1,9 @@
-package com.noscompany.snake.game.client;
+package com.noscompany.snake.game.online.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.noscompany.snake.game.commons.Constants;
-import com.noscompany.snake.game.commons.Ipv4Validator;
-import com.noscompany.snake.game.commons.PortValidator;
-import com.noscompany.snake.game.commons.messages.events.decoder.MessageDecoder;
+import com.noscompany.snake.game.commons.SnakeOnlineServerConstants;
 import io.vavr.control.Option;
+import io.vavr.jackson.datatype.VavrModule;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.atmosphere.wasync.*;
@@ -14,27 +12,16 @@ import org.atmosphere.wasync.impl.AtmosphereClient;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import static com.noscompany.snake.game.client.StartingClientError.INCORRECT_IPV4_FORMAT;
-import static com.noscompany.snake.game.client.StartingClientError.INCORRECT_PORT_FORMAT;
 import static org.atmosphere.wasync.Request.METHOD.GET;
 
 @Slf4j
-public class RunningClientCreator {
+class ConnectedClientCreator {
 
     @SneakyThrows
-    public static Option<SnakeOnlineClient> startClient(String ipv4Address,
-                                                        String port,
-                                                        ClientEventHandler eventHandler) {
-        if (!Ipv4Validator.isValid(ipv4Address)) {
-            eventHandler.handle(INCORRECT_IPV4_FORMAT);
-            return Option.none();
-        } else if (!PortValidator.isValid(port)) {
-            eventHandler.handle(INCORRECT_PORT_FORMAT);
-            return Option.none();
-        }
+    static Option<SnakeOnlineClient> create(String url, ClientEventHandler eventHandler) {
         Socket socket = new NullSocket();
         try {
-            socket = createSocket(ipv4Address, port, eventHandler);
+            socket = createSocket(url, eventHandler);
             var messageSender = new MessageSender(socket, new ObjectMapper());
             return Option.of(new ConnectedClient(messageSender, eventHandler));
         } catch (Exception e) {
@@ -45,14 +32,15 @@ public class RunningClientCreator {
         }
     }
 
-    private static Socket createSocket(String ipv4Address,
-                                       String port,
+    private static Socket createSocket(String roomName,
                                        ClientEventHandler eventHandler) throws IOException {
-        var messageDispatcher = new MessageDispatcher(eventHandler, new MessageDecoder());
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new VavrModule());
+        var messageDispatcher = new MessageDispatcher(eventHandler, objectMapper);
         var client = getClient();
-        var request = createRequest(ipv4Address, port, client);
+        var request = createRequest(roomName, client);
         return client.create()
                 .on(Event.MESSAGE, messageDispatcher)
+                .on(Event.ERROR, s -> eventHandler.handle(ClientError.CONNECTION_CLOSED))
                 .on(Event.CLOSE, s -> eventHandler.connectionClosed())
                 .open(request);
     }
@@ -61,20 +49,15 @@ public class RunningClientCreator {
         return ClientFactory.getDefault().newClient(AtmosphereClient.class);
     }
 
-    private static Request createRequest(String serverIpAddress,
-                                         String port,
+    private static Request createRequest(String url,
                                          Client client) {
         return client
                 .newRequestBuilder()
                 .method(GET)
-                .uri(serverUrl(serverIpAddress, port))
+                .uri(url)
                 .transport(Request.TRANSPORT.WEBSOCKET)
                 .transport(Request.TRANSPORT.LONG_POLLING)
                 .build();
-    }
-
-    private static String serverUrl(String serverIpAddress, String port) {
-        return "ws://" + serverIpAddress + ":" + port + Constants.SNAKE_ENDPOINT_URL;
     }
 
     private static class NullSocket implements Socket {

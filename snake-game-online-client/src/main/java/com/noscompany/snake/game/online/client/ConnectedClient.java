@@ -1,14 +1,15 @@
-package com.noscompany.snake.game.client;
+package com.noscompany.snake.game.online.client;
 
+import com.noscompany.snake.game.commons.messages.commands.chat.SendChatMessage;
 import com.noscompany.snake.game.commons.messages.commands.game.*;
 import com.noscompany.snake.game.commons.messages.commands.lobby.ChangeGameOptions;
 import com.noscompany.snake.game.commons.messages.commands.lobby.FreeUpASeat;
-import com.noscompany.snake.game.commons.messages.commands.lobby.SendChatMessage;
 import com.noscompany.snake.game.commons.messages.commands.lobby.TakeASeat;
+import com.noscompany.snake.game.commons.messages.commands.room.EnterRoom;
 import lombok.AllArgsConstructor;
 import snake.game.core.dto.*;
 
-import static com.noscompany.snake.game.client.StartingClientError.CONNECTION_ALREADY_ESTABLISHED;
+import static com.noscompany.snake.game.online.client.StartingClientError.CONNECTION_ALREADY_ESTABLISHED;
 
 @AllArgsConstructor
 class ConnectedClient implements SnakeOnlineClient {
@@ -16,9 +17,16 @@ class ConnectedClient implements SnakeOnlineClient {
     private final ClientEventHandler eventHandler;
 
     @Override
-    public SnakeOnlineClient connect(String ip, String port) {
+    public SnakeOnlineClient connect(String roomName) {
         eventHandler.handle(CONNECTION_ALREADY_ESTABLISHED);
         return this;
+    }
+
+    @Override
+    public SnakeOnlineClient enterTheRoom(String userName) {
+        return messageSender.send(new EnterRoom(userName))
+                .map(this::handle)
+                .getOrElse(this);
     }
 
     @Override

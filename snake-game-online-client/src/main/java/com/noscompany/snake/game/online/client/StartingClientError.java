@@ -1,4 +1,4 @@
-package com.noscompany.snake.game.client;
+package com.noscompany.snake.game.online.client;
 
 public enum StartingClientError {
     INCORRECT_IPV4_FORMAT,

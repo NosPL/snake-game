@@ -1,20 +1,26 @@
-package com.noscompany.snake.game.client;
+package com.noscompany.snake.game.online.client;
 
 import lombok.AllArgsConstructor;
 import snake.game.core.dto.*;
 
-import static com.noscompany.snake.game.client.ClientError.CLIENT_NOT_CONNECTED;
+import static com.noscompany.snake.game.online.client.ClientError.CLIENT_NOT_CONNECTED;
 
 @AllArgsConstructor
 class NotConnectedClient implements SnakeOnlineClient {
     private final ClientEventHandler eventHandler;
 
     @Override
-    public SnakeOnlineClient connect(String ip, String port) {
-        return RunningClientCreator
-                .startClient(ip, port, eventHandler)
+    public SnakeOnlineClient connect(String userName) {
+        return ConnectedClientCreator
+                .create(userName, eventHandler)
                 .peek(runningClient -> eventHandler.connectionEstablished())
                 .getOrElse(this);
+    }
+
+    @Override
+    public SnakeOnlineClient enterTheRoom(String userName) {
+        eventHandler.handle(CLIENT_NOT_CONNECTED);
+        return this;
     }
 
     @Override

@@ -1,9 +1,9 @@
-package com.noscompany.snake.game.client;
+package com.noscompany.snake.game.online.client;
 
-import com.noscompany.snake.game.commons.messages.events.lobby.LobbyEventHandler;
+import com.noscompany.snake.game.commons.online.client.ServerEventHandler;
 import snake.game.core.SnakeGameEventHandler;
 
-public interface ClientEventHandler extends LobbyEventHandler, SnakeGameEventHandler {
+public interface ClientEventHandler extends ServerEventHandler {
 
     void connectionEstablished();
 
