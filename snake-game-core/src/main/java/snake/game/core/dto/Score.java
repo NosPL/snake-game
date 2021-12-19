@@ -23,6 +23,8 @@ public class Score {
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = PRIVATE)
+    @AllArgsConstructor
     public static class Entry {
         int place;
         int score;
@@ -30,6 +32,8 @@ public class Score {
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = PRIVATE)
+    @AllArgsConstructor
     public static class Snake {
         SnakeNumber snakeNumber;
         int place;

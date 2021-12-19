@@ -2,11 +2,6 @@ package snake.game.core.console.client;
 
 import lombok.RequiredArgsConstructor;
 import snake.game.core.SnakeGameConfiguration;
-import snake.game.core.SnakeGame;
-import snake.game.core.console.client.input.ConsoleInput;
-import snake.game.core.console.client.output.ConsoleEventHandler;
-import snake.game.core.dto.CountdownTime;
-import snake.game.core.dto.SnakeNumber;
 
 import java.util.Scanner;
 
@@ -20,7 +15,7 @@ class SnakeGameConsoleClient {
     public static void main(String[] args) {
         SnakeGameConsoleClient
                 .getInstance()
-                .startGame();
+                .start();
     }
 
     static SnakeGameConsoleClient getInstance() {
@@ -29,39 +24,17 @@ class SnakeGameConsoleClient {
         return new SnakeGameConsoleClient(consoleInput, gameSettingsService);
     }
 
-    void startGame() {
+    void start() {
         System.out.println("Snake Game");
         var gameSettings = gameSettingsService.getSettings();
         System.out.println("Press ENTER to start");
         consoleInput.waitForEnterPress();
-        var snakeGame = createGame(gameSettings);
-        var snakeNumber = gameSettings.getSnakeNumber();
-        snakeGame.start();
-        while (snakeGame.isRunning()) {
-            consoleInput
-                    .getUserCommand()
-                    .onDirectionChange(direction -> snakeGame.changeSnakeDirection(snakeNumber, direction))
-                    .onExit(snakeGame::cancel)
-                    .onPause(snakeGame::pause)
-                    .onResume(snakeGame::resume)
-                    .onUnknownCommand(this::printUnknownCommandError);
-        }
+        ConsoleSnakeGame.createFrom(gameSettings, consoleInput)
+                .peek(ConsoleSnakeGame::start)
+                .peekLeft(this::handleError);
     }
 
-    private void printUnknownCommandError(String unknownCommand) {
-        if (!unknownCommand.isBlank())
-            System.out.println("unknown command: " + unknownCommand);
-    }
-
-    private SnakeGame createGame(GameSettings gameSettings) {
-        return new SnakeGameConfiguration()
-                .set(gameSettings.getSnakeNumber())
-                .set(CountdownTime.inSeconds(3))
-                .set(gameSettings.getGridSize())
-                .set(gameSettings.getGameSpeed())
-                .set(gameSettings.getWalls())
-                .set(new ConsoleEventHandler())
-                .create()
-                .get();
+    private void handleError(SnakeGameConfiguration.Error error) {
+        System.out.println(error.toString());
     }
 }

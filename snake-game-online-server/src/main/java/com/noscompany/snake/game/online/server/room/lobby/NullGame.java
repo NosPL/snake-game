@@ -1,16 +1,15 @@
-package com.noscompany.snake.game.server.lobby;
+package com.noscompany.snake.game.online.server.room.lobby;
 
 import lombok.AllArgsConstructor;
 import snake.game.core.SnakeGame;
 import snake.game.core.dto.*;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 @AllArgsConstructor
 class NullGame implements SnakeGame {
-    private GridSize gridSize;
+    private final GridSize gridSize;
 
     @Override
     public void start() {
@@ -19,6 +18,11 @@ class NullGame implements SnakeGame {
 
     @Override
     public void changeSnakeDirection(SnakeNumber snakeNumber, Direction direction) {
+
+    }
+
+    @Override
+    public void kill(SnakeNumber snakeNumber) {
 
     }
 

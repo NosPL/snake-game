@@ -1,5 +1,6 @@
-package com.noscompany.snake.game.server.lobby;
+package com.noscompany.snake.game.online.server.room.lobby;
 
+import com.noscompany.snake.game.commons.messages.dto.GameLobbyState;
 import com.noscompany.snake.game.commons.messages.events.lobby.*;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
@@ -9,7 +10,7 @@ public interface GameLobby {
 
     Either<FailedToTakeASeat, PlayerTookASeat> takeASeat(String userId, SnakeNumber snakeNumberNumber);
 
-    Option<PlayerFreedUpASeat> freeUpASeat(String userId);
+    Either<FailedToFreeUpSeat, PlayerFreedUpASeat> freeUpASeat(String userId);
 
     Either<FailedToChangeGameOptions, GameOptionsChanged> changeGameOptions(String userId,
                                                                             GridSize gridSize,
@@ -29,6 +30,4 @@ public interface GameLobby {
     void resumeGame(String userId);
 
     GameLobbyState getLobbyState();
-
-    Option<PlayerFreedUpASeat> userLeft(String userId);
 }

@@ -20,6 +20,11 @@ class SnakeGameImpl implements SnakeGame {
     }
 
     @Override
+    public void kill(SnakeNumber snakeNumber) {
+        gameLogic.kill(snakeNumber);
+    }
+
+    @Override
     public GameState getGameState() {
         return gameLogic.getCurrentState();
     }

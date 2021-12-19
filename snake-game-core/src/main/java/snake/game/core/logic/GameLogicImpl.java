@@ -35,6 +35,11 @@ class GameLogicImpl implements GameLogic {
     }
 
     @Override
+    public synchronized void kill(SnakeNumber snakeNumber) {
+        snakes.kill(snakeNumber);
+    }
+
+    @Override
     public synchronized GameState getCurrentState() {
         return new GameState(snakes.toDto(), gridSize, food.getPoint(), scoringSystem.getCurrentScore());
     }

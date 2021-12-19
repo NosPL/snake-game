@@ -1,6 +1,7 @@
-package com.noscompany.snakejavafxclient.game.online;
+package com.noscompany.snakejavafxclient.game.online.client;
 
-import com.noscompany.snake.game.commons.messages.commands.decoder.Consumer3;
+import com.noscompany.snake.game.commons.messages.dto.GameLobbyState;
+import com.noscompany.snake.game.online.server.message.handler.Consumer3;
 import com.noscompany.snakejavafxclient.commons.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
@@ -51,6 +52,13 @@ public class OnlineGameOptionsController extends AbstractController {
     @FXML
     public void gameOptionsChanged() {
         gameOptionsChangedAction.accept(gridSize(), gameSpeed(), walls());
+    }
+
+    public void update(GameLobbyState gameLobbyState) {
+        update(
+                gameLobbyState.getGameSpeed(),
+                gameLobbyState.getGridSize(),
+                gameLobbyState.getWalls());
     }
 
     public void update(GameSpeed gameSpeed, GridSize gridSize, Walls walls) {

@@ -1,6 +1,6 @@
 package snake.game.core.events;
 
-import com.noscompany.snake.game.commons.MessageDto;
+import com.noscompany.snake.game.commons.OnlineMessage;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -8,14 +8,14 @@ import snake.game.core.dto.*;
 
 import java.util.Collection;
 
-import static com.noscompany.snake.game.commons.MessageDto.MessageType.GAME_CONTINUES;
+import static com.noscompany.snake.game.commons.OnlineMessage.MessageType.GAME_CONTINUES;
 import static lombok.AccessLevel.PRIVATE;
 
 @Value
 @NoArgsConstructor(force = true, access = PRIVATE)
 @AllArgsConstructor
-public class GameContinues implements GameEvent, MessageDto {
-    MessageDto.MessageType messageType = GAME_CONTINUES;
+public class GameContinues implements GameEvent, OnlineMessage {
+    OnlineMessage.MessageType messageType = GAME_CONTINUES;
     GridSize gridSize;
     Point foodPoint;
     Collection<SnakeDto> snakes;

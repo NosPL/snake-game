@@ -8,6 +8,8 @@ public interface SnakeGame {
 
     void changeSnakeDirection(SnakeNumber snakeNumber, Direction direction);
 
+    void kill(SnakeNumber snakeNumber);
+
     GameState getGameState();
 
     void start();

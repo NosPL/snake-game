@@ -2,7 +2,6 @@ package snake.game.core.console.client;
 
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
-import snake.game.core.console.client.input.ConsoleInput;
 import snake.game.core.dto.GameSpeed;
 import snake.game.core.dto.GridSize;
 import snake.game.core.dto.SnakeNumber;
