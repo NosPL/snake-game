@@ -20,6 +20,7 @@
         <module>snake-game-client-server</module>
         <module>snake-game-gui</module>
         <module>snake-game-commons</module>
+        <module>snake-game-online-commons</module>
     </modules>
 
     <dependencies>
@@ -32,6 +33,12 @@
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
             <version>0.10.3</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
