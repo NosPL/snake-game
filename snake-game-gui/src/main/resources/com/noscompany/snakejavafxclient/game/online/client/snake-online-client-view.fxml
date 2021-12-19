@@ -4,19 +4,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox prefHeight="860.0" prefWidth="1116.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.game.online.client.OnlineClientController">
+<HBox fx:id="mainHBox" prefHeight="860.0" prefWidth="1116.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.game.online.client.OnlineClientController">
    <children>
-      <VBox prefHeight="200.0" prefWidth="100.0">
+      <VBox fx:id="vBox1" prefHeight="200.0" prefWidth="100.0">
          <children>
-             <fx:include fx:id="lobbySeats" source="../lobby-seats-view.fxml" />
-             <fx:include fx:id="gameOptions" source="../online-game-options-view.fxml" />
+             <fx:include fx:id="lobbySeats" source="lobby-seats-view.fxml" />
+             <fx:include fx:id="gameOptions" source="online-game-options-view.fxml" />
+             <fx:include fx:id="buttons" source="../../game-buttons-view.fxml" />
          </children>
       </VBox>
-      <VBox fx:id="mainVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="563.0">
-          <fx:include fx:id="joinServer" source="join-server-view.fxml" />
+      <VBox fx:id="vBox2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="563.0">
          <HBox minHeight="164.0" minWidth="560.0" prefHeight="164.0" prefWidth="563.0">
             <children>
-                <fx:include fx:id="buttons" source="../../game-buttons-view.fxml" />
                 <fx:include fx:id="scoreboard" source="../../scoreboard-view.fxml" />
             </children>
          </HBox>
@@ -29,10 +28,10 @@
             <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
          </HBox.margin>
       </VBox>
-      <VBox prefHeight="200.0" prefWidth="100.0">
+      <VBox fx:id="vBox3" prefHeight="200.0" prefWidth="100.0">
          <children>
-             <fx:include fx:id="joinedPlayers" source="../joined-users-view.fxml" />
-             <fx:include fx:id="chat" source="../chat-view.fxml" />
+             <fx:include fx:id="joinedPlayers" source="joined-users-view.fxml" />
+             <fx:include fx:id="chat" source="chat-view.fxml" />
          </children>
       </VBox>
    </children>

@@ -105,7 +105,7 @@ public class GuiGameEventHandler implements SnakeGameEventHandler {
     public void snakeNameUpdated(SnakeNumber snakeNumber, String newName) {
         Platform.runLater(() -> {
             gameOptionsController.snakeNameUpdated(snakeNumber, newName);
-            scoreboardController.snakeNameUpdated(snakeNumber, newName);
+            scoreboardController.updateSnakeNames(newName, snakeNumber);
         });
     }
 

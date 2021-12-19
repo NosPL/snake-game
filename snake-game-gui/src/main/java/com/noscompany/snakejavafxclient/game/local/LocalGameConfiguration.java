@@ -62,6 +62,11 @@ public class LocalGameConfiguration {
         }
 
         @Override
+        public void kill(SnakeNumber snakeNumber) {
+
+        }
+
+        @Override
         public boolean isRunning() {
             return false;
         }

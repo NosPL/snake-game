@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="vBox" prefHeight="283.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.game.online.OnlineModeSelectionController">
+<VBox fx:id="vBox" prefHeight="283.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.game.online.client.EnterTheRoomController">
    <children>
       <AnchorPane prefHeight="82.0" prefWidth="448.0">
          <children>
@@ -33,9 +33,10 @@
                   </AnchorPane>
                   <AnchorPane layoutX="115.0" layoutY="64.0" prefHeight="156.0" prefWidth="219.0">
                      <children>
-                        <Button fx:id="joinGameButton" layoutX="14.0" layoutY="82.0" mnemonicParsing="false" onAction="#joinGame" prefHeight="47.0" prefWidth="188.0" text="JOIN GAME" />
-                        <TextField fx:id="roomNameTextField" layoutX="14.0" layoutY="27.0" prefHeight="24.0" prefWidth="188.0" />
-                        <Label layoutX="14.0" layoutY="6.0" text="ROOM NAME" />
+                        <Button fx:id="enterTheRoomButton" layoutX="14.0" layoutY="89.0" mnemonicParsing="false" onAction="#enterTheRoom" prefHeight="47.0" prefWidth="188.0" text="ENTER THE ROOM" />
+                        <TextField fx:id="userNameTextField" layoutX="14.0" layoutY="27.0" prefHeight="24.0" prefWidth="188.0" />
+                        <Label layoutX="14.0" layoutY="6.0" text="ENTER YOUR NAME" />
+                        <Label fx:id="errorMessageLabel" layoutX="14.0" layoutY="62.0" prefHeight="16.0" prefWidth="188.0" />
                      </children>
                   </AnchorPane>
                </children>

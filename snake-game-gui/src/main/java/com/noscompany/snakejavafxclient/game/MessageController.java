@@ -37,6 +37,10 @@ public class MessageController extends AbstractController {
         messageLabel.setText("GAME RESUMED");
     }
 
+    public void print(String msg) {
+        messageLabel.setText(msg);
+    }
+
     public void print(SnakeGameConfiguration.Error error) {
         if (error == PLAYERS_SET_IS_EMPTY)
             messageLabel.setText("SELECT AT LEAST 1 PLAYER");

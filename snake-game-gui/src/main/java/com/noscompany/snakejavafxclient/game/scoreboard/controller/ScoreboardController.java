@@ -1,5 +1,6 @@
 package com.noscompany.snakejavafxclient.game.scoreboard.controller;
 
+import com.noscompany.snake.game.commons.messages.dto.GameLobbyState;
 import com.noscompany.snakejavafxclient.commons.AbstractController;
 import com.noscompany.snakejavafxclient.game.SnakesColors;
 import com.noscompany.snakejavafxclient.game.scoreboard.controller.scoreboard.Scoreboard;
@@ -12,7 +13,6 @@ import snake.game.core.dto.SnakeNumber;
 
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -30,6 +30,12 @@ public class ScoreboardController extends AbstractController {
         currentScore = new Score(new LinkedList<>());
         scoreBoard = ScoreboardCreator.create();
         vBox.getChildren().add(scoreBoard);
+    }
+
+    public void update(GameLobbyState gameLobbyState) {
+        gameLobbyState.getJoinedPlayers()
+                .forEach(this::updateSnakeNames);
+        print(gameLobbyState.getGameState().getScore());
     }
 
     public void clear() {
@@ -68,7 +74,7 @@ public class ScoreboardController extends AbstractController {
                 snake.isAlive());
     }
 
-    public void snakeNameUpdated(SnakeNumber snakeNumber, String newName) {
+    public void updateSnakeNames(String newName, SnakeNumber snakeNumber) {
         nickNames.put(snakeNumber, newName + SPACE);
         print(currentScore);
     }

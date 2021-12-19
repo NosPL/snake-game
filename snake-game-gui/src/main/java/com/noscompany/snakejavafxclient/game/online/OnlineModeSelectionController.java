@@ -1,33 +1,22 @@
 package com.noscompany.snakejavafxclient.game.online;
 
-import com.noscompany.snakejavafxclient.commons.Stages;
+import com.noscompany.snake.game.online.client.SnakeOnlineClientCreator;
+import com.noscompany.snakejavafxclient.ApplicationProfile;
 import com.noscompany.snakejavafxclient.commons.AbstractController;
+import com.noscompany.snakejavafxclient.commons.Stages;
+import com.noscompany.snakejavafxclient.game.online.client.GuiOnlineClientEventHandler;
 import com.noscompany.snakejavafxclient.game.online.client.SnakeOnlineClientConfiguration;
-import com.noscompany.snakejavafxclient.game.online.server.SnakeOnlineServerConfiguration;
 import javafx.fxml.FXML;
-import lombok.SneakyThrows;
-
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.UUID;
+import javafx.scene.control.TextField;
 
 public class OnlineModeSelectionController extends AbstractController {
-
     @FXML
-    @SneakyThrows
-    public void createGame() {
-        Stages.getOnlineModeSelectionStage().close();
-        SnakeOnlineServerConfiguration.run(UUID.randomUUID().toString());
-    }
+    private TextField roomNameTextField;
 
     @FXML
     public void joinGame() {
+        String roomName = roomNameTextField.getText();
+        SnakeOnlineClientConfiguration.run(roomName);
         Stages.getOnlineModeSelectionStage().close();
-        SnakeOnlineClientConfiguration.run(UUID.randomUUID().toString());
-    }
-
-    @Override
-    protected void doInitialize(URL location, ResourceBundle resources) {
-
     }
 }

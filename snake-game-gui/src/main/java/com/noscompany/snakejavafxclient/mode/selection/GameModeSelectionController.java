@@ -1,5 +1,7 @@
 package com.noscompany.snakejavafxclient.mode.selection;
 
+import com.noscompany.snake.game.online.client.SnakeOnlineClient;
+import com.noscompany.snake.game.online.client.SnakeOnlineClientCreator;
 import com.noscompany.snakejavafxclient.commons.Stages;
 import com.noscompany.snakejavafxclient.commons.AbstractController;
 import com.noscompany.snakejavafxclient.game.local.LocalGameConfiguration;
@@ -23,9 +25,5 @@ public class GameModeSelectionController extends AbstractController {
     public void selectOnlineMode() {
         Stages.getGameModeSelectionStage().close();
         Stages.getOnlineModeSelectionStage().show();
-    }
-
-    @Override
-    protected void doInitialize(URL location, ResourceBundle resources) {
     }
 }

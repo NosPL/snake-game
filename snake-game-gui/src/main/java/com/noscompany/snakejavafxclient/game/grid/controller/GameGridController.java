@@ -1,9 +1,9 @@
 package com.noscompany.snakejavafxclient.game.grid.controller;
 
-import com.noscompany.snake.game.server.lobby.GameStateDto;
 import com.noscompany.snakejavafxclient.commons.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
+import snake.game.core.dto.GameState;
 import snake.game.core.dto.GridSize;
 import snake.game.core.dto.Point;
 import snake.game.core.dto.SnakeDto;
@@ -35,11 +35,7 @@ public class GameGridController extends AbstractController {
     protected void doInitialize(URL location, ResourceBundle resources) {
     }
 
-    public void update(GameStateDto gameState) {
-        if (gameState == null) {
-            gameGrid.getChildren().clear();
-            return;
-        }
+    public void update(GameState gameState) {
         initializeGrid(gameState.getGridSize());
         updateGrid(gameState.getSnakes());
     }

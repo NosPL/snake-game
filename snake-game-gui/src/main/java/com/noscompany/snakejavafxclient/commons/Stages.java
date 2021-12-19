@@ -2,16 +2,18 @@ package com.noscompany.snakejavafxclient.commons;
 
 import com.noscompany.snakejavafxclient.game.local.LocalSnakeGame;
 import com.noscompany.snakejavafxclient.game.local.edit.snake.name.EditSnakeNameController;
+import com.noscompany.snakejavafxclient.game.online.client.EnterTheRoomController;
 import com.noscompany.snakejavafxclient.mode.selection.GameModeSelectionController;
 import com.noscompany.snakejavafxclient.game.online.OnlineModeSelectionController;
 import com.noscompany.snakejavafxclient.game.online.client.OnlineClientController;
-import com.noscompany.snakejavafxclient.game.online.server.OnlineServerController;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import lombok.SneakyThrows;
 
 import java.net.URL;
@@ -22,8 +24,8 @@ public class Stages {
     private static final Map<String, Stage> stages = new HashMap<>();
     private static final String GAME_MODE_SELECTION_VIEW = "game-mode-selection-view.fxml";
     private static final String ONLINE_MODE_SELECTION_VIEW = "online-mode-selection-view.fxml";
-    private static final String SNAKE_ONLINE_SERVER_VIEW = "snake-online-server-view.fxml";
     private static final String SNAKE_ONLINE_CLIENT_VIEW = "snake-online-client-view.fxml";
+    private static final String ENTER_THE_ROOM_VIEW = "enter-the-room-view.fxml";
     private static final String LOCAL_GAME_VIEW = "local-game-view.fxml";
     private static final String LOCAL_GAME_EDIT_SNAKE_NAME_VIEW = "local-game-edit-snake-name-view.fxml";
 
@@ -61,15 +63,6 @@ public class Stages {
         return stage;
     }
 
-    public static Stage getSnakeServerStage() {
-        Stage stage = get(OnlineServerController.class, SNAKE_ONLINE_SERVER_VIEW);
-        stage.setOnCloseRequest(e -> {
-            getGameModeSelectionStage().show();
-            stages.remove(SNAKE_ONLINE_SERVER_VIEW);
-        });
-        return stage;
-    }
-
     public static Stage getSnakeOnlineClientStage() {
         Stage stage = get(OnlineClientController.class, SNAKE_ONLINE_CLIENT_VIEW);
         stage.setOnCloseRequest(e -> {
@@ -79,12 +72,22 @@ public class Stages {
         return stage;
     }
 
-    public static void removeLocalGameStage() {
-        stages.remove(LOCAL_GAME_VIEW);
+    public static Stage getEnterRoomStage() {
+        Stage stage = get(EnterTheRoomController.class, ENTER_THE_ROOM_VIEW);
+        if (stage.getOwner() == null) {
+            stage.initOwner(getSnakeOnlineClientStage());
+            stage.initModality(Modality.WINDOW_MODAL);
+        }
+        stage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
+            boolean userInTheRoom = Controllers.get(EnterTheRoomController.class).isUserInTheRoom();
+            if (!userInTheRoom)
+                event.consume();
+        });
+        return stage;
     }
 
-    public static void removeSnakeOnlineServerStage() {
-        stages.remove(SNAKE_ONLINE_SERVER_VIEW);
+    public static void removeLocalGameStage() {
+        stages.remove(LOCAL_GAME_VIEW);
     }
 
     public static void removeSnakeOnlineClientStage() {
