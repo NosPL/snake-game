@@ -13,5 +13,5 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 public class SendChatMessage implements OnlineMessage {
     MessageType messageType = MessageType.SEND_CHAT_MESSAGE;
-    String message;
+    String messageContent;
 }
