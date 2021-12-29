@@ -1,6 +1,6 @@
 package com.noscompany.snake.game.online.server;
 
-import com.noscompany.snake.game.online.server.websocket.SnakeGameRoomWebSocket;
+import com.noscompany.snake.game.online.server.room.websocket.SnakeGameRoomWebSocket;
 import org.atmosphere.cpr.ApplicationConfig;
 import org.atmosphere.nettosphere.Config;
 import org.atmosphere.nettosphere.Nettosphere;
