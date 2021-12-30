@@ -3,8 +3,6 @@ package com.noscompany.snakejavafxclient.game.online.client;
 import com.noscompany.snakejavafxclient.commons.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 
 import java.util.Set;
 

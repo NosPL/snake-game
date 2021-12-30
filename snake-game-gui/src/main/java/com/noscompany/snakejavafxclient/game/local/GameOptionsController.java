@@ -6,7 +6,6 @@ import com.noscompany.snakejavafxclient.game.local.edit.snake.name.EditSnakeName
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import snake.game.core.dto.GameSpeed;
 import snake.game.core.dto.GridSize;
@@ -71,7 +70,7 @@ public class GameOptionsController extends AbstractController {
         playerNumber4.setTextFill(SnakesColors.get(SnakeNumber._4));
     }
 
-    public  void set(LocalSnakeGame localSnakeGame) {
+    public void set(LocalSnakeGame localSnakeGame) {
         this.localSnakeGame = localSnakeGame;
     }
 
@@ -89,6 +88,7 @@ public class GameOptionsController extends AbstractController {
     public void editPlayer2() {
         EditSnakeNameConfiguration.run(SnakeNumber._2, playerNumber2.getText());
     }
+
     @FXML
     public void editPlayer3() {
         EditSnakeNameConfiguration.run(SnakeNumber._3, playerNumber3.getText());
@@ -161,7 +161,7 @@ public class GameOptionsController extends AbstractController {
         throw new IllegalStateException("Non of walls radio buttons is selected");
     }
 
-    public void snakeNameUpdated(SnakeNumber snakeNumber, String newName) {
+    public void updateSnakeName(String newName, SnakeNumber snakeNumber) {
         CheckBox player = getCheckBox(snakeNumber);
         player.setText(newName);
     }

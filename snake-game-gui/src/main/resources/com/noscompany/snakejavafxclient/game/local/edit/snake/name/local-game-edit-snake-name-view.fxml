@@ -6,19 +6,21 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
-<VBox prefHeight="77.0" prefWidth="293.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.game.local.edit.snake.name.EditSnakeNameController">
-   <children>
-      <AnchorPane prefHeight="102.0" prefWidth="293.0">
-         <children>
-            <TextField fx:id="textField" layoutX="14.0" layoutY="8.0" prefHeight="24.0" prefWidth="138.0" />
-            <Button layoutX="163.0" layoutY="8.0" mnemonicParsing="false" onAction="#changeName" text="CHANGE NAME" />
-            <Label fx:id="errorMessageLabel" layoutX="20.0" layoutY="39.0" prefHeight="24.0" prefWidth="231.0" text="NAME LENGTH MUST BE BETWEEN 1 AND 10" textFill="RED">
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
-   </children>
+<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="77.0" prefWidth="293.0" xmlns="http://javafx.com/javafx/17"
+      fx:controller="com.noscompany.snakejavafxclient.game.local.edit.snake.name.EditSnakeNameController">
+    <children>
+        <AnchorPane prefHeight="102.0" prefWidth="293.0">
+            <children>
+                <TextField fx:id="textField" layoutX="14.0" layoutY="8.0" prefHeight="24.0" prefWidth="138.0"/>
+                <Button layoutX="163.0" layoutY="8.0" mnemonicParsing="false" onAction="#changeName"
+                        text="CHANGE NAME"/>
+                <Label fx:id="errorMessageLabel" layoutX="20.0" layoutY="39.0" prefHeight="24.0" prefWidth="231.0"
+                       text="NAME LENGTH MUST BE BETWEEN 1 AND 10" textFill="RED">
+                    <font>
+                        <Font size="10.0"/>
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+    </children>
 </VBox>

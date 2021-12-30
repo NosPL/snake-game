@@ -2,48 +2,51 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
-<VBox xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.mode.selection.GameModeSelectionController" fx:id="vBox">
-   <children>
-      <AnchorPane prefHeight="82.0" prefWidth="448.0">
-         <children>
-            <Label layoutX="45.0" layoutY="8.0" text="SNAKE GAME">
-               <font>
-                  <Font size="54.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
-      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="166.0" prefWidth="448.0">
-         <children>
-            <VBox prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <AnchorPane prefHeight="64.0" prefWidth="448.0">
-                           <children>
-                              <Label layoutX="115.0" layoutY="19.0" text="SELECT GAME MODE">
-                                 <font>
-                                    <Font size="21.0" />
-                                 </font>
-                              </Label>
-                           </children>
+<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16"
+      fx:controller="com.noscompany.snakejavafxclient.mode.selection.GameModeSelectionController" fx:id="vBox">
+    <children>
+        <AnchorPane prefHeight="82.0" prefWidth="448.0">
+            <children>
+                <Label layoutX="45.0" layoutY="8.0" text="SNAKE GAME">
+                    <font>
+                        <Font size="54.0"/>
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+        <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="166.0"
+              prefWidth="448.0">
+            <children>
+                <VBox prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                            <children>
+                                <AnchorPane prefHeight="64.0" prefWidth="448.0">
+                                    <children>
+                                        <Label layoutX="115.0" layoutY="19.0" text="SELECT GAME MODE">
+                                            <font>
+                                                <Font size="21.0"/>
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane layoutY="68.0" prefHeight="97.0" prefWidth="448.0">
+                                    <children>
+                                        <Button fx:id="localModeButton" layoutX="14.0" layoutY="11.0"
+                                                mnemonicParsing="false" onAction="#selectLocalMode" prefHeight="75.0"
+                                                prefWidth="188.0" text="LOCAL"/>
+                                        <Button fx:id="onlineModeButton" layoutX="246.0" layoutY="11.0"
+                                                mnemonicParsing="false" onAction="#selectOnlineMode" prefHeight="75.0"
+                                                prefWidth="188.0" text="ONLINE"/>
+                                    </children>
+                                </AnchorPane>
+                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutY="68.0" prefHeight="97.0" prefWidth="448.0">
-                           <children>
-                              <Button fx:id="localModeButton" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#selectLocalMode" prefHeight="75.0" prefWidth="188.0" text="LOCAL" />
-                              <Button fx:id="onlineModeButton" layoutX="246.0" layoutY="11.0" mnemonicParsing="false" onAction="#selectOnlineMode" prefHeight="75.0" prefWidth="188.0" text="ONLINE" />
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </AnchorPane>
-               </children>
-            </VBox>
-         </children>
-      </HBox>
-   </children>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </children>
 </VBox>

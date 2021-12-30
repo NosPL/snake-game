@@ -1,10 +1,11 @@
 package com.noscompany.snakejavafxclient.game.online.client;
 
-import com.noscompany.snake.game.commons.messages.events.chat.ChatMessageReceived;
+import com.noscompany.snake.game.commons.messages.events.chat.UserSentChatMessage;
 import com.noscompany.snakejavafxclient.commons.AbstractController;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 
 import java.net.URL;
@@ -44,7 +45,7 @@ public class ChatController extends AbstractController {
         chatMessageTextField.setText("");
     }
 
-    public void print(ChatMessageReceived event) {
+    public void print(UserSentChatMessage event) {
         if (messages.size() > 20) {
             messages.pollFirst();
         }
@@ -52,7 +53,7 @@ public class ChatController extends AbstractController {
         stringListView.setItems(FXCollections.observableArrayList(messages));
     }
 
-    private String toString(ChatMessageReceived event) {
+    private String toString(UserSentChatMessage event) {
         return event.getUserName() + ": " + event.getMessage();
     }
 }

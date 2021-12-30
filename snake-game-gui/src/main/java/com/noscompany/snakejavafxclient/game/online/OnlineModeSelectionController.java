@@ -1,10 +1,7 @@
 package com.noscompany.snakejavafxclient.game.online;
 
-import com.noscompany.snake.game.online.client.SnakeOnlineClientCreator;
-import com.noscompany.snakejavafxclient.ApplicationProfile;
 import com.noscompany.snakejavafxclient.commons.AbstractController;
 import com.noscompany.snakejavafxclient.commons.Stages;
-import com.noscompany.snakejavafxclient.game.online.client.GuiOnlineClientEventHandler;
 import com.noscompany.snakejavafxclient.game.online.client.SnakeOnlineClientConfiguration;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;

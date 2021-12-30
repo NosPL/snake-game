@@ -10,8 +10,8 @@ import snake.game.core.dto.SnakeNumber;
 
 @AllArgsConstructor
 public class LocalSnakeGame {
-    private SnakeGame snakeGame;
     private final GuiGameEventHandler eventHandler;
+    private SnakeGame snakeGame;
 
     public void start() {
         if (snakeGame.isRunning())

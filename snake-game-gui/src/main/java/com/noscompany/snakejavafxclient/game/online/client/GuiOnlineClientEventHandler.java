@@ -1,7 +1,7 @@
 package com.noscompany.snakejavafxclient.game.online.client;
 
-import com.noscompany.snake.game.commons.messages.dto.GameLobbyState;
-import com.noscompany.snake.game.commons.messages.events.chat.ChatMessageReceived;
+import com.noscompany.snake.game.commons.messages.dto.LobbyState;
+import com.noscompany.snake.game.commons.messages.events.chat.UserSentChatMessage;
 import com.noscompany.snake.game.commons.messages.events.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.commons.messages.events.lobby.*;
 import com.noscompany.snake.game.commons.messages.events.room.FailedToEnterRoom;
@@ -47,18 +47,18 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
 
     @Override
     public void handle(GameOptionsChanged event) {
-        Platform.runLater(() -> update(event.getGameLobbyState()));
+        Platform.runLater(() -> update(event.getLobbyState()));
 
     }
 
     @Override
     public void handle(PlayerTookASeat event) {
-        Platform.runLater(() -> update(event.getGameLobbyState()));
+        Platform.runLater(() -> update(event.getLobbyState()));
     }
 
     @Override
     public void handle(PlayerFreedUpASeat event) {
-        Platform.runLater(() -> update(event.getGameLobbyState()));
+        Platform.runLater(() -> update(event.getLobbyState()));
     }
 
     @Override
@@ -73,11 +73,12 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
 
     @Override
     public void handle(FailedToChangeGameOptions event) {
-        Platform.runLater(() -> update(event.getGameLobbyState()));
+        Platform.runLater(() -> {
+        });
     }
 
     @Override
-    public void handle(ChatMessageReceived event) {
+    public void handle(UserSentChatMessage event) {
         Platform.runLater(() -> chatController.print(event));
     }
 
@@ -176,12 +177,14 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
 
     @Override
     public void handle(ClientError clientError) {
-        Platform.runLater(() -> {});
+        Platform.runLater(() -> {
+        });
     }
 
     @Override
     public void handle(StartingClientError startingClientError) {
-        Platform.runLater(() -> {});
+        Platform.runLater(() -> {
+        });
     }
 
     @Override
@@ -197,11 +200,11 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
         });
     }
 
-    private void update(GameLobbyState gameLobbyState) {
-        onlineGameOptionsController.update(gameLobbyState);
-        lobbySeatsController.update(gameLobbyState);
-        scoreboardController.update(gameLobbyState);
-        gameGridController.update(gameLobbyState.getGameState());
+    private void update(LobbyState lobbyState) {
+        onlineGameOptionsController.update(lobbyState);
+        lobbySeatsController.update(lobbyState);
+        scoreboardController.update(lobbyState);
+        gameGridController.update(lobbyState.getGameState());
         messageController.clear();
     }
 
@@ -212,12 +215,14 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
 
     @Override
     public void handle(FailedToFreeUpSeat event) {
-        Platform.runLater(() -> {});
+        Platform.runLater(() -> {
+        });
     }
 
     @Override
     public void handle(FailedToSendChatMessage event) {
-        Platform.runLater(() -> {});
+        Platform.runLater(() -> {
+        });
     }
 
     @Override

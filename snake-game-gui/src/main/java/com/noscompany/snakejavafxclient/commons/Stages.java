@@ -2,12 +2,11 @@ package com.noscompany.snakejavafxclient.commons;
 
 import com.noscompany.snakejavafxclient.game.local.LocalSnakeGame;
 import com.noscompany.snakejavafxclient.game.local.edit.snake.name.EditSnakeNameController;
-import com.noscompany.snakejavafxclient.game.online.client.EnterTheRoomController;
-import com.noscompany.snakejavafxclient.mode.selection.GameModeSelectionController;
 import com.noscompany.snakejavafxclient.game.online.OnlineModeSelectionController;
+import com.noscompany.snakejavafxclient.game.online.client.EnterTheRoomController;
 import com.noscompany.snakejavafxclient.game.online.client.OnlineClientController;
+import com.noscompany.snakejavafxclient.mode.selection.GameModeSelectionController;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

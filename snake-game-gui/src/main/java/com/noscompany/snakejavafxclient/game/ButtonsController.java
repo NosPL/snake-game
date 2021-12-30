@@ -1,7 +1,6 @@
 package com.noscompany.snakejavafxclient.game;
 
 import com.noscompany.snakejavafxclient.commons.AbstractController;
-import com.noscompany.snakejavafxclient.game.local.LocalSnakeGame;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -18,10 +17,14 @@ public class ButtonsController extends AbstractController {
     @FXML
     private Button resumeButton;
 
-    private Runnable onStart = () -> {};
-    private Runnable onCancel = () -> {};
-    private Runnable onPause = () -> {};
-    private Runnable onResume = () -> {};
+    private Runnable onStart = () -> {
+    };
+    private Runnable onCancel = () -> {
+    };
+    private Runnable onPause = () -> {
+    };
+    private Runnable onResume = () -> {
+    };
 
     @FXML
     public void startGame() {

@@ -33,7 +33,7 @@ public class SnakeOnlineClientConfiguration {
 
     private static void setControllers(SnakeOnlineClient snakeOnlineClient) {
         Controllers.get(EnterTheRoomController.class)
-                        .set(snakeOnlineClient::enterTheRoom);
+                .set(snakeOnlineClient::enterTheRoom);
         Controllers.get(OnlineGameOptionsController.class)
                 .onGameOptionsChanged(snakeOnlineClient::changeGameOptions);
         Controllers.get(LobbySeatsController.class)

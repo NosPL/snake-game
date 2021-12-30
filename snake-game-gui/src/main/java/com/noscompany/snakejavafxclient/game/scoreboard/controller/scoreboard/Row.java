@@ -3,10 +3,8 @@ package com.noscompany.snakejavafxclient.game.scoreboard.controller.scoreboard;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import snake.game.core.dto.Score;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 

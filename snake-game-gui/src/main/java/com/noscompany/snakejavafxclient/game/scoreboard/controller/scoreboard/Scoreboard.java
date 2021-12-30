@@ -3,7 +3,6 @@ package com.noscompany.snakejavafxclient.game.scoreboard.controller.scoreboard;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import lombok.Value;
-import snake.game.core.dto.Score;
 
 import java.util.Collection;
 

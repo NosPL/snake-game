@@ -1,9 +1,6 @@
 package com.noscompany.snakejavafxclient;
 
 import com.noscompany.snake.game.commons.SnakeOnlineServerConstants;
-import com.noscompany.snake.game.online.client.ClientEventHandler;
-import com.noscompany.snake.game.online.client.SnakeOnlineClient;
-import com.noscompany.snake.game.online.client.SnakeOnlineClientCreator;
 import io.vavr.Function1;
 
 public class ApplicationProfile {

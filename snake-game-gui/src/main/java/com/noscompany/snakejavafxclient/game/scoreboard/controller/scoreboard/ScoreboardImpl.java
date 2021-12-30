@@ -1,9 +1,10 @@
 package com.noscompany.snakejavafxclient.game.scoreboard.controller.scoreboard;
 
 import lombok.NoArgsConstructor;
-import snake.game.core.dto.Score;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @NoArgsConstructor
 class ScoreboardImpl extends Scoreboard {
@@ -25,7 +26,7 @@ class ScoreboardImpl extends Scoreboard {
             row.update(entry.getPlace(), entry.getScore(), entry.getPlayers());
     }
 
-    void setHeaders(String...headers) {
+    void setHeaders(String... headers) {
         super.addRow(0, Row.of(headers).getCells());
     }
 

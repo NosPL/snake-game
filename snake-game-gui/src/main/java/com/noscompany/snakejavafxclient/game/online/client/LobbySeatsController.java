@@ -1,7 +1,7 @@
 package com.noscompany.snakejavafxclient.game.online.client;
 
-import com.noscompany.snake.game.commons.messages.dto.GameLobbyState;
 import com.noscompany.snake.game.commons.messages.dto.LobbyAdmin;
+import com.noscompany.snake.game.commons.messages.dto.LobbyState;
 import com.noscompany.snakejavafxclient.commons.AbstractController;
 import com.noscompany.snakejavafxclient.game.SnakesColors;
 import javafx.fxml.FXML;
@@ -75,10 +75,10 @@ public class LobbySeatsController extends AbstractController {
         freeUpASeatAction.run();
     }
 
-    public void update(GameLobbyState gameLobbyState) {
+    public void update(LobbyState lobbyState) {
         resetSeatsLabels();
-        updateSeats(gameLobbyState.getJoinedPlayers());
-        gameLobbyState
+        updateSeats(lobbyState.getJoinedPlayers());
+        lobbyState
                 .getAdmin()
                 .peek(this::update);
     }
@@ -101,40 +101,37 @@ public class LobbySeatsController extends AbstractController {
 
     private void seatTook(String userName, SnakeNumber snakeNumber) {
         if (snakeNumber == _1) {
-            firstSeatLabel.setText("p1: " + format(userName));
+            firstSeatLabel.setText(format(userName));
         } else if (snakeNumber == SnakeNumber._2) {
-            secondSeatLabel.setText("p2: " + format(userName));
+            secondSeatLabel.setText(format(userName));
         } else if (snakeNumber == _3) {
-            thirdSeatLabel.setText("p3: " + format(userName));
+            thirdSeatLabel.setText(format(userName));
         } else if (snakeNumber == _4) {
-            fourthSeatLabel.setText("p4: " + format(userName));
+            fourthSeatLabel.setText(format(userName));
         }
     }
 
     private String format(String userId) {
-        if (userId.length() < 11)
-            return userId;
-        else
-            return userId.substring(0, 9).concat("...");
+        return userId;
     }
 
     public void seatFreedUp(SnakeNumber snakeNumber) {
         if (snakeNumber == _1) {
-            firstSeatLabel.setText("p1:");
+            firstSeatLabel.setText("");
         } else if (snakeNumber == SnakeNumber._2) {
-            secondSeatLabel.setText("p2:");
+            secondSeatLabel.setText("");
         } else if (snakeNumber == _3) {
-            thirdSeatLabel.setText("p3:");
+            thirdSeatLabel.setText("");
         } else if (snakeNumber == _4) {
-            fourthSeatLabel.setText("p4:");
+            fourthSeatLabel.setText("");
         }
     }
 
     private void resetSeatsLabels() {
-        firstSeatLabel.setText("p1:");
-        secondSeatLabel.setText("p2:");
-        thirdSeatLabel.setText("p3:");
-        fourthSeatLabel.setText("p4:");
+        firstSeatLabel.setText("");
+        secondSeatLabel.setText("");
+        thirdSeatLabel.setText("");
+        fourthSeatLabel.setText("");
     }
 
     @Override

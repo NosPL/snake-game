@@ -21,6 +21,15 @@ public class GuiGameEventHandler implements SnakeGameEventHandler {
     protected final ButtonsController buttonsController;
     protected final ScoreboardController scoreboardController;
 
+    public static GuiGameEventHandler javaFxEventHandler() {
+        return new GuiGameEventHandler(
+                Controllers.get(GameGridController.class),
+                Controllers.get(GameOptionsController.class),
+                Controllers.get(MessageController.class),
+                Controllers.get(ButtonsController.class),
+                Controllers.get(ScoreboardController.class));
+    }
+
     @Override
     public void handle(TimeLeftToGameStartHasChanged event) {
         Platform.runLater(() -> {
@@ -63,7 +72,7 @@ public class GuiGameEventHandler implements SnakeGameEventHandler {
         Platform.runLater(() -> {
             gameGridController.updateGrid(event.getSnakes(), event.getFoodPoint());
             gameOptionsController.enable();
-            messageController.printGameFinished();
+            messageController.printFinishScore(event.getScore());
             scoreboardController.print(event.getScore());
             buttonsController.enableStart();
             buttonsController.disableCancel();
@@ -104,8 +113,9 @@ public class GuiGameEventHandler implements SnakeGameEventHandler {
 
     public void snakeNameUpdated(SnakeNumber snakeNumber, String newName) {
         Platform.runLater(() -> {
-            gameOptionsController.snakeNameUpdated(snakeNumber, newName);
-            scoreboardController.updateSnakeNames(newName, snakeNumber);
+            gameOptionsController.updateSnakeName(newName, snakeNumber);
+            scoreboardController.updateSnakeName(newName, snakeNumber);
+            messageController.updateSnakeName(newName, snakeNumber);
         });
     }
 
@@ -125,14 +135,5 @@ public class GuiGameEventHandler implements SnakeGameEventHandler {
             scoreboardController.clear();
             messageController.print(error);
         });
-    }
-
-    public static GuiGameEventHandler javaFxEventHandler() {
-        return new GuiGameEventHandler(
-                Controllers.get(GameGridController.class),
-                Controllers.get(GameOptionsController.class),
-                Controllers.get(MessageController.class),
-                Controllers.get(ButtonsController.class),
-                Controllers.get(ScoreboardController.class));
     }
 }
