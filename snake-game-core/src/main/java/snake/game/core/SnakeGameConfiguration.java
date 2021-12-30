@@ -9,7 +9,7 @@ import snake.game.core.runner.GameRunnerCreator;
 
 import java.util.Set;
 
-public final class SnakeGameConfiguration {
+public class SnakeGameConfiguration {
     private Set<SnakeNumber> snakeNumbers = Set.of();
     private GameSpeed gameSpeed = GameSpeed.x1;
     private GridSize gridSize = GridSize._10x10;

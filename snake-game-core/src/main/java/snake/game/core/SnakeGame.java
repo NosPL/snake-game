@@ -6,19 +6,19 @@ import snake.game.core.dto.SnakeNumber;
 
 public interface SnakeGame {
 
+    void start();
+
     void changeSnakeDirection(SnakeNumber snakeNumber, Direction direction);
 
     void kill(SnakeNumber snakeNumber);
-
-    GameState getGameState();
-
-    void start();
-
-    void cancel();
 
     void pause();
 
     void resume();
 
+    void cancel();
+
     boolean isRunning();
+
+    GameState getGameState();
 }
