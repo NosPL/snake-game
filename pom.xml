@@ -20,6 +20,7 @@
         <module>snake-game-gui</module>
         <module>snake-game-commons</module>
         <module>snake-game-online-commons</module>
+        <module>snake-game-online-client</module>
         <module>snake-game-online-server</module>
     </modules>
 
