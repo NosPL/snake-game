@@ -20,7 +20,7 @@ public class LocalGameConfiguration {
     public static void run() {
         Stage localGameStage = Stages.getLocalGameStage();
         var eventHandler = GuiGameEventHandler.javaFxEventHandler();
-        var localSnakeGame = new LocalSnakeGame(new NullGame(), eventHandler);
+        var localSnakeGame = new LocalSnakeGame(eventHandler, new NullGame());
         localSnakeGame.updateGameView();
         Controllers.get(GameOptionsController.class).set(localSnakeGame);
         Controllers.get(ButtonsController.class)
