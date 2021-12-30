@@ -2,6 +2,7 @@ package com.noscompany.snake.game.online.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noscompany.snake.game.commons.SnakeOnlineServerConstants;
+import com.noscompany.snake.game.commons.object.mapper.ObjectMapperCreator;
 import io.vavr.control.Option;
 import io.vavr.jackson.datatype.VavrModule;
 import lombok.SneakyThrows;
@@ -34,7 +35,7 @@ class ConnectedClientCreator {
 
     private static Socket createSocket(String roomName,
                                        ClientEventHandler eventHandler) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper().registerModule(new VavrModule());
+        ObjectMapper objectMapper = ObjectMapperCreator.createInstance();
         var messageDispatcher = new MessageDispatcher(eventHandler, objectMapper);
         var client = getClient();
         var request = createRequest(roomName, client);

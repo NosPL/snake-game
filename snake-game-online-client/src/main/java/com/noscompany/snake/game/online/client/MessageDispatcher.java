@@ -3,7 +3,7 @@ package com.noscompany.snake.game.online.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.noscompany.snake.game.commons.OnlineMessage.MessageType;
-import com.noscompany.snake.game.commons.messages.events.chat.ChatMessageReceived;
+import com.noscompany.snake.game.commons.messages.events.chat.UserSentChatMessage;
 import com.noscompany.snake.game.commons.messages.events.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.commons.messages.events.lobby.*;
 import com.noscompany.snake.game.commons.messages.events.room.FailedToEnterRoom;
@@ -57,8 +57,8 @@ MessageDispatcher implements Function<String> {
         } else if (messageType == FAILED_TO_FREE_UP_A_SEAT) {
             var event = objectMapper.readValue(json, FailedToFreeUpSeat.class);
             eventHandler.handle(event);
-        } else if (messageType == CHAT_MESSAGE_RECEIVED) {
-            var event = objectMapper.readValue(json, ChatMessageReceived.class);
+        } else if (messageType == USER_SENT_CHAT_MESSAGE) {
+            var event = objectMapper.readValue(json, UserSentChatMessage.class);
             eventHandler.handle(event);
         } else if (messageType == FAILED_TO_SEND_CHAT_MESSAGE) {
             var event = objectMapper.readValue(json, FailedToSendChatMessage.class);
