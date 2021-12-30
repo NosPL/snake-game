@@ -13,6 +13,7 @@ public interface OnlineMessage {
         USER_LEFT_ROOM,
 
         //lobby commands
+        START_GAME,
         TAKE_A_SEAT,
         FREE_UP_A_SEAT,
         CHANGE_GAME_OPTIONS,
@@ -27,7 +28,6 @@ public interface OnlineMessage {
         FAILED_TO_START_GAME,
 
         //game commands
-        START_GAME,
         CHANGE_SNAKE_DIRECTION,
         CANCEL_GAME,
         PAUSE_GAME,
@@ -46,7 +46,7 @@ public interface OnlineMessage {
         SEND_CHAT_MESSAGE,
 
         //chat events,
-        CHAT_MESSAGE_RECEIVED,
+        USER_SENT_CHAT_MESSAGE,
         FAILED_TO_SEND_CHAT_MESSAGE
         }
 }
