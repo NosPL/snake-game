@@ -10,8 +10,8 @@ import static lombok.AccessLevel.PRIVATE;
 @Value
 @NoArgsConstructor(force = true, access = PRIVATE)
 @AllArgsConstructor
-public class ChatMessageReceived implements OnlineMessage {
-    MessageType messageType = MessageType.CHAT_MESSAGE_RECEIVED;
+public class UserSentChatMessage implements OnlineMessage {
+    MessageType messageType = MessageType.USER_SENT_CHAT_MESSAGE;
     String userName;
     String message;
 }

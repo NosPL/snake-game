@@ -19,8 +19,7 @@ public class FailedToEnterRoom implements OnlineMessage {
         USER_NAME_ALREADY_IN_USE,
         USER_ALREADY_IN_THE_ROOM,
         ROOM_IS_FULL,
-        USER_NAME_CANNOT_BE_BLANK,
-        USER_NAME_CANNOT_BE_LONGER_THAN_15_SIGNS
+        INCORRECT_USER_NAME_FORMAT;
     }
 
     public static FailedToEnterRoom userNameAlreadyInUse(String userName) {
@@ -33,5 +32,9 @@ public class FailedToEnterRoom implements OnlineMessage {
 
     public static FailedToEnterRoom roomIsFull(String userName) {
         return new FailedToEnterRoom(userName, Reason.ROOM_IS_FULL);
+    }
+
+    public static FailedToEnterRoom incorrectUserNameFormat(String userName) {
+        return new FailedToEnterRoom(userName, Reason.INCORRECT_USER_NAME_FORMAT);
     }
 }

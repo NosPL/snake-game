@@ -1,6 +1,6 @@
 package com.noscompany.snake.game.commons.online.client;
 
-import com.noscompany.snake.game.commons.messages.events.chat.ChatMessageReceived;
+import com.noscompany.snake.game.commons.messages.events.chat.UserSentChatMessage;
 import com.noscompany.snake.game.commons.messages.events.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.commons.messages.events.lobby.*;
 import com.noscompany.snake.game.commons.messages.events.room.FailedToEnterRoom;
@@ -28,7 +28,7 @@ public interface ServerEventHandler extends SnakeGameEventHandler {
 
     void handle(FailedToStartGame event);
 
-    void handle(ChatMessageReceived event);
+    void handle(UserSentChatMessage event);
 
     void handle(FailedToSendChatMessage event);
 
