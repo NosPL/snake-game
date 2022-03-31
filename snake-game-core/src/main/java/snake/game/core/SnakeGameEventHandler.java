@@ -1,6 +1,6 @@
 package snake.game.core;
 
-import snake.game.core.events.*;
+import snake.game.core.dto.events.*;
 
 public interface SnakeGameEventHandler {
 

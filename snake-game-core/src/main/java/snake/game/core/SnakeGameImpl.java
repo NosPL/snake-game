@@ -3,9 +3,9 @@ package snake.game.core;
 import lombok.AllArgsConstructor;
 import snake.game.core.dto.Direction;
 import snake.game.core.dto.GameState;
-import snake.game.core.dto.SnakeNumber;
-import snake.game.core.logic.GameLogic;
-import snake.game.core.runner.GameRunner;
+import snake.game.core.dto.PlayerNumber;
+import snake.game.core.internal.logic.GameLogic;
+import snake.game.core.internal.runner.GameRunner;
 
 import static lombok.AccessLevel.PACKAGE;
 
@@ -15,18 +15,18 @@ class SnakeGameImpl implements SnakeGame {
     private final GameRunner gameRunner;
 
     @Override
-    public void changeSnakeDirection(SnakeNumber snakeNumber, Direction direction) {
-        gameLogic.changeSnakeDirection(snakeNumber, direction);
+    public void changeSnakeDirection(PlayerNumber playerNumber, Direction direction) {
+        gameLogic.changeSnakeDirection(playerNumber, direction);
     }
 
     @Override
-    public void kill(SnakeNumber snakeNumber) {
-        gameLogic.kill(snakeNumber);
+    public void killSnake(PlayerNumber playerNumber) {
+        gameLogic.killSnake(playerNumber);
     }
 
     @Override
     public GameState getGameState() {
-        return gameLogic.getCurrentState();
+        return gameLogic.getGameState();
     }
 
     @Override

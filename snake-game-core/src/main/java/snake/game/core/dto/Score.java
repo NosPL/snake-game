@@ -26,7 +26,8 @@ public class Score {
     }
 
     public Set<Snake> getSnakes() {
-        return Vector.ofAll(entries)
+        return Vector
+                .ofAll(entries)
                 .flatMap(Entry::getSnakes)
                 .toJavaSet();
     }
@@ -44,9 +45,7 @@ public class Score {
     @NoArgsConstructor(force = true, access = PRIVATE)
     @AllArgsConstructor
     public static class Snake {
-        SnakeNumber snakeNumber;
-        int place;
-        int score;
+        PlayerNumber playerNumber;
         boolean alive;
     }
 }

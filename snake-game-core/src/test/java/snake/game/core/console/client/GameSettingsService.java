@@ -1,10 +1,9 @@
 package snake.game.core.console.client;
 
-import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
 import snake.game.core.dto.GameSpeed;
 import snake.game.core.dto.GridSize;
-import snake.game.core.dto.SnakeNumber;
+import snake.game.core.dto.PlayerNumber;
 import snake.game.core.dto.Walls;
 
 @RequiredArgsConstructor
@@ -12,34 +11,38 @@ class GameSettingsService {
     private final ConsoleInput consoleInput;
 
     GameSettings getSettings() {
-        return new GameSettings(getSnakeNumber(), getSpeed(), getGridSize(), getWalls());
+        PlayerNumber snakeNumber = getPlayerNumber();
+        GameSpeed gameSpeed = getGameSpeed();
+        GridSize gridSize = getGridSize();
+        Walls walls = getWalls();
+        return new GameSettings(snakeNumber, gameSpeed, gridSize, walls);
     }
 
-    private SnakeNumber getSnakeNumber() {
+    private PlayerNumber getPlayerNumber() {
         System.out.println("set player number:");
         System.out.println("1 - top left corner");
         System.out.println("2 - bottom right corner");
         System.out.println("3 - bottom left corner");
         System.out.println("4 - top right corner");
-        SnakeNumber snakeNumber;
+        PlayerNumber playerNumber;
         do {
-            snakeNumber = consoleInput
+            playerNumber = consoleInput
                     .getInt()
-                    .map(this::getSnakeNumber)
+                    .map(i -> PlayerNumber.values()[i])
                     .getOrNull();
-            if (snakeNumber == null)
+            if (playerNumber == null)
                 System.out.println("wrong input");
-        } while (snakeNumber == null);
-        return snakeNumber;
+        } while (playerNumber == null);
+        return playerNumber;
     }
 
-    private GameSpeed getSpeed() {
+    private GameSpeed getGameSpeed() {
         System.out.println("set speed (from 1 to 8):");
         GameSpeed gameSpeed;
         do {
             gameSpeed = consoleInput
                     .getInt()
-                    .map(this::getSpeed)
+                    .map(i -> GameSpeed.values()[i])
                     .getOrNull();
             if (gameSpeed == null)
                 System.out.println("wrong input");
@@ -57,7 +60,7 @@ class GameSettingsService {
         do {
             gridSize = consoleInput
                     .getInt()
-                    .map(this::getGridSize)
+                    .map(i -> GridSize.values()[i])
                     .getOrNull();
             if (gridSize == null)
                 System.out.println("wrong input");
@@ -73,35 +76,11 @@ class GameSettingsService {
         do {
             walls = consoleInput
                     .getInt()
-                    .map(this::getWalls)
+                    .map(i -> Walls.values()[i])
                     .getOrNull();
             if (walls == null)
                 System.out.println("wrong input");
         } while (walls == null);
         return walls;
-    }
-
-    private SnakeNumber getSnakeNumber(Integer integer) {
-        return Try
-                .of(() -> SnakeNumber.values()[integer - 1])
-                .getOrNull();
-    }
-
-    private GameSpeed getSpeed(Integer integer) {
-        return Try
-                .of(() -> GameSpeed.values()[integer - 1])
-                .getOrNull();
-    }
-
-    private GridSize getGridSize(Integer integer) {
-        return Try
-                .of(() -> GridSize.values()[integer - 1])
-                .getOrNull();
-    }
-
-    private Walls getWalls(Integer integer) {
-        return Try
-                .of(() -> Walls.values()[integer - 1])
-                .getOrNull();
     }
 }

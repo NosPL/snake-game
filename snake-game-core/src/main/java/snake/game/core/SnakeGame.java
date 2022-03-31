@@ -2,15 +2,15 @@ package snake.game.core;
 
 import snake.game.core.dto.Direction;
 import snake.game.core.dto.GameState;
-import snake.game.core.dto.SnakeNumber;
+import snake.game.core.dto.PlayerNumber;
 
 public interface SnakeGame {
 
     void start();
 
-    void changeSnakeDirection(SnakeNumber snakeNumber, Direction direction);
+    void changeSnakeDirection(PlayerNumber playerNumber, Direction direction);
 
-    void kill(SnakeNumber snakeNumber);
+    void killSnake(PlayerNumber playerNumber);
 
     void pause();
 

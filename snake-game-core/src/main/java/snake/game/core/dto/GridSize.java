@@ -1,6 +1,8 @@
 package snake.game.core.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -12,7 +14,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Getter
 @NoArgsConstructor(force = true, access = PRIVATE)
 public enum GridSize {
-
+    _5X5(5, 5),
     _10x10(10, 10),
     _15x15(15, 15),
     _20x20(20, 20),
@@ -21,30 +23,30 @@ public enum GridSize {
     private int width;
     private int height;
 
-    public List<Point> allPoints() {
+    public List<Position> allPositions() {
         return For(range(0, width), range(0, height))
-                .yield(Point::point)
+                .yield(Position::position)
                 .toJavaList();
     }
 
-    public boolean contains(Point point) {
-        return (point.getX() < width && point.getX() >= 0) &&
-                (point.getY() < height && point.getY() >= 0);
+    public boolean contains(Position position) {
+        return (position.getX() < width && position.getX() >= 0) &&
+                (position.getY() < height && position.getY() >= 0);
     }
 
-    public Point bottomRightCorner() {
-        return Point.point(width - 1, 0);
+    public Position bottomRightCorner() {
+        return Position.position(width - 1, 0);
     }
 
-    public Point bottomLeftCorner() {
-        return Point.point(0, 0);
+    public Position bottomLeftCorner() {
+        return Position.position(0, 0);
     }
 
-    public Point topRightCorner() {
-        return Point.point(width - 1, height - 1);
+    public Position topRightCorner() {
+        return Position.position(width - 1, height - 1);
     }
 
-    public Point topLeftCorner() {
-        return Point.point(0, height - 1);
+    public Position topLeftCorner() {
+        return Position.position(0, height - 1);
     }
 }

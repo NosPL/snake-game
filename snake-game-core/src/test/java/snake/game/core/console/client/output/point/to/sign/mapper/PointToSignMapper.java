@@ -1,9 +1,10 @@
 package snake.game.core.console.client.output.point.to.sign.mapper;
 
+import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import snake.game.core.dto.GridSize;
-import snake.game.core.dto.Point;
-import snake.game.core.dto.SnakeDto;
+import snake.game.core.dto.Position;
+import snake.game.core.dto.Snake;
 
 import java.util.Collection;
 
@@ -15,29 +16,29 @@ public class PointToSignMapper {
     private final SnakeHeadMapper snakeHeadMapper = new SnakeHeadMapper();
     private final SnakeBodyMapper snakeBodyMapper = new SnakeBodyMapper();
 
-    private String map(Collection<SnakeDto> snakes,
-                       Point foodPoint,
+    private String map(Collection<Snake> snakes,
+                       Option<Position> foodPosition,
                        GridSize gridSize,
-                       Point pointToDraw) {
+                       Position positionToDraw) {
         return snakeHeadMapper
-                .map(snakes, pointToDraw)
-                .orElse(snakeBodyMapper.map(snakes, pointToDraw))
-                .orElse(wallMapper.map(gridSize, pointToDraw))
-                .orElse(foodMapper.map(foodPoint, pointToDraw))
+                .map(snakes, positionToDraw)
+                .orElse(snakeBodyMapper.map(snakes, positionToDraw))
+                .orElse(wallMapper.map(gridSize, positionToDraw))
+                .orElse(foodMapper.map(foodPosition, positionToDraw))
                 .getOrElse(Signs.EMPTY_POINT);
     }
 
-    public CreateSignFor map(Point point) {
-        return new CreateSignFor(this, point);
+    public CreateSignFor map(Position position) {
+        return new CreateSignFor(this, position);
     }
 
     @AllArgsConstructor(access = PRIVATE)
     public static class CreateSignFor {
         private PointToSignMapper mapper;
-        private Point pointToDraw;
+        private Position positionToDraw;
 
-        public String toSignBasedOn(Collection<SnakeDto> snakes, Point foodPoint, GridSize gridSize) {
-            return mapper.map(snakes, foodPoint, gridSize, pointToDraw);
+        public String toSignBasedOn(Collection<Snake> snakes, Option<Position> foodPosition, GridSize gridSize) {
+            return mapper.map(snakes, foodPosition, gridSize, positionToDraw);
         }
     }
 }
