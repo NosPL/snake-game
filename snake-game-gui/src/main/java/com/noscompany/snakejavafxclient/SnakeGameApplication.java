@@ -1,6 +1,6 @@
 package com.noscompany.snakejavafxclient;
 
-import com.noscompany.snakejavafxclient.commons.Stages;
+import com.noscompany.snakejavafxclient.components.mode.selection.GameModeSelectionStage;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -12,8 +12,6 @@ public class SnakeGameApplication extends Application {
 
     @Override
     public void start(Stage stage) {
-        Stages
-                .getGameModeSelectionStage()
-                .show();
+        GameModeSelectionStage.get().show();
     }
 }

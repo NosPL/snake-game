@@ -10,36 +10,60 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <modules>
-        <module>snake-game-core</module>
+        <module>snake-game-gameplay</module>
         <module>snake-game-gui</module>
-        <module>snake-game-commons</module>
-        <module>snake-game-online-commons</module>
+        <module>snake-game-online-contract</module>
         <module>snake-game-online-client</module>
-        <module>snake-game-online-server</module>
+        <module>snake-game-online-host-room</module>
+        <module>snake-game-online-host-server</module>
+        <module>snake-game-online-host-room-message-dispatcher</module>
+        <module>snake-game-online-host-server-javalin</module>
     </modules>
 
     <dependencies>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.20</version>
         </dependency>
+
         <dependency>
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
             <version>0.10.3</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.google.dagger</groupId>
+            <artifactId>dagger</artifactId>
+            <version>2.44.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.dagger</groupId>
+            <artifactId>dagger-compiler</artifactId>
+            <version>2.44.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 </project>

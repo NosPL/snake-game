@@ -1,86 +1,75 @@
 package com.noscompany.snake.game.online.client;
 
+import com.noscompany.snake.game.online.client.internal.state.ClientState;
+import com.noscompany.snake.game.online.contract.messages.game.dto.*;
 import lombok.AllArgsConstructor;
-import snake.game.core.dto.*;
 
 @AllArgsConstructor
 class SnakeOnlineClientImpl implements SnakeOnlineClient {
-    private SnakeOnlineClient snakeOnlineClient;
+    private ClientState clientState;
 
     @Override
-    public SnakeOnlineClient connect(String roomName) {
-        snakeOnlineClient = snakeOnlineClient.connect(roomName);
-        return this;
+    public void connect(String roomName) {
+        clientState = clientState.connect(roomName);
     }
 
     @Override
-    public SnakeOnlineClient enterTheRoom(String userName) {
-        snakeOnlineClient = snakeOnlineClient.enterTheRoom(userName);
-        return this;
+    public void enterTheRoom(String userName) {
+        clientState = clientState.enterTheRoom(userName);
     }
 
     @Override
-    public SnakeOnlineClient takeASeat(SnakeNumber snakeNumberNumber) {
-        snakeOnlineClient = snakeOnlineClient.takeASeat(snakeNumberNumber);
-        return this;
+    public void takeASeat(PlayerNumber playerNumber) {
+        clientState = clientState.takeASeat(playerNumber);
     }
 
     @Override
-    public SnakeOnlineClient freeUpASeat() {
-        snakeOnlineClient = snakeOnlineClient.freeUpASeat();
-        return this;
+    public void freeUpASeat() {
+        clientState = clientState.freeUpASeat();
     }
 
     @Override
-    public SnakeOnlineClient changeGameOptions(GridSize gridSize, GameSpeed gameSpeed, Walls walls) {
-        snakeOnlineClient = snakeOnlineClient.changeGameOptions(gridSize, gameSpeed, walls);
-        return this;
+    public void changeGameOptions(GridSize gridSize, GameSpeed gameSpeed, Walls walls) {
+        clientState = clientState.changeGameOptions(gridSize, gameSpeed, walls);
     }
 
     @Override
-    public SnakeOnlineClient startGame() {
-        snakeOnlineClient = snakeOnlineClient.startGame();
-        return this;
+    public void startGame() {
+        clientState = clientState.startGame();
     }
 
     @Override
-    public SnakeOnlineClient changeSnakeDirection(Direction direction) {
-        snakeOnlineClient = snakeOnlineClient.changeSnakeDirection(direction);
-        return this;
+    public void changeSnakeDirection(Direction direction) {
+        clientState = clientState.changeSnakeDirection(direction);
     }
 
     @Override
-    public SnakeOnlineClient cancelGame() {
-        snakeOnlineClient = snakeOnlineClient.cancelGame();
-        return this;
+    public void cancelGame() {
+        clientState = clientState.cancelGame();
     }
 
     @Override
-    public SnakeOnlineClient pauseGame() {
-        snakeOnlineClient = snakeOnlineClient.pauseGame();
-        return this;
+    public void pauseGame() {
+        clientState = clientState.pauseGame();
     }
 
     @Override
-    public SnakeOnlineClient resumeGame() {
-        snakeOnlineClient = snakeOnlineClient.resumeGame();
-        return this;
+    public void resumeGame() {
+        clientState = clientState.resumeGame();
     }
 
     @Override
-    public SnakeOnlineClient sendChatMessage(String message) {
-        snakeOnlineClient = snakeOnlineClient.sendChatMessage(message);
-        return this;
+    public void sendChatMessage(String message) {
+        clientState = clientState.sendChatMessage(message);
     }
 
     @Override
-    public SnakeOnlineClient disconnect() {
-        snakeOnlineClient = snakeOnlineClient.disconnect();
-        return this;
+    public void disconnect() {
+        clientState = clientState.closeConnection();
     }
 
     @Override
     public boolean isConnected() {
-        return snakeOnlineClient.isConnected();
+        return clientState.isConnected();
     }
 }

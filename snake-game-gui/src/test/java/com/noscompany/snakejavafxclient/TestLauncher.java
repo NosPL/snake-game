@@ -1,7 +1,7 @@
 package com.noscompany.snakejavafxclient;
 
-import com.noscompany.snake.game.commons.SnakeOnlineServerConstants;
-import com.noscompany.snake.game.online.server.ServerRunner;
+import com.noscompany.snake.game.online.host.server.ServerRunner;
+import com.noscompany.snakejavafxclient.utils.SnakeOnlineServerConstants;
 
 public class TestLauncher {
 

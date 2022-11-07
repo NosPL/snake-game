@@ -1,32 +1,32 @@
 package com.noscompany.snake.game.online.client;
 
-import snake.game.core.dto.*;
+import com.noscompany.snake.game.online.contract.messages.game.dto.*;
 
 public interface SnakeOnlineClient {
 
-    SnakeOnlineClient connect(String roomName);
+    void connect(String roomName);
 
-    SnakeOnlineClient enterTheRoom(String userName);
+    void enterTheRoom(String userName);
 
-    SnakeOnlineClient takeASeat(SnakeNumber snakeNumberNumber);
+    void takeASeat(PlayerNumber playerNumber);
 
-    SnakeOnlineClient freeUpASeat();
+    void freeUpASeat();
 
-    SnakeOnlineClient changeGameOptions(GridSize gridSize, GameSpeed gameSpeed, Walls walls);
+    void changeGameOptions(GridSize gridSize, GameSpeed gameSpeed, Walls walls);
 
-    SnakeOnlineClient startGame();
+    void startGame();
 
-    SnakeOnlineClient changeSnakeDirection(Direction direction);
+    void changeSnakeDirection(Direction direction);
 
-    SnakeOnlineClient cancelGame();
+    void cancelGame();
 
-    SnakeOnlineClient pauseGame();
+    void pauseGame();
 
-    SnakeOnlineClient resumeGame();
+    void resumeGame();
 
-    SnakeOnlineClient sendChatMessage(String message);
+    void sendChatMessage(String message);
 
-    SnakeOnlineClient disconnect();
+    void disconnect();
 
     boolean isConnected();
 }
