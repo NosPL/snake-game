@@ -1,5 +1,6 @@
 package com.noscompany.snakejavafxclient.components.online.game.client;
 
+import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
@@ -17,6 +18,15 @@ public class OnlineClientController extends AbstractController {
     private VBox vBox2;
     @FXML
     private VBox vBox3;
+    private SnakeOnlineClient snakeOnlineClient;
+
+    public void setSnakeOnlineClient(SnakeOnlineClient snakeOnlineClient) {
+        this.snakeOnlineClient = snakeOnlineClient;
+    }
+
+    public void disconnectClient() {
+        snakeOnlineClient.disconnect();
+    }
 
     @Override
     protected void doInitialize(URL location, ResourceBundle resources) {

@@ -62,5 +62,8 @@ public class SnakeOnlineGuiClientConfiguration {
                 .onCancelButtonPress(snakeOnlineClient::cancelGame)
                 .onPauseButtonPress(snakeOnlineClient::pauseGame)
                 .onResumeButtonPress(snakeOnlineClient::resumeGame);
+        Controllers
+                .get(OnlineClientController.class)
+                .setSnakeOnlineClient(snakeOnlineClient);
     }
 }

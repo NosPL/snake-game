@@ -111,10 +111,8 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
 
     @Override
     public void disconnect() {
-        server
-                .start(serverParams(), roomMediator)
-                .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
-                .onEmpty(snakeOnlineClient::disconnect);
+        server.shutdown();
+        snakeOnlineClient.disconnect();
     }
 
     @Override
