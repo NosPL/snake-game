@@ -9,6 +9,7 @@ import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import com.noscompany.snake.game.online.contract.messages.game.events.GameContinues;
 import com.noscompany.snake.game.online.contract.messages.game.events.GameFinished;
+import snake.game.gameplay.internal.logic.internal.SnakesDidNotMoveBecauseAllAreDead;
 import snake.game.gameplay.internal.logic.internal.SnakesMoved;
 import snake.game.gameplay.internal.logic.internal.current.game.state.GameStateView;
 import snake.game.gameplay.internal.logic.internal.food.locator.FoodLocator;
@@ -41,10 +42,11 @@ class GameLogicImpl implements GameLogic {
     public Either<GameFinished, GameContinues> moveSnakes() {
         return snakes
                 .moveAndFeed(getFoodPosition())
-                .peek(foodLocator::updateFoodPosition)
-                .peek(scoring::updateScores)
-                .peek(this::updateGameStateView)
-                .map(snakesMoved -> gameContinues())
+                .map(snakesMoved -> {
+                    foodLocator.updateFoodPosition(snakesMoved);
+                    scoring.updateScores(snakesMoved);
+                    updateGameStateView(snakesMoved);
+                    return gameContinues();})
                 .mapLeft(snakesDidNotMoveBecauseAllAreDead -> gameFinished());
     }
 

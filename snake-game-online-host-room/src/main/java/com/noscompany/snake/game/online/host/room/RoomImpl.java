@@ -21,15 +21,12 @@ import java.util.function.Function;
 
 @AllArgsConstructor
 class RoomImpl implements Room {
-    private final int userLimit;
     private final UserRegistry userRegistry;
     private final Lobby lobby;
     private final Chat chat;
 
     @Override
     public Either<FailedToEnterRoom, NewUserEnteredRoom> enter(String userId, String userName) {
-        if (userRegistry.getUserCount() >= userLimit)
-            return Either.left(FailedToEnterRoom.roomIsFull(userName));
         return userRegistry
                 .registerNewUser(userId, userName)
                 .toEither(new NewUserEnteredRoom(userName, userRegistry.getUserNames()))
@@ -66,8 +63,7 @@ class RoomImpl implements Room {
                 .findUserNameById(userId)
                 .toEither(FailedToStartGame.userIsNotInTheRoom())
                 .map(lobby::startGame)
-                .mapLeft(Option::of)
-                .fold(Function.identity(), Function.identity());
+                .fold(Option::of, Function.identity());
     }
 
     @Override
@@ -137,7 +133,7 @@ class RoomImpl implements Room {
     public boolean userIsSitting(String userId) {
         return userRegistry
                 .findUserNameById(userId)
-                .exists(lobby::userIsSitting);
+                .exists(lobby::userTookASeat);
     }
 
     @Override
@@ -150,6 +146,6 @@ class RoomImpl implements Room {
 
     @Override
     public boolean isFull() {
-        return userRegistry.usersCount() >= userLimit;
+        return userRegistry.isFull();
     }
 }

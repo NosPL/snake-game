@@ -4,15 +4,12 @@ import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatM
 import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
 import io.vavr.control.Either;
 
-public interface Chat {
+import static io.vavr.control.Either.right;
 
-    Either<FailedToSendChatMessage, UserSentChatMessage> sendMessage(String userName, String messageContent);
+public class Chat {
 
-    enum Failure {
-        MESSAGE_TO_LONG
-    }
-
-    enum MessageSent {
-        MESSAGE_SENT
+    public Either<FailedToSendChatMessage, UserSentChatMessage> sendMessage(String userName, String messageContent) {
+        UserSentChatMessage userSentChatMessage = new UserSentChatMessage(userName, messageContent);
+        return right(userSentChatMessage);
     }
 }

@@ -22,10 +22,7 @@ public class GameLogicCreator {
         GameStateView gameStateView = GameStateView.create(
                 snakes.toDto(), foodLocator.getFoodPosition(), scoring.getScore(), walls, gridSize);
         GameLogic gameLogic = new GameLogicImpl(snakes, scoring, foodLocator, gameStateView);
-        return threadSafeDecorator(gameLogic);
-    }
-
-    private static GameLogicThreadSafetyDecorator threadSafeDecorator(GameLogic gameLogic) {
         return new GameLogicThreadSafetyDecorator(gameLogic);
     }
+
 }

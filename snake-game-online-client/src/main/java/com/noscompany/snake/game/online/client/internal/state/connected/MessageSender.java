@@ -11,11 +11,18 @@ import org.atmosphere.wasync.Socket;
 
 import java.io.IOException;
 
+import static org.atmosphere.wasync.Socket.STATUS.OPEN;
+import static org.atmosphere.wasync.Socket.STATUS.REOPENED;
+
 @Slf4j
 @AllArgsConstructor
 class MessageSender {
     private final Socket socket;
     private final ObjectMapper objectMapper;
+
+    boolean isConnected() {
+        return socket.status() == OPEN || socket.status() == REOPENED;
+    }
 
     Option<ClientError> send(OnlineMessage onlineMessage) {
         try {

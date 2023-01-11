@@ -1,10 +1,11 @@
 package com.noscompany.snake.game.online.client.internal.state;
 
+import com.noscompany.snake.game.online.client.HostAddress;
 import com.noscompany.snake.game.online.contract.messages.game.dto.*;
 
 public interface ClientState {
 
-    ClientState connect(String roomName);
+    ClientState connect(HostAddress hostAddress);
 
     ClientState enterTheRoom(String userName);
 

@@ -3,19 +3,15 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="184.0" prefWidth="172.0" xmlns="http://javafx.com/javafx/17"
-            fx:controller="com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController">
+
+<AnchorPane prefHeight="123.0" prefWidth="172.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController">
     <children>
         <VBox layoutX="21.0" layoutY="12.0">
             <children>
-                <Button fx:id="startButton" mnemonicParsing="false" onAction="#startGame" prefHeight="40.0"
-                        prefWidth="130.0" text="START"/>
-                <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelGame" prefHeight="40.0"
-                        prefWidth="130.0" text="CANCEL"/>
-                <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#pauseGame" prefHeight="40.0"
-                        prefWidth="130.0" text="PAUSE"/>
-                <Button fx:id="resumeButton" mnemonicParsing="false" onAction="#resumeGame" prefHeight="40.0"
-                        prefWidth="130.0" text="RESUME"/>
+                <Button fx:id="startButton" mnemonicParsing="false" onAction="#startGame" prefHeight="24.0" prefWidth="130.0" text="START" />
+                <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelGame" prefHeight="21.0" prefWidth="130.0" text="CANCEL" />
+                <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#pauseGame" prefHeight="17.0" prefWidth="130.0" text="PAUSE" />
+                <Button fx:id="resumeButton" mnemonicParsing="false" onAction="#resumeGame" prefHeight="7.0" prefWidth="130.0" text="RESUME" />
             </children>
         </VBox>
     </children>

@@ -1,7 +1,6 @@
 package com.noscompany.snake.game.online.host.room.internal.lobby;
 
 import com.noscompany.snake.game.online.contract.messages.game.dto.GameSpeed;
-import com.noscompany.snake.game.online.host.room.internal.lobby.internal.seats.SeatsCreator;
 import snake.game.gameplay.SnakeGame;
 import snake.game.gameplay.SnakeGameCreator;
 import snake.game.gameplay.SnakeGameEventHandler;
@@ -18,7 +17,7 @@ public class LobbyCreator {
         GameCreator gameCreator = new GameCreator(snakeGameCreator, eventHandler);
         GameOptions gameOptions = new GameOptions(GridSize._10x10, GameSpeed.x1, Walls.ON);
         SnakeGame snakeGame = gameCreator.createGame(Set.of(), gameOptions);
-        return new LobbyImpl(
+        return new Lobby(
                 SeatsCreator.create(),
                 gameCreator,
                 gameOptions,

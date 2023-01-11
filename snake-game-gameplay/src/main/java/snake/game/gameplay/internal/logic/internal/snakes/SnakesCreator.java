@@ -16,10 +16,10 @@ public class SnakesCreator {
     private static final int HEAD_OFFSET = SNAKE_LENGTH - 1;
 
     public static Snakes create(Set<PlayerNumber> playerNumbers, GridSize gridSize, Walls walls) {
-        CrashedSnakesFinder crashedSnakesFinder = new CrashedSnakesFinder(gridSize);
+        SnakeCollisionFinder snakeCollisionFinder = new SnakeCollisionFinder(gridSize);
         var wallTeleport = GridTeleport.create(gridSize, walls);
         var snakesMap = snakesMap(playerNumbers, gridSize, wallTeleport);
-        return new Snakes(snakesMap, crashedSnakesFinder);
+        return new Snakes(snakesMap, snakeCollisionFinder);
     }
 
     private static Map<PlayerNumber, Snake> snakesMap(Set<PlayerNumber> playerNumbers, GridSize gridSize, GridTeleport gridTeleport) {

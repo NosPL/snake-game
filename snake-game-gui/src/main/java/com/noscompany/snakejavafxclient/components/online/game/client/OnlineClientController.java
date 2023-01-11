@@ -1,6 +1,5 @@
 package com.noscompany.snakejavafxclient.components.online.game.client;
 
-import com.noscompany.snakejavafxclient.components.online.game.KeyPressedHandler;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;

@@ -29,9 +29,12 @@ class GameTask implements Runnable {
     @Override
     public void run() {
         countdown();
-        start();
+        startGame();
         while (shouldBeRunning) {
-            move();
+            gameSpeedSleep();
+            moveSnakes();
+            pauseIfRequested();
+            cancelIfRequested();
         }
     }
 
@@ -45,19 +48,16 @@ class GameTask implements Runnable {
         }
     }
 
-    private void start() {
+    private void startGame() {
         if (shouldBeRunning)
             eventHandler.handle(gameStarted(getGameState()));
     }
 
-    private void move() {
-        gameSpeedPause();
+    private void moveSnakes() {
         gameLogic
                 .moveSnakes()
                 .peek(eventHandler::handle)
                 .peekLeft(this::handle);
-        pauseIfRequested();
-        cancelIfRequested();
     }
 
     private void handle(GameFinished gameFinished) {
@@ -82,7 +82,7 @@ class GameTask implements Runnable {
         }
     }
 
-    private void gameSpeedPause() {
+    private void gameSpeedSleep() {
         int pauseTimeInMillis = gameSpeed.getPauseTimeInMillis();
         sleepInMillis(pauseTimeInMillis);
     }

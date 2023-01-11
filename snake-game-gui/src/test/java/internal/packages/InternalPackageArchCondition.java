@@ -16,8 +16,7 @@ class InternalPackageArchCondition extends ArchCondition<JavaClass> {
     @Override
     public void check(JavaClass javaClassFromInternalPackage, ConditionEvents conditionEvents) {
         javaClassFromInternalPackage
-                .getDirectDependenciesToSelf()
-                .stream()
+                .getDirectDependenciesToSelf().stream()
                 .map(this::toConditionEvent)
                 .forEach(conditionEvents::add);
     }

@@ -2,6 +2,7 @@ package com.noscompany.snake.game.online.client.internal.state.not.connected;
 
 import com.noscompany.snake.game.online.client.ClientError;
 import com.noscompany.snake.game.online.client.ClientEventHandler;
+import com.noscompany.snake.game.online.client.HostAddress;
 import com.noscompany.snake.game.online.client.StartingClientError;
 import com.noscompany.snake.game.online.client.internal.state.ClientState;
 import com.noscompany.snake.game.online.client.internal.state.connected.ConnectedClientCreator;
@@ -13,9 +14,9 @@ public class Disconnected implements ClientState {
     private final ClientEventHandler eventHandler;
 
     @Override
-    public ClientState connect(String userName) {
+    public ClientState connect(HostAddress hostAddress) {
         return ConnectedClientCreator
-                .create(userName, eventHandler)
+                .create(hostAddress, eventHandler)
                 .onSuccess(connected -> eventHandler.connectionEstablished())
                 .onFailure(t -> eventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
                 .getOrElse(this);

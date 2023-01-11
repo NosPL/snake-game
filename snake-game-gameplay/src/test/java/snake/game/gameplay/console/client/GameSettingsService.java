@@ -28,7 +28,7 @@ class GameSettingsService {
         do {
             playerNumber = consoleInput
                     .getInt()
-                    .map(i -> PlayerNumber.values()[i])
+                    .map(i -> PlayerNumber.values()[i-1])
                     .getOrNull();
             if (playerNumber == null)
                 System.out.println("wrong input");
@@ -42,7 +42,7 @@ class GameSettingsService {
         do {
             gameSpeed = consoleInput
                     .getInt()
-                    .map(i -> GameSpeed.values()[i])
+                    .map(i -> GameSpeed.values()[i-1])
                     .getOrNull();
             if (gameSpeed == null)
                 System.out.println("wrong input");
@@ -60,7 +60,7 @@ class GameSettingsService {
         do {
             gridSize = consoleInput
                     .getInt()
-                    .map(i -> GridSize.values()[i])
+                    .map(i -> GridSize.values()[i-1])
                     .getOrNull();
             if (gridSize == null)
                 System.out.println("wrong input");
@@ -76,7 +76,7 @@ class GameSettingsService {
         do {
             walls = consoleInput
                     .getInt()
-                    .map(i -> Walls.values()[i])
+                    .map(i -> Walls.values()[i-1])
                     .getOrNull();
             if (walls == null)
                 System.out.println("wrong input");

@@ -9,8 +9,8 @@ class SnakeOnlineClientImpl implements SnakeOnlineClient {
     private ClientState clientState;
 
     @Override
-    public void connect(String roomName) {
-        clientState = clientState.connect(roomName);
+    public void connect(HostAddress hostAddress) {
+        clientState = clientState.connect(hostAddress);
     }
 
     @Override

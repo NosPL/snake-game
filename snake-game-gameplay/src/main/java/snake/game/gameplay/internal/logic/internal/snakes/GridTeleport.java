@@ -19,7 +19,7 @@ interface GridTeleport {
 
     @AllArgsConstructor
     class TeleportEnabled implements GridTeleport {
-        private final GridSize grid;
+        private final GridSize gridSize;
 
         @Override
         public Position teleport(Position position) {
@@ -28,9 +28,9 @@ interface GridTeleport {
             if (wentOverBottomWall(position))
                 return Position.position(position.getX(), 0);
             if (wentOverLeftWall(position))
-                return Position.position(grid.getWidth() - 1, position.getY());
+                return Position.position(gridSize.getWidth() - 1, position.getY());
             if (wentOverTopWall(position))
-                return Position.position(position.getX(), grid.getHeight() - 1);
+                return Position.position(position.getX(), gridSize.getHeight() - 1);
             else
                 return position;
         }
@@ -40,7 +40,7 @@ interface GridTeleport {
         }
 
         private boolean wentOverBottomWall(Position position) {
-            return position.getY() >= grid.getHeight();
+            return position.getY() >= gridSize.getHeight();
         }
 
         private boolean wentOverLeftWall(Position position) {
@@ -48,7 +48,7 @@ interface GridTeleport {
         }
 
         private boolean wentOverRightWall(Position position) {
-            return position.getX() >= grid.getWidth();
+            return position.getX() >= gridSize.getWidth();
         }
 
     }

@@ -36,17 +36,15 @@ class Snake {
         return !isKilled.get();
     }
 
-    boolean move() {
+    void move() {
         if (isKilled.get())
-            return false;
+            return;
         Node newHead = createNewHead();
         nodes.addFirst(newHead);
-        nodes
-                .getLast()
+        nodes.getLast()
                 .tryToGrow()
                 .peek(nodes::addLast);
         nodes.removeLast();
-        return true;
     }
 
     boolean tryToEatFood(Position foodPosition) {
@@ -153,7 +151,7 @@ class Snake {
         private PlayerNumber playerNumber;
         private int snakeLength = MIN_SNAKE_LENGTH;
         private Position headPosition = Position.position(0, 0);
-        private Direction direction = RIGHT;
+        private Direction headDirection = RIGHT;
         private Direction bodyDirectionFromHead = Direction.LEFT;
         private GridTeleport gridTeleport = new GridTeleport.TeleportDisabled();
 
@@ -170,7 +168,7 @@ class Snake {
 
         Creator head(Position position, Direction direction) {
             this.headPosition = position;
-            this.direction = direction;
+            this.headDirection = direction;
             return this;
         }
 
@@ -185,10 +183,10 @@ class Snake {
         }
 
         Snake create() {
-            if (bodyDirectionFromHead == direction)
-                direction = getOpposite(direction);
+            if (bodyDirectionFromHead == headDirection)
+                headDirection = getOpposite(headDirection);
             var nodes = createNodes(snakeLength, headPosition, bodyDirectionFromHead);
-            return new Snake(playerNumber, nodes, gridTeleport, direction, new AtomicBoolean(false));
+            return new Snake(playerNumber, nodes, gridTeleport, headDirection, new AtomicBoolean(false));
         }
 
         private LinkedList<Node> createNodes(int numberOfNodes, final Position startingPosition, Direction direction) {

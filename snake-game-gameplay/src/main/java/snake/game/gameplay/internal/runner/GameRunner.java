@@ -8,7 +8,7 @@ import static java.lang.Thread.State.NEW;
 
 @AllArgsConstructor
 public class GameRunner {
-    private Thread gameThread;
+    private final Thread gameThread;
     private final AtomicBoolean pauseRequested;
     private final AtomicBoolean cancelRequested;
 

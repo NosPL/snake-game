@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="vBox" prefHeight="283.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.components.online.game.mode.selection.OnlineModeSelectionController">
+    <children>
+        <AnchorPane prefHeight="82.0" prefWidth="448.0">
+            <children>
+                <Label layoutX="45.0" layoutY="8.0" text="SNAKE GAME">
+                    <font>
+                        <Font size="54.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+        <VBox prefHeight="196.0" prefWidth="448.0">
+            <children>
+                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                    <children>
+                        <AnchorPane prefHeight="64.0" prefWidth="448.0">
+                            <children>
+                                <Label layoutX="118.0" layoutY="17.0" text="SELECT ONLINE MODE">
+                                    <font>
+                                        <Font size="21.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </AnchorPane>
+                  <Button layoutX="58.0" layoutY="78.0" mnemonicParsing="false" onAction="#runHost" prefHeight="64.0" prefWidth="131.0" text="HOST" />
+                  <Button layoutX="260.0" layoutY="78.0" mnemonicParsing="false" onAction="#runClient" prefHeight="64.0" prefWidth="131.0" text="CLIENT" />
+                    </children>
+                </AnchorPane>
+            </children>
+        </VBox>
+    </children>
+</VBox>

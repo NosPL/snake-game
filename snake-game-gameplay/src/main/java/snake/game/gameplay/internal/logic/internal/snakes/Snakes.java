@@ -21,7 +21,7 @@ import static snake.game.gameplay.internal.logic.internal.SnakesDidNotMoveBecaus
 @AllArgsConstructor
 public class Snakes {
     private final Map<PlayerNumber, Snake> snakesMap;
-    private final CrashedSnakesFinder crashedSnakesFinder;
+    private final SnakeCollisionFinder snakeCollisionFinder;
 
     public void changeSnakeDirection(PlayerNumber playerNumber, Direction newDirection) {
         findSnakeBy(playerNumber)
@@ -67,8 +67,8 @@ public class Snakes {
     }
 
     private void killCrashedSnakes() {
-        crashedSnakesFinder
-                .findCrashed(snakes())
+        snakeCollisionFinder
+                .findCrashedSnakesNumbers(snakes())
                 .forEach(this::killSnake);
     }
 

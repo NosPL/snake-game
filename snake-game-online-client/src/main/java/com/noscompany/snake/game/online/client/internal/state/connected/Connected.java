@@ -2,6 +2,7 @@ package com.noscompany.snake.game.online.client.internal.state.connected;
 
 import com.noscompany.snake.game.online.client.ClientError;
 import com.noscompany.snake.game.online.client.ClientEventHandler;
+import com.noscompany.snake.game.online.client.HostAddress;
 import com.noscompany.snake.game.online.client.StartingClientError;
 import com.noscompany.snake.game.online.client.internal.state.ClientState;
 import com.noscompany.snake.game.online.contract.messages.chat.SendChatMessage;
@@ -20,7 +21,7 @@ public class Connected implements ClientState {
     private final ClientEventHandler eventHandler;
 
     @Override
-    public ClientState connect(String roomName) {
+    public ClientState connect(HostAddress hostAddress) {
         eventHandler.handle(StartingClientError.CONNECTION_ALREADY_ESTABLISHED);
         return this;
     }

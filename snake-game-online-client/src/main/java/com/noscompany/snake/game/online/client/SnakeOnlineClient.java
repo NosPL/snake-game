@@ -4,7 +4,7 @@ import com.noscompany.snake.game.online.contract.messages.game.dto.*;
 
 public interface SnakeOnlineClient {
 
-    void connect(String roomName);
+    void connect(HostAddress hostAddress);
 
     void enterTheRoom(String userName);
 
