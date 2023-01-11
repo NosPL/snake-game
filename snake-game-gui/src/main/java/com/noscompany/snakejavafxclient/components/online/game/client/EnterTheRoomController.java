@@ -51,6 +51,7 @@ public class EnterTheRoomController extends AbstractController {
             EnterTheRoomStage.get().close();
             userInTheRoom = true;
             SnakeMoving.userInTheRoom();
+            SnakeOnlineClientStage.get().show();
         }
     }
 
