@@ -15,9 +15,9 @@ class HostAddressCreator {
                                       String ip3,
                                       String ip4,
                                       String port) {
-        if (isIpValid(ip1, ip2, ip3, ip4))
+        if (!isIpValid(ip1, ip2, ip3, ip4))
             return Either.left(Error.WRONG_IP_FORMAT);
-        if (isPortValid(port))
+        if (!isPortValid(port))
             return Either.left(Error.WRONG_PORT_FORMAT);
         return Either.right(toAddress(ip1, ip2, ip3, ip4, port));
     }
@@ -45,6 +45,7 @@ class HostAddressCreator {
     private boolean isPortValid(String port) {
         return Try
                 .of(() -> Integer.valueOf(port))
+                .filter(portInt -> portInt > 0)
                 .isSuccess();
     }
 }

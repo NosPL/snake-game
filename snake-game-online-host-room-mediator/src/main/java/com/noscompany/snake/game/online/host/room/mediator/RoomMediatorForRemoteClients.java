@@ -3,6 +3,7 @@ package com.noscompany.snake.game.online.host.room.mediator;
 import com.noscompany.snake.game.online.contract.messages.game.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.game.dto.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.room.RoomState;
 import com.noscompany.snake.game.online.host.room.mediator.dto.RemoteClientId;
 
 public interface RoomMediatorForRemoteClients {
@@ -17,4 +18,6 @@ public interface RoomMediatorForRemoteClients {
     void takeASeat(RemoteClientId remoteClientId, PlayerNumber playerNumber);
     void enterRoom(RemoteClientId remoteClientId, String userName);
     void removeClient(RemoteClientId remoteClientId);
+
+    RoomState getRoomState();
 }

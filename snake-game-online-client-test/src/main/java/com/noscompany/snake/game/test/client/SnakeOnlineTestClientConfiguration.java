@@ -7,6 +7,7 @@ import com.noscompany.snake.game.online.host.server.nettosphere.ServerConfigurat
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediator;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorConfiguration;
 import com.noscompany.snake.game.online.host.server.Server;
+import io.vavr.control.Option;
 
 public class SnakeOnlineTestClientConfiguration {
 
@@ -15,6 +16,6 @@ public class SnakeOnlineTestClientConfiguration {
         Server server = new ServerConfiguration().createServer();
         NullHostEventHandler nullHostEventHandler = new NullHostEventHandler();
         RoomMediator roomMediator = new RoomMediatorConfiguration().roomMediator(nullHostEventHandler, server);
-        return new SnakeOnlineTestClient(snakeOnlineClient, clientEventHandler, server, roomMediator);
+        return new SnakeOnlineTestClient(snakeOnlineClient, clientEventHandler, server, roomMediator, Option.none());
     }
 }

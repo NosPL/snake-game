@@ -12,6 +12,7 @@ public interface RoomEventHandlerForRemoteClients {
 
     enum SendMessageError {
         SERVER_DIDNT_GET_STARTED,
-        SERVER_GOT_SHUTDOWN
+        SERVER_GOT_SHUTDOWN,
+        FAILED_TO_SENT_MESSAGE,
     }
 }

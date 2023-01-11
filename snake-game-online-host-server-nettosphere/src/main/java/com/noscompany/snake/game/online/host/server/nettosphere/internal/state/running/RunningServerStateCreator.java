@@ -12,6 +12,7 @@ import org.atmosphere.nettosphere.Config;
 import org.atmosphere.nettosphere.Nettosphere;
 import org.jetbrains.annotations.NotNull;
 
+import static com.noscompany.snake.game.online.host.server.nettosphere.internal.state.running.RoomMediatorHolder.roomMediatorForRemoteClients;
 import static java.util.Objects.requireNonNull;
 
 public class RunningServerStateCreator {

@@ -12,9 +12,11 @@ import com.noscompany.snake.game.online.host.server.nettosphere.internal.state.S
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
+import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.Broadcaster;
 import org.atmosphere.nettosphere.Nettosphere;
+
+import static com.noscompany.snake.game.online.host.room.mediator.ports.RoomEventHandlerForRemoteClients.SendMessageError.FAILED_TO_SENT_MESSAGE;
 
 @AllArgsConstructor
 class RunningServerState implements ServerState {
@@ -42,27 +44,37 @@ class RunningServerState implements ServerState {
         return new ShutdownServerState();
     }
 
-    @SneakyThrows
     @Override
     public Option<SendMessageError> sendToAllClients(OnlineMessage onlineMessage) {
-        String serializedMessage = objectMapper.writeValueAsString(onlineMessage);
-        remoteClientsBroadcaster
-                .getAtmosphereResources()
-                .forEach(r -> r.write(serializedMessage));
-        return Option.none();
+        try {
+            String serializedMessage = objectMapper.writeValueAsString(onlineMessage);
+            remoteClientsBroadcaster
+                    .getAtmosphereResources()
+                    .forEach(r -> send(serializedMessage, r));
+            return Option.none();
+        } catch (Throwable t) {
+            return Option.of(FAILED_TO_SENT_MESSAGE);
+        }
     }
 
-    @SneakyThrows
+    private void send(String serializedMessage, AtmosphereResource r) {
+        r.write(serializedMessage);
+    }
+
     @Override
     public Option<SendMessageError> sendToClientWithId(RemoteClientId remoteClientId, OnlineMessage onlineMessage) {
-        String serializedMessage = objectMapper.writeValueAsString(onlineMessage);
-        remoteClientsBroadcaster
-                .getAtmosphereResources()
-                .stream()
-                .filter(a -> a.uuid().equals(remoteClientId.getId()))
-                .findAny()
-                .ifPresent(a -> a.write(serializedMessage));
-        return Option.none();
+        try {
+            String serializedMessage = objectMapper.writeValueAsString(onlineMessage);
+            remoteClientsBroadcaster
+                    .getAtmosphereResources()
+                    .stream()
+                    .filter(a -> a.uuid().equals(remoteClientId.getId()))
+                    .findAny()
+                    .ifPresent(a -> send(serializedMessage, a));
+            return Option.none();
+        } catch (Throwable t) {
+            return Option.of(FAILED_TO_SENT_MESSAGE);
+        }
     }
 
 }

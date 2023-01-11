@@ -8,6 +8,8 @@ import com.noscompany.snake.game.online.contract.messages.game.dto.*;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediator;
 import com.noscompany.snake.game.online.host.server.Server;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
+import io.vavr.control.Option;
+import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -16,6 +18,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     private final ClientEventHandler clientEventHandler;
     private final Server server;
     private final RoomMediator roomMediator;
+    private final Option<HostAddress> hostAddressOption;
 
     @Override
     public void connect(HostAddress hostAddress) {
@@ -120,6 +123,25 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     }
 
     private ServerParams serverParams() {
-        return new ServerParams("127.0.0.1", 80);
+        return hostAddressOption
+                .map(this::toServerParams)
+                .getOrElse(this::defaultServerParams);
+    }
+
+    private ServerParams toServerParams(HostAddress hostAddress) {
+        String[] splitAddress = hostAddress.getAddress().split(":");
+        if (splitAddress.length != 2)
+            return defaultServerParams();
+        return new ServerParams(splitAddress[0], toPort(splitAddress[1]));
+    }
+
+    private int toPort(String port) {
+        return Try
+                .of(() -> Integer.valueOf(port))
+                .getOrElse(0);
+    }
+
+    private ServerParams defaultServerParams() {
+        return new ServerParams("127.0.0.1", 8080);
     }
 }

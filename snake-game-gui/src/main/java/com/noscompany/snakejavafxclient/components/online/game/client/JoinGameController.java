@@ -4,21 +4,16 @@ import com.noscompany.snake.game.online.client.ClientError;
 import com.noscompany.snake.game.online.client.StartingClientError;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 public class JoinGameController extends AbstractController {
-    @FXML
-    private TextField errorMessageLabel;
-    @FXML
-    private TextField ip1TextField;
-    @FXML
-    private TextField ip2TextField;
-    @FXML
-    private TextField ip3TextField;
-    @FXML
-    private TextField ip4TextField;
-    @FXML
-    private TextField portTextField;
+    @FXML private TextField ip1TextField;
+    @FXML private TextField ip2TextField;
+    @FXML private TextField ip3TextField;
+    @FXML private TextField ip4TextField;
+    @FXML private TextField portTextField;
+    @FXML private Label errorMessageLabel;
     private final HostAddressCreator hostAddressCreator = new HostAddressCreator();
 
     @FXML

@@ -3,6 +3,7 @@ package com.noscompany.snake.game.online.host.room.mediator;
 import com.noscompany.snake.game.online.contract.messages.game.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.game.dto.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.room.RoomState;
 import com.noscompany.snake.game.online.host.room.Room;
 import com.noscompany.snake.game.online.host.room.mediator.dto.HostId;
 import com.noscompany.snake.game.online.host.room.mediator.dto.RemoteClientId;
@@ -154,5 +155,10 @@ public class RoomMediator implements RoomMediatorForHost, RoomMediatorForRemoteC
         room
                 .removeUserById(remoteClientId.getId())
                 .peek(eventDispatcher::sendToClientsAndHost);
+    }
+
+    @Override
+    public RoomState getRoomState() {
+        return room.getState();
     }
 }
