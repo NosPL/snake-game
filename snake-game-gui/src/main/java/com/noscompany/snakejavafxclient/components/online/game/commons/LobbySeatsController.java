@@ -74,9 +74,9 @@ public class LobbySeatsController extends AbstractController {
         freeUpASeatAction.run();
     }
 
-    public void update(LobbyState lobbyState) {
+    public void update(Set<LobbyState.Seat> seats) {
         resetSeatsLabels();
-        updateSeats(lobbyState.getSeats());
+        updateSeats(seats);
     }
 
     private void updateSeats(Set<LobbyState.Seat> seats) {

@@ -5,10 +5,7 @@ import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatM
 import com.noscompany.snake.game.online.contract.messages.game.events.*;
 import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
 import com.noscompany.snake.game.online.contract.messages.lobby.event.*;
-import com.noscompany.snake.game.online.contract.messages.room.FailedToConnectToRoom;
-import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
-import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
-import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
+import com.noscompany.snake.game.online.contract.messages.room.*;
 import com.noscompany.snakejavafxclient.components.online.game.commons.*;
 import com.noscompany.snakejavafxclient.utils.Controllers;
 import com.noscompany.snake.game.online.client.SendClientMessageError;
@@ -188,6 +185,7 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     public void connectionClosed() {
         Platform.runLater(() -> {
             SnakeOnlineClientStage.get().close();
+            joinGameController.connectionClosed();
             JoinGameStage.get().show();
         });
     }
@@ -195,8 +193,10 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     @Override
     public void handle(NewUserEnteredRoom event) {
         Platform.runLater(() -> {
+            RoomState roomState = event.getRoomState();
             joinGameController.handle(event);
-            joinedUsersController.update(event.getConnectedUsers());
+            joinedUsersController.update(roomState.getUsers());
+            update(roomState.getLobbyState());
         });
     }
 
@@ -231,8 +231,8 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     }
 
     private void update(LobbyState lobbyState) {
-        onlineGameOptionsController.update(lobbyState);
-        lobbySeatsController.update(lobbyState);
+        onlineGameOptionsController.update(lobbyState.getGameOptions());
+        lobbySeatsController.update(lobbyState.getSeats());
         scoreboardController.update(lobbyState);
         gameGridController.update(lobbyState.getGameState());
         messageController.clear();

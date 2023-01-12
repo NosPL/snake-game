@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noscompany.snake.game.online.contract.messages.game.dto.*;
 import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
+import com.noscompany.snake.game.online.contract.messages.room.RoomState;
 import com.noscompany.snake.game.online.contract.object.mapper.ObjectMapperCreator;
 import io.vavr.control.Option;
 import org.junit.Assert;
@@ -19,6 +20,10 @@ public class BaseTestClass {
         Class<T> aClass = (Class<T>) onlineMessage.getClass();
         T serialized = objectMapper.readValue(string, aClass);
         Assert.assertEquals(onlineMessage, serialized);
+    }
+
+    protected RoomState roomState() {
+        return new RoomState(false, Set.of("a", "b", "c"), lobbyState());
     }
 
     protected LobbyState lobbyState() {

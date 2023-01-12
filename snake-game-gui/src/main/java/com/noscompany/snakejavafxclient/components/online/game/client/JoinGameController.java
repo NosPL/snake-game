@@ -139,4 +139,8 @@ public class JoinGameController extends AbstractController {
     private String getErrorMessage(FailedToEnterRoom event) {
         return event.getReason().toString().toLowerCase().replace("_", " ");
     }
+
+    public void connectionClosed() {
+        errorMessageLabel.setText("Connection got closed");
+    }
 }

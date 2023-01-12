@@ -1,6 +1,5 @@
 package com.noscompany.snakejavafxclient.components.online.game.commons;
 
-import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
 import com.noscompany.snakejavafxclient.utils.Consumer3;
 import javafx.fxml.FXML;
@@ -55,11 +54,7 @@ public class OnlineGameOptionsController extends AbstractController {
         gameOptionsChangedAction.accept(gridSize(), gameSpeed(), walls());
     }
 
-    public void update(LobbyState lobbyState) {
-        update(lobbyState.getGameOptions());
-    }
-
-    private void update(GameOptions gameOptions) {
+    public void update(GameOptions gameOptions) {
         update(
                 gameOptions.getGameSpeed(),
                 gameOptions.getGridSize(),

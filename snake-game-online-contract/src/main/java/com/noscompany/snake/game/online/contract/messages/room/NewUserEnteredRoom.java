@@ -15,5 +15,5 @@ import static lombok.AccessLevel.PRIVATE;
 public class NewUserEnteredRoom implements OnlineMessage {
     MessageType messageType = MessageType.NEW_USER_ENTERED_ROOM;
     String userName;
-    Set<String> connectedUsers;
+    RoomState roomState;
 }

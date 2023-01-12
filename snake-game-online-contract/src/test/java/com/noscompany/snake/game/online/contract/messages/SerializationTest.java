@@ -9,10 +9,7 @@ import com.noscompany.snake.game.online.contract.messages.lobby.command.ChangeGa
 import com.noscompany.snake.game.online.contract.messages.lobby.command.FreeUpASeat;
 import com.noscompany.snake.game.online.contract.messages.lobby.command.TakeASeat;
 import com.noscompany.snake.game.online.contract.messages.lobby.event.*;
-import com.noscompany.snake.game.online.contract.messages.room.EnterRoom;
-import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
-import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
-import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
+import com.noscompany.snake.game.online.contract.messages.room.*;
 import io.vavr.control.Option;
 import lombok.SneakyThrows;
 import org.junit.Test;
@@ -44,8 +41,8 @@ public class SerializationTest extends BaseTestClass {
         testSerializationOf(new PlayerFreedUpASeat("some name", PlayerNumber._1, lobbyState()));
         testSerializationOf(new PlayerTookASeat("some name", PlayerNumber._1, lobbyState()));
         testSerializationOf(FailedToEnterRoom.userNameAlreadyInUse("some name"));
-        testSerializationOf(new NewUserEnteredRoom("some name", Set.of("a", "b", "c")));
-        testSerializationOf(new NewUserEnteredRoom("some name", Set.of("a", "b", "c")));
+        testSerializationOf(new NewUserEnteredRoom("some name", roomState()));
+        testSerializationOf(new NewUserEnteredRoom("some name", roomState()));
         testSerializationOf(new UserLeftRoom("some name", Set.of("a", "b", "c"), Option.of(playerFreedUpASeat())));
         testSerializationOf(new UserLeftRoom("some name", Set.of("a", "b", "c"), Option.none()));
     }

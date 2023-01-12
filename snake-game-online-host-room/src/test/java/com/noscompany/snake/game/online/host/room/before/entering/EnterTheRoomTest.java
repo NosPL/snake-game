@@ -5,8 +5,6 @@ import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoo
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Set;
-
 import static org.junit.Assert.assertEquals;
 
 public class EnterTheRoomTest extends ActorNotInTheRoomSetup {
@@ -20,13 +18,8 @@ public class EnterTheRoomTest extends ActorNotInTheRoomSetup {
 //        WHEN the actor tries to enter the room
         var result = room.enter(actorId, actorName);
 //        THEN he succeeds
-        var expected = success(newUserEnteredRoom(actorName));
+        var expected = success(new NewUserEnteredRoom(actorName, room.getState()));
         Assert.assertEquals(expected, result);
-    }
-
-    private NewUserEnteredRoom newUserEnteredRoom(String userName) {
-        Set<String> connectedUsers = room.getState().getUsers();
-        return new NewUserEnteredRoom(userName, connectedUsers);
     }
 
     @Test

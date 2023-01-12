@@ -29,7 +29,7 @@ class RoomImpl implements Room {
     public Either<FailedToEnterRoom, NewUserEnteredRoom> enter(String userId, String userName) {
         return userRegistry
                 .registerNewUser(userId, userName)
-                .toEither(new NewUserEnteredRoom(userName, userRegistry.getUserNames()))
+                .toEither(new NewUserEnteredRoom(userName, getState()))
                 .swap();
     }
 

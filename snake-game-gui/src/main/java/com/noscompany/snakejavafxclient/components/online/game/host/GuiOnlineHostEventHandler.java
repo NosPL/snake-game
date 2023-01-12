@@ -170,7 +170,7 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost, ServerEventH
     @Override
     public void handle(NewUserEnteredRoom event) {
         Platform.runLater(() -> {
-            joinedUsersController.update(event.getConnectedUsers());
+            joinedUsersController.update(event.getRoomState().getUsers());
         });
     }
 
@@ -200,8 +200,8 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost, ServerEventH
     }
 
     private void update(LobbyState lobbyState) {
-        onlineGameOptionsController.update(lobbyState);
-        lobbySeatsController.update(lobbyState);
+        onlineGameOptionsController.update(lobbyState.getGameOptions());
+        lobbySeatsController.update(lobbyState.getSeats());
         scoreboardController.update(lobbyState);
         gameGridController.update(lobbyState.getGameState());
         messageController.clear();
