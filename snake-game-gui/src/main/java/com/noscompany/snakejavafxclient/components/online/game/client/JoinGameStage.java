@@ -19,4 +19,8 @@ public class JoinGameStage {
         });
         return stage;
     }
+
+    public static void remove() {
+        Stages.remove(JOIN_GAME_VIEW);
+    }
 }

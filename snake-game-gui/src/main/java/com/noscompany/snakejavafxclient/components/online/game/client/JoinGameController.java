@@ -128,10 +128,6 @@ public class JoinGameController extends AbstractController {
         errorMessageLabel.setText(message);
     }
 
-    private String getPlayerName() {
-        return playerNameTextField.getText();
-    }
-
     private boolean nameOfNewlyConnectedUserEqualsNameTypedInTextField(String userName) {
         return userName.equals(playerNameTextField.getText());
     }
@@ -141,6 +137,7 @@ public class JoinGameController extends AbstractController {
     }
 
     public void connectionClosed() {
+        snakeOnlineClientOption = Option.none();
         errorMessageLabel.setText("Connection got closed");
     }
 }

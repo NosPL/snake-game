@@ -186,7 +186,6 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
         Platform.runLater(() -> {
             SnakeOnlineClientStage.get().close();
             joinGameController.connectionClosed();
-            JoinGameStage.get().show();
         });
     }
 

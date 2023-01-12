@@ -13,6 +13,7 @@ public class SnakeOnlineClientStage {
         stage.setOnCloseRequest(e -> {
             Controllers.get(OnlineClientController.class).disconnectClient();
             remove();
+            JoinGameStage.remove();
             GameModeSelectionStage.get().show();
         });
         return stage;
