@@ -8,6 +8,8 @@ import com.noscompany.snake.game.online.host.room.mediator.PlayerName;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorForHost;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorForRemoteClients;
 import com.noscompany.snake.game.online.host.room.mediator.dto.HostId;
+import com.noscompany.snake.game.online.host.server.dto.ServerStartError;
+import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 
@@ -20,19 +22,16 @@ class SnakeOnlineHostImpl implements SnakeOnlineHost {
     private final RoomMediatorForRemoteClients roomMediatorForRemoteClients;
 
     @Override
-    public void enter(PlayerName playerName) {
-        roomMediatorForHost.enter(hostId, playerName);
-    }
-
-    @Override
     public void startServer(ServerParams serverParams, PlayerName playerName) {
-        Try<IpAddress> getIpAddressResult = server.getIpAddress();
-        serverEventHandler.update(getIpAddressResult);
-        server
-                .start(serverParams, roomMediatorForRemoteClients)
+        Option<ServerStartError> startServerResult = server.start(serverParams, roomMediatorForRemoteClients);
+        startServerResult
                 .peek(serverEventHandler::handle)
-                .onEmpty(() -> serverEventHandler.serverStarted());
-        roomMediatorForHost.enter(hostId, playerName);
+                .onEmpty(() -> {
+                    roomMediatorForHost.enter(hostId, playerName);
+                    serverEventHandler.serverStarted();
+                    Try<IpAddress> getIpAddressResult = server.getIpAddress();
+                    serverEventHandler.update(getIpAddressResult);
+                });
     }
 
     @Override

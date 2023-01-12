@@ -6,7 +6,6 @@ import com.noscompany.snake.game.online.host.server.dto.ServerParams;
 import com.noscompany.snake.game.online.host.room.mediator.PlayerName;
 
 public interface SnakeOnlineHost {
-    void enter(PlayerName playerName);
     void startServer(ServerParams serverParams, PlayerName playerName);
     void sendChatMessage(String messageContent);
     void cancelGame();
