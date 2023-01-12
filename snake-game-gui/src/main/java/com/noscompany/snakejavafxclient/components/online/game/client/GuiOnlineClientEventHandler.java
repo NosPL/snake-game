@@ -34,6 +34,8 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     private final ScprButtonsController scprButtonsController;
 
     public static GuiOnlineClientEventHandler instance() {
+        JoinGameStage.get();
+        SnakeOnlineClientStage.get();
         return new GuiOnlineClientEventHandler(
                 Controllers.get(JoinGameController.class),
                 Controllers.get(OnlineGameOptionsController.class),

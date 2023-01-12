@@ -29,6 +29,7 @@ public class OnlineClientController extends AbstractController {
     }
 
     public void disconnectClient() {
-        snakeOnlineClient.disconnect();
+        if (snakeOnlineClient != null)
+            snakeOnlineClient.disconnect();
     }
 }

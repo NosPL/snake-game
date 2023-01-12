@@ -51,7 +51,8 @@ public class JoinGameController extends AbstractController {
     private void joinGame(HostAddress hostAddress) {
         if (!isClientConnected())
             getOrCreateSnakeOnlineClient().connect(hostAddress);
-        getOrCreateSnakeOnlineClient().enterTheRoom(getPlayerName());
+        else
+            connectionEstablished();
     }
 
     public void connectionEstablished() {
@@ -70,7 +71,7 @@ public class JoinGameController extends AbstractController {
         String errorMessage = getErrorMessage(event);
         errorMessageLabel.setText(errorMessage);
         if (event.getReason() == FailedToEnterRoom.Reason.USER_ALREADY_IN_THE_ROOM) {
-            JoinGameStage.get().show();
+            JoinGameStage.get().close();
             SnakeOnlineClientStage.get().show();
         }
     }
