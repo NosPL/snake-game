@@ -6,16 +6,17 @@ import com.noscompany.snake.game.test.client.SnakeOnlineTestClientConfiguration;
 import com.noscompany.snakejavafxclient.ApplicationProfile;
 import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
 import com.noscompany.snakejavafxclient.components.online.game.commons.ChatController;
+import com.noscompany.snakejavafxclient.components.online.game.commons.KeyPressedHandler;
 import com.noscompany.snakejavafxclient.components.online.game.commons.LobbySeatsController;
 import com.noscompany.snakejavafxclient.components.online.game.commons.OnlineGameOptionsController;
 import com.noscompany.snakejavafxclient.utils.Controllers;
 
-public class SnakeOnlineGuiClientConfiguration {
+class SnakeOnlineGuiClientConfiguration {
 
-    public static SnakeOnlineClient createOnlineClient() {
+    static SnakeOnlineClient createOnlineClient() {
         GuiOnlineClientEventHandler eventHandler = GuiOnlineClientEventHandler.instance();
         SnakeOnlineClient snakeOnlineClient = getSnakeOnlineClient(eventHandler);
-        SnakeOnlineClientStage.get().getScene().setOnKeyPressed(e -> new KeyPressedHandler(snakeOnlineClient));
+        SnakeOnlineClientStage.get().getScene().setOnKeyPressed(e -> new KeyPressedHandler(snakeOnlineClient::changeSnakeDirection));
         setControllers(snakeOnlineClient);
         return snakeOnlineClient;
     }

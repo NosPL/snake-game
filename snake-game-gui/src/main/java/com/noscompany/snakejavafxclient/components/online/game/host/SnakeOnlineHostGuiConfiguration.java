@@ -6,6 +6,7 @@ import com.noscompany.snake.game.online.host.room.mediator.PlayerName;
 import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
 import com.noscompany.snakejavafxclient.components.mode.selection.GameModeSelectionStage;
 import com.noscompany.snakejavafxclient.components.online.game.commons.ChatController;
+import com.noscompany.snakejavafxclient.components.online.game.commons.KeyPressedHandler;
 import com.noscompany.snakejavafxclient.components.online.game.commons.LobbySeatsController;
 import com.noscompany.snakejavafxclient.components.online.game.commons.OnlineGameOptionsController;
 import com.noscompany.snakejavafxclient.utils.Controllers;
@@ -26,7 +27,7 @@ public class SnakeOnlineHostGuiConfiguration {
     }
 
     private static void setStage(Stage snakeOnlineHostStage, SnakeOnlineHost snakeOnlineHost) {
-        KeyPressedHandler keyEventEventHandler = new KeyPressedHandler(snakeOnlineHost);
+        var keyEventEventHandler = new KeyPressedHandler(snakeOnlineHost::changeSnakeDirection);
         Controllers.get(HostController.class).set(keyEventEventHandler);
         snakeOnlineHostStage.getScene().setOnKeyPressed(keyEventEventHandler);
         snakeOnlineHostStage.setOnCloseRequest(e -> {
