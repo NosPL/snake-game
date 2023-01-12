@@ -1,13 +1,12 @@
 package com.noscompany.snake.game.online.host.server.nettosphere;
 
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
+import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorForRemoteClients;
+import com.noscompany.snake.game.online.host.room.mediator.dto.RemoteClientId;
 import com.noscompany.snake.game.online.host.server.Server;
 import com.noscompany.snake.game.online.host.server.dto.IpAddress;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
 import com.noscompany.snake.game.online.host.server.dto.ServerStartError;
-import com.noscompany.snake.game.online.host.server.nettosphere.internal.state.IpAddressChecker;
-import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorForRemoteClients;
-import com.noscompany.snake.game.online.host.room.mediator.dto.RemoteClientId;
 import com.noscompany.snake.game.online.host.server.nettosphere.internal.state.ServerState;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
@@ -17,14 +16,15 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @Slf4j
 class AtmosphereServer implements Server {
-    private final IpAddressChecker ipAddressChecker;
     private ServerState serverState;
+    private Option<IpAddress> ipAddresses;
 
     @Override
     public Option<ServerStartError> start(ServerParams serverParams, RoomMediatorForRemoteClients handlerForRemoteClients) {
         return serverState
                 .start(serverParams, handlerForRemoteClients)
                 .onSuccess(serverState -> this.serverState = serverState)
+                .onSuccess(serverState -> this.ipAddresses = Option.of(new IpAddress(serverParams.getHost())))
                 .transform(this::toResult);
     }
 
@@ -46,7 +46,7 @@ class AtmosphereServer implements Server {
 
     @Override
     public Try<IpAddress> getIpAddress() {
-        return ipAddressChecker.getIpAddress();
+        return ipAddresses.toTry();
     }
 
     @Override

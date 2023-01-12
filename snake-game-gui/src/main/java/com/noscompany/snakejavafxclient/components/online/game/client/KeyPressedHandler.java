@@ -1,5 +1,6 @@
 package com.noscompany.snakejavafxclient.components.online.game.client;
 
+import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -9,17 +10,17 @@ import static com.noscompany.snake.game.online.contract.messages.game.dto.Direct
 
 @AllArgsConstructor
 class KeyPressedHandler implements EventHandler<KeyEvent> {
-
+    private final SnakeOnlineClient snakeOnlineClient;
     @Override
     public void handle(KeyEvent event) {
         var keyCode = event.getCode();
         if (keyCode == KeyCode.W)
-            SnakeMoving.changeSnakeDirection(DOWN);
+            snakeOnlineClient.changeSnakeDirection(DOWN);
         else if (keyCode == KeyCode.S)
-            SnakeMoving.changeSnakeDirection(UP);
+            snakeOnlineClient.changeSnakeDirection(UP);
         else if (keyCode == KeyCode.A)
-            SnakeMoving.changeSnakeDirection(LEFT);
+            snakeOnlineClient.changeSnakeDirection(LEFT);
         else if (keyCode == KeyCode.D)
-            SnakeMoving.changeSnakeDirection(RIGHT);
+            snakeOnlineClient.changeSnakeDirection(RIGHT);
     }
 }

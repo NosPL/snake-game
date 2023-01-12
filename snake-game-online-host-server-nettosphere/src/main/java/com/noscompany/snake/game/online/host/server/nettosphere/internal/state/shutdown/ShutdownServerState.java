@@ -40,5 +40,4 @@ public class ShutdownServerState implements ServerState {
     public Option<SendMessageError> sendToClientWithId(RemoteClientId remoteClientId, OnlineMessage onlineMessage) {
         return Option.of(SERVER_GOT_SHUTDOWN);
     }
-
 }

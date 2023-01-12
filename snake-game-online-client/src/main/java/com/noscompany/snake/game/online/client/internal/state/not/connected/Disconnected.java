@@ -1,6 +1,6 @@
 package com.noscompany.snake.game.online.client.internal.state.not.connected;
 
-import com.noscompany.snake.game.online.client.ClientError;
+import com.noscompany.snake.game.online.client.SendClientMessageError;
 import com.noscompany.snake.game.online.client.ClientEventHandler;
 import com.noscompany.snake.game.online.client.HostAddress;
 import com.noscompany.snake.game.online.client.StartingClientError;
@@ -24,67 +24,67 @@ public class Disconnected implements ClientState {
 
     @Override
     public ClientState enterTheRoom(String userName) {
-        eventHandler.handle(ClientError.CLIENT_NOT_CONNECTED);
+        eventHandler.handle(SendClientMessageError.CLIENT_NOT_CONNECTED);
         return this;
     }
 
     @Override
     public ClientState takeASeat(PlayerNumber playerNumber) {
-        eventHandler.handle(ClientError.CLIENT_NOT_CONNECTED);
+        eventHandler.handle(SendClientMessageError.CLIENT_NOT_CONNECTED);
         return this;
     }
 
     @Override
     public ClientState freeUpASeat() {
-        eventHandler.handle(ClientError.CLIENT_NOT_CONNECTED);
+        eventHandler.handle(SendClientMessageError.CLIENT_NOT_CONNECTED);
         return this;
     }
 
     @Override
     public ClientState changeGameOptions(GridSize gridSize, GameSpeed gameSpeed, Walls walls) {
-        eventHandler.handle(ClientError.CLIENT_NOT_CONNECTED);
+        eventHandler.handle(SendClientMessageError.CLIENT_NOT_CONNECTED);
         return this;
     }
 
     @Override
     public ClientState startGame() {
-        eventHandler.handle(ClientError.CLIENT_NOT_CONNECTED);
+        eventHandler.handle(SendClientMessageError.CLIENT_NOT_CONNECTED);
         return this;
     }
 
     @Override
     public ClientState changeSnakeDirection(Direction direction) {
-        eventHandler.handle(ClientError.CLIENT_NOT_CONNECTED);
+        eventHandler.handle(SendClientMessageError.CLIENT_NOT_CONNECTED);
         return this;
     }
 
     @Override
     public ClientState cancelGame() {
-        eventHandler.handle(ClientError.CLIENT_NOT_CONNECTED);
+        eventHandler.handle(SendClientMessageError.CLIENT_NOT_CONNECTED);
         return this;
     }
 
     @Override
     public ClientState pauseGame() {
-        eventHandler.handle(ClientError.CLIENT_NOT_CONNECTED);
+        eventHandler.handle(SendClientMessageError.CLIENT_NOT_CONNECTED);
         return this;
     }
 
     @Override
     public ClientState resumeGame() {
-        eventHandler.handle(ClientError.CLIENT_NOT_CONNECTED);
+        eventHandler.handle(SendClientMessageError.CLIENT_NOT_CONNECTED);
         return this;
     }
 
     @Override
     public ClientState sendChatMessage(String message) {
-        eventHandler.handle(ClientError.CLIENT_NOT_CONNECTED);
+        eventHandler.handle(SendClientMessageError.CLIENT_NOT_CONNECTED);
         return this;
     }
 
     @Override
     public ClientState closeConnection() {
-        eventHandler.handle(ClientError.CLIENT_NOT_CONNECTED);
+        eventHandler.handle(SendClientMessageError.CLIENT_NOT_CONNECTED);
         return this;
     }
 

@@ -1,29 +1,26 @@
 package com.noscompany.snakejavafxclient.components.online.game.client;
 
-import com.noscompany.snake.game.online.client.HostAddress;
+import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import com.noscompany.snake.game.online.client.SnakeOnlineClientConfiguration;
 import com.noscompany.snake.game.test.client.SnakeOnlineTestClientConfiguration;
 import com.noscompany.snakejavafxclient.ApplicationProfile;
+import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
+import com.noscompany.snakejavafxclient.components.mode.selection.GameModeSelectionStage;
 import com.noscompany.snakejavafxclient.components.online.game.commons.ChatController;
 import com.noscompany.snakejavafxclient.components.online.game.commons.LobbySeatsController;
 import com.noscompany.snakejavafxclient.components.online.game.commons.OnlineGameOptionsController;
 import com.noscompany.snakejavafxclient.utils.Controllers;
-import com.noscompany.snake.game.online.client.SnakeOnlineClient;
-import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
-import com.noscompany.snakejavafxclient.components.mode.selection.GameModeSelectionStage;
 import javafx.stage.Stage;
 
 public class SnakeOnlineGuiClientConfiguration {
 
-    public static void run(HostAddress hostAddress) {
-        EnterTheRoomStage.get();
+    public static SnakeOnlineClient createOnlineClient() {
         Stage snakeOnlineClientStage = SnakeOnlineClientStage.get();
         GuiOnlineClientEventHandler eventHandler = GuiOnlineClientEventHandler.instance();
         SnakeOnlineClient snakeOnlineClient = getSnakeOnlineClient(eventHandler);
-        snakeOnlineClient.connect(hostAddress);
-        SnakeMoving.set(snakeOnlineClient);
         setStage(snakeOnlineClientStage, snakeOnlineClient);
         setControllers(snakeOnlineClient);
+        return snakeOnlineClient;
     }
 
     private static SnakeOnlineClient getSnakeOnlineClient(GuiOnlineClientEventHandler eventHandler) {
@@ -34,7 +31,7 @@ public class SnakeOnlineGuiClientConfiguration {
     }
 
     private static void setStage(Stage snakeClientStage, SnakeOnlineClient snakeOnlineClient) {
-        snakeClientStage.getScene().setOnKeyPressed(e -> new KeyPressedHandler());
+        snakeClientStage.getScene().setOnKeyPressed(e -> new KeyPressedHandler(snakeOnlineClient));
         snakeClientStage.setOnCloseRequest(e -> {
             snakeOnlineClient.disconnect();
             SnakeOnlineClientStage.remove();
@@ -43,9 +40,6 @@ public class SnakeOnlineGuiClientConfiguration {
     }
 
     private static void setControllers(SnakeOnlineClient snakeOnlineClient) {
-        Controllers
-                .get(EnterTheRoomController.class)
-                .onEnterTheRoomButtonPress(snakeOnlineClient::enterTheRoom);
         Controllers
                 .get(OnlineGameOptionsController.class)
                 .onGameOptionsChanged(snakeOnlineClient::changeGameOptions);

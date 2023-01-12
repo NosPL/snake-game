@@ -3,7 +3,7 @@ package com.noscompany.snake.game.online.client.internal.state.connected;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
-import com.noscompany.snake.game.online.client.ClientError;
+import com.noscompany.snake.game.online.client.SendClientMessageError;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,14 +24,14 @@ class MessageSender {
         return socket.status() == OPEN || socket.status() == REOPENED;
     }
 
-    Option<ClientError> send(OnlineMessage onlineMessage) {
+    Option<SendClientMessageError> send(OnlineMessage onlineMessage) {
         try {
             socket.fire(asJson(onlineMessage));
             return Option.none();
         } catch (JsonProcessingException je) {
-            return Option.of(ClientError.FAILED_TO_SERIALIZE_MESSAGE);
+            return Option.of(SendClientMessageError.FAILED_TO_SERIALIZE_MESSAGE);
         } catch (IOException ioe) {
-            return Option.of(ClientError.CONNECTION_CLOSED);
+            return Option.of(SendClientMessageError.CONNECTION_CLOSED);
         }
     }
 

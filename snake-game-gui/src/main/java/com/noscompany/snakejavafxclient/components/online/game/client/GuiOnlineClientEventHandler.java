@@ -11,7 +11,7 @@ import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoo
 import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
 import com.noscompany.snakejavafxclient.components.online.game.commons.*;
 import com.noscompany.snakejavafxclient.utils.Controllers;
-import com.noscompany.snake.game.online.client.ClientError;
+import com.noscompany.snake.game.online.client.SendClientMessageError;
 import com.noscompany.snake.game.online.client.ClientEventHandler;
 import com.noscompany.snake.game.online.client.StartingClientError;
 import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
@@ -24,7 +24,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class GuiOnlineClientEventHandler implements ClientEventHandler {
     private final JoinGameController joinGameController;
-    private final EnterTheRoomController enterTheRoomController;
     private final OnlineGameOptionsController onlineGameOptionsController;
     private final LobbySeatsController lobbySeatsController;
     private final GameGridController gameGridController;
@@ -37,7 +36,6 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     public static GuiOnlineClientEventHandler instance() {
         return new GuiOnlineClientEventHandler(
                 Controllers.get(JoinGameController.class),
-                Controllers.get(EnterTheRoomController.class),
                 Controllers.get(OnlineGameOptionsController.class),
                 Controllers.get(LobbySeatsController.class),
                 Controllers.get(GameGridController.class),
@@ -86,7 +84,6 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     @Override
     public void handle(TimeLeftToGameStartHasChanged event) {
         Platform.runLater(() -> {
-            SnakeMoving.gameIsRunning();
             gameGridController.initializeGrid(event.getGridSize(), event.getWalls());
             gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
             onlineGameOptionsController.disable();
@@ -101,7 +98,6 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     @Override
     public void handle(GameStarted event) {
         Platform.runLater(() -> {
-            SnakeMoving.gameIsRunning();
             gameGridController.initializeGrid(event.getGridSize(), event.getWalls());
             gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
             onlineGameOptionsController.disable();
@@ -116,7 +112,6 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     @Override
     public void handle(GameContinues event) {
         Platform.runLater(() -> {
-            SnakeMoving.gameIsRunning();
             gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
             scoreboardController.print(event.getScore());
         });
@@ -125,7 +120,6 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     @Override
     public void handle(GameFinished event) {
         Platform.runLater(() -> {
-            SnakeMoving.gameIsNotRunning();
             gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
             onlineGameOptionsController.enable();
             messageController.printGameFinished();
@@ -140,7 +134,6 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     @Override
     public void handle(GameCancelled event) {
         Platform.runLater(() -> {
-            SnakeMoving.gameIsNotRunning();
             onlineGameOptionsController.enable();
             messageController.printGameCanceled();
             scprButtonsController.enableStart();
@@ -153,7 +146,6 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     @Override
     public void handle(GamePaused event) {
         Platform.runLater(() -> {
-            SnakeMoving.gameIsRunning();
             messageController.printGamePaused();
             scprButtonsController.enableResume();
             scprButtonsController.disablePause();
@@ -163,7 +155,6 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     @Override
     public void handle(GameResumed event) {
         Platform.runLater(() -> {
-            SnakeMoving.gameIsRunning();
             messageController.printGameResumed();
             scprButtonsController.disableResume();
             scprButtonsController.enablePause();
@@ -178,9 +169,9 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     }
 
     @Override
-    public void handle(ClientError clientError) {
+    public void handle(SendClientMessageError sendClientMessageError) {
         Platform.runLater(() -> {
-            joinGameController.handle(clientError);
+            joinGameController.handle(sendClientMessageError);
         });
     }
 
@@ -202,19 +193,19 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     @Override
     public void handle(NewUserEnteredRoom event) {
         Platform.runLater(() -> {
-            enterTheRoomController.handle(event);
+            joinGameController.handle(event);
             joinedUsersController.update(event.getConnectedUsers());
         });
     }
 
     @Override
     public void handle(FailedToConnectToRoom event) {
-        Platform.runLater(() -> enterTheRoomController.handle(event));
+        Platform.runLater(() -> {});
     }
 
     @Override
     public void handle(FailedToEnterRoom event) {
-        Platform.runLater(() -> enterTheRoomController.handle(event));
+        Platform.runLater(() -> joinGameController.handle(event));
     }
 
     @Override

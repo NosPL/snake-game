@@ -20,9 +20,7 @@ public class ConnectedClientCreator {
         var objectMapper = ObjectMapperCreator.createInstance();
         return createOpenSocket(hostAddress, eventHandler, objectMapper)
                 .map(socket -> new MessageSender(socket, objectMapper))
-                .map(messageSender -> (ClientState) new Connected(messageSender, eventHandler))
-                .onSuccess(connected -> log.info("Socket got successfully open"))
-                .onFailure(t -> log.info("Failed to open socket connection, cause: ", t));
+                .map(messageSender -> new Connected(messageSender, eventHandler));
     }
 
     private static Try<Socket> createOpenSocket(HostAddress hostAddress, ClientEventHandler clientEventHandler, ObjectMapper objectMapper) {
@@ -31,10 +29,8 @@ public class ConnectedClientCreator {
         var request = createRequest(hostAddress, client);
         return Try
                 .of(() -> socket.open(request))
-                .onFailure(t -> {
-                    log.warn("Failed to connect to server", t);
-                });
-
+                .onSuccess(connected -> log.info("Socket got successfully open"))
+                .onFailure(t -> log.info("Failed to open socket connection, cause: ", t));
     }
 
     private static Socket createSocket(ClientEventHandler clientEventHandler, Client client, ObjectMapper objectMapper) {

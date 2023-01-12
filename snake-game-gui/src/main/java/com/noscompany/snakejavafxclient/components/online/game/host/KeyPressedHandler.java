@@ -1,7 +1,6 @@
 package com.noscompany.snakejavafxclient.components.online.game.host;
 
 import com.noscompany.snake.game.online.host.SnakeOnlineHost;
-import com.noscompany.snakejavafxclient.components.online.game.client.SnakeMoving;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;

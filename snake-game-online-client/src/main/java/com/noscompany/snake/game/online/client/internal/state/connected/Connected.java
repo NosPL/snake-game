@@ -1,6 +1,6 @@
 package com.noscompany.snake.game.online.client.internal.state.connected;
 
-import com.noscompany.snake.game.online.client.ClientError;
+import com.noscompany.snake.game.online.client.SendClientMessageError;
 import com.noscompany.snake.game.online.client.ClientEventHandler;
 import com.noscompany.snake.game.online.client.HostAddress;
 import com.noscompany.snake.game.online.client.StartingClientError;
@@ -22,8 +22,11 @@ public class Connected implements ClientState {
 
     @Override
     public ClientState connect(HostAddress hostAddress) {
-        eventHandler.handle(StartingClientError.CONNECTION_ALREADY_ESTABLISHED);
-        return this;
+        if (messageSender.isConnected()) {
+            eventHandler.handle(StartingClientError.CONNECTION_ALREADY_ESTABLISHED);
+            return this;
+        } else
+            return new Disconnected(eventHandler).connect(hostAddress);
     }
 
     @Override
@@ -114,12 +117,12 @@ public class Connected implements ClientState {
 
     @Override
     public boolean isConnected() {
-        return true;
+        return messageSender.isConnected();
     }
 
-    private ClientState handleError(ClientError clientError) {
-        eventHandler.handle(clientError);
-        if (clientError == ClientError.CONNECTION_CLOSED)
+    private ClientState handleError(SendClientMessageError sendClientMessageError) {
+        eventHandler.handle(sendClientMessageError);
+        if (sendClientMessageError == SendClientMessageError.CONNECTION_CLOSED)
             return closeConnection();
         else
             return this;

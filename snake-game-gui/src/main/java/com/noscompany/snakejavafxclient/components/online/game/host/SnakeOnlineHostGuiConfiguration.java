@@ -16,8 +16,12 @@ public class SnakeOnlineHostGuiConfiguration {
     public static void run(ServerParams serverParams, PlayerName playerName) {
         Stage snakeOnlineHostStage = SnakeOnlineHostStage.get();
         SnakeOnlineHost snakeOnlineHost = OnlineHostCreator.create();
+        snakeOnlineHost.startServer(serverParams, playerName);
         setStage(snakeOnlineHostStage, snakeOnlineHost);
-        setControllers(snakeOnlineHost, serverParams, playerName);
+        setControllers(snakeOnlineHost);
+        snakeOnlineHostStage.setOnCloseRequest(e -> {
+            snakeOnlineHost.shutDownServer();
+        });
         snakeOnlineHostStage.show();
     }
 
@@ -32,7 +36,7 @@ public class SnakeOnlineHostGuiConfiguration {
         });
     }
 
-    private static void setControllers(SnakeOnlineHost snakeOnlineHost, ServerParams serverParams, PlayerName playerName) {
+    private static void setControllers(SnakeOnlineHost snakeOnlineHost) {
         Controllers
                 .get(OnlineGameOptionsController.class)
                 .onGameOptionsChanged(snakeOnlineHost::changeGameOptions);
@@ -49,11 +53,5 @@ public class SnakeOnlineHostGuiConfiguration {
                 .onCancelButtonPress(snakeOnlineHost::cancelGame)
                 .onPauseButtonPress(snakeOnlineHost::pauseGame)
                 .onResumeButtonPress(snakeOnlineHost::resumeGame);
-        ServerController serverController = Controllers.get(ServerController.class);
-        serverController
-                .onStartServer(() -> {
-                    snakeOnlineHost.startServer(serverParams, playerName);
-                })
-                .onShutdownServer(snakeOnlineHost::shutDownServer);
     }
 }

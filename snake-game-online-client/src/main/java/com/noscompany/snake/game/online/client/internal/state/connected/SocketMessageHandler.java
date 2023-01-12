@@ -1,7 +1,7 @@
 package com.noscompany.snake.game.online.client.internal.state.connected;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.noscompany.snake.game.online.client.ClientError;
+import com.noscompany.snake.game.online.client.SendClientMessageError;
 import com.noscompany.snake.game.online.client.ClientEventHandler;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ class SocketMessageHandler implements Function<String> {
     private final MessageDeserializer messageDeserializer;
 
     void connectionClosedBecauseOfError() {
-        eventHandler.handle(ClientError.CONNECTION_CLOSED);
+        eventHandler.handle(SendClientMessageError.CONNECTION_CLOSED);
     }
 
     void connectionClosed() {

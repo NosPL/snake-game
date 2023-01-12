@@ -13,7 +13,7 @@ public interface ClientEventHandler {
 
     void connectionEstablished();
 
-    void handle(ClientError clientError);
+    void handle(SendClientMessageError sendClientMessageError);
 
     void handle(StartingClientError startingClientError);
 

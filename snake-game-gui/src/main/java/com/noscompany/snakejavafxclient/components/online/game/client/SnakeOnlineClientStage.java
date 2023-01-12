@@ -12,8 +12,8 @@ public class SnakeOnlineClientStage {
         Stage stage = Stages.getOrCreate(OnlineClientController.class, SNAKE_ONLINE_CLIENT_VIEW);
         stage.setOnCloseRequest(e -> {
             Controllers.get(OnlineClientController.class).disconnectClient();
-            GameModeSelectionStage.get().show();
             Stages.remove(SNAKE_ONLINE_CLIENT_VIEW);
+            GameModeSelectionStage.get().show();
         });
         return stage;
     }

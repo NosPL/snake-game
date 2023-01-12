@@ -16,7 +16,6 @@ import com.noscompany.snakejavafxclient.components.commons.game.grid.GameGridCon
 import com.noscompany.snakejavafxclient.components.commons.message.MessageController;
 import com.noscompany.snakejavafxclient.components.commons.scoreboard.ScoreboardController;
 import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
-import com.noscompany.snakejavafxclient.components.online.game.client.SnakeMoving;
 import com.noscompany.snakejavafxclient.components.online.game.commons.ChatController;
 import com.noscompany.snakejavafxclient.components.online.game.commons.JoinedUsersController;
 import com.noscompany.snakejavafxclient.components.online.game.commons.LobbySeatsController;
@@ -91,7 +90,6 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost, ServerEventH
     @Override
     public void handle(TimeLeftToGameStartHasChanged event) {
         Platform.runLater(() -> {
-            SnakeMoving.gameIsRunning();
             gameGridController.initializeGrid(event.getGridSize(), event.getWalls());
             gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
             onlineGameOptionsController.disable();
@@ -106,7 +104,6 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost, ServerEventH
     @Override
     public void handle(GameStarted event) {
         Platform.runLater(() -> {
-            SnakeMoving.gameIsRunning();
             gameGridController.initializeGrid(event.getGridSize(), event.getWalls());
             gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
             onlineGameOptionsController.disable();
@@ -121,7 +118,6 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost, ServerEventH
     @Override
     public void handle(GameContinues event) {
         Platform.runLater(() -> {
-            SnakeMoving.gameIsRunning();
             gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
             scoreboardController.print(event.getScore());
         });
@@ -130,7 +126,6 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost, ServerEventH
     @Override
     public void handle(GameFinished event) {
         Platform.runLater(() -> {
-            SnakeMoving.gameIsNotRunning();
             gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
             onlineGameOptionsController.enable();
             messageController.printGameFinished();
@@ -145,7 +140,6 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost, ServerEventH
     @Override
     public void handle(GameCancelled event) {
         Platform.runLater(() -> {
-            SnakeMoving.gameIsNotRunning();
             onlineGameOptionsController.enable();
             messageController.printGameCanceled();
             scprButtonsController.enableStart();
@@ -158,7 +152,6 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost, ServerEventH
     @Override
     public void handle(GamePaused event) {
         Platform.runLater(() -> {
-            SnakeMoving.gameIsRunning();
             messageController.printGamePaused();
             scprButtonsController.enableResume();
             scprButtonsController.disablePause();
@@ -168,7 +161,6 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost, ServerEventH
     @Override
     public void handle(GameResumed event) {
         Platform.runLater(() -> {
-            SnakeMoving.gameIsRunning();
             messageController.printGameResumed();
             scprButtonsController.disableResume();
             scprButtonsController.enablePause();

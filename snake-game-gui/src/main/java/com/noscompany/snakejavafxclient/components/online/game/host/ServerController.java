@@ -18,32 +18,8 @@ public class ServerController extends AbstractController {
     private static final String STATUS_PREFIX = "Status: ";
     private static final String IP_ADDRESS_PREFIX = "IP Address: ";
 
-    @FXML private Button startServerButton;
-    @FXML private Button stopServerButton;
     @FXML private Label statusLabel;
     @FXML private Label ipAddressLabel;
-    private Runnable startServerButtonAction;
-    private Runnable shutdownServerButtonAction;
-
-    @FXML
-    public void startServer() {
-        startServerButtonAction.run();
-    }
-
-    @FXML
-    public void shutdownServer() {
-        shutdownServerButtonAction.run();
-    }
-
-    public ServerController onStartServer(Runnable startServerButtonAction) {
-        this.startServerButtonAction = startServerButtonAction;
-        return this;
-    }
-
-    public ServerController onShutdownServer(Runnable shutdownServerButtonAction) {
-        this.shutdownServerButtonAction = shutdownServerButtonAction;
-        return this;
-    }
 
     public void update(Try<IpAddress> getIpAddressResult) {
         getIpAddressResult
@@ -63,8 +39,6 @@ public class ServerController extends AbstractController {
     public void handle(ServerStartError serverStartError) {
         statusLabel.setTextFill(Color.RED);
         statusLabel.setText(STATUS_PREFIX + serverStartError.getCause().getMessage());
-        startServerButton.setDisable(false);
-        stopServerButton.setDisable(true);
     }
 
     public void serverStarted() {
@@ -80,8 +54,6 @@ public class ServerController extends AbstractController {
     @Override
     protected void doInitialize(URL location, ResourceBundle resources) {
         super.doInitialize(location, resources);
-        startServerButton.setDisable(false);
-        stopServerButton.setDisable(true);
         statusLabel.setTextFill(BLACK);
     }
 }

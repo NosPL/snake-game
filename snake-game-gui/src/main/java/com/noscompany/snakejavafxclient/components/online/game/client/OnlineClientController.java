@@ -21,18 +21,14 @@ public class OnlineClientController extends AbstractController {
     private SnakeOnlineClient snakeOnlineClient;
 
     public void setSnakeOnlineClient(SnakeOnlineClient snakeOnlineClient) {
+        mainHBox.setOnKeyPressed(new KeyPressedHandler(snakeOnlineClient));
+        vBox1.setOnKeyPressed(new KeyPressedHandler(snakeOnlineClient));
+        vBox2.setOnKeyPressed(new KeyPressedHandler(snakeOnlineClient));
+        vBox3.setOnKeyPressed(new KeyPressedHandler(snakeOnlineClient));
         this.snakeOnlineClient = snakeOnlineClient;
     }
 
     public void disconnectClient() {
         snakeOnlineClient.disconnect();
-    }
-
-    @Override
-    protected void doInitialize(URL location, ResourceBundle resources) {
-        mainHBox.setOnKeyPressed(new KeyPressedHandler());
-        vBox1.setOnKeyPressed(new KeyPressedHandler());
-        vBox2.setOnKeyPressed(new KeyPressedHandler());
-        vBox3.setOnKeyPressed(new KeyPressedHandler());
     }
 }
