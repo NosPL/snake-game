@@ -9,19 +9,28 @@ import com.noscompany.snake.game.online.host.room.mediator.dto.RemoteClientId;
 import com.noscompany.snake.game.online.host.room.mediator.ports.RoomEventHandlerForRemoteClients.SendMessageError;
 import com.noscompany.snake.game.online.host.server.nettosphere.internal.state.shutdown.ShutdownServerState;
 import com.noscompany.snake.game.online.host.server.nettosphere.internal.state.ServerState;
+import io.vavr.collection.List;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.Broadcaster;
+import org.atmosphere.cpr.BroadcasterFactory;
 import org.atmosphere.nettosphere.Nettosphere;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Optional;
 
 import static com.noscompany.snake.game.online.host.room.mediator.ports.RoomEventHandlerForRemoteClients.SendMessageError.FAILED_TO_SENT_MESSAGE;
 
+@Slf4j
 @AllArgsConstructor
 class RunningServerState implements ServerState {
     private final Nettosphere nettosphere;
-    private final Broadcaster remoteClientsBroadcaster;
+    private final BroadcasterFactory broadcasterFactory;
     private final ObjectMapper objectMapper;
 
     @Override
@@ -39,7 +48,8 @@ class RunningServerState implements ServerState {
 
     @Override
     public ServerState shutdown() {
-        remoteClientsBroadcaster.broadcast(new ServerGotShutdown());
+        getBroadcaster()
+                .peek(broadcaster -> broadcaster.broadcast(new ServerGotShutdown()));
         nettosphere.stop();
         return new ShutdownServerState();
     }
@@ -48,8 +58,7 @@ class RunningServerState implements ServerState {
     public Option<SendMessageError> sendToAllClients(OnlineMessage onlineMessage) {
         try {
             String serializedMessage = objectMapper.writeValueAsString(onlineMessage);
-            remoteClientsBroadcaster
-                    .getAtmosphereResources()
+            getAllResources()
                     .forEach(r -> send(serializedMessage, r));
             return Option.none();
         } catch (Throwable t) {
@@ -57,16 +66,11 @@ class RunningServerState implements ServerState {
         }
     }
 
-    private void send(String serializedMessage, AtmosphereResource r) {
-        r.write(serializedMessage);
-    }
-
     @Override
     public Option<SendMessageError> sendToClientWithId(RemoteClientId remoteClientId, OnlineMessage onlineMessage) {
         try {
             String serializedMessage = objectMapper.writeValueAsString(onlineMessage);
-            remoteClientsBroadcaster
-                    .getAtmosphereResources()
+            getAllResources()
                     .stream()
                     .filter(a -> a.uuid().equals(remoteClientId.getId()))
                     .findAny()
@@ -77,4 +81,25 @@ class RunningServerState implements ServerState {
         }
     }
 
+    private void send(String serializedMessage, AtmosphereResource r) {
+        try {
+            r.write(serializedMessage);
+        } catch (Throwable t) {
+            log.warn("Failed to send message to resource with id {}", r.uuid());
+        }
+    }
+
+    private Option<Broadcaster> getBroadcaster() {
+        return Option.ofOptional(broadcasterFactory
+                .lookupAll()
+                .stream()
+                .filter(broadcaster -> broadcaster.getID().equals("room"))
+                .findAny());
+    }
+
+    private Collection<AtmosphereResource> getAllResources() {
+        return getBroadcaster()
+                .map(Broadcaster::getAtmosphereResources)
+                .getOrElse(new LinkedList<>());
+    }
 }

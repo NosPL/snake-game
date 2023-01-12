@@ -8,6 +8,7 @@ import com.noscompany.snake.game.online.host.server.nettosphere.internal.state.S
 import io.vavr.control.Try;
 import org.atmosphere.cpr.ApplicationConfig;
 import org.atmosphere.cpr.Broadcaster;
+import org.atmosphere.cpr.BroadcasterFactory;
 import org.atmosphere.nettosphere.Config;
 import org.atmosphere.nettosphere.Nettosphere;
 import org.jetbrains.annotations.NotNull;
@@ -23,9 +24,9 @@ public class RunningServerStateCreator {
             ObjectMapper objectMapper = ObjectMapperCreator.createInstance();
             Nettosphere nettosphere = createNettosphere(serverParams.getHost(), serverParams.getPort());
             nettosphere.start();
-            Broadcaster broadcaster = nettosphere.framework().getBroadcasterFactory().lookup("room");
-            requireNonNull(broadcaster);
-            RunningServerState runningServerState = new RunningServerState(nettosphere, broadcaster, objectMapper);
+            BroadcasterFactory broadcasterFactory = nettosphere.framework().getBroadcasterFactory();
+            requireNonNull(broadcasterFactory);
+            RunningServerState runningServerState = new RunningServerState(nettosphere, broadcasterFactory, objectMapper);
             return Try.success(runningServerState);
         } catch (Throwable t) {
             return Try.failure(t);
