@@ -8,8 +8,7 @@ import com.noscompany.snake.game.online.contract.messages.lobby.event.*;
 import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
-import com.noscompany.snake.game.online.host.ServerEventHandler;
-import com.noscompany.snake.game.online.host.server.dto.IpAddress;
+import com.noscompany.snake.game.online.host.HostEventHandler;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
 import com.noscompany.snake.game.online.host.server.dto.ServerStartError;
 import com.noscompany.snake.game.online.host.room.mediator.ports.RoomEventHandlerForHost;
@@ -22,14 +21,13 @@ import com.noscompany.snakejavafxclient.components.online.game.commons.JoinedUse
 import com.noscompany.snakejavafxclient.components.online.game.commons.LobbySeatsController;
 import com.noscompany.snakejavafxclient.components.online.game.commons.OnlineGameOptionsController;
 import com.noscompany.snakejavafxclient.utils.Controllers;
-import io.vavr.control.Try;
 import javafx.application.Platform;
 import lombok.AllArgsConstructor;
 
 import static lombok.AccessLevel.PRIVATE;
 
 @AllArgsConstructor(access = PRIVATE)
-class GuiOnlineHostEventHandler implements RoomEventHandlerForHost, ServerEventHandler {
+class GuiOnlineHostEventHandler implements HostEventHandler {
     private final ServerController serverController;
     private final OnlineGameOptionsController onlineGameOptionsController;
     private final LobbySeatsController lobbySeatsController;

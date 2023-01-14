@@ -14,10 +14,10 @@ public class SnakeOnlineHostConfiguration {
 
     @Provides
     public SnakeOnlineHost snakeOnlineHost(Server server,
-                                           ServerEventHandler serverEventHandler,
+                                           HostEventHandler hostEventHandler,
                                            RoomMediatorForHost roomMediatorForHost,
                                            RoomMediatorForRemoteClients remoteClients) {
         HostId hostId = new HostId(UUID.randomUUID().toString());
-        return new SnakeOnlineHostImpl(hostId, server, serverEventHandler, roomMediatorForHost, remoteClients);
+        return new SnakeOnlineHostImpl(hostId, server, hostEventHandler, roomMediatorForHost, remoteClients);
     }
 }

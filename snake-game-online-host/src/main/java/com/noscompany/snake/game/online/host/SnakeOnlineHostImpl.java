@@ -2,7 +2,6 @@ package com.noscompany.snake.game.online.host;
 
 import com.noscompany.snake.game.online.contract.messages.game.dto.*;
 import com.noscompany.snake.game.online.host.server.Server;
-import com.noscompany.snake.game.online.host.server.dto.IpAddress;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
 import com.noscompany.snake.game.online.host.room.mediator.PlayerName;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorForHost;
@@ -10,14 +9,13 @@ import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorForRemote
 import com.noscompany.snake.game.online.host.room.mediator.dto.HostId;
 import com.noscompany.snake.game.online.host.server.dto.ServerStartError;
 import io.vavr.control.Option;
-import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 class SnakeOnlineHostImpl implements SnakeOnlineHost {
     private final HostId hostId;
     private final Server server;
-    private final ServerEventHandler serverEventHandler;
+    private final HostEventHandler hostEventHandler;
     private final RoomMediatorForHost roomMediatorForHost;
     private final RoomMediatorForRemoteClients roomMediatorForRemoteClients;
 
@@ -25,9 +23,9 @@ class SnakeOnlineHostImpl implements SnakeOnlineHost {
     public void startServer(ServerParams serverParams, PlayerName playerName) {
         Option<ServerStartError> startServerResult = server.start(serverParams, roomMediatorForRemoteClients);
         startServerResult
-                .peek(serverEventHandler::handle)
+                .peek(hostEventHandler::handle)
                 .onEmpty(() -> {
-                    serverEventHandler.serverStarted(serverParams);
+                    hostEventHandler.serverStarted(serverParams);
                     roomMediatorForHost.enter(hostId, playerName);
                 });
     }
@@ -35,49 +33,49 @@ class SnakeOnlineHostImpl implements SnakeOnlineHost {
     @Override
     public void sendChatMessage(String messageContent) {
         if (!server.isRunning())
-            serverEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
+            hostEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
         roomMediatorForHost.sendChatMessage(hostId, messageContent);
     }
 
     @Override
     public void cancelGame() {
         if (!server.isRunning())
-            serverEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
+            hostEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
         roomMediatorForHost.cancelGame(hostId);
     }
 
     @Override
     public void changeSnakeDirection(Direction direction) {
         if (!server.isRunning())
-            serverEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
+            hostEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
         roomMediatorForHost.changeSnakeDirection(hostId, direction);
     }
 
     @Override
     public void pauseGame() {
         if (!server.isRunning())
-            serverEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
+            hostEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
         roomMediatorForHost.pauseGame(hostId);
     }
 
     @Override
     public void resumeGame() {
         if (!server.isRunning())
-            serverEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
+            hostEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
         roomMediatorForHost.resumeGame(hostId);
     }
 
     @Override
     public void startGame() {
         if (!server.isRunning())
-            serverEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
+            hostEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
         roomMediatorForHost.startGame(hostId);
     }
 
     @Override
     public void changeGameOptions(GameOptions gameOptions) {
         if (!server.isRunning())
-            serverEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
+            hostEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
         roomMediatorForHost.changeGameOptions(hostId, gameOptions);
     }
 
@@ -89,14 +87,14 @@ class SnakeOnlineHostImpl implements SnakeOnlineHost {
     @Override
     public void freeUpASeat() {
         if (!server.isRunning())
-            serverEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
+            hostEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
         roomMediatorForHost.freeUpASeat(hostId);
     }
 
     @Override
     public void takeASeat(PlayerNumber playerNumber) {
         if (!server.isRunning())
-            serverEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
+            hostEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
         roomMediatorForHost.takeASeat(hostId, playerNumber);
     }
 
