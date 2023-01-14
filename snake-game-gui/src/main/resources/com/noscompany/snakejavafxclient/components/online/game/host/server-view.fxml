@@ -3,9 +3,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:id="ipAddress" prefHeight="85.0" prefWidth="190.0" style="-fx-border-color: black;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.components.online.game.host.ServerController">
+<Pane fx:id="ipAddress" prefHeight="63.0" prefWidth="190.0" style="-fx-border-color: black;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.components.online.game.host.ServerController">
    <children>
-      <Label fx:id="statusLabel" layoutX="6.0" layoutY="14.0" prefHeight="17.0" prefWidth="178.0" text="Status:" />
-      <Label fx:id="ipAddressLabel" layoutX="6.0" layoutY="47.0" prefHeight="17.0" prefWidth="178.0" text="IP Address:" />
+      <Label fx:id="statusLabel" layoutX="6.0" layoutY="5.0" prefHeight="17.0" prefWidth="178.0" text="Status:" />
+      <Label fx:id="ipAddressLabel" layoutX="6.0" layoutY="22.0" prefHeight="17.0" prefWidth="178.0" text="Ip:" />
+      <Label fx:id="portLabel" layoutX="6.0" layoutY="40.0" prefHeight="17.0" prefWidth="178.0" text="Port:" />
    </children>
 </Pane>

@@ -14,10 +14,12 @@ import static javafx.scene.paint.Color.BLACK;
 
 public class ServerController extends AbstractController {
     private static final String STATUS_PREFIX = "Status: ";
-    private static final String IP_ADDRESS_PREFIX = "IP Address: ";
+    private static final String IP_ADDRESS_PREFIX = "Ip: ";
+    private static final String PORT_PREFIX = "Port: ";
 
     @FXML private Label statusLabel;
     @FXML private Label ipAddressLabel;
+    @FXML private Label portLabel;
 
     public void handle(ServerStartError serverStartError) {
         statusLabel.setTextFill(Color.RED);
@@ -27,12 +29,15 @@ public class ServerController extends AbstractController {
     public void serverStarted(ServerParams serverParams) {
         statusLabel.setTextFill(Color.GREEN);
         statusLabel.setText(STATUS_PREFIX + "Server started");
-        ipAddressLabel.setText(IP_ADDRESS_PREFIX + serverParams.getHost() + ":" + serverParams.getPort());
+        ipAddressLabel.setText(IP_ADDRESS_PREFIX + serverParams.getHost());
+        portLabel.setText(PORT_PREFIX + serverParams.getPort());
     }
 
     public void failedToExecuteActionBecauseServerIsNotRunning() {
         statusLabel.setTextFill(Color.RED);
         statusLabel.setText(STATUS_PREFIX + "Failed to start server!");
+        ipAddressLabel.setText(IP_ADDRESS_PREFIX);
+        portLabel.setText(PORT_PREFIX);
     }
 
     @Override
