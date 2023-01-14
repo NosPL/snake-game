@@ -2,10 +2,8 @@ package com.noscompany.snake.game.online.host.pvp.server;
 
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
 import com.noscompany.snake.game.online.host.server.Server;
-import com.noscompany.snake.game.online.host.server.dto.IpAddress;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
 import com.noscompany.snake.game.online.host.server.dto.ServerStartError;
-import com.noscompany.snake.game.online.host.pvp.server.internal.state.IpAddressChecker;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorForRemoteClients;
 import com.noscompany.snake.game.online.host.room.mediator.dto.RemoteClientId;
 import com.noscompany.snake.game.online.host.pvp.server.internal.state.ServerState;
@@ -17,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @Slf4j
 class JavalinServer implements Server {
-    private final IpAddressChecker ipAddressChecker;
     private ServerState serverState;
 
     @Override
@@ -42,11 +39,6 @@ class JavalinServer implements Server {
     @Override
     public void shutdown() {
         serverState = serverState.shutdown();
-    }
-
-    @Override
-    public Try<IpAddress> getIpAddress() {
-        return ipAddressChecker.getIpAddress();
     }
 
     @Override

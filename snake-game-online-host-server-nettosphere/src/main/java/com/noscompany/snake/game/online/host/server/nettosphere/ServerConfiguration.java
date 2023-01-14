@@ -11,6 +11,6 @@ public class ServerConfiguration {
 
     @Provides
     public Server createServer() {
-        return new AtmosphereServer(new NotStartedServerState(),Option.none());
+        return new AtmosphereServer(new NotStartedServerState());
     }
 }

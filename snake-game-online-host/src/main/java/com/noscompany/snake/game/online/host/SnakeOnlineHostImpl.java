@@ -27,10 +27,8 @@ class SnakeOnlineHostImpl implements SnakeOnlineHost {
         startServerResult
                 .peek(serverEventHandler::handle)
                 .onEmpty(() -> {
+                    serverEventHandler.serverStarted(serverParams);
                     roomMediatorForHost.enter(hostId, playerName);
-                    serverEventHandler.serverStarted();
-                    Try<IpAddress> getIpAddressResult = server.getIpAddress();
-                    serverEventHandler.update(getIpAddressResult);
                 });
     }
 

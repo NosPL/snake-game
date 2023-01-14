@@ -10,6 +10,7 @@ import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoo
 import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
 import com.noscompany.snake.game.online.host.ServerEventHandler;
 import com.noscompany.snake.game.online.host.server.dto.IpAddress;
+import com.noscompany.snake.game.online.host.server.dto.ServerParams;
 import com.noscompany.snake.game.online.host.server.dto.ServerStartError;
 import com.noscompany.snake.game.online.host.room.mediator.ports.RoomEventHandlerForHost;
 import com.noscompany.snakejavafxclient.components.commons.game.grid.GameGridController;
@@ -208,11 +209,6 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost, ServerEventH
     }
 
     @Override
-    public void update(Try<IpAddress> ipAddressResult) {
-        serverController.update(ipAddressResult);
-    }
-
-    @Override
     public void handle(ServerStartError serverStartError) {
         serverController.handle(serverStartError);
     }
@@ -223,7 +219,7 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost, ServerEventH
     }
 
     @Override
-    public void serverStarted() {
-        serverController.serverStarted();
+    public void serverStarted(ServerParams serverParams) {
+        serverController.serverStarted(serverParams);
     }
 }

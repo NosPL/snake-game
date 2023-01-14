@@ -17,14 +17,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 class AtmosphereServer implements Server {
     private ServerState serverState;
-    private Option<IpAddress> ipAddresses;
 
     @Override
     public Option<ServerStartError> start(ServerParams serverParams, RoomMediatorForRemoteClients handlerForRemoteClients) {
         return serverState
                 .start(serverParams, handlerForRemoteClients)
                 .onSuccess(serverState -> this.serverState = serverState)
-                .onSuccess(serverState -> this.ipAddresses = Option.of(new IpAddress(serverParams.getHost())))
+                .onSuccess(serverState -> {
+                })
                 .transform(this::toResult);
     }
 
@@ -42,11 +42,6 @@ class AtmosphereServer implements Server {
     @Override
     public void shutdown() {
         serverState = serverState.shutdown();
-    }
-
-    @Override
-    public Try<IpAddress> getIpAddress() {
-        return ipAddresses.toTry();
     }
 
     @Override
