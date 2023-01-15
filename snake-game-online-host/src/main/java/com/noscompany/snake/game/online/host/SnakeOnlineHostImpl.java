@@ -21,8 +21,8 @@ class SnakeOnlineHostImpl implements SnakeOnlineHost {
 
     @Override
     public void startServer(ServerParams serverParams, PlayerName playerName) {
-        Option<ServerStartError> startServerResult = server.start(serverParams, roomMediatorForRemoteClients);
-        startServerResult
+        server
+                .start(serverParams, roomMediatorForRemoteClients)
                 .peek(hostEventHandler::handle)
                 .onEmpty(() -> {
                     hostEventHandler.serverStarted(serverParams);
@@ -102,5 +102,4 @@ class SnakeOnlineHostImpl implements SnakeOnlineHost {
     public void shutDownServer() {
         server.shutdown();
     }
-
 }

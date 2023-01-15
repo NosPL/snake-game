@@ -1,6 +1,8 @@
 package com.noscompany.snakejavafxclient.components.online.game.host;
 
+import com.noscompany.snake.game.online.host.HostEventHandler;
 import com.noscompany.snake.game.online.host.SnakeOnlineHost;
+import com.noscompany.snake.game.online.host.SnakeOnlineHostConfiguration;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
 import com.noscompany.snake.game.online.host.room.mediator.PlayerName;
 import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
@@ -14,16 +16,13 @@ import javafx.stage.Stage;
 
 public class SnakeOnlineHostGuiConfiguration {
 
-    public static void run(ServerParams serverParams, PlayerName playerName) {
+    public static SnakeOnlineHost createConfiguredHost() {
         Stage snakeOnlineHostStage = SnakeOnlineHostStage.get();
-        SnakeOnlineHost snakeOnlineHost = OnlineHostCreator.create();
-        snakeOnlineHost.startServer(serverParams, playerName);
+        HostEventHandler hostEventHandler = GuiOnlineHostEventHandler.instance();
+        SnakeOnlineHost snakeOnlineHost = new SnakeOnlineHostConfiguration().snakeOnlineHost(hostEventHandler);
         setStage(snakeOnlineHostStage, snakeOnlineHost);
         setControllers(snakeOnlineHost);
-        snakeOnlineHostStage.setOnCloseRequest(e -> {
-            snakeOnlineHost.shutDownServer();
-        });
-        snakeOnlineHostStage.show();
+        return snakeOnlineHost;
     }
 
     private static void setStage(Stage snakeOnlineHostStage, SnakeOnlineHost snakeOnlineHost) {

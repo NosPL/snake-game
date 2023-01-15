@@ -9,6 +9,7 @@ import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom
 import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
 import com.noscompany.snake.game.online.host.HostEventHandler;
+import com.noscompany.snake.game.online.host.SnakeOnlineHost;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
 import com.noscompany.snake.game.online.host.server.dto.ServerStartError;
 import com.noscompany.snake.game.online.host.room.mediator.ports.RoomEventHandlerForHost;
@@ -28,6 +29,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 @AllArgsConstructor(access = PRIVATE)
 class GuiOnlineHostEventHandler implements HostEventHandler {
+    private final SetupHostController setupHostController;
     private final ServerController serverController;
     private final OnlineGameOptionsController onlineGameOptionsController;
     private final LobbySeatsController lobbySeatsController;
@@ -39,7 +41,10 @@ class GuiOnlineHostEventHandler implements HostEventHandler {
     private final ScprButtonsController scprButtonsController;
 
     static GuiOnlineHostEventHandler instance() {
+        SetupHostStage.get();
+        SnakeOnlineHostStage.get();
         return new GuiOnlineHostEventHandler(
+                Controllers.get(SetupHostController.class),
                 Controllers.get(ServerController.class),
                 Controllers.get(OnlineGameOptionsController.class),
                 Controllers.get(LobbySeatsController.class),
@@ -208,6 +213,8 @@ class GuiOnlineHostEventHandler implements HostEventHandler {
 
     @Override
     public void handle(ServerStartError serverStartError) {
+        SetupHostStage.get().close();
+        SnakeOnlineHostStage.get().close();
         serverController.handle(serverStartError);
     }
 
