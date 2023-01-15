@@ -34,14 +34,14 @@
                         </AnchorPane>
                         <AnchorPane layoutX="97.0" layoutY="31.0" prefHeight="305.0" prefWidth="251.0">
                             <children>
+                                <Label fx:id="errorMessageLabel" layoutX="3.0" layoutY="26.0" prefHeight="17.0" prefWidth="245.0" style="-fx-text-fill: red;" />
+                                <Label fx:id="ipAddressLabel" layoutX="14.0" layoutY="69.0" text="IP ADDRESS" />
+                                <ChoiceBox fx:id="ipAddressesChoiceBox" layoutX="14.0" layoutY="88.0" prefWidth="150.0" />
+                                <Label fx:id="portLabel" layoutX="17.0" layoutY="124.0" prefHeight="17.0" prefWidth="36.0" text="PORT" />
+                                <TextField fx:id="portTextField" layoutX="16.0" layoutY="139.0" prefHeight="25.0" prefWidth="64.0" />
+                                <Label fx:id="playerNameLabel" layoutX="18.0" layoutY="172.0" prefHeight="17.0" prefWidth="85.0" text="PLAYER NAME" />
+                                <TextField fx:id="playerNameTextField" layoutX="16.0" layoutY="189.0" prefHeight="25.0" prefWidth="140.0" />
                                 <Button fx:id="startServerButton" layoutX="14.0" layoutY="228.0" mnemonicParsing="false" onAction="#startServer" prefHeight="47.0" prefWidth="188.0" text="START SERVER" />
-                        <TextField fx:id="portTextField" layoutX="16.0" layoutY="139.0" prefHeight="25.0" prefWidth="64.0" />
-                        <Label fx:id="portLabel" layoutX="17.0" layoutY="124.0" prefHeight="17.0" prefWidth="36.0" text="PORT" />
-                        <Label fx:id="errorMessageLabel" layoutX="3.0" layoutY="26.0" prefHeight="17.0" prefWidth="245.0" style="-fx-text-fill: red;" />
-                        <ChoiceBox fx:id="ipAddressesChoiceBox" layoutX="14.0" layoutY="88.0" prefWidth="150.0" />
-                        <Label fx:id="hostAddressLabel" layoutX="14.0" layoutY="69.0" text="IP ADDRESS" />
-                        <Label fx:id="portLabel1" layoutX="18.0" layoutY="172.0" prefHeight="17.0" prefWidth="85.0" text="PLAYER NAME" />
-                        <TextField fx:id="playerNameTextField" layoutX="16.0" layoutY="189.0" prefHeight="25.0" prefWidth="140.0" />
                             </children>
                         </AnchorPane>
                     </children>
