@@ -8,7 +8,7 @@ import com.noscompany.snake.game.online.contract.messages.lobby.event.*;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
-import snake.game.gameplay.SnakeGame;
+import snake.game.gameplay.SnakeGameplay;
 import com.noscompany.snake.game.online.contract.messages.game.dto.GameOptions;
 
 import static io.vavr.control.Either.left;
@@ -20,10 +20,10 @@ public class Lobby {
     private final Seats seats;
     private final GameCreator gameCreator;
     private GameOptions gameOptions;
-    private SnakeGame snakeGame;
+    private SnakeGameplay snakeGameplay;
 
     public synchronized Either<FailedToTakeASeat, PlayerTookASeat> takeASeat(String userName, PlayerNumber seatNumber) {
-        if (snakeGame.isRunning())
+        if (snakeGameplay.isRunning())
             return left(FailedToTakeASeat.gameAlreadyRunning());
         return seats
                 .takeOrChangeSeat(userName, seatNumber)
@@ -44,7 +44,7 @@ public class Lobby {
     }
 
     private void killPlayer(Seat.UserFreedUpASeat event) {
-        snakeGame.killSnake(event.getFreedUpSeatNumber());
+        snakeGameplay.killSnake(event.getFreedUpSeatNumber());
     }
 
     private PlayerFreedUpASeat playerFreedUpASeat(Seat.UserFreedUpASeat event) {
@@ -56,7 +56,7 @@ public class Lobby {
             return left(FailedToChangeGameOptions.requesterDidNotTakeASeat());
         if (!userIsAdmin(userName))
             return left(FailedToChangeGameOptions.requesterIsNotAdmin());
-        if (snakeGame.isRunning())
+        if (snakeGameplay.isRunning())
             return left(FailedToChangeGameOptions.gameIsAlreadyRunning());
         this.gameOptions = gameOptions;
         recreateGame();
@@ -68,40 +68,40 @@ public class Lobby {
             return of(FailedToStartGame.requesterDidNotTakeASeat());
         if (!userIsAdmin(userName))
             return of(FailedToStartGame.requesterIsNotAdmin());
-        if (snakeGame.isRunning())
+        if (snakeGameplay.isRunning())
             return of(FailedToStartGame.gameIsAlreadyRunning());
         recreateGame();
-        snakeGame.start();
+        snakeGameplay.start();
         return Option.none();
     }
 
     public void changeSnakeDirection(String userName, Direction direction) {
         seats
                 .getNumberFor(userName)
-                .peek(playerNumber -> snakeGame.changeSnakeDirection(playerNumber, direction));
+                .peek(playerNumber -> snakeGameplay.changeSnakeDirection(playerNumber, direction));
     }
 
     public void cancelGame(String userName) {
         if (seats.userIsAdmin(userName))
-            snakeGame.cancel();
+            snakeGameplay.cancel();
     }
 
     public void pauseGame(String userName) {
         if (seats.userIsAdmin(userName))
-            snakeGame.pause();
+            snakeGameplay.pause();
     }
 
     public void resumeGame(String userName) {
         if (seats.userIsAdmin(userName))
-            snakeGame.resume();
+            snakeGameplay.resume();
     }
 
     public LobbyState getLobbyState() {
         return new LobbyState(
                 gameOptions,
                 seats.toDto(),
-                snakeGame.isRunning(),
-                snakeGame.getGameState());
+                snakeGameplay.isRunning(),
+                snakeGameplay.getGameState());
     }
 
     public boolean userTookASeat(String userName) {
@@ -113,11 +113,11 @@ public class Lobby {
     }
 
     private void recreateGameIfItIsNotRunning() {
-        if (!snakeGame.isRunning())
+        if (!snakeGameplay.isRunning())
             recreateGame();
     }
 
     private void recreateGame() {
-        snakeGame = gameCreator.createGame(seats.getPlayerNumbers(), gameOptions);
+        snakeGameplay = gameCreator.createGame(seats.getPlayerNumbers(), gameOptions);
     }
 }

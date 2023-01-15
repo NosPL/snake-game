@@ -1,6 +1,7 @@
 package snake.game.gameplay.console.client;
 
-import snake.game.gameplay.SnakeGameCreator;
+
+import snake.game.gameplay.SnakeGameplayBuilder;
 
 import java.util.Scanner;
 
@@ -19,7 +20,7 @@ class Main {
                 .peekLeft(Main::handleError);
     }
 
-    private static void handleError(SnakeGameCreator.Error error) {
+    private static void handleError(SnakeGameplayBuilder.Error error) {
         System.out.println(error.toString());
     }
 }

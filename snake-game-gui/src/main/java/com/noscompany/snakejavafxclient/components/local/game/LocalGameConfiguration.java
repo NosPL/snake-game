@@ -7,12 +7,13 @@ import io.vavr.control.Either;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import snake.game.gameplay.SnakeGame;
-import snake.game.gameplay.SnakeGameCreator;
+import snake.game.gameplay.SnakeGameplay;
 import com.noscompany.snake.game.online.contract.messages.game.dto.CountdownTime;
 import com.noscompany.snake.game.online.contract.messages.game.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.game.dto.GameState;
 import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import snake.game.gameplay.SnakeGameplayBuilder;
+import snake.game.gameplay.SnakeGameplayConfiguration;
 
 import static com.noscompany.snakejavafxclient.components.local.game.GuiGameEventHandler.javaFxEventHandler;
 
@@ -21,7 +22,7 @@ public class LocalGameConfiguration {
     public static void run() {
         Stage localGameStage = LocalGameStage.get();
         var eventHandler = GuiGameEventHandler.javaFxEventHandler();
-        var localSnakeGame = new LocalSnakeGame(eventHandler, new NullGame());
+        var localSnakeGame = new LocalSnakeGame(eventHandler, new NullGameplay());
         localSnakeGame.updateGameView();
         Controllers.get(GameOptionsController.class).set(localSnakeGame);
         Controllers.get(ScprButtonsController.class)
@@ -40,9 +41,10 @@ public class LocalGameConfiguration {
         localGameStage.show();
     }
 
-    static Either<SnakeGameCreator.Error, SnakeGame> createGame() {
+    static Either<SnakeGameplayBuilder.Error, SnakeGameplay> createGame() {
         var gameOptions = Controllers.get(GameOptionsController.class);
-        return new SnakeGameCreator()
+        return new SnakeGameplayConfiguration()
+                .snakeGameplayBuilder()
                 .set(gameOptions.gameSpeed())
                 .set(gameOptions.gridSize())
                 .set(gameOptions.playerNumbers())
@@ -51,7 +53,7 @@ public class LocalGameConfiguration {
                 .set(javaFxEventHandler())
                 .createGame();
     }
-    private static class NullGame implements SnakeGame {
+    private static class NullGameplay implements SnakeGameplay {
 
         @Override
         public void start() {

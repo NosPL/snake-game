@@ -4,7 +4,7 @@ import com.noscompany.snake.game.online.contract.messages.game.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.game.dto.GameState;
 import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
 
-public interface SnakeGame {
+public interface SnakeGameplay {
 
     void start();
 

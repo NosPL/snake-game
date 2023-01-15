@@ -3,8 +3,8 @@ package com.noscompany.snake.game.online.host.room.internal.lobby;
 import com.noscompany.snake.game.online.contract.messages.game.dto.*;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
-import snake.game.gameplay.SnakeGame;
-import snake.game.gameplay.SnakeGameCreator;
+import snake.game.gameplay.SnakeGameplay;
+import snake.game.gameplay.SnakeGameplayBuilder;
 import snake.game.gameplay.SnakeGameEventHandler;
 
 import java.util.LinkedList;
@@ -13,11 +13,11 @@ import java.util.Set;
 
 @AllArgsConstructor
 class GameCreator {
-    private SnakeGameCreator snakeGameCreator;
+    private SnakeGameplayBuilder snakeGameplayBuilder;
     private SnakeGameEventHandler snakeGameEventHandler;
 
-    SnakeGame createGame(Set<PlayerNumber> players, GameOptions gameOptions) {
-        return snakeGameCreator
+    SnakeGameplay createGame(Set<PlayerNumber> players, GameOptions gameOptions) {
+        return snakeGameplayBuilder
                 .set(gameOptions.getGameSpeed())
                 .set(gameOptions.getGridSize())
                 .set(gameOptions.getWalls())
@@ -30,12 +30,12 @@ class GameCreator {
                         snakeGame -> snakeGame);
     }
 
-    private SnakeGame createNullGame(GameOptions gameOptions) {
-        return new NullGame(gameOptions.getGridSize(), gameOptions.getWalls());
+    private SnakeGameplay createNullGame(GameOptions gameOptions) {
+        return new NullGameplay(gameOptions.getGridSize(), gameOptions.getWalls());
     }
 
     @AllArgsConstructor
-    private class NullGame implements SnakeGame {
+    private class NullGameplay implements SnakeGameplay {
         private final GridSize gridSize;
         private final Walls walls;
 
