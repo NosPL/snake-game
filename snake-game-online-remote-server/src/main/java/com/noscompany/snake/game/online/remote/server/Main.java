@@ -4,7 +4,7 @@ import com.noscompany.snake.game.online.host.room.mediator.RoomMediator;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorConfiguration;
 import com.noscompany.snake.game.online.host.server.Server;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
-import com.noscompany.snake.game.online.host.server.nettosphere.ServerConfiguration;
+import com.noscompany.snake.game.online.host.server.ServerConfiguration;
 
 import static io.vavr.API.Try;
 

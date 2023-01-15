@@ -3,7 +3,7 @@ package com.noscompany.snake.game.test.client;
 import com.noscompany.snake.game.online.client.ClientEventHandler;
 import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import com.noscompany.snake.game.online.client.SnakeOnlineClientConfiguration;
-import com.noscompany.snake.game.online.host.server.nettosphere.ServerConfiguration;
+import com.noscompany.snake.game.online.host.server.ServerConfiguration;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediator;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorConfiguration;
 import com.noscompany.snake.game.online.host.server.Server;

@@ -5,7 +5,7 @@ import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorForHost;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorForRemoteClients;
 import com.noscompany.snake.game.online.host.room.mediator.dto.HostId;
 import com.noscompany.snake.game.online.host.server.Server;
-import com.noscompany.snake.game.online.host.server.nettosphere.ServerConfiguration;
+import com.noscompany.snake.game.online.host.server.ServerConfiguration;
 import dagger.Module;
 import dagger.Provides;
 
