@@ -29,7 +29,6 @@ import static lombok.AccessLevel.PRIVATE;
 
 @AllArgsConstructor(access = PRIVATE)
 class GuiOnlineHostEventHandler implements HostEventHandler {
-    private final SetupHostController setupHostController;
     private final ServerController serverController;
     private final OnlineGameOptionsController onlineGameOptionsController;
     private final LobbySeatsController lobbySeatsController;
@@ -44,7 +43,6 @@ class GuiOnlineHostEventHandler implements HostEventHandler {
         SetupHostStage.get();
         SnakeOnlineHostStage.get();
         return new GuiOnlineHostEventHandler(
-                Controllers.get(SetupHostController.class),
                 Controllers.get(ServerController.class),
                 Controllers.get(OnlineGameOptionsController.class),
                 Controllers.get(LobbySeatsController.class),
@@ -225,6 +223,8 @@ class GuiOnlineHostEventHandler implements HostEventHandler {
 
     @Override
     public void serverStarted(ServerParams serverParams) {
+        SetupHostStage.get().close();
+        SnakeOnlineHostStage.get().show();
         serverController.serverStarted(serverParams);
     }
 }
