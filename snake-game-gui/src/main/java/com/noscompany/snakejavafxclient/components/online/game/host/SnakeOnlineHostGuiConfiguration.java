@@ -33,6 +33,7 @@ public class SnakeOnlineHostGuiConfiguration {
             snakeOnlineHost.shutDownServer();
             SnakeOnlineHostStage.remove();
             GameModeSelectionStage.get().show();
+            SnakeOnlineHostStage.remove();
         });
     }
 
