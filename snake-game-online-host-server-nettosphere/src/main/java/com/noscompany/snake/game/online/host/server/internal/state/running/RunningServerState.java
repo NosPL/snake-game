@@ -15,11 +15,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.Broadcaster;
-import org.atmosphere.cpr.BroadcasterFactory;
 import org.atmosphere.nettosphere.Nettosphere;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Optional;
 
 import static com.noscompany.snake.game.online.host.room.mediator.ports.RoomEventHandlerForRemoteClients.SendMessageError.FAILED_TO_SENT_MESSAGE;
 
@@ -27,7 +27,6 @@ import static com.noscompany.snake.game.online.host.room.mediator.ports.RoomEven
 @AllArgsConstructor
 class RunningServerState implements ServerState {
     private final Nettosphere nettosphere;
-    private final BroadcasterFactory broadcasterFactory;
     private final ObjectMapper objectMapper;
 
     @Override
@@ -45,8 +44,7 @@ class RunningServerState implements ServerState {
 
     @Override
     public ServerState shutdown() {
-        getBroadcaster()
-                .peek(broadcaster -> broadcaster.broadcast(new ServerGotShutdown()));
+        getBroadcaster().peek(broadcaster -> broadcaster.broadcast(new ServerGotShutdown()));
         nettosphere.stop();
         return new ShutdownServerState();
     }
@@ -55,8 +53,7 @@ class RunningServerState implements ServerState {
     public Option<SendMessageError> sendToAllClients(OnlineMessage onlineMessage) {
         try {
             String serializedMessage = objectMapper.writeValueAsString(onlineMessage);
-            getAllResources()
-                    .forEach(r -> send(serializedMessage, r));
+            getBroadcaster().peek(broadcaster -> broadcaster.broadcast(serializedMessage));
             return Option.none();
         } catch (Throwable t) {
             return Option.of(FAILED_TO_SENT_MESSAGE);
@@ -67,36 +64,40 @@ class RunningServerState implements ServerState {
     public Option<SendMessageError> sendToClientWithId(RemoteClientId remoteClientId, OnlineMessage onlineMessage) {
         try {
             String serializedMessage = objectMapper.writeValueAsString(onlineMessage);
-            getAllResources()
-                    .stream()
-                    .filter(a -> a.uuid().equals(remoteClientId.getId()))
-                    .findAny()
-                    .ifPresent(a -> send(serializedMessage, a));
+            findResourceById(remoteClientId).ifPresent(resource -> send(serializedMessage, resource));
             return Option.none();
         } catch (Throwable t) {
             return Option.of(FAILED_TO_SENT_MESSAGE);
         }
     }
 
-    private void send(String serializedMessage, AtmosphereResource r) {
-        try {
-            r.write(serializedMessage);
-        } catch (Throwable t) {
-            log.warn("Failed to send message to resource with id {}", r.uuid());
-        }
-    }
-
     private Option<Broadcaster> getBroadcaster() {
-        return Option.ofOptional(broadcasterFactory
-                .lookupAll()
-                .stream()
-                .filter(broadcaster -> broadcaster.getID().equals("room"))
-                .findAny());
+        return Option.ofOptional(
+                nettosphere
+                        .framework()
+                        .getBroadcasterFactory()
+                        .lookupAll()
+                        .stream()
+                        .filter(broadcaster -> broadcaster.getID().equals("room"))
+                        .findAny());
     }
 
     private Collection<AtmosphereResource> getAllResources() {
         return getBroadcaster()
                 .map(Broadcaster::getAtmosphereResources)
                 .getOrElse(new LinkedList<>());
+    }
+
+    private Optional<AtmosphereResource> findResourceById(RemoteClientId remoteClientId) {
+        return getAllResources()
+                .stream()
+                .filter(a -> a.uuid().equals(remoteClientId.getId()))
+                .findAny();
+    }
+
+    private void send(String serializedMessage, AtmosphereResource r) {
+        Try
+                .of(() -> r.write(serializedMessage))
+                .onFailure(t -> log.warn("Failed to send message to resource with id {}", r.uuid()));
     }
 }
