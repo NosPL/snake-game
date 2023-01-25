@@ -1,10 +1,10 @@
 package com.noscompany.snake.game.online.host.server;
 
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
-import com.noscompany.snake.game.online.host.server.dto.ServerParams;
-import com.noscompany.snake.game.online.host.server.dto.ServerStartError;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorForRemoteClients;
 import com.noscompany.snake.game.online.host.room.mediator.dto.RemoteClientId;
+import com.noscompany.snake.game.online.host.server.dto.ServerParams;
+import com.noscompany.snake.game.online.host.server.dto.ServerStartError;
 import com.noscompany.snake.game.online.host.server.internal.state.ServerState;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @AllArgsConstructor
 @Slf4j
-class JavalinServer implements Server {
+class NettosphereServer implements Server {
     private ServerState serverState;
 
     @Override

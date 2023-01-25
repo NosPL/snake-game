@@ -23,8 +23,6 @@
         <module>snake-game-online-host</module>
         <module>snake-game-online-host-room</module>
         <module>snake-game-online-host-room-mediator</module>
-        <module>snake-game-online-host-server</module>
-        <module>snake-game-online-host-server-javalin</module>
         <module>snake-game-online-host-server-nettosphere</module>
         <module>snake-game-online-client-test</module>
         <module>snake-game-online-remote-server</module>
@@ -50,11 +48,6 @@
             <groupId>com.google.dagger</groupId>
             <artifactId>dagger-compiler</artifactId>
             <version>2.44.1</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>javax.annotation-api</artifactId>
-            <version>1.3.2</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

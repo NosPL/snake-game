@@ -9,6 +9,6 @@ public class ServerConfiguration {
 
     @Provides
     public Server createServer() {
-        return new AtmosphereServer(new NotStartedServerState());
+        return new NettosphereServer(new NotStartedServerState());
     }
 }
