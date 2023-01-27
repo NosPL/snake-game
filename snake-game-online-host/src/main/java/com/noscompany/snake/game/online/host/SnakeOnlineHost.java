@@ -1,7 +1,6 @@
 package com.noscompany.snake.game.online.host;
 
 import com.noscompany.snake.game.online.contract.messages.game.dto.*;
-import com.noscompany.snake.game.online.host.server.dto.IpAddress;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
 import com.noscompany.snake.game.online.host.room.mediator.PlayerName;
 

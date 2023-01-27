@@ -26,6 +26,7 @@
         <module>snake-game-online-host-server-nettosphere</module>
         <module>snake-game-online-client-test</module>
         <module>snake-game-online-remote-server</module>
+        <module>snake-game-online-network-interfaces-analyzer</module>
     </modules>
 
     <dependencies>

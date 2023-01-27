@@ -1,16 +1,16 @@
 package com.noscompany.snakejavafxclient.components.online.game.host;
 
-import com.noscompany.snake.game.online.host.AvailableHostIpv4AddressesFetcher;
 import com.noscompany.snake.game.online.host.room.mediator.PlayerName;
-import com.noscompany.snake.game.online.host.server.dto.IpAddress;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
+import com.noscompany.snake.game.online.network.interfaces.analyzer.IpV4Address;
+import com.noscompany.snake.game.online.network.interfaces.analyzer.NetworkInterfacesAnalyzerConfiguration;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
+import io.vavr.control.Option;
+import io.vavr.control.Try;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.net.URL;
 import java.util.List;
@@ -25,60 +25,79 @@ public class SetupHostController extends AbstractController {
     private TextField portTextField;
     @FXML
     private TextField playerNameTextField;
-    private final AvailableHostIpv4AddressesFetcher ipFetcher = new AvailableHostIpv4AddressesFetcher();
 
     @FXML
     public void startServer() {
-        try {
-            ServerParams serverParams = getServerParams();
-            PlayerName playerName = getPlayerName();
-            SnakeOnlineHostGuiConfiguration
-                    .createConfiguredHost()
-                    .startServer(serverParams, playerName);
-        } catch (Exception e) {
-        }
+        errorMessageLabel.setText("");
+        getServerParams()
+                .peek(this::startServer);
     }
 
-    private ServerParams getServerParams() {
+    private void startServer(ServerParams serverParams) {
+        getPlayerName()
+                .peek(playerName -> startServer(serverParams, playerName));
+    }
+
+    private void startServer(ServerParams serverParams, PlayerName playerName) {
+        SnakeOnlineHostGuiConfiguration
+                .createConfiguredHost()
+                .startServer(serverParams, playerName);
+    }
+
+    private Option<ServerParams> getServerParams() {
         String ipAddress = ipAddressesChoiceBox.getSelectionModel().getSelectedItem();
         if (ipAddress == null) {
-            errorMessageLabel.setText("Ip Address not chosen");
-            throw new RuntimeException();
+            errorMessageLabel.setText("Ip address must be set");
+            return Option.none();
         }
-        int port = Integer.parseInt(portTextField.getText());
-        if (port < 0) {
-            errorMessageLabel.setText("Wrong port value");
-            throw new RuntimeException();
-        }
-        return new ServerParams(ipAddress, port);
+        return getServerParams(ipAddress);
     }
 
-    private PlayerName getPlayerName() {
+    private Option<ServerParams> getServerParams(String ipAddress) {
+        String portStr = portTextField.getText();
+        if (portStr == null || portStr.isBlank()) {
+            errorMessageLabel.setText("Port must be set");
+            return Option.none();
+        }
+        var parsedPortValue = Try.of(() -> Integer.parseInt(portStr));
+        if (parsedPortValue.isFailure()) {
+            errorMessageLabel.setText("Port value must be numerical value");
+            return Option.none();
+        }
+        if (parsedPortValue.get() < 0) {
+            errorMessageLabel.setText("Port value must be > 0");
+            return Option.none();
+        }
+        return Option.of(new ServerParams(ipAddress, parsedPortValue.get()));
+    }
+
+    private Option<PlayerName> getPlayerName() {
         String playerNameStr = playerNameTextField.getText();
         if (playerNameStr == null || playerNameStr.isBlank()) {
             errorMessageLabel.setText("Player name cannot be empty");
-            throw new RuntimeException();
+            return Option.none();
         }
         if (playerNameStr.length() > 10) {
             errorMessageLabel.setText("Player name cannot be longer than 10 signs");
-            throw new RuntimeException();
+            return Option.none();
         }
-        return new PlayerName(playerNameStr);
+        return Option.of(new PlayerName(playerNameStr));
     }
 
     @Override
     protected void doInitialize(URL location, ResourceBundle resources) {
-        getNetworkInterfacesIpAddresses().forEach(this::addToChoiceBox);
+        getAvailableIpV4Addresses().forEach(this::addToChoiceBox);
     }
 
     private void addToChoiceBox(String string) {
         ipAddressesChoiceBox.getItems().add(string);
     }
 
-    private List<String> getNetworkInterfacesIpAddresses() {
-        return ipFetcher
-                .fetch().stream()
-                .map(IpAddress::getIp)
+    private List<String> getAvailableIpV4Addresses() {
+        return new NetworkInterfacesAnalyzerConfiguration()
+                .createNetworkInterfacesAnalyzer()
+                .findIpV4Addresses().stream()
+                .map(IpV4Address::getIp)
                 .toList();
     }
 }
