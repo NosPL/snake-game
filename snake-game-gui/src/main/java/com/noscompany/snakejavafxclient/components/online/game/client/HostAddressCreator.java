@@ -3,7 +3,6 @@ package com.noscompany.snakejavafxclient.components.online.game.client;
 import com.noscompany.snake.game.online.client.HostAddress;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
-import org.jetbrains.annotations.NotNull;
 
 class HostAddressCreator {
     enum Error {
@@ -22,7 +21,6 @@ class HostAddressCreator {
         return Either.right(toAddress(ip1, ip2, ip3, ip4, port));
     }
 
-    @NotNull
     private HostAddress toAddress(String ip1, String ip2, String ip3, String ip4, String port) {
         return new HostAddress(ip1 + "." + ip2 + "." + ip3 + "." + ip4 + ":" + port);
     }

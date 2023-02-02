@@ -1,10 +1,9 @@
 package com.noscompany.snakejavafxclient.components.online.game.client;
 
-import com.noscompany.snake.game.online.client.SendClientMessageError;
 import com.noscompany.snake.game.online.client.HostAddress;
+import com.noscompany.snake.game.online.client.SendClientMessageError;
 import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import com.noscompany.snake.game.online.client.StartingClientError;
-import com.noscompany.snake.game.online.contract.messages.room.FailedToConnectToRoom;
 import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
@@ -13,11 +12,6 @@ import io.vavr.control.Option;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import org.jetbrains.annotations.NotNull;
-
-import static com.noscompany.snake.game.online.client.SendClientMessageError.CLIENT_NOT_CONNECTED;
-import static com.noscompany.snake.game.online.client.SendClientMessageError.CONNECTION_CLOSED;
-import static io.vavr.control.Option.of;
 
 public class JoinGameController extends AbstractController {
     @FXML

@@ -2,17 +2,13 @@ package com.noscompany.snake.game.online.host.server.internal.state.running;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noscompany.snake.game.online.contract.object.mapper.ObjectMapperCreator;
-import com.noscompany.snake.game.online.host.server.dto.ServerParams;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorForRemoteClients;
+import com.noscompany.snake.game.online.host.server.dto.ServerParams;
 import com.noscompany.snake.game.online.host.server.internal.state.ServerState;
 import io.vavr.control.Try;
 import org.atmosphere.cpr.ApplicationConfig;
-import org.atmosphere.cpr.BroadcasterFactory;
 import org.atmosphere.nettosphere.Config;
 import org.atmosphere.nettosphere.Nettosphere;
-import org.jetbrains.annotations.NotNull;
-
-import static java.util.Objects.requireNonNull;
 
 public class RunningServerStateCreator {
 

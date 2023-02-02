@@ -6,12 +6,9 @@ import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorForRemote
 import com.noscompany.snake.game.online.host.room.mediator.dto.HostId;
 import com.noscompany.snake.game.online.host.server.Server;
 import com.noscompany.snake.game.online.host.server.ServerConfiguration;
-import dagger.Module;
-import dagger.Provides;
 
 import java.util.UUID;
 
-@Module
 public class SnakeOnlineHostConfiguration {
 
     public SnakeOnlineHost snakeOnlineHost(HostEventHandler hostEventHandler) {
@@ -20,7 +17,6 @@ public class SnakeOnlineHostConfiguration {
         return new SnakeOnlineHostConfiguration().snakeOnlineHost(server, hostEventHandler, roomMediator, roomMediator);
     }
 
-    @Provides
     public SnakeOnlineHost snakeOnlineHost(Server server,
                                            HostEventHandler hostEventHandler,
                                            RoomMediatorForHost roomMediatorForHost,
