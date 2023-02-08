@@ -3,8 +3,9 @@ package com.noscompany.snake.game.online.host.room.commons;
 import com.noscompany.snake.game.online.contract.messages.game.dto.*;
 import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
 import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState.Seat;
+import com.noscompany.snake.game.online.contract.messages.room.PlayersLimit;
 import com.noscompany.snake.game.online.host.room.Room;
-import com.noscompany.snake.game.online.host.room.RoomCreator;
+import com.noscompany.snake.game.online.host.room.RoomConfiguration;
 import io.vavr.control.Either;
 import org.junit.Before;
 
@@ -18,9 +19,7 @@ public class RoomTestSetup {
 
     @Before
     public void init() {
-        room = RoomCreator.create(
-                new SnakeGameplayIdleEventHandler(),
-                new GameRunningEndlesslyAfterStartCreator());
+        room = new RoomConfiguration().roomCreator().createRoom(new SnakeGameplayIdleEventHandler(), new GameRunningEndlesslyAfterStartCreator(), new PlayersLimit(5));
         actorId = randomUserId();
         actorName = randomValidUserName();
     }

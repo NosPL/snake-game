@@ -1,6 +1,7 @@
 package com.noscompany.snakejavafxclient.components.online.game.host;
 
 import com.noscompany.snake.game.online.contract.messages.room.PlayerName;
+import com.noscompany.snake.game.online.contract.messages.room.PlayersLimit;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
 import com.noscompany.snake.game.online.network.interfaces.analyzer.IpV4Address;
 import com.noscompany.snake.game.online.network.interfaces.analyzer.NetworkInterfacesAnalyzerConfiguration;
@@ -39,9 +40,18 @@ public class SetupHostController extends AbstractController {
     }
 
     private void startServer(ServerParams serverParams, PlayerName playerName) {
+        getPlayerLimit()
+                .peek(playersLimit -> startServer(serverParams, playerName, playersLimit));
+    }
+
+    private void startServer(ServerParams serverParams, PlayerName playerName, PlayersLimit playersLimit) {
         SnakeOnlineHostGuiConfiguration
-                .createConfiguredHost()
+                .createConfiguredHost(playersLimit)
                 .startServer(serverParams, playerName);
+    }
+
+    private Option<PlayersLimit> getPlayerLimit() {
+        return Option.of(new PlayersLimit(10));
     }
 
     private Option<ServerParams> getServerParams() {

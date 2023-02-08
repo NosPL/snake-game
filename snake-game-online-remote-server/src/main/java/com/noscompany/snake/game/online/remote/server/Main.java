@@ -1,5 +1,8 @@
 package com.noscompany.snake.game.online.remote.server;
 
+import com.noscompany.snake.game.online.contract.messages.room.PlayersLimit;
+import com.noscompany.snake.game.online.host.room.RoomConfiguration;
+import com.noscompany.snake.game.online.host.room.RoomCreator;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediator;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorConfiguration;
 import com.noscompany.snake.game.online.host.server.Server;
@@ -14,7 +17,8 @@ class Main {
 
     public static void main(String[] args) {
         Server server = new ServerConfiguration().createServer();
-        RoomMediator roomMediator = new RoomMediatorConfiguration().roomMediator(new LogHostEventHandler(), server);
+        RoomCreator roomCreator = new RoomConfiguration().roomCreator();
+        RoomMediator roomMediator = new RoomMediatorConfiguration().roomMediator(new LogHostEventHandler(), server, roomCreator, new PlayersLimit(10));
         server.start(serverParams(), roomMediator);
     }
 

@@ -2,8 +2,8 @@ package com.noscompany.snakejavafxclient.components.online.game.host;
 
 import com.noscompany.snake.game.online.host.HostEventHandler;
 import com.noscompany.snake.game.online.host.SnakeOnlineHost;
-import com.noscompany.snake.game.online.host.SnakeOnlineHostConfiguration;
 import com.noscompany.snake.game.online.host.dependency.configurator.SnakeOnlineHostDependencyConfigurator;
+import com.noscompany.snake.game.online.contract.messages.room.PlayersLimit;
 import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
 import com.noscompany.snakejavafxclient.components.mode.selection.GameModeSelectionStage;
 import com.noscompany.snakejavafxclient.components.online.game.commons.ChatController;
@@ -15,10 +15,10 @@ import javafx.stage.Stage;
 
 public class SnakeOnlineHostGuiConfiguration {
 
-    public static SnakeOnlineHost createConfiguredHost() {
+    public static SnakeOnlineHost createConfiguredHost(PlayersLimit playersLimit) {
         Stage snakeOnlineHostStage = SnakeOnlineHostStage.get();
         HostEventHandler hostEventHandler = GuiOnlineHostEventHandler.instance();
-        SnakeOnlineHost snakeOnlineHost = new SnakeOnlineHostDependencyConfigurator().snakeOnlineHost(hostEventHandler);
+        SnakeOnlineHost snakeOnlineHost = new SnakeOnlineHostDependencyConfigurator().snakeOnlineHost(hostEventHandler, playersLimit);
         setStage(snakeOnlineHostStage, snakeOnlineHost);
         setControllers(snakeOnlineHost);
         return snakeOnlineHost;

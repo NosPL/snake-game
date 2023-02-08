@@ -3,6 +3,8 @@ package com.noscompany.snake.game.test.client;
 import com.noscompany.snake.game.online.client.ClientEventHandler;
 import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import com.noscompany.snake.game.online.client.SnakeOnlineClientConfiguration;
+import com.noscompany.snake.game.online.contract.messages.room.PlayersLimit;
+import com.noscompany.snake.game.online.host.room.RoomConfiguration;
 import com.noscompany.snake.game.online.host.server.ServerConfiguration;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediator;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorConfiguration;
@@ -15,7 +17,7 @@ public class SnakeOnlineTestClientConfiguration {
         SnakeOnlineClient snakeOnlineClient = new SnakeOnlineClientConfiguration().create(clientEventHandler);
         Server server = new ServerConfiguration().createServer();
         NullHostEventHandler nullHostEventHandler = new NullHostEventHandler();
-        RoomMediator roomMediator = new RoomMediatorConfiguration().roomMediator(nullHostEventHandler, server);
+        RoomMediator roomMediator = new RoomMediatorConfiguration().roomMediator(nullHostEventHandler, server, new RoomConfiguration().roomCreator(), new PlayersLimit(10));
         return new SnakeOnlineTestClient(snakeOnlineClient, clientEventHandler, server, roomMediator, Option.none());
     }
 }
