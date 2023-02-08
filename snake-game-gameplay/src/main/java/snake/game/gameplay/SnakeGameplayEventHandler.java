@@ -2,7 +2,7 @@ package snake.game.gameplay;
 
 import com.noscompany.snake.game.online.contract.messages.game.events.*;
 
-public interface SnakeGameEventHandler {
+public interface SnakeGameplayEventHandler {
 
     void handle(TimeLeftToGameStartHasChanged event);
 

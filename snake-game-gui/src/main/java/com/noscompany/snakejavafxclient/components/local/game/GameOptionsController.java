@@ -1,5 +1,6 @@
 package com.noscompany.snakejavafxclient.components.local.game;
 
+import com.noscompany.snake.game.online.contract.messages.game.dto.*;
 import com.noscompany.snakejavafxclient.utils.SnakesColors;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
 import com.noscompany.snakejavafxclient.components.local.game.edit.snake.name.EditSnakeNameConfiguration;
@@ -7,10 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.VBox;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GameSpeed;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GridSize;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Walls;
+import snake.game.gameplay.dto.GameplayParams;
 
 import java.net.URL;
 import java.util.HashSet;
@@ -173,5 +171,9 @@ public class GameOptionsController extends AbstractController {
             return playerNumber3;
         else
             return playerNumber4;
+    }
+
+    public GameplayParams getGameplayParams() {
+        return new GameplayParams(playerNumbers(), gameSpeed(), gridSize(), walls(), CountdownTime.inSeconds(3));
     }
 }

@@ -1,21 +1,21 @@
 package snake.game.gameplay.console.client;
 
+import com.noscompany.snake.game.online.contract.messages.game.dto.*;
 import lombok.RequiredArgsConstructor;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GameSpeed;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GridSize;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Walls;
+import snake.game.gameplay.dto.GameplayParams;
+
+import java.util.Set;
 
 @RequiredArgsConstructor
-class GameSettingsService {
+class GameplayParamsService {
     private final ConsoleInput consoleInput;
 
-    GameSettings getSettings() {
+    GameplayParams getParams() {
         PlayerNumber snakeNumber = getPlayerNumber();
         GameSpeed gameSpeed = getGameSpeed();
         GridSize gridSize = getGridSize();
         Walls walls = getWalls();
-        return new GameSettings(snakeNumber, gameSpeed, gridSize, walls);
+        return new GameplayParams(Set.of(snakeNumber), gameSpeed, gridSize, walls, CountdownTime.inSeconds(3));
     }
 
     private PlayerNumber getPlayerNumber() {

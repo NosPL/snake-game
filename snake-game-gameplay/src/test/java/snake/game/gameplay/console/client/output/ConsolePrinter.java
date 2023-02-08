@@ -2,7 +2,7 @@ package snake.game.gameplay.console.client.output;
 
 import com.noscompany.snake.game.online.contract.messages.game.events.*;
 import io.vavr.control.Option;
-import snake.game.gameplay.SnakeGameEventHandler;
+import snake.game.gameplay.SnakeGameplayEventHandler;
 import snake.game.gameplay.console.client.output.point.to.sign.mapper.PointToSignMapper;
 import com.noscompany.snake.game.online.contract.messages.game.dto.GridSize;
 import com.noscompany.snake.game.online.contract.messages.game.dto.Position;
@@ -11,7 +11,7 @@ import com.noscompany.snake.game.online.contract.messages.game.dto.Snake;
 
 import java.util.Collection;
 
-public class ConsolePrinter implements SnakeGameEventHandler {
+public class ConsolePrinter implements SnakeGameplayEventHandler {
     private final PointToSignMapper mapper = new PointToSignMapper();
 
     public void handle(TimeLeftToGameStartHasChanged timeLeftToGameStartHasChanged) {

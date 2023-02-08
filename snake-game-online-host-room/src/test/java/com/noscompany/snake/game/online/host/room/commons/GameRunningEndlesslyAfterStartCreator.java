@@ -3,58 +3,22 @@ package com.noscompany.snake.game.online.host.room.commons;
 import com.noscompany.snake.game.online.contract.messages.game.dto.*;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import snake.game.gameplay.SnakeGameplay;
-import snake.game.gameplay.SnakeGameEventHandler;
-import snake.game.gameplay.SnakeGameplayBuilder;
+import snake.game.gameplay.SnakeGameplayCreator;
+import snake.game.gameplay.SnakeGameplayEventHandler;
+import snake.game.gameplay.dto.GameplayParams;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  *Creates a mock game that runs endlessly without emitting any events after invoking SnakeGame.start()
  */
-public class GameRunningEndlesslyAfterStartFactory implements SnakeGameplayBuilder {
+public class GameRunningEndlesslyAfterStartCreator implements SnakeGameplayCreator {
 
     @Override
-    public SnakeGameplayBuilder set(@NonNull PlayerNumber player) {
-        return this;
-    }
-
-    @Override
-    public SnakeGameplayBuilder set(@NonNull Collection<PlayerNumber> players) {
-        return this;
-    }
-
-    @Override
-    public SnakeGameplayBuilder set(@NonNull GameSpeed gameSpeed) {
-        return this;
-    }
-
-    @Override
-    public SnakeGameplayBuilder set(@NonNull GridSize gridSize) {
-        return this;
-    }
-
-    @Override
-    public SnakeGameplayBuilder set(@NonNull Walls walls) {
-        return this;
-    }
-
-    @Override
-    public SnakeGameplayBuilder set(@NonNull CountdownTime countdownTime) {
-        return this;
-    }
-
-    @Override
-    public SnakeGameplayBuilder set(@NonNull SnakeGameEventHandler eventHandler) {
-        return this;
-    }
-
-    @Override
-    public Either<Error, SnakeGameplay> createGame() {
+    public Either<Error, SnakeGameplay> createGame(GameplayParams gameplayParams, SnakeGameplayEventHandler snakeGameplayEventHandler) {
         return Either.right(new AlwaysRunningGameplay(GridSize._10x10, Walls.ON));
     }
 

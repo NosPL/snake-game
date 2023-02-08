@@ -9,12 +9,12 @@ import com.noscompany.snakejavafxclient.utils.Controllers;
 import javafx.application.Platform;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import snake.game.gameplay.SnakeGameEventHandler;
+import snake.game.gameplay.SnakeGameplayCreator;
+import snake.game.gameplay.SnakeGameplayEventHandler;
 import com.noscompany.snake.game.online.contract.messages.game.dto.GameState;
 import com.noscompany.snake.game.online.contract.messages.game.dto.GridSize;
 import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.game.dto.Walls;
-import snake.game.gameplay.SnakeGameplayBuilder;
 
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
@@ -23,15 +23,15 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 @AllArgsConstructor
-public class GuiGameEventHandler implements SnakeGameEventHandler {
+public class GuiGameplayEventHandler implements SnakeGameplayEventHandler {
     protected final GameGridController gameGridController;
     protected final GameOptionsController gameOptionsController;
     protected final MessageController messageController;
     protected final ScprButtonsController scprButtonsController;
     protected final ScoreboardController scoreboardController;
 
-    public static GuiGameEventHandler javaFxEventHandler() {
-        return new GuiGameEventHandler(
+    public static GuiGameplayEventHandler javaFxEventHandler() {
+        return new GuiGameplayEventHandler(
                 Controllers.get(GameGridController.class),
                 Controllers.get(GameOptionsController.class),
                 Controllers.get(MessageController.class),
@@ -151,7 +151,7 @@ public class GuiGameEventHandler implements SnakeGameEventHandler {
         });
     }
 
-    public void handle(SnakeGameplayBuilder.Error error) {
+    public void handle(SnakeGameplayCreator.Error error) {
         Platform.runLater(() -> {
             GridSize gridSize = gameOptionsController.gridSize();
             Walls walls = gameOptionsController.walls();

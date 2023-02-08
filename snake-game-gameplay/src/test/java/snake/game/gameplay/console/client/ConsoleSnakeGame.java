@@ -3,11 +3,11 @@ package snake.game.gameplay.console.client;
 import io.vavr.control.Either;
 import lombok.AllArgsConstructor;
 import snake.game.gameplay.SnakeGameplay;
-import snake.game.gameplay.SnakeGameplayBuilder;
 import snake.game.gameplay.SnakeGameplayConfiguration;
+import snake.game.gameplay.SnakeGameplayCreator;
 import snake.game.gameplay.console.client.output.ConsolePrinter;
-import com.noscompany.snake.game.online.contract.messages.game.dto.CountdownTime;
 import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import snake.game.gameplay.dto.GameplayParams;
 
 import static com.noscompany.snake.game.online.contract.messages.game.dto.Direction.*;
 import static lombok.AccessLevel.PRIVATE;
@@ -39,18 +39,15 @@ class ConsoleSnakeGame {
         }
     }
 
-    static Either<SnakeGameplayBuilder.Error, ConsoleSnakeGame> createFrom(GameSettings settings,
+    static Either<SnakeGameplayCreator.Error, ConsoleSnakeGame> createFrom(GameplayParams params,
                                                                            ConsoleInput consoleInput) {
-        PlayerNumber playerNumber = settings.getPlayerNumber();
         return new SnakeGameplayConfiguration()
-                .snakeGameplayBuilder()
-                .set(playerNumber)
-                .set(CountdownTime.inSeconds(3))
-                .set(settings.getGridSize())
-                .set(settings.getGameSpeed())
-                .set(settings.getWalls())
-                .set(new ConsolePrinter())
-                .createGame()
-                .map(game -> new ConsoleSnakeGame(game, playerNumber, consoleInput));
+                .snakeGameplayCreator()
+                .createGame(params, new ConsolePrinter())
+                .map(game -> new ConsoleSnakeGame(game, getPlayerNumber(params), consoleInput));
+    }
+
+    private static PlayerNumber getPlayerNumber(GameplayParams params) {
+        return params.getPlayerNumbers().stream().findFirst().get();
     }
 }

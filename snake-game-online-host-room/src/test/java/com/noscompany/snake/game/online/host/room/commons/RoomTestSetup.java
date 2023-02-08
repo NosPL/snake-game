@@ -19,8 +19,8 @@ public class RoomTestSetup {
     @Before
     public void init() {
         room = RoomCreator.create(
-                new SnakeGameIdleEventHandler(),
-                new GameRunningEndlesslyAfterStartFactory());
+                new SnakeGameplayIdleEventHandler(),
+                new GameRunningEndlesslyAfterStartCreator());
         actorId = randomUserId();
         actorName = randomValidUserName();
     }

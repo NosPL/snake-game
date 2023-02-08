@@ -1,7 +1,7 @@
 package com.noscompany.snakejavafxclient.components.local.game.edit.snake.name;
 
 import com.noscompany.snakejavafxclient.utils.AbstractController;
-import com.noscompany.snakejavafxclient.components.local.game.GuiGameEventHandler;
+import com.noscompany.snakejavafxclient.components.local.game.GuiGameplayEventHandler;
 import io.vavr.control.Option;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 public class EditSnakeNameController extends AbstractController {
     private static final String TOO_LONG_NAME_MESSAGE = "NAME CANNOT BE LONGER THAN 15 SIGNS";
     private static final String BLANK_NAME_MESSAGE = "NAME CANNOT BE EMPTY";
-    private GuiGameEventHandler guiGameEventHandler;
+    private GuiGameplayEventHandler guiGameEventHandler;
     private PlayerNumber playerNumber;
     private String currentName;
     @FXML
@@ -60,7 +60,7 @@ public class EditSnakeNameController extends AbstractController {
 
     @Override
     protected void doInitialize(URL location, ResourceBundle resources) {
-        this.guiGameEventHandler = GuiGameEventHandler.javaFxEventHandler();
+        this.guiGameEventHandler = GuiGameplayEventHandler.javaFxEventHandler();
         this.textField.setText("");
         this.errorMessageLabel.setVisible(false);
         this.textField.setOnKeyPressed(key -> {

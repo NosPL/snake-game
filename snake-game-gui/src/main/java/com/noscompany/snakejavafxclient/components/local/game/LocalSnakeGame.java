@@ -5,11 +5,11 @@ import lombok.AllArgsConstructor;
 import snake.game.gameplay.SnakeGameplay;
 import com.noscompany.snake.game.online.contract.messages.game.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
-import snake.game.gameplay.SnakeGameplayBuilder;
+import snake.game.gameplay.SnakeGameplayCreator;
 
 @AllArgsConstructor
 public class LocalSnakeGame {
-    private final GuiGameEventHandler eventHandler;
+    private final GuiGameplayEventHandler eventHandler;
     private SnakeGameplay snakeGameplay;
 
     public void start() {
@@ -38,7 +38,7 @@ public class LocalSnakeGame {
         snakeGameplay.resume();
     }
 
-    private Either<SnakeGameplayBuilder.Error, SnakeGameplay> createNewGame() {
+    private Either<SnakeGameplayCreator.Error, SnakeGameplay> createNewGame() {
         return LocalGameConfiguration
                 .createGame()
                 .peek(game -> this.snakeGameplay = game)

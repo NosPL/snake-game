@@ -8,20 +8,20 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import snake.game.gameplay.SnakeGameplay;
-import com.noscompany.snake.game.online.contract.messages.game.dto.CountdownTime;
 import com.noscompany.snake.game.online.contract.messages.game.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.game.dto.GameState;
 import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
-import snake.game.gameplay.SnakeGameplayBuilder;
 import snake.game.gameplay.SnakeGameplayConfiguration;
+import snake.game.gameplay.SnakeGameplayCreator;
+import snake.game.gameplay.dto.GameplayParams;
 
-import static com.noscompany.snakejavafxclient.components.local.game.GuiGameEventHandler.javaFxEventHandler;
+import static com.noscompany.snakejavafxclient.components.local.game.GuiGameplayEventHandler.javaFxEventHandler;
 
 public class LocalGameConfiguration {
 
     public static void run() {
         Stage localGameStage = LocalGameStage.get();
-        var eventHandler = GuiGameEventHandler.javaFxEventHandler();
+        var eventHandler = GuiGameplayEventHandler.javaFxEventHandler();
         var localSnakeGame = new LocalSnakeGame(eventHandler, new NullGameplay());
         localSnakeGame.updateGameView();
         Controllers.get(GameOptionsController.class).set(localSnakeGame);
@@ -41,18 +41,14 @@ public class LocalGameConfiguration {
         localGameStage.show();
     }
 
-    static Either<SnakeGameplayBuilder.Error, SnakeGameplay> createGame() {
-        var gameOptions = Controllers.get(GameOptionsController.class);
+    static Either<SnakeGameplayCreator.Error, SnakeGameplay> createGame() {
+        var gameOptionsController = Controllers.get(GameOptionsController.class);
+        GameplayParams gameplayParams = gameOptionsController.getGameplayParams();
         return new SnakeGameplayConfiguration()
-                .snakeGameplayBuilder()
-                .set(gameOptions.gameSpeed())
-                .set(gameOptions.gridSize())
-                .set(gameOptions.playerNumbers())
-                .set(gameOptions.walls())
-                .set(CountdownTime.inSeconds(3))
-                .set(javaFxEventHandler())
-                .createGame();
+                .snakeGameplayCreator()
+                .createGame(gameplayParams, javaFxEventHandler());
     }
+
     private static class NullGameplay implements SnakeGameplay {
 
         @Override

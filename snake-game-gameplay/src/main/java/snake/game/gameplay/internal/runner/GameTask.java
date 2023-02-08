@@ -1,7 +1,7 @@
 package snake.game.gameplay.internal.runner;
 
 import lombok.RequiredArgsConstructor;
-import snake.game.gameplay.SnakeGameEventHandler;
+import snake.game.gameplay.SnakeGameplayEventHandler;
 import com.noscompany.snake.game.online.contract.messages.game.dto.CountdownTime;
 import com.noscompany.snake.game.online.contract.messages.game.dto.GameSpeed;
 import com.noscompany.snake.game.online.contract.messages.game.dto.GameState;
@@ -19,7 +19,7 @@ import static com.noscompany.snake.game.online.contract.messages.game.events.Tim
 @RequiredArgsConstructor
 class GameTask implements Runnable {
     private final GameLogic gameLogic;
-    private final SnakeGameEventHandler eventHandler;
+    private final SnakeGameplayEventHandler eventHandler;
     private final GameSpeed gameSpeed;
     private final CountdownTime countdownTime;
     private final AtomicBoolean pauseRequested;

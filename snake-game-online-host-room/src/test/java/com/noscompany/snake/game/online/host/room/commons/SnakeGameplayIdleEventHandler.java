@@ -1,9 +1,9 @@
 package com.noscompany.snake.game.online.host.room.commons;
 
 import com.noscompany.snake.game.online.contract.messages.game.events.*;
-import snake.game.gameplay.SnakeGameEventHandler;
+import snake.game.gameplay.SnakeGameplayEventHandler;
 
-public class SnakeGameIdleEventHandler implements SnakeGameEventHandler {
+public class SnakeGameplayIdleEventHandler implements SnakeGameplayEventHandler {
 
     @Override
     public void handle(TimeLeftToGameStartHasChanged event) {
