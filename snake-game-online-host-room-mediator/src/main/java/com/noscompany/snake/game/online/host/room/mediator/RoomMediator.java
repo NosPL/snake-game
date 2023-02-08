@@ -3,16 +3,17 @@ package com.noscompany.snake.game.online.host.room.mediator;
 import com.noscompany.snake.game.online.contract.messages.game.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.game.dto.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.room.PlayerName;
 import com.noscompany.snake.game.online.contract.messages.room.RoomState;
+import com.noscompany.snake.game.online.host.ports.RoomApiForHost;
 import com.noscompany.snake.game.online.host.room.Room;
-import com.noscompany.snake.game.online.host.room.mediator.dto.HostId;
-import com.noscompany.snake.game.online.host.room.mediator.dto.RemoteClientId;
+import com.noscompany.snake.game.online.host.server.ports.RoomApiForRemoteClients;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @AllArgsConstructor
-public class RoomMediator implements RoomMediatorForHost, RoomMediatorForRemoteClients {
+public class RoomMediator implements RoomApiForHost, RoomApiForRemoteClients {
     private final Room room;
     private final EventDispatcher eventDispatcher;
 
@@ -143,9 +144,9 @@ public class RoomMediator implements RoomMediatorForHost, RoomMediatorForRemoteC
     }
 
     @Override
-    public void enterRoom(RemoteClientId remoteClientId, String userName) {
+    public void enterRoom(RemoteClientId remoteClientId, PlayerName playerName) {
         room
-                .enter(remoteClientId.getId(), userName)
+                .enter(remoteClientId.getId(), playerName.getName())
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(failure -> eventDispatcher.sendToClient(remoteClientId, failure));
     }

@@ -1,8 +1,8 @@
 package com.noscompany.snake.game.online.host.room.mediator;
 
 import com.noscompany.snake.game.online.host.room.RoomCreator;
-import com.noscompany.snake.game.online.host.room.mediator.ports.RoomEventHandlerForHost;
-import com.noscompany.snake.game.online.host.room.mediator.ports.RoomEventHandlerForRemoteClients;
+import com.noscompany.snake.game.online.host.RoomEventHandlerForHost;
+import com.noscompany.snake.game.online.host.server.RoomEventHandlerForRemoteClients;
 
 
 public class RoomMediatorConfiguration {

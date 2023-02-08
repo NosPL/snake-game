@@ -1,6 +1,6 @@
 package com.noscompany.snakejavafxclient.components.online.game.host;
 
-import com.noscompany.snake.game.online.host.room.mediator.PlayerName;
+import com.noscompany.snake.game.online.contract.messages.room.PlayerName;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
 import com.noscompany.snake.game.online.network.interfaces.analyzer.IpV4Address;
 import com.noscompany.snake.game.online.network.interfaces.analyzer.NetworkInterfacesAnalyzerConfiguration;

@@ -3,30 +3,27 @@ package com.noscompany.snake.game.online.host;
 import com.noscompany.snake.game.online.contract.messages.game.dto.*;
 import com.noscompany.snake.game.online.host.server.Server;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
-import com.noscompany.snake.game.online.host.room.mediator.PlayerName;
-import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorForHost;
-import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorForRemoteClients;
-import com.noscompany.snake.game.online.host.room.mediator.dto.HostId;
-import com.noscompany.snake.game.online.host.server.dto.ServerStartError;
-import io.vavr.control.Option;
+import com.noscompany.snake.game.online.contract.messages.room.PlayerName;
+import com.noscompany.snake.game.online.host.ports.RoomApiForHost;
+import com.noscompany.snake.game.online.host.server.ports.RoomApiForRemoteClients;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 class SnakeOnlineHostImpl implements SnakeOnlineHost {
-    private final HostId hostId;
+    private final RoomApiForHost.HostId hostId;
     private final Server server;
     private final HostEventHandler hostEventHandler;
-    private final RoomMediatorForHost roomMediatorForHost;
-    private final RoomMediatorForRemoteClients roomMediatorForRemoteClients;
+    private final RoomApiForHost roomApiForHost;
+    private final RoomApiForRemoteClients roomApiForRemoteClients;
 
     @Override
     public void startServer(ServerParams serverParams, PlayerName playerName) {
         server
-                .start(serverParams, roomMediatorForRemoteClients)
+                .start(serverParams, roomApiForRemoteClients)
                 .peek(hostEventHandler::handle)
                 .onEmpty(() -> {
                     hostEventHandler.serverStarted(serverParams);
-                    roomMediatorForHost.enter(hostId, playerName);
+                    roomApiForHost.enter(hostId, playerName);
                 });
     }
 
@@ -34,49 +31,49 @@ class SnakeOnlineHostImpl implements SnakeOnlineHost {
     public void sendChatMessage(String messageContent) {
         if (!server.isRunning())
             hostEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
-        roomMediatorForHost.sendChatMessage(hostId, messageContent);
+        roomApiForHost.sendChatMessage(hostId, messageContent);
     }
 
     @Override
     public void cancelGame() {
         if (!server.isRunning())
             hostEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
-        roomMediatorForHost.cancelGame(hostId);
+        roomApiForHost.cancelGame(hostId);
     }
 
     @Override
     public void changeSnakeDirection(Direction direction) {
         if (!server.isRunning())
             hostEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
-        roomMediatorForHost.changeSnakeDirection(hostId, direction);
+        roomApiForHost.changeSnakeDirection(hostId, direction);
     }
 
     @Override
     public void pauseGame() {
         if (!server.isRunning())
             hostEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
-        roomMediatorForHost.pauseGame(hostId);
+        roomApiForHost.pauseGame(hostId);
     }
 
     @Override
     public void resumeGame() {
         if (!server.isRunning())
             hostEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
-        roomMediatorForHost.resumeGame(hostId);
+        roomApiForHost.resumeGame(hostId);
     }
 
     @Override
     public void startGame() {
         if (!server.isRunning())
             hostEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
-        roomMediatorForHost.startGame(hostId);
+        roomApiForHost.startGame(hostId);
     }
 
     @Override
     public void changeGameOptions(GameOptions gameOptions) {
         if (!server.isRunning())
             hostEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
-        roomMediatorForHost.changeGameOptions(hostId, gameOptions);
+        roomApiForHost.changeGameOptions(hostId, gameOptions);
     }
 
     @Override
@@ -88,14 +85,14 @@ class SnakeOnlineHostImpl implements SnakeOnlineHost {
     public void freeUpASeat() {
         if (!server.isRunning())
             hostEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
-        roomMediatorForHost.freeUpASeat(hostId);
+        roomApiForHost.freeUpASeat(hostId);
     }
 
     @Override
     public void takeASeat(PlayerNumber playerNumber) {
         if (!server.isRunning())
             hostEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
-        roomMediatorForHost.takeASeat(hostId, playerNumber);
+        roomApiForHost.takeASeat(hostId, playerNumber);
     }
 
     @Override

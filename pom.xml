@@ -23,10 +23,11 @@
         <module>snake-game-online-host</module>
         <module>snake-game-online-host-room</module>
         <module>snake-game-online-host-room-mediator</module>
-        <module>snake-game-online-host-server-nettosphere</module>
+        <module>snake-game-online-host-server</module>
         <module>snake-game-online-client-test</module>
         <module>snake-game-online-remote-server</module>
         <module>snake-game-online-network-interfaces-analyzer</module>
+        <module>snake-game-online-host-dependency-configurator</module>
     </modules>
 
     <dependencies>

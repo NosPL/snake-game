@@ -7,9 +7,9 @@ import com.noscompany.snake.game.online.contract.messages.lobby.event.*;
 import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
-import com.noscompany.snake.game.online.host.room.mediator.dto.RemoteClientId;
-import com.noscompany.snake.game.online.host.room.mediator.ports.RoomEventHandlerForHost;
-import com.noscompany.snake.game.online.host.room.mediator.ports.RoomEventHandlerForRemoteClients;
+import com.noscompany.snake.game.online.host.RoomEventHandlerForHost;
+import com.noscompany.snake.game.online.host.server.RoomEventHandlerForRemoteClients;
+import com.noscompany.snake.game.online.host.server.ports.RoomApiForRemoteClients;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -62,7 +62,7 @@ class EventDispatcher {
         host.handle(event);
     }
 
-    void sendToClient(RemoteClientId remoteClientId, OnlineMessage onlineMessage) {
+    void sendToClient(RoomApiForRemoteClients.RemoteClientId remoteClientId, OnlineMessage onlineMessage) {
         remoteClients.sendToClientWithId(remoteClientId, onlineMessage);
     }
 

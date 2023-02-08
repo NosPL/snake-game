@@ -9,10 +9,8 @@ import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom
 import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
 import com.noscompany.snake.game.online.host.HostEventHandler;
-import com.noscompany.snake.game.online.host.SnakeOnlineHost;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
 import com.noscompany.snake.game.online.host.server.dto.ServerStartError;
-import com.noscompany.snake.game.online.host.room.mediator.ports.RoomEventHandlerForHost;
 import com.noscompany.snakejavafxclient.components.commons.game.grid.GameGridController;
 import com.noscompany.snakejavafxclient.components.commons.message.MessageController;
 import com.noscompany.snakejavafxclient.components.commons.scoreboard.ScoreboardController;

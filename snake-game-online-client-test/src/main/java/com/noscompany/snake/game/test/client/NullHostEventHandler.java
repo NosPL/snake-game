@@ -7,7 +7,7 @@ import com.noscompany.snake.game.online.contract.messages.lobby.event.*;
 import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
-import com.noscompany.snake.game.online.host.room.mediator.ports.RoomEventHandlerForHost;
+import com.noscompany.snake.game.online.host.RoomEventHandlerForHost;
 
 class NullHostEventHandler implements RoomEventHandlerForHost {
 

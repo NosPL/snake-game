@@ -2,7 +2,7 @@ package com.noscompany.snake.game.online.host;
 
 import com.noscompany.snake.game.online.contract.messages.game.dto.*;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
-import com.noscompany.snake.game.online.host.room.mediator.PlayerName;
+import com.noscompany.snake.game.online.contract.messages.room.PlayerName;
 
 public interface SnakeOnlineHost {
     void startServer(ServerParams serverParams, PlayerName playerName);
