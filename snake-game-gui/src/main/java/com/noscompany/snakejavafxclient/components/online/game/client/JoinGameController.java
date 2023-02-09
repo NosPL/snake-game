@@ -39,7 +39,7 @@ public class JoinGameController extends AbstractController {
     public void joinGame() {
         getIpAddress()
                 .peek(this::joinGame)
-                .peekLeft(this::handle);
+                .peekLeft(this::handleError);
     }
 
     private void joinGame(HostAddress hostAddress) {
@@ -50,7 +50,11 @@ public class JoinGameController extends AbstractController {
     }
 
     public void connectionEstablished() {
-        errorMessageLabel.setText("connection established");
+        errorMessageLabel.setText("connection established, initializing room...");
+    }
+
+    public void enterRoom() {
+        errorMessageLabel.setText("Initialized room, entering...");
         getOrCreateSnakeOnlineClient().enterTheRoom(playerNameTextField.getText());
     }
 
@@ -114,7 +118,7 @@ public class JoinGameController extends AbstractController {
                 .toLowerCase();
     }
 
-    private void handle(HostAddressCreator.Error error) {
+    private void handleError(HostAddressCreator.Error error) {
         String message = error
                 .toString()
                 .replace("_", " ")

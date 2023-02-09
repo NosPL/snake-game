@@ -2,7 +2,6 @@ package com.noscompany.snake.game.online.client.internal.state.connected;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
-import com.noscompany.snake.game.online.client.ClientEventHandler;
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage.MessageType;
 import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
@@ -11,15 +10,12 @@ import com.noscompany.snake.game.online.contract.messages.lobby.event.*;
 import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
+import com.noscompany.snake.game.online.contract.messages.server.InitializeRoomState;
 import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.function.Consumer;
-
 import static io.vavr.control.Try.failure;
-import static io.vavr.control.Try.success;
 
 @AllArgsConstructor
 @Slf4j
@@ -42,6 +38,9 @@ class MessageDeserializer {
 
     private Try<DeserializedMessage> mapToObject(String serializedMessage, MessageType messageType) {
         return switch (messageType) {
+            case USER_CONNECTED_TO_THE_SERVER -> Try
+                    .of(() -> objectMapper.readValue(serializedMessage, InitializeRoomState.class))
+                    .map(event -> new DeserializedMessage(eventHandler -> eventHandler.handle(event)));
             case NEW_USER_ENTERED_ROOM -> Try
                     .of(() -> objectMapper.readValue(serializedMessage, NewUserEnteredRoom.class))
                     .map(event -> new DeserializedMessage(eventHandler -> eventHandler.handle(event)));
@@ -108,15 +107,6 @@ class MessageDeserializer {
 
         public NotSupportedMessageTypeException(MessageType messageType) {
             super(MESSAGE + messageType);
-        }
-    }
-
-    @RequiredArgsConstructor
-    static class DeserializedMessage {
-        private final Consumer<ClientEventHandler> consumer;
-
-        void applyTo(ClientEventHandler clientEventHandler) {
-            consumer.accept(clientEventHandler);
         }
     }
 }

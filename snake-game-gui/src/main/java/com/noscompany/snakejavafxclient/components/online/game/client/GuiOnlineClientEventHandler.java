@@ -6,6 +6,7 @@ import com.noscompany.snake.game.online.contract.messages.game.events.*;
 import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
 import com.noscompany.snake.game.online.contract.messages.lobby.event.*;
 import com.noscompany.snake.game.online.contract.messages.room.*;
+import com.noscompany.snake.game.online.contract.messages.server.InitializeRoomState;
 import com.noscompany.snakejavafxclient.components.online.game.commons.*;
 import com.noscompany.snakejavafxclient.utils.Controllers;
 import com.noscompany.snake.game.online.client.SendClientMessageError;
@@ -164,6 +165,16 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     public void connectionEstablished() {
         Platform.runLater(() -> {
             joinGameController.connectionEstablished();
+        });
+    }
+
+    @Override
+    public void handle(InitializeRoomState event) {
+        Platform.runLater(() -> {
+            RoomState roomState = event.getRoomState();
+            joinedUsersController.update(roomState.getUsers());
+            update(roomState.getLobbyState());
+            joinGameController.enterRoom();
         });
     }
 

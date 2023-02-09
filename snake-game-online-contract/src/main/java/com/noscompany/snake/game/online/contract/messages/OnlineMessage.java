@@ -5,6 +5,7 @@ public interface OnlineMessage {
 
     enum MessageType {
         //server event
+        USER_CONNECTED_TO_THE_SERVER,
         SERVER_GOT_SHUTDOWN,
 
         //room commands

@@ -14,11 +14,13 @@ public class RunningServerStateCreator {
 
     public static Try<ServerState> createRunningServer(ServerParams serverParams, RoomApiForRemoteClients roomApiForRemoteClients) {
         return Try.of(() -> {
-            SnakeGameRoomWebSocket.roomApiForRemoteClients = roomApiForRemoteClients;
             ObjectMapper objectMapper = ObjectMapperCreator.createInstance();
             Nettosphere nettosphere = createNettosphere(serverParams);
             nettosphere.start();
-            return new RunningServerState(nettosphere, objectMapper);
+            RunningServerState runningServerState = new RunningServerState(nettosphere, objectMapper);
+            SnakeGameRoomWebSocket.roomApiForRemoteClients = roomApiForRemoteClients;
+            SnakeGameRoomWebSocket.runningServerState = runningServerState;
+            return runningServerState;
         });
     }
 

@@ -8,10 +8,13 @@ import com.noscompany.snake.game.online.contract.messages.room.FailedToConnectTo
 import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
+import com.noscompany.snake.game.online.contract.messages.server.InitializeRoomState;
 
 public interface ClientEventHandler {
 
     void connectionEstablished();
+
+    void handle(InitializeRoomState initializeRoomState);
 
     void handle(SendClientMessageError sendClientMessageError);
 
