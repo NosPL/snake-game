@@ -22,7 +22,7 @@
         </dependency>
         <dependency>
             <groupId>com.noscompany</groupId>
-            <artifactId>snake-online-host-dependency-configurator</artifactId>
+            <artifactId>snake-game-online-host-dependency-configurator</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>snake-online-host-dependency-configurator</artifactId>
+    <artifactId>snake-game-online-host-dependency-configurator</artifactId>
 
     <dependencies>
         <dependency>
