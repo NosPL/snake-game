@@ -1,1 +1,0 @@
-web: java -jar target/snake-game-online-remote-server-1.0-SNAPSHOT.jar
