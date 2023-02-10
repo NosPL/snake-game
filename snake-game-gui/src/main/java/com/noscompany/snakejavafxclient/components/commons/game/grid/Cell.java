@@ -9,7 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Position;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;
 
 import static com.noscompany.snakejavafxclient.components.commons.game.grid.GameGridSigns.EMPTY_CELL;
 

@@ -1,12 +1,12 @@
 package com.noscompany.snake.game.online.host.room.internal.lobby;
 
-import com.noscompany.snake.game.online.contract.messages.game.dto.GameSpeed;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameSpeed;
 import snake.game.gameplay.SnakeGameplay;
 import snake.game.gameplay.SnakeGameplayCreator;
 import snake.game.gameplay.SnakeGameplayEventHandler;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GameOptions;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GridSize;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Walls;
+import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Walls;
 
 import java.util.Set;
 

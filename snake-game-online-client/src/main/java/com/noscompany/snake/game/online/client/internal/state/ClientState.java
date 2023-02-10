@@ -1,7 +1,7 @@
 package com.noscompany.snake.game.online.client.internal.state;
 
 import com.noscompany.snake.game.online.client.HostAddress;
-import com.noscompany.snake.game.online.contract.messages.game.dto.*;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 
 public interface ClientState {
 

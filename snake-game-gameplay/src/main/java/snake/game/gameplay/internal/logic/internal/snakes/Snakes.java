@@ -3,11 +3,11 @@ package snake.game.gameplay.internal.logic.internal.snakes;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Direction;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Position;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;
 import snake.game.gameplay.internal.logic.internal.SnakesDidNotMoveBecauseAllAreDead;
-import snake.game.gameplay.internal.logic.internal.SnakesMoved;
+import snake.game.gameplay.internal.logic.internal.SnakesGotMoved;
 
 import java.util.Collection;
 import java.util.List;
@@ -33,14 +33,14 @@ public class Snakes {
                 .peek(Snake::kill);
     }
 
-    public List<com.noscompany.snake.game.online.contract.messages.game.dto.Snake> toDto() {
+    public List<com.noscompany.snake.game.online.contract.messages.gameplay.dto.Snake> toDto() {
         return snakes()
                 .stream()
                 .map(Snake::toDto)
                 .collect(toList());
     }
 
-    public Either<SnakesDidNotMoveBecauseAllAreDead, SnakesMoved> moveAndFeed(Option<Position> foodPosition) {
+    public Either<SnakesDidNotMoveBecauseAllAreDead, SnakesGotMoved> moveAndFeed(Option<Position> foodPosition) {
         if (allSnakesAreDead())
             return left(SNAKES_DID_NOT_MOVE_BECAUSE_ALL_ARE_DEAD);
         moveSnakes();
@@ -49,8 +49,8 @@ public class Snakes {
         return snakesMoved();
     }
 
-    private Either<SnakesDidNotMoveBecauseAllAreDead, SnakesMoved> snakesMoved() {
-        return right(new SnakesMoved(this.toDto()));
+    private Either<SnakesDidNotMoveBecauseAllAreDead, SnakesGotMoved> snakesMoved() {
+        return right(new SnakesGotMoved(this.toDto()));
     }
 
     private boolean allSnakesAreDead() {

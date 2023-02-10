@@ -1,6 +1,7 @@
 package com.noscompany.snake.game.online.host.ports;
 
-import com.noscompany.snake.game.online.contract.messages.game.dto.*;
+import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.contract.messages.room.PlayerName;
 import lombok.Value;
 

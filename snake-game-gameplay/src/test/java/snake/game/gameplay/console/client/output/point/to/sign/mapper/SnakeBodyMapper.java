@@ -1,8 +1,8 @@
 package snake.game.gameplay.console.client.output.point.to.sign.mapper;
 
 import io.vavr.control.Option;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Position;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Snake;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Snake;
 
 import java.util.Collection;
 

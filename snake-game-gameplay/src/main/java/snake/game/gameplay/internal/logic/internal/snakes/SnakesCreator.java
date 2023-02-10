@@ -1,15 +1,15 @@
 package snake.game.gameplay.internal.logic.internal.snakes;
 
-import com.noscompany.snake.game.online.contract.messages.game.dto.GridSize;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Walls;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Walls;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static com.noscompany.snake.game.online.contract.messages.game.dto.Direction.*;
-import static com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber.*;
+import static com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction.*;
+import static com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber.*;
 
 public class SnakesCreator {
     private static final int SNAKE_LENGTH = 4;

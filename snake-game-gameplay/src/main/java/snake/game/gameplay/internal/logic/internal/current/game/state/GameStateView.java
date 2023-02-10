@@ -1,6 +1,6 @@
 package snake.game.gameplay.internal.logic.internal.current.game.state;
 
-import com.noscompany.snake.game.online.contract.messages.game.dto.*;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 

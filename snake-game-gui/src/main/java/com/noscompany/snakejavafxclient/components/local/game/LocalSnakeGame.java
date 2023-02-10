@@ -3,8 +3,8 @@ package com.noscompany.snakejavafxclient.components.local.game;
 import io.vavr.control.Either;
 import lombok.AllArgsConstructor;
 import snake.game.gameplay.SnakeGameplay;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Direction;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import snake.game.gameplay.SnakeGameplayCreator;
 
 @AllArgsConstructor

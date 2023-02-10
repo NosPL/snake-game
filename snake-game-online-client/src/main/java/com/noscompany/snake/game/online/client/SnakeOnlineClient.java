@@ -1,6 +1,6 @@
 package com.noscompany.snake.game.online.client;
 
-import com.noscompany.snake.game.online.contract.messages.game.dto.*;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 
 public interface SnakeOnlineClient {
 

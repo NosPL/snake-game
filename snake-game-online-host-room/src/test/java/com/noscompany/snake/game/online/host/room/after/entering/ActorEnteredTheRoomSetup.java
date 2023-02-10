@@ -1,8 +1,8 @@
 package com.noscompany.snake.game.online.host.room.after.entering;
 
-import com.noscompany.snake.game.online.contract.messages.lobby.event.FailedToTakeASeat;
-import com.noscompany.snake.game.online.contract.messages.lobby.event.PlayerTookASeat;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.host.room.commons.RoomTestSetup;
 import io.vavr.control.Either;
 import org.junit.Before;

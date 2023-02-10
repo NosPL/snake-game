@@ -1,7 +1,7 @@
 package com.noscompany.snakejavafxclient.utils;
 
 import javafx.scene.paint.Color;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 
 import java.util.Map;
 

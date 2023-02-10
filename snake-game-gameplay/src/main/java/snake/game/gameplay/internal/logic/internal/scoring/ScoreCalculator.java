@@ -4,8 +4,8 @@ import io.vavr.Tuple2;
 import io.vavr.Tuple3;
 import io.vavr.collection.Map;
 import io.vavr.collection.Seq;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Score;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Score;
 
 import java.util.List;
 

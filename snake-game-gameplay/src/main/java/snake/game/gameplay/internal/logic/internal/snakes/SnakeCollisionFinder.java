@@ -2,9 +2,9 @@ package snake.game.gameplay.internal.logic.internal.snakes;
 
 import lombok.AllArgsConstructor;
 import lombok.Value;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GridSize;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Position;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;
 
 import java.util.Collection;
 import java.util.List;

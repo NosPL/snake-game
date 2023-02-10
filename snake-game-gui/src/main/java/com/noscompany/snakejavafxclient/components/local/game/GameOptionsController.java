@@ -1,6 +1,6 @@
 package com.noscompany.snakejavafxclient.components.local.game;
 
-import com.noscompany.snake.game.online.contract.messages.game.dto.*;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snakejavafxclient.utils.SnakesColors;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
 import com.noscompany.snakejavafxclient.components.local.game.edit.snake.name.EditSnakeNameConfiguration;

@@ -2,7 +2,7 @@ package com.noscompany.snakejavafxclient.components.commons.game.grid;
 
 import javafx.scene.paint.Color;
 import lombok.Value;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Position;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;
 
 import java.util.List;
 

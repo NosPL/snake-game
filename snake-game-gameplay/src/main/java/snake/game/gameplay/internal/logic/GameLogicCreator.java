@@ -1,8 +1,8 @@
 package snake.game.gameplay.internal.logic;
 
-import com.noscompany.snake.game.online.contract.messages.game.dto.GridSize;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Walls;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Walls;
 import snake.game.gameplay.internal.logic.internal.current.game.state.GameStateView;
 import snake.game.gameplay.internal.logic.internal.food.locator.FoodLocator;
 import snake.game.gameplay.internal.logic.internal.food.locator.FoodLocatorCreator;

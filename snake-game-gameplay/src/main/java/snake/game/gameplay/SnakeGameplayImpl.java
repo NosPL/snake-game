@@ -1,9 +1,9 @@
 package snake.game.gameplay;
 
 import lombok.AllArgsConstructor;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Direction;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GameState;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import snake.game.gameplay.internal.logic.GameLogic;
 import snake.game.gameplay.internal.runner.GameRunner;
 

@@ -4,14 +4,14 @@ import io.vavr.control.Option;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import lombok.RequiredArgsConstructor;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GridSize;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Position;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Snake;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Walls;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Snake;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Walls;
 
 import java.util.*;
 
-import static com.noscompany.snake.game.online.contract.messages.game.dto.GridSize.*;
+import static com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize.*;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
 import static lombok.AccessLevel.PRIVATE;

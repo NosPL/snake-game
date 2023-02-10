@@ -1,7 +1,7 @@
 package com.noscompany.snake.game.online.contract.messages.room;
 
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
-import com.noscompany.snake.game.online.contract.messages.lobby.event.PlayerFreedUpASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

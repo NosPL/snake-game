@@ -1,16 +1,15 @@
 package snake.game.gameplay.internal.logic;
 
-import com.noscompany.snake.game.online.contract.messages.game.dto.Direction;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GameState;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Position;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
-import com.noscompany.snake.game.online.contract.messages.game.events.GameContinues;
-import com.noscompany.snake.game.online.contract.messages.game.events.GameFinished;
-import snake.game.gameplay.internal.logic.internal.SnakesDidNotMoveBecauseAllAreDead;
-import snake.game.gameplay.internal.logic.internal.SnakesMoved;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.SnakesMoved;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameFinished;
+import snake.game.gameplay.internal.logic.internal.SnakesGotMoved;
 import snake.game.gameplay.internal.logic.internal.current.game.state.GameStateView;
 import snake.game.gameplay.internal.logic.internal.food.locator.FoodLocator;
 import snake.game.gameplay.internal.logic.internal.scoring.Scoring;
@@ -39,20 +38,20 @@ class GameLogicImpl implements GameLogic {
     }
 
     @Override
-    public Either<GameFinished, GameContinues> moveSnakes() {
+    public Either<GameFinished, SnakesMoved> moveSnakes() {
         return snakes
                 .moveAndFeed(getFoodPosition())
-                .map(snakesMoved -> {
-                    foodLocator.updateFoodPosition(snakesMoved);
-                    scoring.updateScores(snakesMoved);
-                    updateGameStateView(snakesMoved);
-                    return gameContinues();})
+                .map(snakesGotMoved -> {
+                    foodLocator.updateFoodPosition(snakesGotMoved);
+                    scoring.updateScores(snakesGotMoved);
+                    updateGameStateView(snakesGotMoved);
+                    return snakesMoved();})
                 .mapLeft(snakesDidNotMoveBecauseAllAreDead -> gameFinished());
     }
 
-    private void updateGameStateView(SnakesMoved snakesMoved) {
+    private void updateGameStateView(SnakesGotMoved snakesGotMoved) {
         gameStateView.update(
-                snakesMoved.getSnakes(),
+                snakesGotMoved.getSnakes(),
                 getFoodPosition(),
                 scoring.getScore());
     }
@@ -61,8 +60,8 @@ class GameLogicImpl implements GameLogic {
         return foodLocator.getFoodPosition();
     }
 
-    private GameContinues gameContinues() {
-        return GameContinues.createEvent(getGameState());
+    private SnakesMoved snakesMoved() {
+        return SnakesMoved.createEvent(getGameState());
     }
 
     private GameFinished gameFinished() {

@@ -6,10 +6,10 @@ import snake.game.gameplay.SnakeGameplay;
 import snake.game.gameplay.SnakeGameplayConfiguration;
 import snake.game.gameplay.SnakeGameplayCreator;
 import snake.game.gameplay.console.client.output.ConsolePrinter;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import snake.game.gameplay.dto.GameplayParams;
 
-import static com.noscompany.snake.game.online.contract.messages.game.dto.Direction.*;
+import static com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction.*;
 import static lombok.AccessLevel.PRIVATE;
 
 @AllArgsConstructor(access = PRIVATE)

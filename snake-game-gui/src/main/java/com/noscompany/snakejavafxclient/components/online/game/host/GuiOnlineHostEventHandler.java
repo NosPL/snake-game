@@ -2,12 +2,17 @@ package com.noscompany.snakejavafxclient.components.online.game.host;
 
 import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
-import com.noscompany.snake.game.online.contract.messages.game.events.*;
+import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
+import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
-import com.noscompany.snake.game.online.contract.messages.lobby.event.*;
 import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
+import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
+import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
 import com.noscompany.snake.game.online.host.HostEventHandler;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
 import com.noscompany.snake.game.online.host.server.dto.ServerStartError;
@@ -116,7 +121,7 @@ class GuiOnlineHostEventHandler implements HostEventHandler {
     }
 
     @Override
-    public void handle(GameContinues event) {
+    public void handle(SnakesMoved event) {
         Platform.runLater(() -> {
             gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
             scoreboardController.print(event.getScore());

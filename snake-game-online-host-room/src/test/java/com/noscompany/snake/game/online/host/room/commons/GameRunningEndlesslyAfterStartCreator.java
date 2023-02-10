@@ -1,6 +1,6 @@
 package com.noscompany.snake.game.online.host.room.commons;
 
-import com.noscompany.snake.game.online.contract.messages.game.dto.*;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;

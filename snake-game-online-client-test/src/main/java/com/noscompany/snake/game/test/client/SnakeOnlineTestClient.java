@@ -4,7 +4,7 @@ import com.noscompany.snake.game.online.client.ClientEventHandler;
 import com.noscompany.snake.game.online.client.HostAddress;
 import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import com.noscompany.snake.game.online.client.StartingClientError;
-import com.noscompany.snake.game.online.contract.messages.game.dto.*;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediator;
 import com.noscompany.snake.game.online.host.server.Server;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;

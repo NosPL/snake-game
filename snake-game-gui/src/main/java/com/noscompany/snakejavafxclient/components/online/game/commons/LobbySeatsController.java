@@ -7,14 +7,14 @@ import io.vavr.control.Option;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import static com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber.*;
+import static com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber.*;
 
 public class LobbySeatsController extends AbstractController {
     @FXML

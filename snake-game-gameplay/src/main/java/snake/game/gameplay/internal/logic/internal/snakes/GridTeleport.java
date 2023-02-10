@@ -1,9 +1,9 @@
 package snake.game.gameplay.internal.logic.internal.snakes;
 
 import lombok.AllArgsConstructor;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GridSize;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Position;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Walls;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Walls;
 
 @FunctionalInterface
 interface GridTeleport {

@@ -1,6 +1,6 @@
 package snake.game.gameplay.console.client;
 
-import com.noscompany.snake.game.online.contract.messages.game.dto.*;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import lombok.RequiredArgsConstructor;
 import snake.game.gameplay.dto.GameplayParams;
 

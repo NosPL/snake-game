@@ -2,8 +2,8 @@ package snake.game.gameplay.internal.logic.internal.scoring;
 
 import io.vavr.collection.Map;
 import io.vavr.collection.Vector;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Score;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Score;
 
 import java.util.Set;
 

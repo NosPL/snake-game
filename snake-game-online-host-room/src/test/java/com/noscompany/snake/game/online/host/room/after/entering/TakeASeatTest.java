@@ -1,12 +1,12 @@
 package com.noscompany.snake.game.online.host.room.after.entering;
 
-import com.noscompany.snake.game.online.contract.messages.lobby.event.FailedToTakeASeat;
-import com.noscompany.snake.game.online.contract.messages.lobby.event.PlayerTookASeat;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static com.noscompany.snake.game.online.contract.messages.lobby.event.FailedToTakeASeat.seatAlreadyTaken;
+import static com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat.seatAlreadyTaken;
 import static org.junit.Assert.assertEquals;
 
 public class TakeASeatTest extends ActorEnteredTheRoomSetup {

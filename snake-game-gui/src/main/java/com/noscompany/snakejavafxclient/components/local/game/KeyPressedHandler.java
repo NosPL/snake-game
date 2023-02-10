@@ -5,8 +5,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import lombok.AllArgsConstructor;
 
-import static com.noscompany.snake.game.online.contract.messages.game.dto.Direction.*;
-import static com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber.*;
+import static com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction.*;
+import static com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber.*;
 
 @AllArgsConstructor
 class KeyPressedHandler implements EventHandler<KeyEvent> {

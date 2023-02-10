@@ -2,19 +2,19 @@ package snake.game.gameplay.internal.runner;
 
 import lombok.RequiredArgsConstructor;
 import snake.game.gameplay.SnakeGameplayEventHandler;
-import com.noscompany.snake.game.online.contract.messages.game.dto.CountdownTime;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GameSpeed;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GameState;
-import com.noscompany.snake.game.online.contract.messages.game.events.GameFinished;
-import com.noscompany.snake.game.online.contract.messages.game.events.GamePaused;
-import com.noscompany.snake.game.online.contract.messages.game.events.GameResumed;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.CountdownTime;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameSpeed;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameFinished;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.GamePaused;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameResumed;
 import snake.game.gameplay.internal.logic.GameLogic;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.noscompany.snake.game.online.contract.messages.game.events.GameCancelled.gameCancelled;
-import static com.noscompany.snake.game.online.contract.messages.game.events.GameStarted.gameStarted;
-import static com.noscompany.snake.game.online.contract.messages.game.events.TimeLeftToGameStartHasChanged.timeLeftToGameStartHasChanged;
+import static com.noscompany.snake.game.online.contract.messages.gameplay.events.GameCancelled.gameCancelled;
+import static com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStarted.gameStarted;
+import static com.noscompany.snake.game.online.contract.messages.gameplay.events.TimeLeftToGameStartHasChanged.timeLeftToGameStartHasChanged;
 
 @RequiredArgsConstructor
 class GameTask implements Runnable {

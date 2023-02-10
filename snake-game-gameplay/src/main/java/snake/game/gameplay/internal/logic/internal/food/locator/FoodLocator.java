@@ -3,9 +3,9 @@ package snake.game.gameplay.internal.logic.internal.food.locator;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Position;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Snake;
-import snake.game.gameplay.internal.logic.internal.SnakesMoved;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Snake;
+import snake.game.gameplay.internal.logic.internal.SnakesGotMoved;
 
 import java.util.Collection;
 
@@ -19,12 +19,12 @@ public class FoodLocator {
     private int snakeMoveCount;
     private int moveLimit;
 
-    public void updateFoodPosition(SnakesMoved snakesMoved) {
+    public void updateFoodPosition(SnakesGotMoved snakesGotMoved) {
         snakeMoveCount++;
-        boolean foodGotConsumed = snakesMoved.foodGotConsumed();
+        boolean foodGotConsumed = snakesGotMoved.foodGotConsumed();
         if (moveLimitReached() || foodGotConsumed) {
             snakeMoveCount = 0;
-            Collection<Snake> snakes = snakesMoved.getSnakes();
+            Collection<Snake> snakes = snakesGotMoved.getSnakes();
             foodPosition = randomFreePositionFinder.find(snakes);
         }
     }

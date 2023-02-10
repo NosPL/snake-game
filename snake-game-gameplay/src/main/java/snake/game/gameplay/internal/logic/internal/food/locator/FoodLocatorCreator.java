@@ -1,9 +1,9 @@
 package snake.game.gameplay.internal.logic.internal.food.locator;
 
 import lombok.AllArgsConstructor;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GridSize;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Snake;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Walls;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Snake;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Walls;
 
 import java.util.Collection;
 

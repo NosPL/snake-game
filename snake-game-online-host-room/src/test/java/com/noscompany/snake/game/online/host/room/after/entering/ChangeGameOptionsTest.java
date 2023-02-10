@@ -1,7 +1,7 @@
 package com.noscompany.snake.game.online.host.room.after.entering;
 
-import com.noscompany.snake.game.online.contract.messages.lobby.event.FailedToChangeGameOptions;
-import com.noscompany.snake.game.online.contract.messages.lobby.event.GameOptionsChanged;
+import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
+import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import org.junit.Assert;
 import org.junit.Test;
 

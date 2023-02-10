@@ -2,15 +2,15 @@ package com.noscompany.snakejavafxclient.components.commons.game.grid;
 
 import com.noscompany.snakejavafxclient.utils.SnakesColors;
 import javafx.scene.paint.Color;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Direction;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Position;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Snake;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Snake;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import static com.noscompany.snake.game.online.contract.messages.game.dto.Direction.*;
+import static com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction.*;
 import static java.util.stream.Collectors.toList;
 
 class SnakeMapper {

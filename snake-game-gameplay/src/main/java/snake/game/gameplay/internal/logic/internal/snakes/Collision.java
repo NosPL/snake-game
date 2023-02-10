@@ -1,7 +1,7 @@
 package snake.game.gameplay.internal.logic.internal.snakes;
 
 import lombok.Value;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 
 import java.util.stream.Stream;
 

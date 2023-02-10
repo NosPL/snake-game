@@ -1,6 +1,6 @@
 package snake.game.gameplay.dto;
 
-import com.noscompany.snake.game.online.contract.messages.game.dto.*;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import lombok.Value;
 
 import java.util.Set;

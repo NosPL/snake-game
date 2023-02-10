@@ -1,8 +1,8 @@
 package snake.game.gameplay.internal.runner;
 
 import snake.game.gameplay.SnakeGameplayEventHandler;
-import com.noscompany.snake.game.online.contract.messages.game.dto.CountdownTime;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GameSpeed;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.CountdownTime;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameSpeed;
 import snake.game.gameplay.internal.logic.GameLogic;
 
 import java.util.concurrent.atomic.AtomicBoolean;

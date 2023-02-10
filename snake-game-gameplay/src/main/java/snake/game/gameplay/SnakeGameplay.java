@@ -1,8 +1,8 @@
 package snake.game.gameplay;
 
-import com.noscompany.snake.game.online.contract.messages.game.dto.Direction;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GameState;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 
 public interface SnakeGameplay {
 

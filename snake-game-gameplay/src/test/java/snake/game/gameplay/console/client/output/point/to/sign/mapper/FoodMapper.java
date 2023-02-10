@@ -1,6 +1,6 @@
 package snake.game.gameplay.console.client.output.point.to.sign.mapper;
 
-import com.noscompany.snake.game.online.contract.messages.game.dto.Position;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;
 import io.vavr.control.Option;
 
 class FoodMapper {

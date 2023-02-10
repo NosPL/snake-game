@@ -3,9 +3,9 @@ package snake.game.gameplay.internal.logic.internal.food.locator;
 import io.vavr.collection.Vector;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GridSize;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Position;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Snake;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Snake;
 
 import java.util.Collection;
 import java.util.Random;

@@ -1,8 +1,8 @@
 package com.noscompany.snake.game.online.host.room.mediator;
 
-import com.noscompany.snake.game.online.contract.messages.game.dto.Direction;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GameOptions;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
+import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.room.PlayerName;
 import com.noscompany.snake.game.online.contract.messages.room.RoomState;
 import com.noscompany.snake.game.online.host.ports.RoomApiForHost;

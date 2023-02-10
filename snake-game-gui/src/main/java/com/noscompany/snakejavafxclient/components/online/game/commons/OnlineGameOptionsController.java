@@ -4,10 +4,10 @@ import com.noscompany.snakejavafxclient.utils.AbstractController;
 import com.noscompany.snakejavafxclient.utils.Consumer3;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GameOptions;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GameSpeed;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GridSize;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Walls;
+import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameSpeed;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Walls;
 
 public class OnlineGameOptionsController extends AbstractController {
     @FXML

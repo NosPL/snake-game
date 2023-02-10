@@ -6,8 +6,8 @@ import com.noscompany.snakejavafxclient.utils.SnakesColors;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Score;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Score;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 
 import java.net.URL;
 import java.util.*;

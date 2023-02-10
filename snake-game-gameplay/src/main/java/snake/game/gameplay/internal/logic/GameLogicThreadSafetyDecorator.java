@@ -2,11 +2,11 @@ package snake.game.gameplay.internal.logic;
 
 import io.vavr.control.Either;
 import lombok.RequiredArgsConstructor;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Direction;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GameState;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.game.events.GameContinues;
-import com.noscompany.snake.game.online.contract.messages.game.events.GameFinished;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.SnakesMoved;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameFinished;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -27,7 +27,7 @@ class GameLogicThreadSafetyDecorator implements GameLogic {
     }
 
     @Override
-    public Either<GameFinished, GameContinues> moveSnakes() {
+    public Either<GameFinished, SnakesMoved> moveSnakes() {
         killRequests.keySet().forEach(gameLogic::killSnake);
         directions.forEach(gameLogic::changeSnakeDirection);
         return gameLogic.moveSnakes();

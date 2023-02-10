@@ -2,11 +2,16 @@ package com.noscompany.snake.game.test.client;
 
 import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
-import com.noscompany.snake.game.online.contract.messages.game.events.*;
-import com.noscompany.snake.game.online.contract.messages.lobby.event.*;
+import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
+import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
+import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
+import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
 import com.noscompany.snake.game.online.host.RoomEventHandlerForHost;
 
 class NullHostEventHandler implements RoomEventHandlerForHost {
@@ -72,7 +77,7 @@ class NullHostEventHandler implements RoomEventHandlerForHost {
     }
 
     @Override
-    public void handle(GameContinues event) {
+    public void handle(SnakesMoved event) {
 
     }
 

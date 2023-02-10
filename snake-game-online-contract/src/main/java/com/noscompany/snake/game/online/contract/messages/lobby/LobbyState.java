@@ -1,8 +1,8 @@
 package com.noscompany.snake.game.online.contract.messages.lobby;
 
-import com.noscompany.snake.game.online.contract.messages.game.dto.GameOptions;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GameState;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

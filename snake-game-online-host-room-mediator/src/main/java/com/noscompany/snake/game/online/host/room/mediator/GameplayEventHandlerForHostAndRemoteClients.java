@@ -1,6 +1,6 @@
 package com.noscompany.snake.game.online.host.room.mediator;
 
-import com.noscompany.snake.game.online.contract.messages.game.events.*;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.host.RoomEventHandlerForHost;
 import com.noscompany.snake.game.online.host.server.RoomEventHandlerForRemoteClients;
 import lombok.AllArgsConstructor;
@@ -24,7 +24,7 @@ class GameplayEventHandlerForHostAndRemoteClients implements SnakeGameplayEventH
     }
 
     @Override
-    public void handle(GameContinues event) {
+    public void handle(SnakesMoved event) {
         remoteClients.sendToAllClients(event);
         host.handle(event);
     }

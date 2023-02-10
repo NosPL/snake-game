@@ -2,19 +2,24 @@ package com.noscompany.snake.game.online.client;
 
 import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
-import com.noscompany.snake.game.online.contract.messages.game.events.*;
-import com.noscompany.snake.game.online.contract.messages.lobby.event.*;
+import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
+import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.room.FailedToConnectToRoom;
 import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
-import com.noscompany.snake.game.online.contract.messages.server.InitializeRoomState;
+import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
+import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
+import com.noscompany.snake.game.online.contract.messages.server.InitializeRemoteClientState;
 
 public interface ClientEventHandler {
 
     void connectionEstablished();
 
-    void handle(InitializeRoomState initializeRoomState);
+    void handle(InitializeRemoteClientState initializeRemoteClientState);
 
     void handle(SendClientMessageError sendClientMessageError);
 
@@ -52,7 +57,7 @@ public interface ClientEventHandler {
 
     void handle(GameStarted event);
 
-    void handle(GameContinues event);
+    void handle(SnakesMoved event);
 
     void handle(GameFinished event);
 

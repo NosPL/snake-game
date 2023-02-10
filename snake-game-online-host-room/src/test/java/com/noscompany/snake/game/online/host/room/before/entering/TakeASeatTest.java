@@ -1,6 +1,6 @@
 package com.noscompany.snake.game.online.host.room.before.entering;
 
-import com.noscompany.snake.game.online.contract.messages.lobby.event.FailedToTakeASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import org.junit.Assert;
 import org.junit.Test;
 

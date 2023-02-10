@@ -1,6 +1,6 @@
 package com.noscompany.snakejavafxclient.components.local.game;
 
-import com.noscompany.snake.game.online.contract.messages.game.events.*;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snakejavafxclient.components.commons.game.grid.GameGridController;
 import com.noscompany.snakejavafxclient.components.commons.message.MessageController;
 import com.noscompany.snakejavafxclient.components.commons.scoreboard.ScoreboardController;
@@ -11,10 +11,10 @@ import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import snake.game.gameplay.SnakeGameplayCreator;
 import snake.game.gameplay.SnakeGameplayEventHandler;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GameState;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GridSize;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Walls;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Walls;
 
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
@@ -72,7 +72,7 @@ public class GuiGameplayEventHandler implements SnakeGameplayEventHandler {
     }
 
     @Override
-    public void handle(GameContinues event) {
+    public void handle(SnakesMoved event) {
         LagSimulator.lag(() -> {
             Platform.runLater(() -> {
                 gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());

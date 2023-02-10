@@ -3,9 +3,9 @@ package snake.game.gameplay.internal.logic.internal.scoring;
 import io.vavr.collection.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Score;
-import snake.game.gameplay.internal.logic.internal.SnakesMoved;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Score;
+import snake.game.gameplay.internal.logic.internal.SnakesGotMoved;
 
 import static lombok.AccessLevel.PACKAGE;
 
@@ -17,8 +17,8 @@ public class Scoring {
     @Getter
     private Score score;
 
-    public void updateScores(SnakesMoved snakesMoved) {
-        snakesMoved.getNumbersOfSnakesThatAteFood().forEach(this::addPointsForEatingFood);
+    public void updateScores(SnakesGotMoved snakesGotMoved) {
+        snakesGotMoved.getNumbersOfSnakesThatAteFood().forEach(this::addPointsForEatingFood);
         score = scoreCalculator.calculateScore(snakesMap);
     }
 

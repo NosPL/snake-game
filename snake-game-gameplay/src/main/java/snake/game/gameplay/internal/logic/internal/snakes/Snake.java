@@ -4,9 +4,9 @@ import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Direction;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Position;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.IntStream;
 
-import static com.noscompany.snake.game.online.contract.messages.game.dto.Direction.*;
+import static com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction.*;
 import static java.util.stream.Collectors.*;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
@@ -103,11 +103,11 @@ class Snake {
                 .collect(toSet());
     }
 
-    com.noscompany.snake.game.online.contract.messages.game.dto.Snake toDto() {
-        return new com.noscompany.snake.game.online.contract.messages.game.dto.Snake(playerNumber, currentDirection, isAlive(), nodesDto());
+    com.noscompany.snake.game.online.contract.messages.gameplay.dto.Snake toDto() {
+        return new com.noscompany.snake.game.online.contract.messages.gameplay.dto.Snake(playerNumber, currentDirection, isAlive(), nodesDto());
     }
 
-    private List<com.noscompany.snake.game.online.contract.messages.game.dto.Snake.Node> nodesDto() {
+    private List<com.noscompany.snake.game.online.contract.messages.gameplay.dto.Snake.Node> nodesDto() {
         return nodes
                 .stream()
                 .map(Node::toDto)
@@ -136,8 +136,8 @@ class Snake {
                 return false;
         }
 
-        com.noscompany.snake.game.online.contract.messages.game.dto.Snake.Node toDto() {
-            return new com.noscompany.snake.game.online.contract.messages.game.dto.Snake.Node(position, hasFood);
+        com.noscompany.snake.game.online.contract.messages.gameplay.dto.Snake.Node toDto() {
+            return new com.noscompany.snake.game.online.contract.messages.gameplay.dto.Snake.Node(position, hasFood);
         }
 
         static Node notFed(Position position) {

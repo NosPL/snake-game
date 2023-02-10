@@ -1,8 +1,8 @@
 package com.noscompany.snake.game.online.host.room.after.entering;
 
-import com.noscompany.snake.game.online.contract.messages.lobby.event.FailedToFreeUpSeat;
-import com.noscompany.snake.game.online.contract.messages.lobby.event.PlayerFreedUpASeat;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import org.junit.Assert;
 import org.junit.Test;
 

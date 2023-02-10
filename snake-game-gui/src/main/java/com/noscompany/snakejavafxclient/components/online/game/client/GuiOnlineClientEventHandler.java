@@ -2,11 +2,16 @@ package com.noscompany.snakejavafxclient.components.online.game.client;
 
 import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
 import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
-import com.noscompany.snake.game.online.contract.messages.game.events.*;
+import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
+import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
-import com.noscompany.snake.game.online.contract.messages.lobby.event.*;
 import com.noscompany.snake.game.online.contract.messages.room.*;
-import com.noscompany.snake.game.online.contract.messages.server.InitializeRoomState;
+import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
+import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
+import com.noscompany.snake.game.online.contract.messages.server.InitializeRemoteClientState;
 import com.noscompany.snakejavafxclient.components.online.game.commons.*;
 import com.noscompany.snakejavafxclient.utils.Controllers;
 import com.noscompany.snake.game.online.client.SendClientMessageError;
@@ -110,7 +115,7 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     }
 
     @Override
-    public void handle(GameContinues event) {
+    public void handle(SnakesMoved event) {
         Platform.runLater(() -> {
             gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
             scoreboardController.print(event.getScore());
@@ -169,7 +174,7 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     }
 
     @Override
-    public void handle(InitializeRoomState event) {
+    public void handle(InitializeRemoteClientState event) {
         Platform.runLater(() -> {
             RoomState roomState = event.getRoomState();
             joinedUsersController.update(roomState.getUsers());

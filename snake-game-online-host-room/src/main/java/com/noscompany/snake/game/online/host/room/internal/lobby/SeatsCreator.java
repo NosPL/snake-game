@@ -1,6 +1,6 @@
 package com.noscompany.snake.game.online.host.room.internal.lobby;
 
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import io.vavr.collection.Vector;
 
 import java.util.Map;

@@ -2,7 +2,8 @@ package com.noscompany.snake.game.online.contract.messages;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.noscompany.snake.game.online.contract.messages.game.dto.*;
+import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
 import com.noscompany.snake.game.online.contract.messages.room.RoomState;
 import com.noscompany.snake.game.online.contract.object.mapper.ObjectMapperCreator;

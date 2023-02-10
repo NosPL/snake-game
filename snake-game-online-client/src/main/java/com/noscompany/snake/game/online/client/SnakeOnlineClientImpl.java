@@ -1,7 +1,7 @@
 package com.noscompany.snake.game.online.client;
 
 import com.noscompany.snake.game.online.client.internal.state.ClientState;
-import com.noscompany.snake.game.online.contract.messages.game.dto.*;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

@@ -1,6 +1,6 @@
 package com.noscompany.snake.game.online.host.room.after.entering;
 
-import com.noscompany.snake.game.online.contract.messages.lobby.event.FailedToStartGame;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToStartGame;
 import io.vavr.control.Option;
 import org.junit.Test;
 

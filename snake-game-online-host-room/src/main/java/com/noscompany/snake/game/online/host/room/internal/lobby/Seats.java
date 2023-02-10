@@ -1,9 +1,9 @@
 package com.noscompany.snake.game.online.host.room.internal.lobby;
 
 import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
-import com.noscompany.snake.game.online.contract.messages.lobby.event.FailedToFreeUpSeat;
-import com.noscompany.snake.game.online.contract.messages.lobby.event.FailedToTakeASeat;
-import com.noscompany.snake.game.online.contract.messages.game.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
+import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;

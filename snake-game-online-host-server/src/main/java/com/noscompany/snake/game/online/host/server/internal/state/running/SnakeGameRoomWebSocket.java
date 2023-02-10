@@ -1,6 +1,6 @@
 package com.noscompany.snake.game.online.host.server.internal.state.running;
 
-import com.noscompany.snake.game.online.contract.messages.server.InitializeRoomState;
+import com.noscompany.snake.game.online.contract.messages.server.InitializeRemoteClientState;
 import com.noscompany.snake.game.online.host.server.ports.RoomApiForRemoteClients;
 import com.noscompany.snake.game.online.host.server.ports.RoomApiForRemoteClients.RemoteClientId;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class SnakeGameRoomWebSocket {
     private void sendRoomState(AtmosphereResource resource) {
         var remoteClientId = new RemoteClientId(resource.uuid());
         var roomState = roomApiForRemoteClients.getRoomState();
-        var event = new InitializeRoomState(roomState);
+        var event = new InitializeRemoteClientState(roomState);
         runningServerState.sendToClientWithId(remoteClientId, event);
     }
 

@@ -1,13 +1,13 @@
 package snake.game.gameplay.console.client.output;
 
-import com.noscompany.snake.game.online.contract.messages.game.events.*;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import io.vavr.control.Option;
 import snake.game.gameplay.SnakeGameplayEventHandler;
 import snake.game.gameplay.console.client.output.point.to.sign.mapper.PointToSignMapper;
-import com.noscompany.snake.game.online.contract.messages.game.dto.GridSize;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Position;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Score;
-import com.noscompany.snake.game.online.contract.messages.game.dto.Snake;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Score;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Snake;
 
 import java.util.Collection;
 
@@ -25,7 +25,7 @@ public class ConsolePrinter implements SnakeGameplayEventHandler {
         printScore(event.getScore());
     }
 
-    public void handle(GameContinues event) {
+    public void handle(SnakesMoved event) {
         System.out.println();
         printGrid(event.getSnakes(), event.getFoodPosition(), event.getGridSize());
         printScore(event.getScore());

@@ -1,6 +1,6 @@
 package com.noscompany.snakejavafxclient.components.commons.game.grid;
 
-import com.noscompany.snake.game.online.contract.messages.game.dto.*;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
 import io.vavr.control.Option;
 import javafx.fxml.FXML;

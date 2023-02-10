@@ -1,6 +1,6 @@
 package com.noscompany.snake.game.online.host.room.commons;
 
-import com.noscompany.snake.game.online.contract.messages.game.events.*;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import snake.game.gameplay.SnakeGameplayEventHandler;
 
 public class SnakeGameplayIdleEventHandler implements SnakeGameplayEventHandler {
@@ -16,7 +16,7 @@ public class SnakeGameplayIdleEventHandler implements SnakeGameplayEventHandler 
     }
 
     @Override
-    public void handle(GameContinues event) {
+    public void handle(SnakesMoved event) {
 
     }
 

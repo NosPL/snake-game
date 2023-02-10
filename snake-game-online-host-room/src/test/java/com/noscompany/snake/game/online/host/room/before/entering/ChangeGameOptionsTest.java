@@ -1,6 +1,6 @@
 package com.noscompany.snake.game.online.host.room.before.entering;
 
-import com.noscompany.snake.game.online.contract.messages.lobby.event.FailedToChangeGameOptions;
+import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import org.junit.Assert;
 import org.junit.Test;
 
