@@ -109,7 +109,7 @@ class RoomImpl implements Room {
     }
 
     @Override
-    public Option<UserLeftRoom> removeUserById(String userId) {
+    public Option<UserLeftRoom> leave(String userId) {
         return userRegistry
                 .removeUser(userId)
                 .map(UserRegistry.UserRemoved::getUserName)

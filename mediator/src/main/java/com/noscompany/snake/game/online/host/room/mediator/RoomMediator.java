@@ -152,9 +152,9 @@ public class RoomMediator implements RoomApiForHost, RoomApiForRemoteClients {
     }
 
     @Override
-    public void removeClient(RemoteClientId remoteClientId) {
+    public void leaveRoom(RemoteClientId remoteClientId) {
         room
-                .removeUserById(remoteClientId.getId())
+                .leave(remoteClientId.getId())
                 .peek(eventDispatcher::sendToClientsAndHost);
     }
 

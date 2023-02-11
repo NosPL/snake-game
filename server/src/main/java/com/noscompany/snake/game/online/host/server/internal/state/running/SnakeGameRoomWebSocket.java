@@ -44,6 +44,6 @@ public class SnakeGameRoomWebSocket {
     public void onDisconnect(AtmosphereResourceEvent re) {
         var userId = re.getResource().uuid();
         log.info("user disconnected: " + userId);
-        roomApiForRemoteClients.removeClient(new RemoteClientId(userId));
+        roomApiForRemoteClients.leaveRoom(new RemoteClientId(userId));
     }
 }

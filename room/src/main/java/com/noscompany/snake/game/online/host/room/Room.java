@@ -30,7 +30,7 @@ public interface Room {
     void pauseGame(String userId);
     void resumeGame(String userId);
     Either<FailedToSendChatMessage, UserSentChatMessage> sendChatMessage(String userId, String messageContent);
-    Option<UserLeftRoom> removeUserById(String userId);
+    Option<UserLeftRoom> leave(String userId);
     RoomState getState();
     boolean hasUserWithId(String userId);
     boolean userIsAdmin(String userId);

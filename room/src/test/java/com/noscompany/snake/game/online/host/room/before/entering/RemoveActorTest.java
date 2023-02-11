@@ -7,7 +7,7 @@ public class RemoveActorTest extends ActorNotInTheRoomSetup {
     @Test
     public void removingActorThatDidNotEnterTheRoomShouldNotProduceAnyEvent() {
 //        WHEN someone tries to remove the actor from the room
-        var possibleEvent = room.removeUserById(actorId);
+        var possibleEvent = room.leave(actorId);
 //        THEN nothing happens
         assert possibleEvent.isEmpty();
     }

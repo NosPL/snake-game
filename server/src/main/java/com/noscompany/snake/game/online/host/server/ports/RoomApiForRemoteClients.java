@@ -18,7 +18,7 @@ public interface RoomApiForRemoteClients {
     void freeUpSeat(RemoteClientId remoteClientId);
     void takeASeat(RemoteClientId remoteClientId, PlayerNumber playerNumber);
     void enterRoom(RemoteClientId remoteClientId, PlayerName playerName);
-    void removeClient(RemoteClientId remoteClientId);
+    void leaveRoom(RemoteClientId remoteClientId);
 
     RoomState getRoomState();
 
