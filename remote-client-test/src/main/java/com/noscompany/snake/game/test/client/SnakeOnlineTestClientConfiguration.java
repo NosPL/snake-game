@@ -5,19 +5,25 @@ import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import com.noscompany.snake.game.online.client.SnakeOnlineClientConfiguration;
 import com.noscompany.snake.game.online.contract.messages.room.PlayersLimit;
 import com.noscompany.snake.game.online.host.room.RoomConfiguration;
+import com.noscompany.snake.game.online.host.room.RoomCreator;
 import com.noscompany.snake.game.online.host.server.ServerConfiguration;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediator;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorConfiguration;
 import com.noscompany.snake.game.online.host.server.Server;
 import io.vavr.control.Option;
+import snake.game.gameplay.SnakeGameplayConfiguration;
+import snake.game.gameplay.SnakeGameplayCreator;
 
 public class SnakeOnlineTestClientConfiguration {
 
     public SnakeOnlineClient snakeOnlineTestClient(ClientEventHandler clientEventHandler) {
-        SnakeOnlineClient snakeOnlineClient = new SnakeOnlineClientConfiguration().create(clientEventHandler);
-        Server server = new ServerConfiguration().createServer();
-        NullHostEventHandler nullHostEventHandler = new NullHostEventHandler();
-        RoomMediator roomMediator = new RoomMediatorConfiguration().roomMediator(nullHostEventHandler, server, new RoomConfiguration().roomCreator(), new PlayersLimit(10));
+        var snakeOnlineClient = new SnakeOnlineClientConfiguration().create(clientEventHandler);
+        var server = new ServerConfiguration().createServer();
+        var nullHostEventHandler = new NullHostEventHandler();
+        var roomCreator = new RoomConfiguration().roomCreator();
+        var snakeGameplayCreator = new SnakeGameplayConfiguration().snakeGameplayCreator();
+        var playersLimit = new PlayersLimit(10);
+        var roomMediator = new RoomMediatorConfiguration().roomMediator(nullHostEventHandler, server, roomCreator, playersLimit, snakeGameplayCreator);
         return new SnakeOnlineTestClient(snakeOnlineClient, clientEventHandler, server, roomMediator, Option.none());
     }
 }
