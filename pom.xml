@@ -16,17 +16,17 @@
     </properties>
 
     <modules>
-        <module>snake-game-gameplay</module>
-        <module>snake-game-gui</module>
-        <module>snake-game-online-contract</module>
-        <module>snake-game-online-client</module>
-        <module>snake-game-online-host</module>
-        <module>snake-game-online-host-room</module>
-        <module>snake-game-online-host-room-mediator</module>
-        <module>snake-game-online-host-server</module>
-        <module>snake-game-online-client-test</module>
-        <module>snake-game-online-network-interfaces-analyzer</module>
-        <module>snake-game-online-host-dependency-configurator</module>
+        <module>room</module>
+        <module>room-gameplay</module>
+        <module>gui</module>
+        <module>online-contract</module>
+        <module>remote-client</module>
+        <module>host</module>
+        <module>mediator</module>
+        <module>server</module>
+        <module>remote-client-test</module>
+        <module>network-interfaces-analyzer</module>
+        <module>host-dependency-configurator</module>
     </modules>
 
     <dependencies>

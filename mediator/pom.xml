@@ -9,15 +9,23 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>snake-game-online-host</artifactId>
+    <artifactId>mediator</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>com.noscompany</groupId>
-            <artifactId>snake-game-online-host-server</artifactId>
+            <artifactId>room</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.noscompany</groupId>
+            <artifactId>host</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.noscompany</groupId>
+            <artifactId>server</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>
