@@ -5,7 +5,7 @@ import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessa
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
-import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
+import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
@@ -59,17 +59,17 @@ class GuiOnlineHostEventHandler implements HostEventHandler {
 
     @Override
     public void handle(GameOptionsChanged event) {
-        Platform.runLater(() -> update(event.getLobbyState()));
+        Platform.runLater(() -> update(event.getPlaygroundState()));
     }
 
     @Override
     public void handle(PlayerTookASeat event) {
-        Platform.runLater(() -> update(event.getLobbyState()));
+        Platform.runLater(() -> update(event.getPlaygroundState()));
     }
 
     @Override
     public void handle(PlayerFreedUpASeat event) {
-        Platform.runLater(() -> update(event.getLobbyState()));
+        Platform.runLater(() -> update(event.getPlaygroundState()));
     }
 
     @Override
@@ -204,11 +204,11 @@ class GuiOnlineHostEventHandler implements HostEventHandler {
         });
     }
 
-    private void update(LobbyState lobbyState) {
-        onlineGameOptionsController.update(lobbyState.getGameOptions());
-        lobbySeatsController.update(lobbyState.getSeats());
-        scoreboardController.update(lobbyState);
-        gameGridController.update(lobbyState.getGameState());
+    private void update(PlaygroundState playgroundState) {
+        onlineGameOptionsController.update(playgroundState.getGameOptions());
+        lobbySeatsController.update(playgroundState.getSeats());
+        scoreboardController.update(playgroundState);
+        gameGridController.update(playgroundState.getGameState());
         messageController.clear();
     }
 

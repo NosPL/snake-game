@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
-import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
+import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.room.RoomState;
 import com.noscompany.snake.game.online.contract.object.mapper.ObjectMapperCreator;
 import io.vavr.control.Option;
@@ -27,10 +27,10 @@ public class BaseTestClass {
         return new RoomState(false, Set.of("a", "b", "c"), lobbyState());
     }
 
-    protected LobbyState lobbyState() {
-        return new LobbyState(
+    protected PlaygroundState lobbyState() {
+        return new PlaygroundState(
                 new GameOptions(GridSize._10x10, GameSpeed.x1, Walls.OFF),
-                Set.of(new LobbyState.Seat(PlayerNumber._1, Option.of("some name"),  true, true)),
+                Set.of(new PlaygroundState.Seat(PlayerNumber._1, Option.of("some name"),  true, true)),
                 false,
                 gameState());
     }

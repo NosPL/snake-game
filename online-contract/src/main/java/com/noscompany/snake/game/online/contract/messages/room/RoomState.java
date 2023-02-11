@@ -1,6 +1,6 @@
 package com.noscompany.snake.game.online.contract.messages.room;
 
-import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
+import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -15,5 +15,5 @@ import static lombok.AccessLevel.PRIVATE;
 public class RoomState {
     boolean isFull;
     Set<String> users;
-    LobbyState lobbyState;
+    PlaygroundState playgroundState;
 }

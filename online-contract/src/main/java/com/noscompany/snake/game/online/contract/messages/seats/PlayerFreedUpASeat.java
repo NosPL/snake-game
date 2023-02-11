@@ -2,7 +2,7 @@ package com.noscompany.snake.game.online.contract.messages.seats;
 
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
-import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
+import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -16,5 +16,5 @@ public class PlayerFreedUpASeat implements OnlineMessage {
     MessageType messageType = MessageType.PLAYER_FREED_UP_SEAT;
     String userName;
     PlayerNumber freedUpPlayerNumber;
-    LobbyState lobbyState;
+    PlaygroundState playgroundState;
 }

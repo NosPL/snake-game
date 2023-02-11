@@ -1,6 +1,6 @@
 package com.noscompany.snakejavafxclient.components.commons.scoreboard;
 
-import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
+import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
 import com.noscompany.snakejavafxclient.utils.SnakesColors;
 import javafx.fxml.FXML;
@@ -30,11 +30,11 @@ public class ScoreboardController extends AbstractController {
         vBox.getChildren().add(scoreBoard);
     }
 
-    public void update(LobbyState lobbyState) {
-        lobbyState
+    public void update(PlaygroundState playgroundState) {
+        playgroundState
                 .getSeats()
                 .forEach(seat -> updateSnakeName(seat.getUserName().getOrElse(""), seat.getPlayerNumber()));
-        print(lobbyState.getGameState().getScore());
+        print(playgroundState.getGameState().getScore());
     }
 
     public void clear() {

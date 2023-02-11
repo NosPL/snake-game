@@ -2,8 +2,8 @@ package com.noscompany.snake.game.online.host.room.commons;
 
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
-import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
-import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState.Seat;
+import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
+import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState.Seat;
 import com.noscompany.snake.game.online.contract.messages.room.PlayersLimit;
 import com.noscompany.snake.game.online.host.room.Room;
 import com.noscompany.snake.game.online.host.room.RoomConfiguration;
@@ -45,8 +45,8 @@ public class RoomTestSetup {
         return UUID.randomUUID().toString().substring(0, 10);
     }
 
-    protected LobbyState lobbyState() {
-        return room.getState().getLobbyState();
+    protected PlaygroundState lobbyState() {
+        return room.getState().getPlaygroundState();
     }
 
     protected boolean gameIsRunning() {

@@ -1,4 +1,4 @@
-package com.noscompany.snake.game.online.host.room.internal.lobby;
+package com.noscompany.snake.game.online.host.room.internal.playground;
 
 
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
@@ -6,7 +6,7 @@ import com.noscompany.snake.game.online.contract.messages.game.options.GameOptio
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToStartGame;
-import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
+import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
@@ -22,7 +22,7 @@ import static io.vavr.control.Either.right;
 import static io.vavr.control.Option.of;
 
 @AllArgsConstructor
-public class Lobby {
+public class Playground {
     private final Seats seats;
     private final GameCreator gameCreator;
     private GameOptions gameOptions;
@@ -38,7 +38,7 @@ public class Lobby {
     }
 
     private PlayerTookASeat playerTookASeat(Seat.UserSuccessfullyTookASeat event) {
-        return new PlayerTookASeat(event.getUserName(), event.getPlayerNumber(), getLobbyState());
+        return new PlayerTookASeat(event.getUserName(), event.getPlayerNumber(), getPlaygroundState());
     }
 
     public synchronized Either<FailedToFreeUpSeat, PlayerFreedUpASeat> freeUpASeat(String userName) {
@@ -54,7 +54,7 @@ public class Lobby {
     }
 
     private PlayerFreedUpASeat playerFreedUpASeat(Seat.UserFreedUpASeat event) {
-        return new PlayerFreedUpASeat(event.getUserName(), event.getFreedUpSeatNumber(), getLobbyState());
+        return new PlayerFreedUpASeat(event.getUserName(), event.getFreedUpSeatNumber(), getPlaygroundState());
     }
 
     public synchronized Either<FailedToChangeGameOptions, GameOptionsChanged> changeGameOptions(String userName, GameOptions gameOptions) {
@@ -66,7 +66,7 @@ public class Lobby {
             return left(FailedToChangeGameOptions.gameIsAlreadyRunning());
         this.gameOptions = gameOptions;
         recreateGame();
-        return right(new GameOptionsChanged(getLobbyState()));
+        return right(new GameOptionsChanged(getPlaygroundState()));
     }
 
     public synchronized Option<FailedToStartGame> startGame(String userName) {
@@ -102,8 +102,8 @@ public class Lobby {
             snakeGameplay.resume();
     }
 
-    public LobbyState getLobbyState() {
-        return new LobbyState(
+    public PlaygroundState getPlaygroundState() {
+        return new PlaygroundState(
                 gameOptions,
                 seats.toDto(),
                 snakeGameplay.isRunning(),

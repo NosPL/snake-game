@@ -1,6 +1,6 @@
-package com.noscompany.snake.game.online.host.room.internal.lobby;
+package com.noscompany.snake.game.online.host.room.internal.playground;
 
-import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
+import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
@@ -48,7 +48,7 @@ class Seats {
         return findSeatBy(userName).exists(Seat::isAdmin);
     }
 
-    Set<LobbyState.Seat> toDto() {
+    Set<PlaygroundState.Seat> toDto() {
         return seatsStream()
                 .map(Seat::toDto)
                 .collect(toSet());

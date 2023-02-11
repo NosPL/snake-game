@@ -17,7 +17,7 @@ import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASea
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
 import com.noscompany.snake.game.online.host.room.internal.chat.Chat;
-import com.noscompany.snake.game.online.host.room.internal.lobby.Lobby;
+import com.noscompany.snake.game.online.host.room.internal.playground.Playground;
 import com.noscompany.snake.game.online.host.room.internal.user.registry.UserRegistry;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
@@ -28,7 +28,7 @@ import java.util.function.Function;
 @AllArgsConstructor
 class RoomImpl implements Room {
     private final UserRegistry userRegistry;
-    private final Lobby lobby;
+    private final Playground playground;
     private final Chat chat;
 
     @Override
@@ -44,7 +44,7 @@ class RoomImpl implements Room {
         return userRegistry
                 .findUserNameById(userId)
                 .toEither(FailedToTakeASeat.userNotInTheRoom())
-                .flatMap(userName -> lobby.takeASeat(userName, playerNumber));
+                .flatMap(userName -> playground.takeASeat(userName, playerNumber));
     }
 
     @Override
@@ -52,7 +52,7 @@ class RoomImpl implements Room {
         return userRegistry
                 .findUserNameById(userId)
                 .toEither(FailedToFreeUpSeat.userNotInTheRoom())
-                .flatMap(lobby::freeUpASeat);
+                .flatMap(playground::freeUpASeat);
     }
 
     @Override
@@ -60,7 +60,7 @@ class RoomImpl implements Room {
         return userRegistry
                 .findUserNameById(userId)
                 .toEither(FailedToChangeGameOptions.userNotInTheRoom())
-                .flatMap(userName -> lobby.changeGameOptions(userName, gameOptions));
+                .flatMap(userName -> playground.changeGameOptions(userName, gameOptions));
     }
 
     @Override
@@ -68,7 +68,7 @@ class RoomImpl implements Room {
         return userRegistry
                 .findUserNameById(userId)
                 .toEither(FailedToStartGame.userIsNotInTheRoom())
-                .map(lobby::startGame)
+                .map(playground::startGame)
                 .fold(Option::of, Function.identity());
     }
 
@@ -76,28 +76,28 @@ class RoomImpl implements Room {
     public void changeSnakeDirection(String userId, Direction direction) {
         userRegistry
                 .findUserNameById(userId)
-                .peek(userName -> lobby.changeSnakeDirection(userName, direction));
+                .peek(userName -> playground.changeSnakeDirection(userName, direction));
     }
 
     @Override
     public void cancelGame(String userId) {
         userRegistry
                 .findUserNameById(userId)
-                .peek(lobby::cancelGame);
+                .peek(playground::cancelGame);
     }
 
     @Override
     public void pauseGame(String userId) {
         userRegistry
                 .findUserNameById(userId)
-                .peek(lobby::pauseGame);
+                .peek(playground::pauseGame);
     }
 
     @Override
     public void resumeGame(String userId) {
         userRegistry
                 .findUserNameById(userId)
-                .peek(lobby::resumeGame);
+                .peek(playground::resumeGame);
     }
 
     @Override
@@ -120,7 +120,7 @@ class RoomImpl implements Room {
         return new UserLeftRoom(
                 userName,
                 userRegistry.getUserNames(),
-                lobby.freeUpASeat(userName).toOption());
+                playground.freeUpASeat(userName).toOption());
     }
 
     @Override
@@ -132,14 +132,14 @@ class RoomImpl implements Room {
     public boolean userIsAdmin(String userId) {
         return userRegistry
                 .findUserNameById(userId)
-                .exists(lobby::userIsAdmin);
+                .exists(playground::userIsAdmin);
     }
 
     @Override
     public boolean userIsSitting(String userId) {
         return userRegistry
                 .findUserNameById(userId)
-                .exists(lobby::userTookASeat);
+                .exists(playground::userTookASeat);
     }
 
     @Override
@@ -147,7 +147,7 @@ class RoomImpl implements Room {
         return new RoomState(
                 isFull(),
                 userRegistry.getUserNames(),
-                lobby.getLobbyState());
+                playground.getPlaygroundState());
     }
 
     @Override

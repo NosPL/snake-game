@@ -1,4 +1,4 @@
-package com.noscompany.snake.game.online.host.room.internal.lobby;
+package com.noscompany.snake.game.online.host.room.internal.playground;
 
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;

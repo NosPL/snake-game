@@ -1,6 +1,6 @@
 package com.noscompany.snake.game.online.host.room.after.entering;
 
-import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
+import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import org.junit.Test;
 
 public class ChoosingAdminTest extends ActorEnteredTheRoomSetup {
@@ -80,6 +80,6 @@ public class ChoosingAdminTest extends ActorEnteredTheRoomSetup {
     private boolean allSeatsAreFree() {
         return lobbyState()
                 .getSeats().stream()
-                .noneMatch(LobbyState.Seat::isTaken);
+                .noneMatch(PlaygroundState.Seat::isTaken);
     }
 }

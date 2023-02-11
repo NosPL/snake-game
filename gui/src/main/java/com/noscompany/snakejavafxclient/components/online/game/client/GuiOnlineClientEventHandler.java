@@ -5,7 +5,7 @@ import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatM
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
-import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
+import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.room.*;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
@@ -53,17 +53,17 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
 
     @Override
     public void handle(GameOptionsChanged event) {
-        Platform.runLater(() -> update(event.getLobbyState()));
+        Platform.runLater(() -> update(event.getPlaygroundState()));
     }
 
     @Override
     public void handle(PlayerTookASeat event) {
-        Platform.runLater(() -> update(event.getLobbyState()));
+        Platform.runLater(() -> update(event.getPlaygroundState()));
     }
 
     @Override
     public void handle(PlayerFreedUpASeat event) {
-        Platform.runLater(() -> update(event.getLobbyState()));
+        Platform.runLater(() -> update(event.getPlaygroundState()));
     }
 
     @Override
@@ -178,7 +178,7 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
         Platform.runLater(() -> {
             RoomState roomState = event.getRoomState();
             joinedUsersController.update(roomState.getUsers());
-            update(roomState.getLobbyState());
+            update(roomState.getPlaygroundState());
             joinGameController.enterRoom();
         });
     }
@@ -211,7 +211,7 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
             RoomState roomState = event.getRoomState();
             joinGameController.handle(event);
             joinedUsersController.update(roomState.getUsers());
-            update(roomState.getLobbyState());
+            update(roomState.getPlaygroundState());
         });
     }
 
@@ -245,11 +245,11 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
         });
     }
 
-    private void update(LobbyState lobbyState) {
-        onlineGameOptionsController.update(lobbyState.getGameOptions());
-        lobbySeatsController.update(lobbyState.getSeats());
-        scoreboardController.update(lobbyState);
-        gameGridController.update(lobbyState.getGameState());
+    private void update(PlaygroundState playgroundState) {
+        onlineGameOptionsController.update(playgroundState.getGameOptions());
+        lobbySeatsController.update(playgroundState.getSeats());
+        scoreboardController.update(playgroundState);
+        gameGridController.update(playgroundState.getGameState());
         messageController.clear();
     }
 }

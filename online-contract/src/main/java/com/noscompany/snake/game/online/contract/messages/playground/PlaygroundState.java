@@ -1,4 +1,4 @@
-package com.noscompany.snake.game.online.contract.messages.lobby;
+package com.noscompany.snake.game.online.contract.messages.playground;
 
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
@@ -15,7 +15,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Value
 @NoArgsConstructor(force = true, access = PRIVATE)
 @AllArgsConstructor
-public class LobbyState {
+public class PlaygroundState {
     GameOptions gameOptions;
     Set<Seat> seats;
     boolean gameRunning;

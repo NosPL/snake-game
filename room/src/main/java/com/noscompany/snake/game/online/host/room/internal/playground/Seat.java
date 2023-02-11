@@ -1,6 +1,6 @@
-package com.noscompany.snake.game.online.host.room.internal.lobby;
+package com.noscompany.snake.game.online.host.room.internal.playground;
 
-import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
+import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import io.vavr.control.Either;
@@ -68,8 +68,8 @@ class Seat {
         this.isAdmin = true;
     }
 
-    LobbyState.Seat toDto() {
-        return new LobbyState.Seat(playerNumber, userName, isAdmin, isTaken);
+    PlaygroundState.Seat toDto() {
+        return new PlaygroundState.Seat(playerNumber, userName, isAdmin, isTaken);
     }
 
     @Value

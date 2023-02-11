@@ -1,6 +1,6 @@
 package com.noscompany.snakejavafxclient.components.online.game.commons;
 
-import com.noscompany.snake.game.online.contract.messages.lobby.LobbyState;
+import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snakejavafxclient.utils.SnakesColors;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
 import io.vavr.control.Option;
@@ -74,12 +74,12 @@ public class LobbySeatsController extends AbstractController {
         freeUpASeatAction.run();
     }
 
-    public void update(Set<LobbyState.Seat> seats) {
+    public void update(Set<PlaygroundState.Seat> seats) {
         resetSeatsLabels();
         updateSeats(seats);
     }
 
-    private void updateSeats(Set<LobbyState.Seat> seats) {
+    private void updateSeats(Set<PlaygroundState.Seat> seats) {
         seats.forEach(seat -> seatTook(seat.getUserName(), seat.getPlayerNumber(), seat.isAdmin()));
     }
 

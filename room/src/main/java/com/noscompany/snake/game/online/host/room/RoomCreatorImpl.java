@@ -2,7 +2,7 @@ package com.noscompany.snake.game.online.host.room;
 
 import com.noscompany.snake.game.online.contract.messages.room.PlayersLimit;
 import com.noscompany.snake.game.online.host.room.internal.chat.ChatCreator;
-import com.noscompany.snake.game.online.host.room.internal.lobby.LobbyCreator;
+import com.noscompany.snake.game.online.host.room.internal.playground.PlaygroundCreator;
 import com.noscompany.snake.game.online.host.room.internal.user.registry.UserRegistryCreator;
 import snake.game.gameplay.SnakeGameplayCreator;
 import snake.game.gameplay.SnakeGameplayEventHandler;
@@ -14,7 +14,7 @@ class RoomCreatorImpl implements RoomCreator{
                      PlayersLimit playersLimit) {
         return new RoomImpl(
                 UserRegistryCreator.create(playersLimit),
-                LobbyCreator.create(snakeGameplayEventHandler, snakeGameplayCreator),
+                PlaygroundCreator.create(snakeGameplayEventHandler, snakeGameplayCreator),
                 ChatCreator.create());
     }
 
