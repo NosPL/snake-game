@@ -7,13 +7,14 @@ import com.noscompany.snake.game.online.contract.messages.room.PlayersLimit;
 import com.noscompany.snake.game.online.host.room.RoomConfiguration;
 import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorConfiguration;
 import com.noscompany.snake.game.online.host.server.ServerConfiguration;
+import com.noscompany.snake.game.online.websocket.WebsocketConfiguration;
 import snake.game.gameplay.SnakeGameplayConfiguration;
-import snake.game.gameplay.SnakeGameplayCreator;
 
 public class SnakeOnlineHostDependencyConfigurator {
 
     public SnakeOnlineHost snakeOnlineHost(HostEventHandler hostEventHandler, PlayersLimit playersLimit) {
-        var server = new ServerConfiguration().createServer();
+        var websocketCreator = new WebsocketConfiguration().websocketCreator();
+        var server = new ServerConfiguration().server(websocketCreator);
         var roomCreator = new RoomConfiguration().roomCreator();
         var snakeGameplayCreator = new SnakeGameplayConfiguration().snakeGameplayCreator();
         var roomMediator = new RoomMediatorConfiguration().roomMediator(hostEventHandler, server, roomCreator, playersLimit, snakeGameplayCreator);

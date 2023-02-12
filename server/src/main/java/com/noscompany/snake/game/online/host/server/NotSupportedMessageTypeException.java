@@ -1,4 +1,4 @@
-package com.noscompany.snake.game.online.host.server.internal.state.running;
+package com.noscompany.snake.game.online.host.server;
 
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage.MessageType;
 

@@ -27,6 +27,7 @@
         <module>remote-client-test</module>
         <module>network-interfaces-analyzer</module>
         <module>host-dependency-configurator</module>
+        <module>server-websocket-nettosphere</module>
     </modules>
 
     <dependencies>

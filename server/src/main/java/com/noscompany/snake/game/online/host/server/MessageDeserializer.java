@@ -1,22 +1,22 @@
-package com.noscompany.snake.game.online.host.server.internal.state.running;
+package com.noscompany.snake.game.online.host.server;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage.MessageType;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
-import com.noscompany.snake.game.online.host.server.ports.RoomApiForRemoteClients;
+import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
 import io.vavr.control.Try;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.noscompany.snake.game.online.host.server.internal.state.running.DeserializedMessage.*;
+import static com.noscompany.snake.game.online.host.server.DeserializedMessage.*;
 import static io.vavr.control.Try.failure;
 import static io.vavr.control.Try.success;
 
 @Slf4j
 class MessageDeserializer {
 
-    Try<DeserializedMessage> deserialize(RoomApiForRemoteClients.RemoteClientId remoteClientId, String serializedMessage) {
+    Try<DeserializedMessage> deserialize(RemoteClientId remoteClientId, String serializedMessage) {
         try {
             var parsedMessage = JsonPath.parse(serializedMessage);
             var messageType = getMessageType(parsedMessage);
@@ -33,7 +33,7 @@ class MessageDeserializer {
         return MessageType.valueOf(messageTypeName);
     }
 
-    private DeserializedMessage mapToObject(RoomApiForRemoteClients.RemoteClientId remoteClientId, DocumentContext parsedMessage, MessageType messageType) {
+    private DeserializedMessage mapToObject(RemoteClientId remoteClientId, DocumentContext parsedMessage, MessageType messageType) {
         return switch (messageType) {
             case CHANGE_SNAKE_DIRECTION -> changeSnakeDirection(remoteClientId, parsedMessage);
             case SEND_CHAT_MESSAGE -> toSendChat(remoteClientId, parsedMessage);
@@ -49,17 +49,17 @@ class MessageDeserializer {
         };
     }
 
-    private DeserializedMessage toSendChat(RoomApiForRemoteClients.RemoteClientId remoteClientId, DocumentContext parsedMessage) {
+    private DeserializedMessage toSendChat(RemoteClientId remoteClientId, DocumentContext parsedMessage) {
         String messageContent = parsedMessage.read("$.messageContent");
         return new SendChatMessage(remoteClientId, messageContent);
     }
 
-    private DeserializedMessage toEnterTheRoom(RoomApiForRemoteClients.RemoteClientId remoteClientId, DocumentContext parsedMessage) {
+    private DeserializedMessage toEnterTheRoom(RemoteClientId remoteClientId, DocumentContext parsedMessage) {
         String userName = parsedMessage.read("$.userName");
         return new EnterRoom(remoteClientId, userName);
     }
 
-    private DeserializedMessage changeGameOptions(RoomApiForRemoteClients.RemoteClientId remoteClientId, DocumentContext parsedMessage) {
+    private DeserializedMessage changeGameOptions(RemoteClientId remoteClientId, DocumentContext parsedMessage) {
         String gridSizeStr = parsedMessage.read("$.gridSize");
         GridSize gridSize = GridSize.valueOf(gridSizeStr);
         String gameSpeedStr = parsedMessage.read("$.gameSpeed");
@@ -70,13 +70,13 @@ class MessageDeserializer {
         return new ChangeGameOptions(remoteClientId, gameOptions);
     }
 
-    private DeserializedMessage changeSnakeDirection(RoomApiForRemoteClients.RemoteClientId remoteClientId, DocumentContext parsedMessage) {
+    private DeserializedMessage changeSnakeDirection(RemoteClientId remoteClientId, DocumentContext parsedMessage) {
         String snakeDirectionStr = parsedMessage.read("$.direction");
         Direction direction = Direction.valueOf(snakeDirectionStr);
         return new ChangeSnakeDirection(remoteClientId, direction);
     }
 
-    private DeserializedMessage takeASeat(RoomApiForRemoteClients.RemoteClientId remoteClientId, DocumentContext parsedMessage) {
+    private DeserializedMessage takeASeat(RemoteClientId remoteClientId, DocumentContext parsedMessage) {
         String snakeNumberStr = parsedMessage.read("$.playerNumber");
         PlayerNumber playerNumber = PlayerNumber.valueOf(snakeNumberStr);
         return new TakeASeat(remoteClientId, playerNumber);

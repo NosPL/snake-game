@@ -4,8 +4,7 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.room.PlayerName;
-import com.noscompany.snake.game.online.contract.messages.room.RoomState;
-import lombok.Value;
+import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
 
 public interface RoomApiForRemoteClients {
     void sendChatMessage(RemoteClientId remoteClientId, String messageContent);
@@ -20,10 +19,6 @@ public interface RoomApiForRemoteClients {
     void enterRoom(RemoteClientId remoteClientId, PlayerName playerName);
     void leaveRoom(RemoteClientId remoteClientId);
 
-    RoomState getRoomState();
+    void initializeClientState(RemoteClientId remoteClientId);
 
-    @Value
-    class RemoteClientId {
-        String id;
-    }
 }

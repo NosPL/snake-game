@@ -15,7 +15,7 @@ import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASe
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
 import com.noscompany.snake.game.online.host.RoomEventHandlerForHost;
 import com.noscompany.snake.game.online.host.server.RoomEventHandlerForRemoteClients;
-import com.noscompany.snake.game.online.host.server.ports.RoomApiForRemoteClients;
+import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -68,7 +68,7 @@ class EventDispatcher {
         host.handle(event);
     }
 
-    void sendToClient(RoomApiForRemoteClients.RemoteClientId remoteClientId, OnlineMessage onlineMessage) {
+    void sendToClient(RemoteClientId remoteClientId, OnlineMessage onlineMessage) {
         remoteClients.sendToClientWithId(remoteClientId, onlineMessage);
     }
 

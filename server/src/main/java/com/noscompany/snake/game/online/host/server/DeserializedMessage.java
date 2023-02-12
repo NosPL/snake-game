@@ -1,22 +1,23 @@
-package com.noscompany.snake.game.online.host.server.internal.state.running;
+package com.noscompany.snake.game.online.host.server;
 
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.room.PlayerName;
+import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
 import com.noscompany.snake.game.online.host.server.ports.RoomApiForRemoteClients;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
  abstract class DeserializedMessage {
-    protected final RoomApiForRemoteClients.RemoteClientId remoteClientId;
+    protected final RemoteClientId remoteClientId;
 
      abstract void applyTo(RoomApiForRemoteClients handler);
 
      static class EnterRoom extends DeserializedMessage {
         private final String userName;
 
-         EnterRoom(RoomApiForRemoteClients.RemoteClientId remoteClientId, String userName) {
+         EnterRoom(RemoteClientId remoteClientId, String userName) {
             super(remoteClientId);
             this.userName = userName;
         }
@@ -30,7 +31,7 @@ import lombok.RequiredArgsConstructor;
      static class TakeASeat extends DeserializedMessage {
         private final PlayerNumber playerNumber;
 
-         TakeASeat(RoomApiForRemoteClients.RemoteClientId remoteClientId, PlayerNumber playerNumber) {
+         TakeASeat(RemoteClientId remoteClientId, PlayerNumber playerNumber) {
             super(remoteClientId);
             this.playerNumber = playerNumber;
         }
@@ -43,7 +44,7 @@ import lombok.RequiredArgsConstructor;
 
      static class FreeUpASeat extends DeserializedMessage {
 
-         FreeUpASeat(RoomApiForRemoteClients.RemoteClientId remoteClientId) {
+         FreeUpASeat(RemoteClientId remoteClientId) {
             super(remoteClientId);
         }
 
@@ -56,7 +57,7 @@ import lombok.RequiredArgsConstructor;
      static class ChangeGameOptions extends DeserializedMessage {
         private final GameOptions gameOptions;
 
-         ChangeGameOptions(RoomApiForRemoteClients.RemoteClientId remoteClientId, GameOptions gameOptions) {
+         ChangeGameOptions(RemoteClientId remoteClientId, GameOptions gameOptions) {
             super(remoteClientId);
             this.gameOptions = gameOptions;
         }
@@ -70,7 +71,7 @@ import lombok.RequiredArgsConstructor;
      static class ChangeSnakeDirection extends DeserializedMessage {
         private final Direction direction;
 
-         ChangeSnakeDirection(RoomApiForRemoteClients.RemoteClientId remoteClientId, Direction direction) {
+         ChangeSnakeDirection(RemoteClientId remoteClientId, Direction direction) {
             super(remoteClientId);
             this.direction = direction;
         }
@@ -83,7 +84,7 @@ import lombok.RequiredArgsConstructor;
 
      static class StartGame extends DeserializedMessage {
 
-         StartGame(RoomApiForRemoteClients.RemoteClientId remoteClientId) {
+         StartGame(RemoteClientId remoteClientId) {
             super(remoteClientId);
         }
 
@@ -95,7 +96,7 @@ import lombok.RequiredArgsConstructor;
 
      static class CancelGame extends DeserializedMessage {
 
-         CancelGame(RoomApiForRemoteClients.RemoteClientId remoteClientId) {
+         CancelGame(RemoteClientId remoteClientId) {
             super(remoteClientId);
         }
 
@@ -107,7 +108,7 @@ import lombok.RequiredArgsConstructor;
 
      static class PauseGame extends DeserializedMessage {
 
-         PauseGame(RoomApiForRemoteClients.RemoteClientId remoteClientId) {
+         PauseGame(RemoteClientId remoteClientId) {
             super(remoteClientId);
         }
 
@@ -119,7 +120,7 @@ import lombok.RequiredArgsConstructor;
 
      static class ResumeGame extends DeserializedMessage {
 
-         ResumeGame(RoomApiForRemoteClients.RemoteClientId remoteClientId) {
+         ResumeGame(RemoteClientId remoteClientId) {
             super(remoteClientId);
         }
 
@@ -132,7 +133,7 @@ import lombok.RequiredArgsConstructor;
      static class SendChatMessage extends DeserializedMessage {
         private final String messageContent;
 
-         SendChatMessage(RoomApiForRemoteClients.RemoteClientId remoteClientId, String messageContent) {
+         SendChatMessage(RemoteClientId remoteClientId, String messageContent) {
             super(remoteClientId);
             this.messageContent = messageContent;
         }

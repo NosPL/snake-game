@@ -1,10 +1,11 @@
 package com.noscompany.snake.game.online.host.server;
 
-import com.noscompany.snake.game.online.host.server.internal.state.not.started.NotStartedServerState;
+import com.noscompany.snake.game.online.contract.object.mapper.ObjectMapperCreator;
+import com.noscompany.snake.game.online.host.server.ports.WebsocketCreator;
 
 public class ServerConfiguration {
 
-    public Server createServer() {
-        return new NettosphereServer(new NotStartedServerState());
+    public Server server(WebsocketCreator websocketCreator) {
+        return new ServerImpl(websocketCreator, new ClosedWebsocket(), ObjectMapperCreator.createInstance());
     }
 }
