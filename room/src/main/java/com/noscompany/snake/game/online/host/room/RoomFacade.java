@@ -26,7 +26,7 @@ import lombok.AllArgsConstructor;
 import java.util.function.Function;
 
 @AllArgsConstructor
-class RoomImpl implements Room {
+class RoomFacade implements Room {
     private final UserRegistry userRegistry;
     private final Playground playground;
     private final Chat chat;

@@ -5,7 +5,7 @@ import com.noscompany.snake.game.online.client.HostAddress;
 import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import com.noscompany.snake.game.online.client.StartingClientError;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
-import com.noscompany.snake.game.online.host.room.mediator.RoomMediator;
+import com.noscompany.snake.game.online.host.mediator.Mediator;
 import com.noscompany.snake.game.online.host.server.Server;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
 import io.vavr.control.Option;
@@ -17,13 +17,13 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     private final SnakeOnlineClient snakeOnlineClient;
     private final ClientEventHandler clientEventHandler;
     private final Server server;
-    private final RoomMediator roomMediator;
+    private final Mediator mediator;
     private final Option<HostAddress> hostAddressOption;
 
     @Override
     public void connect(HostAddress hostAddress) {
         server
-                .start(serverParams(), roomMediator)
+                .start(serverParams(), mediator)
                 .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
                 .onEmpty(() -> snakeOnlineClient.connect(hostAddress));
 
@@ -32,7 +32,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void enterTheRoom(String userName) {
         server
-                .start(serverParams(), roomMediator)
+                .start(serverParams(), mediator)
                 .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
                 .onEmpty(() -> snakeOnlineClient.enterTheRoom(userName));
     }
@@ -40,7 +40,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void takeASeat(PlayerNumber playerNumber) {
         server
-                .start(serverParams(), roomMediator)
+                .start(serverParams(), mediator)
                 .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
                 .onEmpty(() -> snakeOnlineClient.takeASeat(playerNumber));
     }
@@ -48,7 +48,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void freeUpASeat() {
         server
-                .start(serverParams(), roomMediator)
+                .start(serverParams(), mediator)
                 .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
                 .onEmpty(snakeOnlineClient::freeUpASeat);
     }
@@ -56,7 +56,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void changeGameOptions(GridSize gridSize, GameSpeed gameSpeed, Walls walls) {
         server
-                .start(serverParams(), roomMediator)
+                .start(serverParams(), mediator)
                 .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
                 .onEmpty(() -> snakeOnlineClient.changeGameOptions(gridSize, gameSpeed, walls));
     }
@@ -64,7 +64,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void startGame() {
         server
-                .start(serverParams(), roomMediator)
+                .start(serverParams(), mediator)
                 .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
                 .onEmpty(snakeOnlineClient::startGame);
     }
@@ -72,7 +72,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void changeSnakeDirection(Direction direction) {
         server
-                .start(serverParams(), roomMediator)
+                .start(serverParams(), mediator)
                 .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
                 .onEmpty(() -> snakeOnlineClient.changeSnakeDirection(direction));
     }
@@ -80,7 +80,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void cancelGame() {
         server
-                .start(serverParams(), roomMediator)
+                .start(serverParams(), mediator)
                 .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
                 .onEmpty(snakeOnlineClient::cancelGame);
     }
@@ -88,7 +88,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void pauseGame() {
         server
-                .start(serverParams(), roomMediator)
+                .start(serverParams(), mediator)
                 .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
                 .onEmpty(snakeOnlineClient::pauseGame);
     }
@@ -96,7 +96,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void resumeGame() {
         server
-                .start(serverParams(), roomMediator)
+                .start(serverParams(), mediator)
                 .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
                 .onEmpty(snakeOnlineClient::resumeGame);
     }
@@ -104,7 +104,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void sendChatMessage(String message) {
         server
-                .start(serverParams(), roomMediator)
+                .start(serverParams(), mediator)
                 .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
                 .onEmpty(() -> snakeOnlineClient.sendChatMessage(message));
     }

@@ -1,20 +1,18 @@
-package com.noscompany.snake.game.online.host.room.mediator;
+package com.noscompany.snake.game.online.host.mediator;
 
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.room.PlayerName;
 import com.noscompany.snake.game.online.contract.messages.server.InitializeRemoteClientState;
-import com.noscompany.snake.game.online.host.ports.RoomApiForHost;
 import com.noscompany.snake.game.online.host.room.Room;
 import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
-import com.noscompany.snake.game.online.host.server.ports.RoomApiForRemoteClients;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @AllArgsConstructor
-public class RoomMediator implements RoomApiForHost, RoomApiForRemoteClients {
+class CommandHandler implements Mediator {
     private final Room room;
     private final EventDispatcher eventDispatcher;
 

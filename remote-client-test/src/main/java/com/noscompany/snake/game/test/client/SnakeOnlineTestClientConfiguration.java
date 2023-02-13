@@ -5,16 +5,11 @@ import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import com.noscompany.snake.game.online.client.SnakeOnlineClientConfiguration;
 import com.noscompany.snake.game.online.contract.messages.room.PlayersLimit;
 import com.noscompany.snake.game.online.host.room.RoomConfiguration;
-import com.noscompany.snake.game.online.host.room.RoomCreator;
 import com.noscompany.snake.game.online.host.server.ServerConfiguration;
-import com.noscompany.snake.game.online.host.room.mediator.RoomMediator;
-import com.noscompany.snake.game.online.host.room.mediator.RoomMediatorConfiguration;
-import com.noscompany.snake.game.online.host.server.Server;
-import com.noscompany.snake.game.online.host.server.ports.WebsocketCreator;
+import com.noscompany.snake.game.online.host.mediator.MediatorConfiguration;
 import com.noscompany.snake.game.online.websocket.WebsocketConfiguration;
 import io.vavr.control.Option;
 import snake.game.gameplay.SnakeGameplayConfiguration;
-import snake.game.gameplay.SnakeGameplayCreator;
 
 public class SnakeOnlineTestClientConfiguration {
 
@@ -26,7 +21,7 @@ public class SnakeOnlineTestClientConfiguration {
         var roomCreator = new RoomConfiguration().roomCreator();
         var snakeGameplayCreator = new SnakeGameplayConfiguration().snakeGameplayCreator();
         var playersLimit = new PlayersLimit(10);
-        var roomMediator = new RoomMediatorConfiguration().roomMediator(nullHostEventHandler, server, roomCreator, playersLimit, snakeGameplayCreator);
+        var roomMediator = new MediatorConfiguration().mediator(nullHostEventHandler, server, roomCreator, playersLimit, snakeGameplayCreator);
         return new SnakeOnlineTestClient(snakeOnlineClient, clientEventHandler, server, roomMediator, Option.none());
     }
 }

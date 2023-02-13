@@ -28,7 +28,7 @@ public class Playground {
     private GameOptions gameOptions;
     private SnakeGameplay snakeGameplay;
 
-    public synchronized Either<FailedToTakeASeat, PlayerTookASeat> takeASeat(String userName, PlayerNumber seatNumber) {
+    public Either<FailedToTakeASeat, PlayerTookASeat> takeASeat(String userName, PlayerNumber seatNumber) {
         if (snakeGameplay.isRunning())
             return left(FailedToTakeASeat.gameAlreadyRunning());
         return seats
@@ -41,7 +41,7 @@ public class Playground {
         return new PlayerTookASeat(event.getUserName(), event.getPlayerNumber(), getPlaygroundState());
     }
 
-    public synchronized Either<FailedToFreeUpSeat, PlayerFreedUpASeat> freeUpASeat(String userName) {
+    public Either<FailedToFreeUpSeat, PlayerFreedUpASeat> freeUpASeat(String userName) {
         return seats
                 .freeUpSeat(userName)
                 .peek(this::killPlayer)
@@ -57,7 +57,7 @@ public class Playground {
         return new PlayerFreedUpASeat(event.getUserName(), event.getFreedUpSeatNumber(), getPlaygroundState());
     }
 
-    public synchronized Either<FailedToChangeGameOptions, GameOptionsChanged> changeGameOptions(String userName, GameOptions gameOptions) {
+    public Either<FailedToChangeGameOptions, GameOptionsChanged> changeGameOptions(String userName, GameOptions gameOptions) {
         if (!userTookASeat(userName))
             return left(FailedToChangeGameOptions.requesterDidNotTakeASeat());
         if (!userIsAdmin(userName))
@@ -69,7 +69,7 @@ public class Playground {
         return right(new GameOptionsChanged(getPlaygroundState()));
     }
 
-    public synchronized Option<FailedToStartGame> startGame(String userName) {
+    public Option<FailedToStartGame> startGame(String userName) {
         if (!userTookASeat(userName))
             return of(FailedToStartGame.requesterDidNotTakeASeat());
         if (!userIsAdmin(userName))

@@ -14,11 +14,11 @@ public class UserRegistry {
     private final Map<String, String> userNamesById;
     private final int playerLimit;
 
-    public synchronized boolean isFull() {
+    public boolean isFull() {
         return userNamesById.size() >= playerLimit;
     }
 
-    public synchronized Option<FailedToEnterRoom> registerNewUser(String userId, String userName) {
+    public Option<FailedToEnterRoom> registerNewUser(String userId, String userName) {
         if (this.isFull())
             return Option.of(FailedToEnterRoom.roomIsFull(userName));
         String currentUserName = userNamesById.get(userId);
@@ -47,7 +47,7 @@ public class UserRegistry {
         ));
     }
 
-    public synchronized Set<String> getUserNames() {
+    public Set<String> getUserNames() {
         return new HashSet<>(userNamesById.values());
     }
 

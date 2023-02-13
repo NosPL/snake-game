@@ -1,11 +1,11 @@
-package com.noscompany.snake.game.online.host.room.mediator;
+package com.noscompany.snake.game.online.host.mediator;
 
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
 import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
-import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToStartGame;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
@@ -17,9 +17,10 @@ import com.noscompany.snake.game.online.host.RoomEventHandlerForHost;
 import com.noscompany.snake.game.online.host.server.RoomEventHandlerForRemoteClients;
 import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
 import lombok.AllArgsConstructor;
+import snake.game.gameplay.SnakeGameplayEventHandler;
 
 @AllArgsConstructor
-class EventDispatcher {
+class EventDispatcher implements SnakeGameplayEventHandler {
     private final RoomEventHandlerForHost host;
     private final RoomEventHandlerForRemoteClients remoteClients;
 
@@ -72,12 +73,54 @@ class EventDispatcher {
         remoteClients.sendToClientWithId(remoteClientId, onlineMessage);
     }
 
-    public void sendToClientsAndHost(UserLeftRoom event) {
+    void sendToClientsAndHost(UserLeftRoom event) {
         remoteClients.sendToAllClients(event);
         host.handle(event);
     }
 
-    public void sendToHost(FailedToEnterRoom failedToEnterRoom) {
+    void sendToHost(FailedToEnterRoom failedToEnterRoom) {
         host.handle(failedToEnterRoom);
+    }
+
+    @Override
+    public void handle(TimeLeftToGameStartHasChanged event) {
+        remoteClients.sendToAllClients(event);
+        host.handle(event);
+    }
+
+    @Override
+    public void handle(GameStarted event) {
+        remoteClients.sendToAllClients(event);
+        host.handle(event);
+    }
+
+    @Override
+    public void handle(SnakesMoved event) {
+        remoteClients.sendToAllClients(event);
+        host.handle(event);
+    }
+
+    @Override
+    public void handle(GameFinished event) {
+        remoteClients.sendToAllClients(event);
+        host.handle(event);
+    }
+
+    @Override
+    public void handle(GameCancelled event) {
+        remoteClients.sendToAllClients(event);
+        host.handle(event);
+    }
+
+    @Override
+    public void handle(GamePaused event) {
+        remoteClients.sendToAllClients(event);
+        host.handle(event);
+    }
+
+    @Override
+    public void handle(GameResumed event) {
+        remoteClients.sendToAllClients(event);
+        host.handle(event);
     }
 }
