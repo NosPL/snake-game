@@ -4,9 +4,9 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
-import snake.game.gameplay.SnakeGameplay;
-import snake.game.gameplay.SnakeGameplayCreator;
-import snake.game.gameplay.SnakeGameplayEventHandler;
+import snake.game.gameplay.Gameplay;
+import snake.game.gameplay.GameplayCreator;
+import snake.game.gameplay.GameplayEventHandler;
 import snake.game.gameplay.dto.GameplayParams;
 
 import java.util.LinkedList;
@@ -15,15 +15,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  *Creates a mock game that runs endlessly without emitting any events after invoking SnakeGame.start()
  */
-public class GameRunningEndlesslyAfterStartCreator implements SnakeGameplayCreator {
+public class GameRunningEndlesslyAfterStartCreator implements GameplayCreator {
 
     @Override
-    public Either<Error, SnakeGameplay> createGame(GameplayParams gameplayParams, SnakeGameplayEventHandler snakeGameplayEventHandler) {
+    public Either<Error, Gameplay> createGame(GameplayParams gameplayParams, GameplayEventHandler gameplayEventHandler) {
         return Either.right(new AlwaysRunningGameplay(GridSize._10x10, Walls.ON));
     }
 
     @RequiredArgsConstructor
-    private class AlwaysRunningGameplay implements SnakeGameplay {
+    private class AlwaysRunningGameplay implements Gameplay {
         private final GridSize gridSize;
         private final Walls walls;
         private AtomicBoolean isRunning = new AtomicBoolean(false);

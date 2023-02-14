@@ -4,9 +4,9 @@ import com.noscompany.snake.game.online.contract.messages.game.options.GameOptio
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
-import snake.game.gameplay.SnakeGameplay;
-import snake.game.gameplay.SnakeGameplayCreator;
-import snake.game.gameplay.SnakeGameplayEventHandler;
+import snake.game.gameplay.Gameplay;
+import snake.game.gameplay.GameplayCreator;
+import snake.game.gameplay.GameplayEventHandler;
 import snake.game.gameplay.dto.GameplayParams;
 
 import java.util.LinkedList;
@@ -14,14 +14,14 @@ import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
-class GameCreator {
-    private SnakeGameplayCreator snakeGameplayCreator;
-    private SnakeGameplayEventHandler snakeGameplayEventHandler;
+class GameCreatorAdapter {
+    private GameplayCreator gameplayCreator;
+    private GameplayEventHandler gameplayEventHandler;
 
-    SnakeGameplay createGame(Set<PlayerNumber> players, GameOptions gameOptions) {
+    Gameplay createGame(Set<PlayerNumber> players, GameOptions gameOptions) {
         GameplayParams gameplayParams = toParams(players, gameOptions);
-        return snakeGameplayCreator
-                .createGame(gameplayParams, snakeGameplayEventHandler)
+        return gameplayCreator
+                .createGame(gameplayParams, gameplayEventHandler)
                 .fold(
                         error -> createNullGame(gameOptions),
                         snakeGame -> snakeGame);
@@ -31,12 +31,12 @@ class GameCreator {
         return new GameplayParams(playerNumbers, gameOptions.getGameSpeed(), gameOptions.getGridSize(), gameOptions.getWalls(), CountdownTime.inSeconds(3));
     }
 
-    private SnakeGameplay createNullGame(GameOptions gameOptions) {
+    private Gameplay createNullGame(GameOptions gameOptions) {
         return new NullGameplay(gameOptions.getGridSize(), gameOptions.getWalls());
     }
 
     @AllArgsConstructor
-    private class NullGameplay implements SnakeGameplay {
+    private class NullGameplay implements Gameplay {
         private final GridSize gridSize;
         private final Walls walls;
 

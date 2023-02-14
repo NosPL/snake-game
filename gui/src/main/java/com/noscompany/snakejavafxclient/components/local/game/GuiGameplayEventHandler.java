@@ -9,8 +9,8 @@ import com.noscompany.snakejavafxclient.utils.Controllers;
 import javafx.application.Platform;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import snake.game.gameplay.SnakeGameplayCreator;
-import snake.game.gameplay.SnakeGameplayEventHandler;
+import snake.game.gameplay.GameplayCreator;
+import snake.game.gameplay.GameplayEventHandler;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
@@ -23,7 +23,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 @AllArgsConstructor
-public class GuiGameplayEventHandler implements SnakeGameplayEventHandler {
+public class GuiGameplayEventHandler implements GameplayEventHandler {
     protected final GameGridController gameGridController;
     protected final GameOptionsController gameOptionsController;
     protected final MessageController messageController;
@@ -151,7 +151,7 @@ public class GuiGameplayEventHandler implements SnakeGameplayEventHandler {
         });
     }
 
-    public void handle(SnakeGameplayCreator.Error error) {
+    public void handle(GameplayCreator.Error error) {
         Platform.runLater(() -> {
             GridSize gridSize = gameOptionsController.gridSize();
             Walls walls = gameOptionsController.walls();

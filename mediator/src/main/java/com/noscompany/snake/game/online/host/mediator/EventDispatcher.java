@@ -17,10 +17,10 @@ import com.noscompany.snake.game.online.host.RoomEventHandlerForHost;
 import com.noscompany.snake.game.online.host.server.RoomEventHandlerForRemoteClients;
 import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
 import lombok.AllArgsConstructor;
-import snake.game.gameplay.SnakeGameplayEventHandler;
+import snake.game.gameplay.GameplayEventHandler;
 
 @AllArgsConstructor
-class EventDispatcher implements SnakeGameplayEventHandler {
+class EventDispatcher implements GameplayEventHandler {
     private final RoomEventHandlerForHost host;
     private final RoomEventHandlerForRemoteClients remoteClients;
 

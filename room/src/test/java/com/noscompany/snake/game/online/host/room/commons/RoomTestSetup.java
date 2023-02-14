@@ -20,7 +20,7 @@ public class RoomTestSetup {
 
     @Before
     public void init() {
-        room = new RoomConfiguration().roomCreator().createRoom(new SnakeGameplayIdleEventHandler(), new GameRunningEndlesslyAfterStartCreator(), new PlayersLimit(5));
+        room = new RoomConfiguration().roomCreator().createRoom(new GameplayIdleEventHandler(), new GameRunningEndlesslyAfterStartCreator(), new PlayersLimit(5));
         actorId = randomUserId();
         actorName = randomValidUserName();
     }

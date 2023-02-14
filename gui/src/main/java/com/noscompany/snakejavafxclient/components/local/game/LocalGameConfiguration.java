@@ -7,12 +7,12 @@ import io.vavr.control.Either;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import snake.game.gameplay.SnakeGameplay;
+import snake.game.gameplay.Gameplay;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
-import snake.game.gameplay.SnakeGameplayConfiguration;
-import snake.game.gameplay.SnakeGameplayCreator;
+import snake.game.gameplay.GameplayConfiguration;
+import snake.game.gameplay.GameplayCreator;
 import snake.game.gameplay.dto.GameplayParams;
 
 import static com.noscompany.snakejavafxclient.components.local.game.GuiGameplayEventHandler.javaFxEventHandler;
@@ -41,15 +41,15 @@ public class LocalGameConfiguration {
         localGameStage.show();
     }
 
-    static Either<SnakeGameplayCreator.Error, SnakeGameplay> createGame() {
+    static Either<GameplayCreator.Error, Gameplay> createGame() {
         var gameOptionsController = Controllers.get(GameOptionsController.class);
         GameplayParams gameplayParams = gameOptionsController.getGameplayParams();
-        return new SnakeGameplayConfiguration()
+        return new GameplayConfiguration()
                 .snakeGameplayCreator()
                 .createGame(gameplayParams, javaFxEventHandler());
     }
 
-    private static class NullGameplay implements SnakeGameplay {
+    private static class NullGameplay implements Gameplay {
 
         @Override
         public void start() {

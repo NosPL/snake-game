@@ -2,20 +2,20 @@ package com.noscompany.snakejavafxclient.components.local.game;
 
 import io.vavr.control.Either;
 import lombok.AllArgsConstructor;
-import snake.game.gameplay.SnakeGameplay;
+import snake.game.gameplay.Gameplay;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
-import snake.game.gameplay.SnakeGameplayCreator;
+import snake.game.gameplay.GameplayCreator;
 
 @AllArgsConstructor
 public class LocalSnakeGame {
     private final GuiGameplayEventHandler eventHandler;
-    private SnakeGameplay snakeGameplay;
+    private Gameplay gameplay;
 
     public void start() {
-        if (snakeGameplay.isRunning())
+        if (gameplay.isRunning())
             return;
-        createNewGame().peek(SnakeGameplay::start);
+        createNewGame().peek(Gameplay::start);
     }
 
     public void updateGameView() {
@@ -23,25 +23,25 @@ public class LocalSnakeGame {
     }
 
     public void cancel() {
-        snakeGameplay.cancel();
+        gameplay.cancel();
     }
 
     public void changeSnakeDirection(PlayerNumber playerNumber, Direction direction) {
-        snakeGameplay.changeSnakeDirection(playerNumber, direction);
+        gameplay.changeSnakeDirection(playerNumber, direction);
     }
 
     public void pause() {
-        snakeGameplay.pause();
+        gameplay.pause();
     }
 
     public void resume() {
-        snakeGameplay.resume();
+        gameplay.resume();
     }
 
-    private Either<SnakeGameplayCreator.Error, SnakeGameplay> createNewGame() {
+    private Either<GameplayCreator.Error, Gameplay> createNewGame() {
         return LocalGameConfiguration
                 .createGame()
-                .peek(game -> this.snakeGameplay = game)
+                .peek(game -> this.gameplay = game)
                 .peek(game -> eventHandler.gameCreated(game.getGameState()))
                 .peekLeft(eventHandler::handle);
     }

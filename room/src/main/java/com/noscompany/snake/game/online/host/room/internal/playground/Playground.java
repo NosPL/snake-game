@@ -14,7 +14,7 @@ import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
-import snake.game.gameplay.SnakeGameplay;
+import snake.game.gameplay.Gameplay;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 
 import static io.vavr.control.Either.left;
@@ -24,12 +24,12 @@ import static io.vavr.control.Option.of;
 @AllArgsConstructor
 public class Playground {
     private final Seats seats;
-    private final GameCreator gameCreator;
+    private final GameCreatorAdapter gameCreatorAdapter;
     private GameOptions gameOptions;
-    private SnakeGameplay snakeGameplay;
+    private Gameplay gameplay;
 
     public Either<FailedToTakeASeat, PlayerTookASeat> takeASeat(String userName, PlayerNumber seatNumber) {
-        if (snakeGameplay.isRunning())
+        if (gameplay.isRunning())
             return left(FailedToTakeASeat.gameAlreadyRunning());
         return seats
                 .takeOrChangeSeat(userName, seatNumber)
@@ -50,7 +50,7 @@ public class Playground {
     }
 
     private void killPlayer(Seat.UserFreedUpASeat event) {
-        snakeGameplay.killSnake(event.getFreedUpSeatNumber());
+        gameplay.killSnake(event.getFreedUpSeatNumber());
     }
 
     private PlayerFreedUpASeat playerFreedUpASeat(Seat.UserFreedUpASeat event) {
@@ -62,7 +62,7 @@ public class Playground {
             return left(FailedToChangeGameOptions.requesterDidNotTakeASeat());
         if (!userIsAdmin(userName))
             return left(FailedToChangeGameOptions.requesterIsNotAdmin());
-        if (snakeGameplay.isRunning())
+        if (gameplay.isRunning())
             return left(FailedToChangeGameOptions.gameIsAlreadyRunning());
         this.gameOptions = gameOptions;
         recreateGame();
@@ -74,40 +74,40 @@ public class Playground {
             return of(FailedToStartGame.requesterDidNotTakeASeat());
         if (!userIsAdmin(userName))
             return of(FailedToStartGame.requesterIsNotAdmin());
-        if (snakeGameplay.isRunning())
+        if (gameplay.isRunning())
             return of(FailedToStartGame.gameIsAlreadyRunning());
         recreateGame();
-        snakeGameplay.start();
+        gameplay.start();
         return Option.none();
     }
 
     public void changeSnakeDirection(String userName, Direction direction) {
         seats
                 .getNumberFor(userName)
-                .peek(playerNumber -> snakeGameplay.changeSnakeDirection(playerNumber, direction));
+                .peek(playerNumber -> gameplay.changeSnakeDirection(playerNumber, direction));
     }
 
     public void cancelGame(String userName) {
         if (seats.userIsAdmin(userName))
-            snakeGameplay.cancel();
+            gameplay.cancel();
     }
 
     public void pauseGame(String userName) {
         if (seats.userIsAdmin(userName))
-            snakeGameplay.pause();
+            gameplay.pause();
     }
 
     public void resumeGame(String userName) {
         if (seats.userIsAdmin(userName))
-            snakeGameplay.resume();
+            gameplay.resume();
     }
 
     public PlaygroundState getPlaygroundState() {
         return new PlaygroundState(
                 gameOptions,
                 seats.toDto(),
-                snakeGameplay.isRunning(),
-                snakeGameplay.getGameState());
+                gameplay.isRunning(),
+                gameplay.getGameState());
     }
 
     public boolean userTookASeat(String userName) {
@@ -119,11 +119,11 @@ public class Playground {
     }
 
     private void recreateGameIfItIsNotRunning() {
-        if (!snakeGameplay.isRunning())
+        if (!gameplay.isRunning())
             recreateGame();
     }
 
     private void recreateGame() {
-        snakeGameplay = gameCreator.createGame(seats.getPlayerNumbers(), gameOptions);
+        gameplay = gameCreatorAdapter.createGame(seats.getPlayerNumbers(), gameOptions);
     }
 }

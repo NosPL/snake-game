@@ -9,7 +9,7 @@ import com.noscompany.snake.game.online.host.server.ServerConfiguration;
 import com.noscompany.snake.game.online.host.mediator.MediatorConfiguration;
 import com.noscompany.snake.game.online.websocket.WebsocketConfiguration;
 import io.vavr.control.Option;
-import snake.game.gameplay.SnakeGameplayConfiguration;
+import snake.game.gameplay.GameplayConfiguration;
 
 public class SnakeOnlineTestClientConfiguration {
 
@@ -19,7 +19,7 @@ public class SnakeOnlineTestClientConfiguration {
         var server = new ServerConfiguration().server(websocketCreator);
         var nullHostEventHandler = new NullHostEventHandler();
         var roomCreator = new RoomConfiguration().roomCreator();
-        var snakeGameplayCreator = new SnakeGameplayConfiguration().snakeGameplayCreator();
+        var snakeGameplayCreator = new GameplayConfiguration().snakeGameplayCreator();
         var playersLimit = new PlayersLimit(10);
         var roomMediator = new MediatorConfiguration().mediator(nullHostEventHandler, server, roomCreator, playersLimit, snakeGameplayCreator);
         return new SnakeOnlineTestClient(snakeOnlineClient, clientEventHandler, server, roomMediator, Option.none());

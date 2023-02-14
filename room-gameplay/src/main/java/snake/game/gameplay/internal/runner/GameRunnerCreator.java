@@ -1,6 +1,6 @@
 package snake.game.gameplay.internal.runner;
 
-import snake.game.gameplay.SnakeGameplayEventHandler;
+import snake.game.gameplay.GameplayEventHandler;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.CountdownTime;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameSpeed;
 import snake.game.gameplay.internal.logic.GameLogic;
@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GameRunnerCreator {
     public static GameRunner create(GameLogic gameLogic,
-                                    SnakeGameplayEventHandler eventHandler,
+                                    GameplayEventHandler eventHandler,
                                     GameSpeed gameSpeed,
                                     CountdownTime countdownTime) {
         var pauseRequested = new AtomicBoolean(false);

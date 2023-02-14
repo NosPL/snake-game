@@ -12,9 +12,10 @@ class RoomCreatorImpl implements RoomCreator{
     public Room createRoom(GameplayEventHandler gameplayEventHandler,
                            GameplayCreator gameplayCreator,
                            PlayersLimit playersLimit) {
-        return new RoomFacade(
+        return new RoomImpl(
                 UserRegistryCreator.create(playersLimit),
                 PlaygroundCreator.create(gameplayEventHandler, gameplayCreator),
                 ChatCreator.create());
     }
+
 }
