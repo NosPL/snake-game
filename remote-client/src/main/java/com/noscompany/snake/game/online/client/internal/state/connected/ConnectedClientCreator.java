@@ -9,6 +9,7 @@ import io.vavr.control.Try;
 import lombok.extern.slf4j.Slf4j;
 import org.atmosphere.wasync.*;
 import org.atmosphere.wasync.impl.AtmosphereClient;
+import org.atmosphere.wasync.impl.DefaultOptions;
 
 import static org.atmosphere.wasync.Request.METHOD.GET;
 
@@ -24,8 +25,9 @@ public class ConnectedClientCreator {
     }
 
     private static Try<Socket> createOpenSocket(HostAddress hostAddress, ClientEventHandler clientEventHandler, ObjectMapper objectMapper) {
+        SocketMessageHandler socketMessageHandler = SocketMessageHandler.create(clientEventHandler, objectMapper);
         AtmosphereClient client = ClientFactory.getDefault().newClient(AtmosphereClient.class);
-        var socket = createSocket(clientEventHandler, client, objectMapper);
+        var socket = createSocket(client, socketMessageHandler);
         var request = createRequest(hostAddress, client);
         return Try
                 .of(() -> socket.open(request))
@@ -33,12 +35,20 @@ public class ConnectedClientCreator {
                 .onFailure(t -> log.info("Failed to open socket connection, cause: ", t));
     }
 
-    private static Socket createSocket(ClientEventHandler clientEventHandler, Client client, ObjectMapper objectMapper) {
-        var socketMessageHandler = SocketMessageHandler.create(clientEventHandler, objectMapper);
-        return client.create()
+    private static Socket createSocket(AtmosphereClient client, SocketMessageHandler socketMessageHandler) {
+        DefaultOptions options = socketOptions(client);
+        return client.create(options)
                 .on(Event.MESSAGE, socketMessageHandler)
                 .on(Event.ERROR, object -> socketMessageHandler.connectionClosedBecauseOfError())
                 .on(Event.CLOSE, object -> socketMessageHandler.connectionClosed());
+    }
+
+    private static DefaultOptions socketOptions(AtmosphereClient atmosphereClient) {
+        return atmosphereClient
+                .newOptionsBuilder()
+                .reconnectAttempts(5)
+                .pauseBeforeReconnectInSeconds(2)
+                .build();
     }
 
     private static Request createRequest(HostAddress hostAddress, Client client) {
@@ -47,7 +57,6 @@ public class ConnectedClientCreator {
                 .method(GET)
                 .uri(toUrl(hostAddress))
                 .transport(Request.TRANSPORT.WEBSOCKET)
-                .transport(Request.TRANSPORT.LONG_POLLING)
                 .build();
     }
 
