@@ -28,6 +28,7 @@
         <module>network-interfaces-analyzer</module>
         <module>host-dependency-configurator</module>
         <module>server-websocket-nettosphere</module>
+        <module>utils</module>
     </modules>
 
     <dependencies>
