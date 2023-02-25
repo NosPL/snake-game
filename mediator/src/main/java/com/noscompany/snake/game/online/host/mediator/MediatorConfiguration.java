@@ -4,12 +4,14 @@ import com.noscompany.snake.game.online.host.RoomEventHandlerForHost;
 import com.noscompany.snake.game.online.contract.messages.room.PlayersLimit;
 import com.noscompany.snake.game.online.host.room.RoomCreator;
 import com.noscompany.snake.game.online.host.server.RoomEventHandlerForRemoteClients;
+import com.noscompany.snake.game.utils.monitored.executor.service.MonitoredExecutorServiceCreator;
 import snake.game.gameplay.GameplayCreator;
 
 import java.util.concurrent.*;
 
 
 public class MediatorConfiguration {
+    private final MonitoredExecutorServiceCreator monitoredExecutorServiceCreator = new MonitoredExecutorServiceCreator();
 
     public Mediator mediator(RoomEventHandlerForHost handlerForHost,
                              RoomEventHandlerForRemoteClients handlerForRemoteClients,
@@ -32,9 +34,18 @@ public class MediatorConfiguration {
     }
 
     private ExecutorService executorService() {
-        return new ThreadPoolExecutor(1, 1,
-                0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>(100),
+        return monitoredExecutorServiceCreator.create(
+                1, 1,
+                new LinkedBlockingDeque<>(100),
+                threadFactory(),
                 new ThreadPoolExecutor.DiscardPolicy());
+    }
+
+    private ThreadFactory threadFactory() {
+        return runnable -> {
+            Thread thread = new Thread(runnable, "mediator-command-queue-thread");
+            thread.setDaemon(true);
+            return thread;
+        };
     }
 }
