@@ -99,5 +99,6 @@ class SnakeOnlineHostImpl implements SnakeOnlineHost {
     @Override
     public void shutDownServer() {
         server.shutdown();
+        roomApiForHost.shutdown();
     }
 }

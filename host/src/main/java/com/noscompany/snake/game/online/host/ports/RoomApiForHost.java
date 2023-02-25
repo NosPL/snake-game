@@ -16,7 +16,7 @@ public interface RoomApiForHost {
     void changeGameOptions(HostId hostId, GameOptions gameOptions);
     void freeUpASeat(HostId hostId);
     void takeASeat(HostId hostId, PlayerNumber playerNumber);
-
+    void shutdown();
     @Value
     class HostId {
         String id;

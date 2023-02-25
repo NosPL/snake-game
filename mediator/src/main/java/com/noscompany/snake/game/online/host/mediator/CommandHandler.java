@@ -84,6 +84,11 @@ class CommandHandler implements Mediator {
     }
 
     @Override
+    public void shutdown() {
+
+    }
+
+    @Override
     public void sendChatMessage(RemoteClientId remoteClientId, String messageContent) {
         room
                 .sendChatMessage(remoteClientId.getId(), messageContent)

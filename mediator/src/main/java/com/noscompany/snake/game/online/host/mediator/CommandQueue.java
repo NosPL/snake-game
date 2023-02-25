@@ -65,6 +65,12 @@ class CommandQueue implements Mediator {
     }
 
     @Override
+    public void shutdown() {
+        executor.shutdown();
+        commandHandler.shutdown();
+    }
+
+    @Override
     public void sendChatMessage(RemoteClientId remoteClientId, String messageContent) {
         executor.submit(() -> commandHandler.sendChatMessage(remoteClientId, messageContent));
     }
