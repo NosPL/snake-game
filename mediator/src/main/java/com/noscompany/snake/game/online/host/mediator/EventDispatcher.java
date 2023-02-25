@@ -14,7 +14,7 @@ import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASea
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
 import com.noscompany.snake.game.online.host.RoomEventHandlerForHost;
-import com.noscompany.snake.game.online.host.server.RoomEventHandlerForRemoteClients;
+import com.noscompany.snake.game.online.host.server.Server;
 import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
 import lombok.AllArgsConstructor;
 import snake.game.gameplay.GameplayEventHandler;
@@ -22,10 +22,10 @@ import snake.game.gameplay.GameplayEventHandler;
 @AllArgsConstructor
 class EventDispatcher implements GameplayEventHandler {
     private final RoomEventHandlerForHost host;
-    private final RoomEventHandlerForRemoteClients remoteClients;
+    private final Server server;
 
     void sendToClientsAndHost(UserSentChatMessage event) {
-        remoteClients.sendToAllClients(event);
+        server.sendToAllClients(event);
         host.handle(event);
     }
 
@@ -38,7 +38,7 @@ class EventDispatcher implements GameplayEventHandler {
     }
 
     void sendToClientsAndHost(GameOptionsChanged event) {
-        remoteClients.sendToAllClients(event);
+        server.sendToAllClients(event);
         host.handle(event);
     }
 
@@ -47,7 +47,7 @@ class EventDispatcher implements GameplayEventHandler {
     }
 
     void sendToClientsAndHost(PlayerFreedUpASeat event) {
-        remoteClients.sendToAllClients(event);
+        server.sendToAllClients(event);
         host.handle(event);
     }
 
@@ -56,12 +56,12 @@ class EventDispatcher implements GameplayEventHandler {
     }
 
     void sendToClientsAndHost(PlayerTookASeat event) {
-        remoteClients.sendToAllClients(event);
+        server.sendToAllClients(event);
         host.handle(event);
     }
 
     void sendToClientsAndHost(NewUserEnteredRoom event) {
-        remoteClients.sendToAllClients(event);
+        server.sendToAllClients(event);
         host.handle(event);
     }
 
@@ -70,11 +70,11 @@ class EventDispatcher implements GameplayEventHandler {
     }
 
     void sendToClient(RemoteClientId remoteClientId, OnlineMessage onlineMessage) {
-        remoteClients.sendToClientWithId(remoteClientId, onlineMessage);
+        server.sendToClientWithId(remoteClientId, onlineMessage);
     }
 
     void sendToClientsAndHost(UserLeftRoom event) {
-        remoteClients.sendToAllClients(event);
+        server.sendToAllClients(event);
         host.handle(event);
     }
 
@@ -84,43 +84,43 @@ class EventDispatcher implements GameplayEventHandler {
 
     @Override
     public void handle(TimeLeftToGameStartHasChanged event) {
-        remoteClients.sendToAllClients(event);
+        server.sendToAllClients(event);
         host.handle(event);
     }
 
     @Override
     public void handle(GameStarted event) {
-        remoteClients.sendToAllClients(event);
+        server.sendToAllClients(event);
         host.handle(event);
     }
 
     @Override
     public void handle(SnakesMoved event) {
-        remoteClients.sendToAllClients(event);
+        server.sendToAllClients(event);
         host.handle(event);
     }
 
     @Override
     public void handle(GameFinished event) {
-        remoteClients.sendToAllClients(event);
+        server.sendToAllClients(event);
         host.handle(event);
     }
 
     @Override
     public void handle(GameCancelled event) {
-        remoteClients.sendToAllClients(event);
+        server.sendToAllClients(event);
         host.handle(event);
     }
 
     @Override
     public void handle(GamePaused event) {
-        remoteClients.sendToAllClients(event);
+        server.sendToAllClients(event);
         host.handle(event);
     }
 
     @Override
     public void handle(GameResumed event) {
-        remoteClients.sendToAllClients(event);
+        server.sendToAllClients(event);
         host.handle(event);
     }
 }

@@ -28,14 +28,11 @@ class ServerImpl implements Server {
     public Option<ServerStartError> start(ServerParams serverParams, RoomApiForRemoteClients roomMediatorForRemoteClients) {
         if (websocket.isOpen())
             Option.none();
+        var roomWebsocketAdapter = RoomWebsocketAdapter.create(roomMediatorForRemoteClients);
         return websocketCreator
-                .create(serverParams, getWebsocketEventHandler(roomMediatorForRemoteClients))
+                .create(serverParams, roomWebsocketAdapter)
                 .peek(websocket -> this.websocket = websocket)
                 .transform(this::toResult);
-    }
-
-    private RoomWebsocketAdapter getWebsocketEventHandler(RoomApiForRemoteClients roomMediatorForRemoteClients) {
-        return new RoomWebsocketAdapter(roomMediatorForRemoteClients, new MessageDeserializer());
     }
 
     private Option<ServerStartError> toResult(Try<Websocket> createWebsocketResult) {

@@ -3,7 +3,7 @@ package com.noscompany.snake.game.online.host.mediator;
 import com.noscompany.snake.game.online.host.RoomEventHandlerForHost;
 import com.noscompany.snake.game.online.contract.messages.room.PlayersLimit;
 import com.noscompany.snake.game.online.host.room.RoomCreator;
-import com.noscompany.snake.game.online.host.server.RoomEventHandlerForRemoteClients;
+import com.noscompany.snake.game.online.host.server.Server;
 import com.noscompany.snake.game.utils.monitored.executor.service.MonitoredExecutorServiceCreator;
 import snake.game.gameplay.GameplayCreator;
 
@@ -14,20 +14,20 @@ public class MediatorConfiguration {
     private final MonitoredExecutorServiceCreator monitoredExecutorServiceCreator = new MonitoredExecutorServiceCreator();
 
     public Mediator mediator(RoomEventHandlerForHost handlerForHost,
-                             RoomEventHandlerForRemoteClients handlerForRemoteClients,
+                             Server server,
                              RoomCreator roomCreator,
                              PlayersLimit playersLimit,
                              GameplayCreator gameplayCreator) {
-        return mediator(executorService(), handlerForHost, handlerForRemoteClients, roomCreator, playersLimit, gameplayCreator);
+        return mediator(executorService(), handlerForHost, server, roomCreator, playersLimit, gameplayCreator);
     }
 
     public Mediator mediator(ExecutorService executorService,
                              RoomEventHandlerForHost handlerForHost,
-                             RoomEventHandlerForRemoteClients handlerForRemoteClients,
+                             Server server,
                              RoomCreator roomCreator,
                              PlayersLimit playersLimit,
                              GameplayCreator gameplayCreator) {
-        var eventDispatcher = new EventDispatcher(handlerForHost, handlerForRemoteClients);
+        var eventDispatcher = new EventDispatcher(handlerForHost, server);
         var room = roomCreator.createRoom(eventDispatcher, gameplayCreator, playersLimit);
         var commandHandler = new CommandHandler(room, eventDispatcher);
         return new CommandQueue(executorService, commandHandler);
