@@ -4,11 +4,13 @@ import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundS
 import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
+import com.noscompany.snake.game.online.host.room.dto.UserId;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 
 import static io.vavr.control.Either.left;
 import static io.vavr.control.Either.right;
@@ -19,17 +21,19 @@ import static lombok.AccessLevel.PRIVATE;
 @Getter
 class Seat {
     private final PlayerNumber playerNumber;
-    private volatile Option<UserName> userName;
-    private volatile boolean isAdmin;
-    private volatile boolean isTaken;
+    private Option<UserId> userId;
+    private Option<UserName> userName;
+    private boolean isAdmin;
+    private boolean isTaken;
 
     static Seat create(PlayerNumber playerNumber) {
-        return new Seat(playerNumber, Option.none(), false, false);
+        return new Seat(playerNumber, Option.none(), Option.none(), false, false);
     }
 
-    Either<FailedToTakeASeat, UserSuccessfullyTookASeat> take(UserName userName) {
+    Either<FailedToTakeASeat, UserSuccessfullyTookASeat> take(UserId userId, UserName userName) {
         if (isTaken())
             return left(FailedToTakeASeat.seatAlreadyTaken());
+        this.userId = Option.of(userId);
         this.userName = of(userName);
         this.isTaken = true;
         return right(new UserSuccessfullyTookASeat(userName, playerNumber));
@@ -42,6 +46,7 @@ class Seat {
     }
 
     private void reset() {
+        userId = Option.none();
         userName = Option.none();
         isAdmin = false;
         isTaken = false;
@@ -51,13 +56,14 @@ class Seat {
         return userName.isDefined();
     }
 
-    boolean isTakenBy(UserName userName) {
-        return this.userName.exists(userName::equals);
+    boolean isTakenBy(UserId userId) {
+        return this.userId.exists(userId::equals);
     }
 
     Either<FailedToTakeASeat, UserSuccessfullyTookASeat> changeTo(Seat newSeat) {
         if (newSeat.isTaken())
             return left(FailedToTakeASeat.seatAlreadyTaken());
+        newSeat.userId = this.userId;
         newSeat.userName = this.userName;
         newSeat.isAdmin = this.isAdmin;
         newSeat.isTaken = true;

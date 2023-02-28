@@ -1,14 +1,14 @@
 package com.noscompany.snake.game.online.host.room;
 
+import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
+import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
+import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
-import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToStartGame;
 import com.noscompany.snake.game.online.contract.messages.room.*;
-import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
-import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
@@ -21,9 +21,7 @@ import io.vavr.control.Either;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
+import static io.vavr.control.Either.left;
 import static java.util.stream.Collectors.toSet;
 
 @AllArgsConstructor
@@ -45,60 +43,48 @@ class RoomFacade implements Room {
         return userRegistry
                 .findUserNameById(userId)
                 .toEither(FailedToTakeASeat.userNotInTheRoom())
-                .flatMap(userName -> playground.takeASeat(userName, playerNumber));
+                .flatMap(userName -> playground.takeASeat(userId, userName, playerNumber));
     }
 
     @Override
     public Either<FailedToFreeUpSeat, PlayerFreedUpASeat> freeUpASeat(UserId userId) {
-        return userRegistry
-                .findUserNameById(userId)
-                .toEither(FailedToFreeUpSeat.userNotInTheRoom())
-                .flatMap(playground::freeUpASeat);
+        if (!userRegistry.containsId(userId))
+            return left(FailedToFreeUpSeat.userNotInTheRoom());
+        return playground.freeUpASeat(userId);
     }
 
     @Override
     public Either<FailedToChangeGameOptions, GameOptionsChanged> changeGameOptions(UserId userId, GameOptions gameOptions) {
-        return userRegistry
-                .findUserNameById(userId)
-                .toEither(FailedToChangeGameOptions.userNotInTheRoom())
-                .flatMap(userName -> playground.changeGameOptions(userName, gameOptions));
+        if (!userRegistry.containsId(userId))
+            return left(FailedToChangeGameOptions.userNotInTheRoom());
+        return playground.changeGameOptions(userId, gameOptions);
     }
 
     @Override
     public Option<FailedToStartGame> startGame(UserId userId) {
-        return userRegistry
-                .findUserNameById(userId)
-                .toEither(FailedToStartGame.userIsNotInTheRoom())
-                .map(playground::startGame)
-                .fold(Option::of, Function.identity());
+        if (!userRegistry.containsId(userId))
+            return Option.of(FailedToStartGame.userIsNotInTheRoom());
+        return playground.startGame(userId);
     }
 
     @Override
     public void changeSnakeDirection(UserId userId, Direction direction) {
-        userRegistry
-                .findUserNameById(userId)
-                .peek(userName -> playground.changeSnakeDirection(userName, direction));
+        playground.changeSnakeDirection(userId, direction);
     }
 
     @Override
     public void cancelGame(UserId userId) {
-        userRegistry
-                .findUserNameById(userId)
-                .peek(playground::cancelGame);
+        playground.cancelGame(userId);
     }
 
     @Override
     public void pauseGame(UserId userId) {
-        userRegistry
-                .findUserNameById(userId)
-                .peek(playground::pauseGame);
+        playground.pauseGame(userId);
     }
 
     @Override
     public void resumeGame(UserId userId) {
-        userRegistry
-                .findUserNameById(userId)
-                .peek(playground::resumeGame);
+        playground.resumeGame(userId);
     }
 
     @Override
@@ -106,22 +92,21 @@ class RoomFacade implements Room {
         return userRegistry
                 .findUserNameById(userId)
                 .toEither(FailedToSendChatMessage.userIsNotInTheRoom())
-                .flatMap(userName -> chat.sendMessage(userName, messageContent));
+                .flatMap(userName -> chat.sendMessage(userId, userName, messageContent));
     }
 
     @Override
     public Option<UserLeftRoom> leave(UserId userId) {
         return userRegistry
                 .removeUser(userId)
-                .map(UserRegistry.UserRemoved::getUserName)
                 .map(this::userLeftTheRoom);
     }
 
-    private UserLeftRoom userLeftTheRoom(UserName userName) {
+    private UserLeftRoom userLeftTheRoom(UserRegistry.UserRemoved userRemoved) {
         return new UserLeftRoom(
-                userName.getName(),
+                userRemoved.getUserName().getName(),
                 userRegistry.getUserNames().stream().map(UserName::getName).collect(toSet()),
-                playground.freeUpASeat(userName).toOption());
+                playground.freeUpASeat(userRemoved.getUserId()).toOption());
     }
 
     @Override
@@ -131,16 +116,12 @@ class RoomFacade implements Room {
 
     @Override
     public boolean userIsAdmin(UserId userId) {
-        return userRegistry
-                .findUserNameById(userId)
-                .exists(playground::userIsAdmin);
+        return playground.userIsAdmin(userId);
     }
 
     @Override
     public boolean userIsSitting(UserId userId) {
-        return userRegistry
-                .findUserNameById(userId)
-                .exists(playground::userTookASeat);
+        return playground.userTookASeat(userId);
     }
 
     @Override

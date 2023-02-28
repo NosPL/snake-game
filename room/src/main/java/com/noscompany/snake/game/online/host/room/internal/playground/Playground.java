@@ -12,6 +12,7 @@ import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSe
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
+import com.noscompany.snake.game.online.host.room.dto.UserId;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
@@ -29,11 +30,11 @@ public class Playground {
     private GameOptions gameOptions;
     private Gameplay gameplay;
 
-    public Either<FailedToTakeASeat, PlayerTookASeat> takeASeat(UserName userName, PlayerNumber seatNumber) {
+    public Either<FailedToTakeASeat, PlayerTookASeat> takeASeat(UserId userId, UserName userName, PlayerNumber seatNumber) {
         if (gameplay.isRunning())
             return left(FailedToTakeASeat.gameAlreadyRunning());
         return seats
-                .takeOrChangeSeat(userName, seatNumber)
+                .takeOrChangeSeat(userId, userName, seatNumber)
                 .peek(userSuccessfullyTookASeat -> recreateGame())
                 .map(this::playerTookASeat);
     }
@@ -42,9 +43,9 @@ public class Playground {
         return new PlayerTookASeat(event.getUserName().getName(), event.getPlayerNumber(), getPlaygroundState());
     }
 
-    public Either<FailedToFreeUpSeat, PlayerFreedUpASeat> freeUpASeat(UserName userName) {
+    public Either<FailedToFreeUpSeat, PlayerFreedUpASeat> freeUpASeat(UserId userId) {
         return seats
-                .freeUpSeat(userName)
+                .freeUpSeat(userId)
                 .peek(this::killPlayer)
                 .peek(userFreedUpASeat -> recreateGameIfItIsNotRunning())
                 .map(this::playerFreedUpASeat);
@@ -58,10 +59,10 @@ public class Playground {
         return new PlayerFreedUpASeat(event.getUserName().getName(), event.getFreedUpSeatNumber(), getPlaygroundState());
     }
 
-    public Either<FailedToChangeGameOptions, GameOptionsChanged> changeGameOptions(UserName userName, GameOptions gameOptions) {
-        if (!userTookASeat(userName))
+    public Either<FailedToChangeGameOptions, GameOptionsChanged> changeGameOptions(UserId userId, GameOptions gameOptions) {
+        if (!userTookASeat(userId))
             return left(FailedToChangeGameOptions.requesterDidNotTakeASeat());
-        if (!userIsAdmin(userName))
+        if (!userIsAdmin(userId))
             return left(FailedToChangeGameOptions.requesterIsNotAdmin());
         if (gameplay.isRunning())
             return left(FailedToChangeGameOptions.gameIsAlreadyRunning());
@@ -70,10 +71,10 @@ public class Playground {
         return right(new GameOptionsChanged(getPlaygroundState()));
     }
 
-    public Option<FailedToStartGame> startGame(UserName userName) {
-        if (!userTookASeat(userName))
+    public Option<FailedToStartGame> startGame(UserId userId) {
+        if (!userTookASeat(userId))
             return of(FailedToStartGame.requesterDidNotTakeASeat());
-        if (!userIsAdmin(userName))
+        if (!userIsAdmin(userId))
             return of(FailedToStartGame.requesterIsNotAdmin());
         if (gameplay.isRunning())
             return of(FailedToStartGame.gameIsAlreadyRunning());
@@ -82,24 +83,24 @@ public class Playground {
         return Option.none();
     }
 
-    public void changeSnakeDirection(UserName userName, Direction direction) {
+    public void changeSnakeDirection(UserId userId, Direction direction) {
         seats
-                .getNumberFor(userName)
+                .getNumberFor(userId)
                 .peek(playerNumber -> gameplay.changeSnakeDirection(playerNumber, direction));
     }
 
-    public void cancelGame(UserName userName) {
-        if (seats.userIsAdmin(userName))
+    public void cancelGame(UserId userId) {
+        if (seats.userIsAdmin(userId))
             gameplay.cancel();
     }
 
-    public void pauseGame(UserName userName) {
-        if (seats.userIsAdmin(userName))
+    public void pauseGame(UserId userId) {
+        if (seats.userIsAdmin(userId))
             gameplay.pause();
     }
 
-    public void resumeGame(UserName userName) {
-        if (seats.userIsAdmin(userName))
+    public void resumeGame(UserId userId) {
+        if (seats.userIsAdmin(userId))
             gameplay.resume();
     }
 
@@ -111,12 +112,12 @@ public class Playground {
                 gameplay.getGameState());
     }
 
-    public boolean userTookASeat(UserName userName) {
-        return seats.userIsSitting(userName);
+    public boolean userTookASeat(UserId userId) {
+        return seats.userIsSitting(userId);
     }
 
-    public boolean userIsAdmin(UserName userName) {
-        return seats.userIsAdmin(userName);
+    public boolean userIsAdmin(UserId userId) {
+        return seats.userIsAdmin(userId);
     }
 
     private void recreateGameIfItIsNotRunning() {

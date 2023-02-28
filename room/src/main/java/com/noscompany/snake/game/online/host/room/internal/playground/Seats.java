@@ -5,6 +5,7 @@ import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
+import com.noscompany.snake.game.online.host.room.dto.UserId;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
@@ -21,32 +22,32 @@ import static lombok.AccessLevel.PACKAGE;
 class Seats {
     private final Map<PlayerNumber, Seat> seats;
 
-    Either<FailedToTakeASeat, Seat.UserSuccessfullyTookASeat> takeOrChangeSeat(UserName userName, PlayerNumber seatNumber) {
+    Either<FailedToTakeASeat, Seat.UserSuccessfullyTookASeat> takeOrChangeSeat(UserId userId, UserName userName, PlayerNumber seatNumber) {
         Seat desiredSeat = seats.get(seatNumber);
-        return findSeatBy(userName)
+        return findSeatBy(userId)
                 .map(currentUserSeat -> currentUserSeat.changeTo(desiredSeat))
-                .getOrElse(desiredSeat.take(userName))
+                .getOrElse(desiredSeat.take(userId, userName))
                 .peek(userSuccessfullyTookASeat -> chooseAdminIfNeeded());
     }
 
-    Either<FailedToFreeUpSeat, Seat.UserFreedUpASeat> freeUpSeat(UserName userName) {
-        return findSeatBy(userName)
+    Either<FailedToFreeUpSeat, Seat.UserFreedUpASeat> freeUpSeat(UserId userId) {
+        return findSeatBy(userId)
                 .flatMap(Seat::freeUp)
                 .peek(userFreedUpASeat -> chooseAdminIfNeeded())
                 .toEither(FailedToFreeUpSeat.userDidNotTakeASeat());
     }
 
-    Option<PlayerNumber> getNumberFor(UserName userName) {
-        return findSeatBy(userName)
+    Option<PlayerNumber> getNumberFor(UserId userId) {
+        return findSeatBy(userId)
                 .map(Seat::getPlayerNumber);
     }
 
-    boolean userIsSitting(UserName userName) {
-        return findSeatBy(userName).exists(Seat::isTaken);
+    boolean userIsSitting(UserId userId) {
+        return findSeatBy(userId).exists(Seat::isTaken);
     }
 
-    boolean userIsAdmin(UserName userName) {
-        return findSeatBy(userName).exists(Seat::isAdmin);
+    boolean userIsAdmin(UserId userId) {
+        return findSeatBy(userId).exists(Seat::isAdmin);
     }
 
     Set<PlaygroundState.Seat> toDto() {
@@ -74,8 +75,8 @@ class Seats {
 
     private Optional<Seat> findAnyTakenPlace() {
         return seatsStream()
-                        .filter(Seat::isTaken)
-                        .findAny();
+                .filter(Seat::isTaken)
+                .findAny();
     }
 
     private Stream<Seat> seatsStream() {
@@ -84,10 +85,10 @@ class Seats {
                 .stream();
     }
 
-    private Option<Seat> findSeatBy(UserName userName) {
+    private Option<Seat> findSeatBy(UserId userId) {
         return Option.ofOptional(
                 seatsStream()
-                        .filter(seat -> seat.isTakenBy(userName))
+                        .filter(seat -> seat.isTakenBy(userId))
                         .findFirst());
 
     }
