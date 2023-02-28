@@ -16,12 +16,16 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 public class RoomTestSetup {
+    protected int userIdCounter;
+    protected int userNameCounter;
     protected Room room;
     protected UserId actorId;
     protected UserName actorName;
 
     @Before
     public void init() {
+        userIdCounter = 0;
+        userNameCounter = 0;
         room = new RoomConfiguration().roomCreator().createRoom(new GameplayIdleEventHandler(), new GameRunningEndlesslyAfterStartCreator(), new UsersCountLimit(5));
         actorId = randomUserId();
         actorName = randomValidUserName();
@@ -40,11 +44,11 @@ public class RoomTestSetup {
     }
 
     protected UserId randomUserId() {
-        return new UserId(UUID.randomUUID().toString());
+        return new UserId("id-" + userIdCounter++);
     }
 
     protected UserName randomValidUserName() {
-        return new UserName(UUID.randomUUID().toString().substring(0, 10));
+        return new UserName("name-" + userNameCounter++);
     }
 
     protected PlaygroundState lobbyState() {

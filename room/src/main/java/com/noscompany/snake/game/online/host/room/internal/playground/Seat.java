@@ -19,6 +19,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 @AllArgsConstructor(access = PRIVATE)
 @Getter
+@Slf4j
 class Seat {
     private final PlayerNumber playerNumber;
     private Option<UserId> userId;
@@ -72,6 +73,8 @@ class Seat {
     }
 
     void chooseAsAdmin() {
+        String userId = this.userId.map(UserId::getId).getOrElse("");
+        log.info("user with id {} and player number {} got chosen as admin", userId, playerNumber);
         this.isAdmin = true;
     }
 
