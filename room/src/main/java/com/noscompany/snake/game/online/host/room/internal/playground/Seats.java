@@ -1,6 +1,7 @@
 package com.noscompany.snake.game.online.host.room.internal.playground;
 
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
+import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
@@ -20,7 +21,7 @@ import static lombok.AccessLevel.PACKAGE;
 class Seats {
     private final Map<PlayerNumber, Seat> seats;
 
-    Either<FailedToTakeASeat, Seat.UserSuccessfullyTookASeat> takeOrChangeSeat(String userName, PlayerNumber seatNumber) {
+    Either<FailedToTakeASeat, Seat.UserSuccessfullyTookASeat> takeOrChangeSeat(UserName userName, PlayerNumber seatNumber) {
         Seat desiredSeat = seats.get(seatNumber);
         return findSeatBy(userName)
                 .map(currentUserSeat -> currentUserSeat.changeTo(desiredSeat))
@@ -28,23 +29,23 @@ class Seats {
                 .peek(userSuccessfullyTookASeat -> chooseAdminIfNeeded());
     }
 
-    Either<FailedToFreeUpSeat, Seat.UserFreedUpASeat> freeUpSeat(String userName) {
+    Either<FailedToFreeUpSeat, Seat.UserFreedUpASeat> freeUpSeat(UserName userName) {
         return findSeatBy(userName)
                 .flatMap(Seat::freeUp)
                 .peek(userFreedUpASeat -> chooseAdminIfNeeded())
                 .toEither(FailedToFreeUpSeat.userDidNotTakeASeat());
     }
 
-    Option<PlayerNumber> getNumberFor(String userName) {
+    Option<PlayerNumber> getNumberFor(UserName userName) {
         return findSeatBy(userName)
                 .map(Seat::getPlayerNumber);
     }
 
-    boolean userIsSitting(String userName) {
+    boolean userIsSitting(UserName userName) {
         return findSeatBy(userName).exists(Seat::isTaken);
     }
 
-    boolean userIsAdmin(String userName) {
+    boolean userIsAdmin(UserName userName) {
         return findSeatBy(userName).exists(Seat::isAdmin);
     }
 
@@ -83,7 +84,7 @@ class Seats {
                 .stream();
     }
 
-    private Option<Seat> findSeatBy(String userName) {
+    private Option<Seat> findSeatBy(UserName userName) {
         return Option.ofOptional(
                 seatsStream()
                         .filter(seat -> seat.isTakenBy(userName))

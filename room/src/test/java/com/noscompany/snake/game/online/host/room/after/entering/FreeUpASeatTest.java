@@ -18,7 +18,7 @@ public class FreeUpASeatTest extends ActorEnteredTheRoomSetup {
 //        WHEN he tries to free up a seat
         var result = room.freeUpASeat(actorId);
 //        THEN he succeeds
-        var expected = success(playerFreedUpASeat(actorName, playerNumber));
+        var expected = success(playerFreedUpASeat(actorName.getName(), playerNumber));
         Assert.assertEquals(expected, result);
     }
 

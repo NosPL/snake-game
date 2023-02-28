@@ -7,6 +7,7 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToStartGame;
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
+import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
@@ -28,7 +29,7 @@ public class Playground {
     private GameOptions gameOptions;
     private Gameplay gameplay;
 
-    public Either<FailedToTakeASeat, PlayerTookASeat> takeASeat(String userName, PlayerNumber seatNumber) {
+    public Either<FailedToTakeASeat, PlayerTookASeat> takeASeat(UserName userName, PlayerNumber seatNumber) {
         if (gameplay.isRunning())
             return left(FailedToTakeASeat.gameAlreadyRunning());
         return seats
@@ -38,10 +39,10 @@ public class Playground {
     }
 
     private PlayerTookASeat playerTookASeat(Seat.UserSuccessfullyTookASeat event) {
-        return new PlayerTookASeat(event.getUserName(), event.getPlayerNumber(), getPlaygroundState());
+        return new PlayerTookASeat(event.getUserName().getName(), event.getPlayerNumber(), getPlaygroundState());
     }
 
-    public Either<FailedToFreeUpSeat, PlayerFreedUpASeat> freeUpASeat(String userName) {
+    public Either<FailedToFreeUpSeat, PlayerFreedUpASeat> freeUpASeat(UserName userName) {
         return seats
                 .freeUpSeat(userName)
                 .peek(this::killPlayer)
@@ -54,10 +55,10 @@ public class Playground {
     }
 
     private PlayerFreedUpASeat playerFreedUpASeat(Seat.UserFreedUpASeat event) {
-        return new PlayerFreedUpASeat(event.getUserName(), event.getFreedUpSeatNumber(), getPlaygroundState());
+        return new PlayerFreedUpASeat(event.getUserName().getName(), event.getFreedUpSeatNumber(), getPlaygroundState());
     }
 
-    public Either<FailedToChangeGameOptions, GameOptionsChanged> changeGameOptions(String userName, GameOptions gameOptions) {
+    public Either<FailedToChangeGameOptions, GameOptionsChanged> changeGameOptions(UserName userName, GameOptions gameOptions) {
         if (!userTookASeat(userName))
             return left(FailedToChangeGameOptions.requesterDidNotTakeASeat());
         if (!userIsAdmin(userName))
@@ -69,7 +70,7 @@ public class Playground {
         return right(new GameOptionsChanged(getPlaygroundState()));
     }
 
-    public Option<FailedToStartGame> startGame(String userName) {
+    public Option<FailedToStartGame> startGame(UserName userName) {
         if (!userTookASeat(userName))
             return of(FailedToStartGame.requesterDidNotTakeASeat());
         if (!userIsAdmin(userName))
@@ -81,23 +82,23 @@ public class Playground {
         return Option.none();
     }
 
-    public void changeSnakeDirection(String userName, Direction direction) {
+    public void changeSnakeDirection(UserName userName, Direction direction) {
         seats
                 .getNumberFor(userName)
                 .peek(playerNumber -> gameplay.changeSnakeDirection(playerNumber, direction));
     }
 
-    public void cancelGame(String userName) {
+    public void cancelGame(UserName userName) {
         if (seats.userIsAdmin(userName))
             gameplay.cancel();
     }
 
-    public void pauseGame(String userName) {
+    public void pauseGame(UserName userName) {
         if (seats.userIsAdmin(userName))
             gameplay.pause();
     }
 
-    public void resumeGame(String userName) {
+    public void resumeGame(UserName userName) {
         if (seats.userIsAdmin(userName))
             gameplay.resume();
     }
@@ -110,11 +111,11 @@ public class Playground {
                 gameplay.getGameState());
     }
 
-    public boolean userTookASeat(String userName) {
+    public boolean userTookASeat(UserName userName) {
         return seats.userIsSitting(userName);
     }
 
-    public boolean userIsAdmin(String userName) {
+    public boolean userIsAdmin(UserName userName) {
         return seats.userIsAdmin(userName);
     }
 

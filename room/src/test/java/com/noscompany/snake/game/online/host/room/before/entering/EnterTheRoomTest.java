@@ -2,6 +2,7 @@ package com.noscompany.snake.game.online.host.room.before.entering;
 
 import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
+import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -18,7 +19,7 @@ public class EnterTheRoomTest extends ActorNotInTheRoomSetup {
 //        WHEN the actor tries to enter the room
         var result = room.enter(actorId, actorName);
 //        THEN he succeeds
-        var expected = success(new NewUserEnteredRoom(actorName, room.getState()));
+        var expected = success(new NewUserEnteredRoom(actorName.getName(), room.getState()));
         Assert.assertEquals(expected, result);
     }
 
@@ -29,7 +30,7 @@ public class EnterTheRoomTest extends ActorNotInTheRoomSetup {
 //        WHEN the actor tries to enter the room with the same name
         var result = room.enter(actorId, actorName);
 //        THEN he fails due to name being already used
-        var expected = failure(FailedToEnterRoom.userNameAlreadyInUse(actorName));
+        var expected = failure(FailedToEnterRoom.userNameAlreadyInUse(actorName.getName()));
         Assert.assertEquals(expected, result);
     }
 
@@ -41,7 +42,7 @@ public class EnterTheRoomTest extends ActorNotInTheRoomSetup {
 //        WHEN the actor tries to enter the room
         var result = room.enter(actorId, actorName);
 //        THEN he fails due to room being full
-        var expected = failure(FailedToEnterRoom.roomIsFull(actorName));
+        var expected = failure(FailedToEnterRoom.roomIsFull(actorName.getName()));
         Assert.assertEquals(expected, result);
     }
 
@@ -53,23 +54,23 @@ public class EnterTheRoomTest extends ActorNotInTheRoomSetup {
     @Test
     public void actorShouldFailToEnterTheRoomUsingBlankName() {
 //        GIVEN that the actor wants to use blank name
-        actorName = "  ";
+        actorName = new UserName("  ");
 //        WHEN he tries to enter the room
         var result = room.enter(actorId, actorName);
 //        THEN he fails due to incorrect name format
-        var expected = failure(FailedToEnterRoom.incorrectUserNameFormat(actorName));
+        var expected = failure(FailedToEnterRoom.incorrectUserNameFormat(actorName.getName()));
         Assert.assertEquals(expected, result);
     }
 
     @Test
     public void actorShouldFailToEnterTheRoomUsingNameLongerThan15Signs() {
 //        GIVEN that the actor wants to use name longer than 15 signs
-        actorName = "aaabbbcccdddeeef";
-        assert actorName.codePoints().count() > 15;
+        actorName = new UserName("aaabbbcccdddeeef");
+        assert actorName.getName().codePoints().count() > 15;
 //        WHEN he tries to enter the room
         var result = room.enter(actorId, actorName);
 //        THEN he fails due to incorrect name format
-        var expected = failure(FailedToEnterRoom.incorrectUserNameFormat(actorName));
+        var expected = failure(FailedToEnterRoom.incorrectUserNameFormat(actorName.getName()));
         Assert.assertEquals(expected, result);
     }
 }

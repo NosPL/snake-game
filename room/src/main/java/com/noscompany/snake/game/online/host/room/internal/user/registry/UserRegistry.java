@@ -1,6 +1,8 @@
 package com.noscompany.snake.game.online.host.room.internal.user.registry;
 
 import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
+import com.noscompany.snake.game.online.contract.messages.room.UserName;
+import com.noscompany.snake.game.online.host.room.dto.UserId;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import lombok.Value;
@@ -11,23 +13,23 @@ import java.util.Set;
 
 @AllArgsConstructor
 public class UserRegistry {
-    private final Map<String, String> userNamesById;
+    private final Map<UserId, UserName> userNamesById;
     private final int playerLimit;
 
     public boolean isFull() {
         return userNamesById.size() >= playerLimit;
     }
 
-    public Option<FailedToEnterRoom> registerNewUser(String userId, String userName) {
+    public Option<FailedToEnterRoom> registerNewUser(UserId userId, UserName userName) {
         if (this.isFull())
-            return Option.of(FailedToEnterRoom.roomIsFull(userName));
-        String currentUserName = userNamesById.get(userId);
+            return Option.of(FailedToEnterRoom.roomIsFull(userName.getName()));
+        UserName currentUserName = userNamesById.get(userId);
         if (currentUserName != null)
-            return Option.of(FailedToEnterRoom.userAlreadyInTheRoom(currentUserName));
+            return Option.of(FailedToEnterRoom.userAlreadyInTheRoom(currentUserName.getName()));
         if (getUserNames().contains(userName))
-            return Option.of(FailedToEnterRoom.userNameAlreadyInUse(userName));
-        if (!userNameIsValid(userName))
-            return Option.of(FailedToEnterRoom.incorrectUserNameFormat(userName));
+            return Option.of(FailedToEnterRoom.userNameAlreadyInUse(userName.getName()));
+        if (!userNameIsValid(userName.getName()))
+            return Option.of(FailedToEnterRoom.incorrectUserNameFormat(userName.getName()));
         userNamesById.put(userId, userName);
         return Option.none();
     }
@@ -36,29 +38,28 @@ public class UserRegistry {
         return !userName.isBlank() && userName.codePoints().count() <= 15;
     }
 
-    public Option<UserRemoved> removeUser(String userId) {
+    public Option<UserRemoved> removeUser(UserId userId) {
         return Option
                 .of(userNamesById.remove(userId))
                 .map(userName -> new UserRemoved(userId, userName));
     }
 
-    public Option<String> findUserNameById(String userId) {
-        return Option.of(userNamesById.get(userId
-        ));
+    public Option<UserName> findUserNameById(UserId userId) {
+        return Option.of(userNamesById.get(userId));
     }
 
-    public Set<String> getUserNames() {
+    public Set<UserName> getUserNames() {
         return new HashSet<>(userNamesById.values());
     }
 
-    public boolean containsId(String userId) {
+    public boolean containsId(UserId userId) {
         return userNamesById.containsKey(userId);
     }
 
     @Value
     public
     class UserRemoved {
-        String userId;
-        String userName;
+        UserId userId;
+        UserName userName;
     }
 }

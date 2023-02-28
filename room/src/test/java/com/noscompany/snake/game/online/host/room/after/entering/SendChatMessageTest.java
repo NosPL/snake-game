@@ -14,7 +14,7 @@ public class SendChatMessageTest extends ActorEnteredTheRoomSetup {
         var messageContent = "sample message content";
         var result = room.sendChatMessage(actorId, messageContent);
 //        THEN he succeeds
-        var expected = success(userSentChatMessage(actorName, messageContent));
+        var expected = success(userSentChatMessage(actorName.getName(), messageContent));
         Assert.assertEquals(expected, result);
     }
 

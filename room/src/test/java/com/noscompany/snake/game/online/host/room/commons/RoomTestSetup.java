@@ -4,9 +4,11 @@ import com.noscompany.snake.game.online.contract.messages.game.options.GameOptio
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState.Seat;
+import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import com.noscompany.snake.game.online.contract.messages.room.UsersCountLimit;
 import com.noscompany.snake.game.online.host.room.Room;
 import com.noscompany.snake.game.online.host.room.RoomConfiguration;
+import com.noscompany.snake.game.online.host.room.dto.UserId;
 import io.vavr.control.Either;
 import org.junit.Before;
 
@@ -15,8 +17,8 @@ import java.util.stream.Stream;
 
 public class RoomTestSetup {
     protected Room room;
-    protected String actorId;
-    protected String actorName;
+    protected UserId actorId;
+    protected UserName actorName;
 
     @Before
     public void init() {
@@ -37,12 +39,12 @@ public class RoomTestSetup {
         return either.isRight();
     }
 
-    protected String randomUserId() {
-        return UUID.randomUUID().toString();
+    protected UserId randomUserId() {
+        return new UserId(UUID.randomUUID().toString());
     }
 
-    protected String randomValidUserName() {
-        return UUID.randomUUID().toString().substring(0, 10);
+    protected UserName randomValidUserName() {
+        return new UserName(UUID.randomUUID().toString().substring(0, 10));
     }
 
     protected PlaygroundState lobbyState() {

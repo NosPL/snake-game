@@ -6,6 +6,7 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNum
 import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import com.noscompany.snake.game.online.contract.messages.server.InitializeRemoteClientState;
 import com.noscompany.snake.game.online.host.room.Room;
+import com.noscompany.snake.game.online.host.room.dto.UserId;
 import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ class CommandHandler implements Mediator {
     @Override
     public void enter(HostId hostId, UserName userName) {
         room
-                .enter(hostId.getId(), userName.getName())
+                .enter(toUserId(hostId), userName)
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(eventDispatcher::sendToHost);
     }
@@ -27,42 +28,42 @@ class CommandHandler implements Mediator {
     @Override
     public void sendChatMessage(HostId hostId, String messageContent) {
         room
-                .sendChatMessage(hostId.getId(), messageContent)
+                .sendChatMessage(toUserId(hostId), messageContent)
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(eventDispatcher::sendToHost);
     }
 
     @Override
     public void cancelGame(HostId hostId) {
-        room.cancelGame(hostId.getId());
+        room.cancelGame(toUserId(hostId));
     }
 
     @Override
     public void changeSnakeDirection(HostId hostId, Direction direction) {
-        room.changeSnakeDirection(hostId.getId(), direction);
+        room.changeSnakeDirection(toUserId(hostId), direction);
     }
 
     @Override
     public void pauseGame(HostId hostId) {
-        room.pauseGame(hostId.getId());
+        room.pauseGame(toUserId(hostId));
     }
 
     @Override
     public void resumeGame(HostId hostId) {
-        room.resumeGame(hostId.getId());
+        room.resumeGame(toUserId(hostId));
     }
 
     @Override
     public void startGame(HostId hostId) {
         room
-                .startGame(hostId.getId())
+                .startGame(toUserId(hostId))
                 .peek(eventDispatcher::sendToHost);
     }
 
     @Override
     public void changeGameOptions(HostId hostId, GameOptions gameOptions) {
         room
-                .changeGameOptions(hostId.getId(), gameOptions)
+                .changeGameOptions(toUserId(hostId), gameOptions)
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(eventDispatcher::sendToHost);
     }
@@ -70,7 +71,7 @@ class CommandHandler implements Mediator {
     @Override
     public void freeUpASeat(HostId hostId) {
         room
-                .freeUpASeat(hostId.getId())
+                .freeUpASeat(toUserId(hostId))
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(eventDispatcher::sendToHost);
     }
@@ -78,7 +79,7 @@ class CommandHandler implements Mediator {
     @Override
     public void takeASeat(HostId hostId, PlayerNumber playerNumber) {
         room
-                .takeASeat(hostId.getId(), playerNumber)
+                .takeASeat(toUserId(hostId), playerNumber)
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(eventDispatcher::sendToHost);
     }
@@ -91,42 +92,42 @@ class CommandHandler implements Mediator {
     @Override
     public void sendChatMessage(RemoteClientId remoteClientId, String messageContent) {
         room
-                .sendChatMessage(remoteClientId.getId(), messageContent)
+                .sendChatMessage(toUserId(remoteClientId), messageContent)
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(failure -> eventDispatcher.sendToClient(remoteClientId, failure));
     }
 
     @Override
     public void cancelGame(RemoteClientId remoteClientId) {
-        room.cancelGame(remoteClientId.getId());
+        room.cancelGame(toUserId(remoteClientId));
     }
 
     @Override
     public void changeDirection(RemoteClientId remoteClientId, Direction direction) {
-        room.changeSnakeDirection(remoteClientId.getId(), direction);
+        room.changeSnakeDirection(toUserId(remoteClientId), direction);
     }
 
     @Override
     public void pauseGame(RemoteClientId remoteClientId) {
-        room.pauseGame(remoteClientId.getId());
+        room.pauseGame(toUserId(remoteClientId));
     }
 
     @Override
     public void resumeGame(RemoteClientId remoteClientId) {
-        room.resumeGame(remoteClientId.getId());
+        room.resumeGame(toUserId(remoteClientId));
     }
 
     @Override
     public void startGame(RemoteClientId remoteClientId) {
         room
-                .startGame(remoteClientId.getId())
+                .startGame(toUserId(remoteClientId))
                 .peek(failure -> eventDispatcher.sendToClient(remoteClientId, failure));
     }
 
     @Override
     public void changeGameOptions(RemoteClientId remoteClientId, GameOptions gameOptions) {
         room
-                .changeGameOptions(remoteClientId.getId(), gameOptions)
+                .changeGameOptions(toUserId(remoteClientId), gameOptions)
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(failure -> eventDispatcher.sendToClient(remoteClientId, failure));
     }
@@ -134,7 +135,7 @@ class CommandHandler implements Mediator {
     @Override
     public void freeUpSeat(RemoteClientId remoteClientId) {
         room
-                .freeUpASeat(remoteClientId.getId())
+                .freeUpASeat(toUserId(remoteClientId))
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(failure -> eventDispatcher.sendToClient(remoteClientId, failure));
     }
@@ -142,7 +143,7 @@ class CommandHandler implements Mediator {
     @Override
     public void takeASeat(RemoteClientId remoteClientId, PlayerNumber playerNumber) {
         room
-                .takeASeat(remoteClientId.getId(), playerNumber)
+                .takeASeat(toUserId(remoteClientId), playerNumber)
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(failure -> eventDispatcher.sendToClient(remoteClientId, failure));
     }
@@ -150,7 +151,7 @@ class CommandHandler implements Mediator {
     @Override
     public void enterRoom(RemoteClientId remoteClientId, UserName userName) {
         room
-                .enter(remoteClientId.getId(), userName.getName())
+                .enter(toUserId(remoteClientId), userName)
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(failure -> eventDispatcher.sendToClient(remoteClientId, failure));
     }
@@ -158,7 +159,7 @@ class CommandHandler implements Mediator {
     @Override
     public void leaveRoom(RemoteClientId remoteClientId) {
         room
-                .leave(remoteClientId.getId())
+                .leave(toUserId(remoteClientId))
                 .peek(eventDispatcher::sendToClientsAndHost);
     }
 
@@ -166,5 +167,13 @@ class CommandHandler implements Mediator {
     public void initializeClientState(RemoteClientId remoteClientId) {
         var initializeRemoteClientState = new InitializeRemoteClientState(room.getState());
         eventDispatcher.sendToClient(remoteClientId, initializeRemoteClientState);
+    }
+
+    private UserId toUserId(HostId hostId) {
+        return new UserId(hostId.getId());
+    }
+
+    private UserId toUserId(RemoteClientId remoteClientId) {
+        return new UserId(remoteClientId.getId());
     }
 }

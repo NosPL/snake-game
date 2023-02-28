@@ -8,32 +8,30 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToStartGame;
-import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
-import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
-import com.noscompany.snake.game.online.contract.messages.room.RoomState;
-import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
+import com.noscompany.snake.game.online.contract.messages.room.*;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
+import com.noscompany.snake.game.online.host.room.dto.UserId;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 
 public interface Room {
-    Either<FailedToEnterRoom, NewUserEnteredRoom> enter(String userId, String userName);
-    Either<FailedToTakeASeat, PlayerTookASeat> takeASeat(String userId, PlayerNumber playerNumber);
-    Either<FailedToFreeUpSeat, PlayerFreedUpASeat> freeUpASeat(String userId);
-    Either<FailedToChangeGameOptions, GameOptionsChanged> changeGameOptions(String userId, GameOptions gameOptions);
-    Option<FailedToStartGame> startGame(String userId);
-    void changeSnakeDirection(String userId, Direction direction);
-    void cancelGame(String userId);
-    void pauseGame(String userId);
-    void resumeGame(String userId);
-    Either<FailedToSendChatMessage, UserSentChatMessage> sendChatMessage(String userId, String messageContent);
-    Option<UserLeftRoom> leave(String userId);
+    Either<FailedToEnterRoom, NewUserEnteredRoom> enter(UserId userId, UserName userName);
+    Either<FailedToTakeASeat, PlayerTookASeat> takeASeat(UserId userId, PlayerNumber playerNumber);
+    Either<FailedToFreeUpSeat, PlayerFreedUpASeat> freeUpASeat(UserId userId);
+    Either<FailedToChangeGameOptions, GameOptionsChanged> changeGameOptions(UserId userId, GameOptions gameOptions);
+    Option<FailedToStartGame> startGame(UserId userId);
+    void changeSnakeDirection(UserId userId, Direction direction);
+    void cancelGame(UserId userId);
+    void pauseGame(UserId userId);
+    void resumeGame(UserId userId);
+    Either<FailedToSendChatMessage, UserSentChatMessage> sendChatMessage(UserId userId, String messageContent);
+    Option<UserLeftRoom> leave(UserId userId);
     RoomState getState();
-    boolean hasUserWithId(String userId);
-    boolean userIsAdmin(String userId);
-    boolean userIsSitting(String userId);
+    boolean hasUserWithId(UserId userId);
+    boolean userIsAdmin(UserId userId);
+    boolean userIsSitting(UserId userId);
     boolean isFull();
 }

@@ -1,6 +1,7 @@
 package com.noscompany.snake.game.online.host.room.internal.playground;
 
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
+import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import io.vavr.control.Either;
@@ -18,7 +19,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Getter
 class Seat {
     private final PlayerNumber playerNumber;
-    private volatile Option<String> userName;
+    private volatile Option<UserName> userName;
     private volatile boolean isAdmin;
     private volatile boolean isTaken;
 
@@ -26,7 +27,7 @@ class Seat {
         return new Seat(playerNumber, Option.none(), false, false);
     }
 
-    Either<FailedToTakeASeat, UserSuccessfullyTookASeat> take(String userName) {
+    Either<FailedToTakeASeat, UserSuccessfullyTookASeat> take(UserName userName) {
         if (isTaken())
             return left(FailedToTakeASeat.seatAlreadyTaken());
         this.userName = of(userName);
@@ -50,7 +51,7 @@ class Seat {
         return userName.isDefined();
     }
 
-    boolean isTakenBy(String userName) {
+    boolean isTakenBy(UserName userName) {
         return this.userName.exists(userName::equals);
     }
 
@@ -69,18 +70,18 @@ class Seat {
     }
 
     PlaygroundState.Seat toDto() {
-        return new PlaygroundState.Seat(playerNumber, userName, isAdmin, isTaken);
+        return new PlaygroundState.Seat(playerNumber, userName.map(UserName::getName), isAdmin, isTaken);
     }
 
     @Value
     static class UserFreedUpASeat {
-        String userName;
+        UserName userName;
         PlayerNumber freedUpSeatNumber;
     }
 
     @Value
     static class UserSuccessfullyTookASeat {
-        String userName;
+        UserName userName;
         PlayerNumber playerNumber;
     }
 }

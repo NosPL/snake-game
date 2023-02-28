@@ -19,7 +19,7 @@ public class TakeASeatTest extends ActorEnteredTheRoomSetup {
         var freeSeatNumber = freeSeatNumber();
         var result = room.takeASeat(actorId, freeSeatNumber);
 //        THEN he succeeds
-        var expected = success(playerTookASeat(actorName, freeSeatNumber));
+        var expected = success(playerTookASeat(actorName.getName(), freeSeatNumber));
         Assert.assertEquals(expected, result);
     }
 

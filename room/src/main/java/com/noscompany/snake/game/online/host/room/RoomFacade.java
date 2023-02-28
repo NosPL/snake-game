@@ -6,16 +6,14 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToStartGame;
-import com.noscompany.snake.game.online.contract.messages.room.RoomState;
+import com.noscompany.snake.game.online.contract.messages.room.*;
 import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
 import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
-import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
-import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
-import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
+import com.noscompany.snake.game.online.host.room.dto.UserId;
 import com.noscompany.snake.game.online.host.room.internal.chat.Chat;
 import com.noscompany.snake.game.online.host.room.internal.playground.Playground;
 import com.noscompany.snake.game.online.host.room.internal.user.registry.UserRegistry;
@@ -24,6 +22,9 @@ import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 
 import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toSet;
 
 @AllArgsConstructor
 class RoomFacade implements Room {
@@ -32,15 +33,15 @@ class RoomFacade implements Room {
     private final Chat chat;
 
     @Override
-    public Either<FailedToEnterRoom, NewUserEnteredRoom> enter(String userId, String userName) {
+    public Either<FailedToEnterRoom, NewUserEnteredRoom> enter(UserId userId, UserName userName) {
         return userRegistry
                 .registerNewUser(userId, userName)
-                .toEither(new NewUserEnteredRoom(userName, getState()))
+                .toEither(new NewUserEnteredRoom(userName.getName(), getState()))
                 .swap();
     }
 
     @Override
-    public Either<FailedToTakeASeat, PlayerTookASeat> takeASeat(String userId, PlayerNumber playerNumber) {
+    public Either<FailedToTakeASeat, PlayerTookASeat> takeASeat(UserId userId, PlayerNumber playerNumber) {
         return userRegistry
                 .findUserNameById(userId)
                 .toEither(FailedToTakeASeat.userNotInTheRoom())
@@ -48,7 +49,7 @@ class RoomFacade implements Room {
     }
 
     @Override
-    public Either<FailedToFreeUpSeat, PlayerFreedUpASeat> freeUpASeat(String userId) {
+    public Either<FailedToFreeUpSeat, PlayerFreedUpASeat> freeUpASeat(UserId userId) {
         return userRegistry
                 .findUserNameById(userId)
                 .toEither(FailedToFreeUpSeat.userNotInTheRoom())
@@ -56,7 +57,7 @@ class RoomFacade implements Room {
     }
 
     @Override
-    public Either<FailedToChangeGameOptions, GameOptionsChanged> changeGameOptions(String userId, GameOptions gameOptions) {
+    public Either<FailedToChangeGameOptions, GameOptionsChanged> changeGameOptions(UserId userId, GameOptions gameOptions) {
         return userRegistry
                 .findUserNameById(userId)
                 .toEither(FailedToChangeGameOptions.userNotInTheRoom())
@@ -64,7 +65,7 @@ class RoomFacade implements Room {
     }
 
     @Override
-    public Option<FailedToStartGame> startGame(String userId) {
+    public Option<FailedToStartGame> startGame(UserId userId) {
         return userRegistry
                 .findUserNameById(userId)
                 .toEither(FailedToStartGame.userIsNotInTheRoom())
@@ -73,35 +74,35 @@ class RoomFacade implements Room {
     }
 
     @Override
-    public void changeSnakeDirection(String userId, Direction direction) {
+    public void changeSnakeDirection(UserId userId, Direction direction) {
         userRegistry
                 .findUserNameById(userId)
                 .peek(userName -> playground.changeSnakeDirection(userName, direction));
     }
 
     @Override
-    public void cancelGame(String userId) {
+    public void cancelGame(UserId userId) {
         userRegistry
                 .findUserNameById(userId)
                 .peek(playground::cancelGame);
     }
 
     @Override
-    public void pauseGame(String userId) {
+    public void pauseGame(UserId userId) {
         userRegistry
                 .findUserNameById(userId)
                 .peek(playground::pauseGame);
     }
 
     @Override
-    public void resumeGame(String userId) {
+    public void resumeGame(UserId userId) {
         userRegistry
                 .findUserNameById(userId)
                 .peek(playground::resumeGame);
     }
 
     @Override
-    public Either<FailedToSendChatMessage, UserSentChatMessage> sendChatMessage(String userId, String messageContent) {
+    public Either<FailedToSendChatMessage, UserSentChatMessage> sendChatMessage(UserId userId, String messageContent) {
         return userRegistry
                 .findUserNameById(userId)
                 .toEither(FailedToSendChatMessage.userIsNotInTheRoom())
@@ -109,34 +110,34 @@ class RoomFacade implements Room {
     }
 
     @Override
-    public Option<UserLeftRoom> leave(String userId) {
+    public Option<UserLeftRoom> leave(UserId userId) {
         return userRegistry
                 .removeUser(userId)
                 .map(UserRegistry.UserRemoved::getUserName)
                 .map(this::userLeftTheRoom);
     }
 
-    private UserLeftRoom userLeftTheRoom(String userName) {
+    private UserLeftRoom userLeftTheRoom(UserName userName) {
         return new UserLeftRoom(
-                userName,
-                userRegistry.getUserNames(),
+                userName.getName(),
+                userRegistry.getUserNames().stream().map(UserName::getName).collect(toSet()),
                 playground.freeUpASeat(userName).toOption());
     }
 
     @Override
-    public boolean hasUserWithId(String userId) {
+    public boolean hasUserWithId(UserId userId) {
         return userRegistry.containsId(userId);
     }
 
     @Override
-    public boolean userIsAdmin(String userId) {
+    public boolean userIsAdmin(UserId userId) {
         return userRegistry
                 .findUserNameById(userId)
                 .exists(playground::userIsAdmin);
     }
 
     @Override
-    public boolean userIsSitting(String userId) {
+    public boolean userIsSitting(UserId userId) {
         return userRegistry
                 .findUserNameById(userId)
                 .exists(playground::userTookASeat);
@@ -146,7 +147,7 @@ class RoomFacade implements Room {
     public RoomState getState() {
         return new RoomState(
                 isFull(),
-                userRegistry.getUserNames(),
+                userRegistry.getUserNames().stream().map(UserName::getName).collect(toSet()),
                 playground.getPlaygroundState());
     }
 
