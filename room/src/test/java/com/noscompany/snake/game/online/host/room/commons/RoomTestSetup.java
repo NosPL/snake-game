@@ -4,7 +4,7 @@ import com.noscompany.snake.game.online.contract.messages.game.options.GameOptio
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState.Seat;
-import com.noscompany.snake.game.online.contract.messages.room.PlayersLimit;
+import com.noscompany.snake.game.online.contract.messages.room.UsersCountLimit;
 import com.noscompany.snake.game.online.host.room.Room;
 import com.noscompany.snake.game.online.host.room.RoomConfiguration;
 import io.vavr.control.Either;
@@ -20,7 +20,7 @@ public class RoomTestSetup {
 
     @Before
     public void init() {
-        room = new RoomConfiguration().roomCreator().createRoom(new GameplayIdleEventHandler(), new GameRunningEndlesslyAfterStartCreator(), new PlayersLimit(5));
+        room = new RoomConfiguration().roomCreator().createRoom(new GameplayIdleEventHandler(), new GameRunningEndlesslyAfterStartCreator(), new UsersCountLimit(5));
         actorId = randomUserId();
         actorName = randomValidUserName();
     }

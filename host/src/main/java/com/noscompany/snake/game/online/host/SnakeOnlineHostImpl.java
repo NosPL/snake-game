@@ -4,7 +4,7 @@ import com.noscompany.snake.game.online.contract.messages.game.options.GameOptio
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.host.server.Server;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
-import com.noscompany.snake.game.online.contract.messages.room.PlayerName;
+import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import com.noscompany.snake.game.online.host.ports.RoomApiForHost;
 import com.noscompany.snake.game.online.host.server.ports.RoomApiForRemoteClients;
 import lombok.AllArgsConstructor;
@@ -18,13 +18,13 @@ class SnakeOnlineHostImpl implements SnakeOnlineHost {
     private final RoomApiForRemoteClients roomApiForRemoteClients;
 
     @Override
-    public void startServer(ServerParams serverParams, PlayerName playerName) {
+    public void startServer(ServerParams serverParams, UserName userName) {
         server
                 .start(serverParams, roomApiForRemoteClients)
                 .peek(hostEventHandler::handle)
                 .onEmpty(() -> {
                     hostEventHandler.serverStarted(serverParams);
-                    roomApiForHost.enter(hostId, playerName);
+                    roomApiForHost.enter(hostId, userName);
                 });
     }
 

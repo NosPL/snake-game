@@ -3,10 +3,10 @@ package com.noscompany.snake.game.online.host;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
-import com.noscompany.snake.game.online.contract.messages.room.PlayerName;
+import com.noscompany.snake.game.online.contract.messages.room.UserName;
 
 public interface SnakeOnlineHost {
-    void startServer(ServerParams serverParams, PlayerName playerName);
+    void startServer(ServerParams serverParams, UserName userName);
     void sendChatMessage(String messageContent);
     void cancelGame();
     void changeSnakeDirection(Direction direction);

@@ -3,7 +3,7 @@ package com.noscompany.snake.game.online.host.mediator;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.room.PlayerName;
+import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
 import lombok.AllArgsConstructor;
 
@@ -15,8 +15,8 @@ class CommandQueue implements Mediator {
     private final CommandHandler commandHandler;
 
     @Override
-    public void enter(HostId hostId, PlayerName playerName) {
-        executor.submit(() -> commandHandler.enter(hostId, playerName));
+    public void enter(HostId hostId, UserName userName) {
+        executor.submit(() -> commandHandler.enter(hostId, userName));
     }
 
     @Override
@@ -116,8 +116,8 @@ class CommandQueue implements Mediator {
     }
 
     @Override
-    public void enterRoom(RemoteClientId remoteClientId, PlayerName playerName) {
-        executor.submit(() -> commandHandler.enterRoom(remoteClientId, playerName));
+    public void enterRoom(RemoteClientId remoteClientId, UserName userName) {
+        executor.submit(() -> commandHandler.enterRoom(remoteClientId, userName));
     }
 
     @Override

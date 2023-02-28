@@ -5,7 +5,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
-import com.noscompany.snake.game.online.contract.messages.room.PlayerName;
+import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import com.noscompany.snake.game.online.host.server.ports.RoomApiForRemoteClients;
 import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
 import io.vavr.control.Try;
@@ -129,7 +129,7 @@ abstract class DeserializedMessage {
 
         @Override
         void applyTo(RoomApiForRemoteClients roomCommandHandler) {
-            roomCommandHandler.enterRoom(remoteClientId, new PlayerName(userName));
+            roomCommandHandler.enterRoom(remoteClientId, new UserName(userName));
         }
     }
 

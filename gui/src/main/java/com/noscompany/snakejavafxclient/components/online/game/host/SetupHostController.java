@@ -1,7 +1,7 @@
 package com.noscompany.snakejavafxclient.components.online.game.host;
 
-import com.noscompany.snake.game.online.contract.messages.room.PlayerName;
-import com.noscompany.snake.game.online.contract.messages.room.PlayersLimit;
+import com.noscompany.snake.game.online.contract.messages.room.UserName;
+import com.noscompany.snake.game.online.contract.messages.room.UsersCountLimit;
 import com.noscompany.snake.game.online.host.server.dto.ServerParams;
 import com.noscompany.snake.game.online.network.interfaces.analyzer.IpV4Address;
 import com.noscompany.snake.game.online.network.interfaces.analyzer.NetworkInterfacesAnalyzerConfiguration;
@@ -39,19 +39,19 @@ public class SetupHostController extends AbstractController {
                 .peek(playerName -> startServer(serverParams, playerName));
     }
 
-    private void startServer(ServerParams serverParams, PlayerName playerName) {
+    private void startServer(ServerParams serverParams, UserName userName) {
         getPlayerLimit()
-                .peek(playersLimit -> startServer(serverParams, playerName, playersLimit));
+                .peek(playersLimit -> startServer(serverParams, userName, playersLimit));
     }
 
-    private void startServer(ServerParams serverParams, PlayerName playerName, PlayersLimit playersLimit) {
+    private void startServer(ServerParams serverParams, UserName userName, UsersCountLimit usersCountLimit) {
         SnakeOnlineHostGuiConfiguration
-                .createConfiguredHost(playersLimit)
-                .startServer(serverParams, playerName);
+                .createConfiguredHost(usersCountLimit)
+                .startServer(serverParams, userName);
     }
 
-    private Option<PlayersLimit> getPlayerLimit() {
-        return Option.of(new PlayersLimit(10));
+    private Option<UsersCountLimit> getPlayerLimit() {
+        return Option.of(new UsersCountLimit(10));
     }
 
     private Option<ServerParams> getServerParams() {
@@ -81,7 +81,7 @@ public class SetupHostController extends AbstractController {
         return Option.of(new ServerParams(ipAddress, parsedPortValue.get()));
     }
 
-    private Option<PlayerName> getPlayerName() {
+    private Option<UserName> getPlayerName() {
         String playerNameStr = playerNameTextField.getText();
         if (playerNameStr == null || playerNameStr.isBlank()) {
             errorMessageLabel.setText("Player name cannot be empty");
@@ -91,7 +91,7 @@ public class SetupHostController extends AbstractController {
             errorMessageLabel.setText("Player name cannot be longer than 10 signs");
             return Option.none();
         }
-        return Option.of(new PlayerName(playerNameStr));
+        return Option.of(new UserName(playerNameStr));
     }
 
     @Override

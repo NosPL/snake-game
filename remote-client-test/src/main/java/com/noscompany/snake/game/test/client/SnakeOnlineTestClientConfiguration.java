@@ -3,7 +3,7 @@ package com.noscompany.snake.game.test.client;
 import com.noscompany.snake.game.online.client.ClientEventHandler;
 import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import com.noscompany.snake.game.online.client.SnakeOnlineClientConfiguration;
-import com.noscompany.snake.game.online.contract.messages.room.PlayersLimit;
+import com.noscompany.snake.game.online.contract.messages.room.UsersCountLimit;
 import com.noscompany.snake.game.online.host.room.RoomConfiguration;
 import com.noscompany.snake.game.online.host.server.ServerConfiguration;
 import com.noscompany.snake.game.online.host.mediator.MediatorConfiguration;
@@ -20,7 +20,7 @@ public class SnakeOnlineTestClientConfiguration {
         var nullHostEventHandler = new NullHostEventHandler();
         var roomCreator = new RoomConfiguration().roomCreator();
         var snakeGameplayCreator = new GameplayConfiguration().snakeGameplayCreator();
-        var playersLimit = new PlayersLimit(10);
+        var playersLimit = new UsersCountLimit(10);
         var roomMediator = new MediatorConfiguration().mediator(nullHostEventHandler, server, roomCreator, playersLimit, snakeGameplayCreator);
         return new SnakeOnlineTestClient(snakeOnlineClient, clientEventHandler, server, roomMediator, Option.none());
     }

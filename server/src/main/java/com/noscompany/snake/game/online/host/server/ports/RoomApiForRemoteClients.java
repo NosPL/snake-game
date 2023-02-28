@@ -3,7 +3,7 @@ package com.noscompany.snake.game.online.host.server.ports;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.room.PlayerName;
+import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
 
 public interface RoomApiForRemoteClients {
@@ -16,7 +16,7 @@ public interface RoomApiForRemoteClients {
     void changeGameOptions(RemoteClientId remoteClientId, GameOptions gameOptions);
     void freeUpSeat(RemoteClientId remoteClientId);
     void takeASeat(RemoteClientId remoteClientId, PlayerNumber playerNumber);
-    void enterRoom(RemoteClientId remoteClientId, PlayerName playerName);
+    void enterRoom(RemoteClientId remoteClientId, UserName userName);
     void leaveRoom(RemoteClientId remoteClientId);
 
     void initializeClientState(RemoteClientId remoteClientId);

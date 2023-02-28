@@ -3,7 +3,7 @@ package com.noscompany.snake.game.online.host.mediator;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.room.PlayerName;
+import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import com.noscompany.snake.game.online.contract.messages.server.InitializeRemoteClientState;
 import com.noscompany.snake.game.online.host.room.Room;
 import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
@@ -17,9 +17,9 @@ class CommandHandler implements Mediator {
     private final EventDispatcher eventDispatcher;
 
     @Override
-    public void enter(HostId hostId, PlayerName playerName) {
+    public void enter(HostId hostId, UserName userName) {
         room
-                .enter(hostId.getId(), playerName.getName())
+                .enter(hostId.getId(), userName.getName())
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(eventDispatcher::sendToHost);
     }
@@ -148,9 +148,9 @@ class CommandHandler implements Mediator {
     }
 
     @Override
-    public void enterRoom(RemoteClientId remoteClientId, PlayerName playerName) {
+    public void enterRoom(RemoteClientId remoteClientId, UserName userName) {
         room
-                .enter(remoteClientId.getId(), playerName.getName())
+                .enter(remoteClientId.getId(), userName.getName())
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(failure -> eventDispatcher.sendToClient(remoteClientId, failure));
     }

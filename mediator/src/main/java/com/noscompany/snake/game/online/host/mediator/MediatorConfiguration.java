@@ -1,7 +1,7 @@
 package com.noscompany.snake.game.online.host.mediator;
 
 import com.noscompany.snake.game.online.host.RoomEventHandlerForHost;
-import com.noscompany.snake.game.online.contract.messages.room.PlayersLimit;
+import com.noscompany.snake.game.online.contract.messages.room.UsersCountLimit;
 import com.noscompany.snake.game.online.host.room.RoomCreator;
 import com.noscompany.snake.game.online.host.server.Server;
 import com.noscompany.snake.game.utils.monitored.executor.service.MonitoredExecutorServiceCreator;
@@ -16,19 +16,19 @@ public class MediatorConfiguration {
     public Mediator mediator(RoomEventHandlerForHost handlerForHost,
                              Server server,
                              RoomCreator roomCreator,
-                             PlayersLimit playersLimit,
+                             UsersCountLimit usersCountLimit,
                              GameplayCreator gameplayCreator) {
-        return mediator(executorService(), handlerForHost, server, roomCreator, playersLimit, gameplayCreator);
+        return mediator(executorService(), handlerForHost, server, roomCreator, usersCountLimit, gameplayCreator);
     }
 
     public Mediator mediator(ExecutorService executorService,
                              RoomEventHandlerForHost handlerForHost,
                              Server server,
                              RoomCreator roomCreator,
-                             PlayersLimit playersLimit,
+                             UsersCountLimit usersCountLimit,
                              GameplayCreator gameplayCreator) {
         var eventDispatcher = new EventDispatcher(handlerForHost, server);
-        var room = roomCreator.createRoom(eventDispatcher, gameplayCreator, playersLimit);
+        var room = roomCreator.createRoom(eventDispatcher, gameplayCreator, usersCountLimit);
         var commandHandler = new CommandHandler(room, eventDispatcher);
         return new CommandQueue(executorService, commandHandler);
     }
