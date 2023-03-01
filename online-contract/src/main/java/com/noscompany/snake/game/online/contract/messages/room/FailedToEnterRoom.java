@@ -12,7 +12,6 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PRIVATE)
 public class FailedToEnterRoom implements OnlineMessage {
     MessageType messageType = MessageType.FAILED_TO_ENTER_THE_ROOM;
-    String userName;
     Reason reason;
 
     public enum Reason {
@@ -22,19 +21,19 @@ public class FailedToEnterRoom implements OnlineMessage {
         INCORRECT_USER_NAME_FORMAT
     }
 
-    public static FailedToEnterRoom userNameAlreadyInUse(String userName) {
-        return new FailedToEnterRoom(userName, Reason.USER_NAME_ALREADY_IN_USE);
+    public static FailedToEnterRoom userNameAlreadyInUse() {
+        return new FailedToEnterRoom(Reason.USER_NAME_ALREADY_IN_USE);
     }
 
-    public static FailedToEnterRoom userAlreadyInTheRoom(String userName) {
-        return new FailedToEnterRoom(userName, Reason.USER_ALREADY_IN_THE_ROOM);
+    public static FailedToEnterRoom userAlreadyInTheRoom() {
+        return new FailedToEnterRoom(Reason.USER_ALREADY_IN_THE_ROOM);
     }
 
-    public static FailedToEnterRoom roomIsFull(String userName) {
-        return new FailedToEnterRoom(userName, Reason.ROOM_IS_FULL);
+    public static FailedToEnterRoom roomIsFull() {
+        return new FailedToEnterRoom(Reason.ROOM_IS_FULL);
     }
 
-    public static FailedToEnterRoom incorrectUserNameFormat(String userName) {
-        return new FailedToEnterRoom(userName, Reason.INCORRECT_USER_NAME_FORMAT);
+    public static FailedToEnterRoom incorrectUserNameFormat() {
+        return new FailedToEnterRoom(Reason.INCORRECT_USER_NAME_FORMAT);
     }
 }

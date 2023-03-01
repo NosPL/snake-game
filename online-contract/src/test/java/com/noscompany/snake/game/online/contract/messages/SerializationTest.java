@@ -46,7 +46,7 @@ public class SerializationTest extends BaseTestClass {
         testSerializationOf(new GameOptionsChanged(lobbyState()));
         testSerializationOf(new PlayerFreedUpASeat("some name", PlayerNumber._1, lobbyState()));
         testSerializationOf(new PlayerTookASeat("some name", PlayerNumber._1, lobbyState()));
-        testSerializationOf(FailedToEnterRoom.userNameAlreadyInUse("some name"));
+        testSerializationOf(FailedToEnterRoom.userNameAlreadyInUse());
         testSerializationOf(new NewUserEnteredRoom("some name", roomState()));
         testSerializationOf(new NewUserEnteredRoom("some name", roomState()));
         testSerializationOf(new UserLeftRoom("some name", Set.of("a", "b", "c"), Option.of(playerFreedUpASeat())));

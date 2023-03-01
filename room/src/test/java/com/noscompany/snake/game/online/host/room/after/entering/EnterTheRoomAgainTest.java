@@ -13,7 +13,7 @@ public class EnterTheRoomAgainTest extends ActorEnteredTheRoomSetup {
 //        WHEN the actor tries to enter the room again with a different name
         var result = room.enter(actorId, randomValidUserName());
 //        THEN he fails because he entered the room already
-        var expected = failure(userAlreadyInTheRoom(actorName.getName()));
+        var expected = failure(userAlreadyInTheRoom());
         Assert.assertEquals(expected, result);
     }
 
@@ -22,7 +22,7 @@ public class EnterTheRoomAgainTest extends ActorEnteredTheRoomSetup {
 //        WHEN the actor tries to enter the room again with the same name
         var result = room.enter(actorId, actorName);
 //        THEN he fails due to being in the room already
-        var expected = failure(userAlreadyInTheRoom(actorName.getName()));
+        var expected = failure(userAlreadyInTheRoom());
         Assert.assertEquals(expected, result);
     }
 }

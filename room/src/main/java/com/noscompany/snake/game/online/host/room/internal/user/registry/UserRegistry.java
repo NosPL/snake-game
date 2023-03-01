@@ -22,14 +22,14 @@ public class UserRegistry {
 
     public Option<FailedToEnterRoom> registerNewUser(UserId userId, UserName userName) {
         if (this.isFull())
-            return Option.of(FailedToEnterRoom.roomIsFull(userName.getName()));
+            return Option.of(FailedToEnterRoom.roomIsFull());
         UserName currentUserName = userNamesById.get(userId);
         if (currentUserName != null)
-            return Option.of(FailedToEnterRoom.userAlreadyInTheRoom(currentUserName.getName()));
+            return Option.of(FailedToEnterRoom.userAlreadyInTheRoom());
         if (getUserNames().contains(userName))
-            return Option.of(FailedToEnterRoom.userNameAlreadyInUse(userName.getName()));
+            return Option.of(FailedToEnterRoom.userNameAlreadyInUse());
         if (!userNameIsValid(userName.getName()))
-            return Option.of(FailedToEnterRoom.incorrectUserNameFormat(userName.getName()));
+            return Option.of(FailedToEnterRoom.incorrectUserNameFormat());
         userNamesById.put(userId, userName);
         return Option.none();
     }

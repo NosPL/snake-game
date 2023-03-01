@@ -30,7 +30,7 @@ public class EnterTheRoomTest extends ActorNotInTheRoomSetup {
 //        WHEN the actor tries to enter the room with the same name
         var result = room.enter(actorId, actorName);
 //        THEN he fails due to name being already used
-        var expected = failure(FailedToEnterRoom.userNameAlreadyInUse(actorName.getName()));
+        var expected = failure(FailedToEnterRoom.userNameAlreadyInUse());
         Assert.assertEquals(expected, result);
     }
 
@@ -42,7 +42,7 @@ public class EnterTheRoomTest extends ActorNotInTheRoomSetup {
 //        WHEN the actor tries to enter the room
         var result = room.enter(actorId, actorName);
 //        THEN he fails due to room being full
-        var expected = failure(FailedToEnterRoom.roomIsFull(actorName.getName()));
+        var expected = failure(FailedToEnterRoom.roomIsFull());
         Assert.assertEquals(expected, result);
     }
 
@@ -58,7 +58,7 @@ public class EnterTheRoomTest extends ActorNotInTheRoomSetup {
 //        WHEN he tries to enter the room
         var result = room.enter(actorId, actorName);
 //        THEN he fails due to incorrect name format
-        var expected = failure(FailedToEnterRoom.incorrectUserNameFormat(actorName.getName()));
+        var expected = failure(FailedToEnterRoom.incorrectUserNameFormat());
         Assert.assertEquals(expected, result);
     }
 
@@ -70,7 +70,7 @@ public class EnterTheRoomTest extends ActorNotInTheRoomSetup {
 //        WHEN he tries to enter the room
         var result = room.enter(actorId, actorName);
 //        THEN he fails due to incorrect name format
-        var expected = failure(FailedToEnterRoom.incorrectUserNameFormat(actorName.getName()));
+        var expected = failure(FailedToEnterRoom.incorrectUserNameFormat());
         Assert.assertEquals(expected, result);
     }
 }
