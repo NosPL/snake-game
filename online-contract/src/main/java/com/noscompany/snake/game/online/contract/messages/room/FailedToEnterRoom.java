@@ -19,7 +19,7 @@ public class FailedToEnterRoom implements OnlineMessage {
         USER_NAME_ALREADY_IN_USE,
         USER_ALREADY_IN_THE_ROOM,
         ROOM_IS_FULL,
-        INCORRECT_USER_NAME_FORMAT;
+        INCORRECT_USER_NAME_FORMAT
     }
 
     public static FailedToEnterRoom userNameAlreadyInUse(String userName) {

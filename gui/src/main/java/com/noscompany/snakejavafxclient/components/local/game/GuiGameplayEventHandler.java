@@ -41,96 +41,82 @@ public class GuiGameplayEventHandler implements GameplayEventHandler {
 
     @Override
     public void handle(TimeLeftToGameStartHasChanged event) {
-        LagSimulator.lag(() -> {
-            Platform.runLater(() -> {
-                gameGridController.initializeGrid(event.getGridSize(), event.getWalls());
-                gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
-                gameOptionsController.disable();
-                messageController.printSecondsLeftToStart(event.getSecondsLeft());
-                scoreboardController.print(event.getScore());
-                scprButtonsController.disableStart();
-                scprButtonsController.enableCancel();
-                scprButtonsController.enablePause();
-            });
+        Platform.runLater(() -> {
+            gameGridController.initializeGrid(event.getGridSize(), event.getWalls());
+            gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
+            gameOptionsController.disable();
+            messageController.printSecondsLeftToStart(event.getSecondsLeft());
+            scoreboardController.print(event.getScore());
+            scprButtonsController.disableStart();
+            scprButtonsController.enableCancel();
+            scprButtonsController.enablePause();
         });
     }
 
     @Override
     public void handle(GameStarted event) {
-        LagSimulator.lag(() -> {
-            Platform.runLater(() -> {
-                gameGridController.initializeGrid(event.getGridSize(), event.getWalls());
-                gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
-                gameOptionsController.disable();
-                scoreboardController.print(event.getScore());
-                scprButtonsController.disableStart();
-                scprButtonsController.enableCancel();
-                scprButtonsController.enablePause();
-                messageController.clear();
-            });
+        Platform.runLater(() -> {
+            gameGridController.initializeGrid(event.getGridSize(), event.getWalls());
+            gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
+            gameOptionsController.disable();
+            scoreboardController.print(event.getScore());
+            scprButtonsController.disableStart();
+            scprButtonsController.enableCancel();
+            scprButtonsController.enablePause();
+            messageController.clear();
         });
     }
 
     @Override
     public void handle(SnakesMoved event) {
-        LagSimulator.lag(() -> {
-            Platform.runLater(() -> {
-                gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
-                scoreboardController.print(event.getScore());
-                messageController.clear();
-            });
+        Platform.runLater(() -> {
+            gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
+            scoreboardController.print(event.getScore());
+            messageController.clear();
         });
     }
 
     @Override
     public void handle(GameFinished event) {
-        LagSimulator.lag(() -> {
-            Platform.runLater(() -> {
-                gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
-                gameOptionsController.enable();
-                messageController.printFinishScore(event.getScore());
-                scoreboardController.print(event.getScore());
-                scprButtonsController.enableStart();
-                scprButtonsController.disableCancel();
-                scprButtonsController.disableResume();
-                scprButtonsController.disablePause();
-            });
+        Platform.runLater(() -> {
+            gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
+            gameOptionsController.enable();
+            messageController.printFinishScore(event.getScore());
+            scoreboardController.print(event.getScore());
+            scprButtonsController.enableStart();
+            scprButtonsController.disableCancel();
+            scprButtonsController.disableResume();
+            scprButtonsController.disablePause();
         });
     }
 
     @Override
     public void handle(GameCancelled event) {
-        LagSimulator.lag(() -> {
-            Platform.runLater(() -> {
-                gameOptionsController.enable();
-                messageController.printGameCanceled();
-                scprButtonsController.enableStart();
-                scprButtonsController.disableCancel();
-                scprButtonsController.disableResume();
-                scprButtonsController.disablePause();
-            });
+        Platform.runLater(() -> {
+            gameOptionsController.enable();
+            messageController.printGameCanceled();
+            scprButtonsController.enableStart();
+            scprButtonsController.disableCancel();
+            scprButtonsController.disableResume();
+            scprButtonsController.disablePause();
         });
     }
 
     @Override
     public void handle(GamePaused event) {
-        LagSimulator.lag(() -> {
-            Platform.runLater(() -> {
-                messageController.printGamePaused();
-                scprButtonsController.enableResume();
-                scprButtonsController.disablePause();
-            });
+        Platform.runLater(() -> {
+            messageController.printGamePaused();
+            scprButtonsController.enableResume();
+            scprButtonsController.disablePause();
         });
     }
 
     @Override
     public void handle(GameResumed event) {
-        LagSimulator.lag(() -> {
-            Platform.runLater(() -> {
-                messageController.printGameResumed();
-                scprButtonsController.disableResume();
-                scprButtonsController.enablePause();
-            });
+        Platform.runLater(() -> {
+            messageController.printGameResumed();
+            scprButtonsController.disableResume();
+            scprButtonsController.enablePause();
         });
     }
 
@@ -159,23 +145,5 @@ public class GuiGameplayEventHandler implements GameplayEventHandler {
             scoreboardController.clear();
             messageController.print(error.toString());
         });
-    }
-
-    private class LagSimulator {
-        private static ExecutorService executorService = new ThreadPoolExecutor(1, 1,
-                0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>(1),
-                new ThreadPoolExecutor.DiscardOldestPolicy());
-        private static Random random = new Random();
-
-        static void lag(Runnable runnable) {
-            sleep(0);
-            runnable.run();
-        }
-
-        @SneakyThrows
-        static private void sleep(int millis) {
-            Thread.sleep(millis);
-        }
     }
 }

@@ -6,7 +6,7 @@ import io.vavr.control.Try;
 
 class HostAddressCreator {
     enum Error {
-        WRONG_IP_FORMAT, WRONG_PORT_FORMAT;
+        WRONG_IP_FORMAT, WRONG_PORT_FORMAT
     }
 
     Either<Error, HostAddress> create(String ip1,

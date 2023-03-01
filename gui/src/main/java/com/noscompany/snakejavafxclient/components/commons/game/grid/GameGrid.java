@@ -18,9 +18,9 @@ import static lombok.AccessLevel.PRIVATE;
 
 @RequiredArgsConstructor(access = PRIVATE)
 class GameGrid extends GridPane {
-    private Map<Position, Cell> cellsMap = new HashMap<>();
+    private final Map<Position, Cell> cellsMap = new HashMap<>();
     private List<Cell> dirtyCells = new LinkedList<>();
-    private SnakeMapper snakeMapper = new SnakeMapper();
+    private final SnakeMapper snakeMapper = new SnakeMapper();
     private final GridSize gridSize;
     private final Walls walls;
 

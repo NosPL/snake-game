@@ -17,7 +17,7 @@ public class FailedToTakeASeat implements OnlineMessage {
     public enum Reason {
         USER_NOT_IN_THE_ROOM,
         GAME_ALREADY_RUNNING,
-        SEAT_ALREADY_TAKEN;
+        SEAT_ALREADY_TAKEN
     }
 
     public static FailedToTakeASeat userNotInTheRoom() {

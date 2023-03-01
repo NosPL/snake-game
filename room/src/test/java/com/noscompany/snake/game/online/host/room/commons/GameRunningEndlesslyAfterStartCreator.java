@@ -26,7 +26,7 @@ public class GameRunningEndlesslyAfterStartCreator implements GameplayCreator {
     private class AlwaysRunningGameplay implements Gameplay {
         private final GridSize gridSize;
         private final Walls walls;
-        private AtomicBoolean isRunning = new AtomicBoolean(false);
+        private final AtomicBoolean isRunning = new AtomicBoolean(false);
 
         @Override
         public void changeSnakeDirection(PlayerNumber playerNumber, Direction direction) {
