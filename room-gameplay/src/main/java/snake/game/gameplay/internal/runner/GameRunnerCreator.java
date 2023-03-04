@@ -15,7 +15,7 @@ public class GameRunnerCreator {
         var pauseRequested = new AtomicBoolean(false);
         var cancelRequested = new AtomicBoolean(false);
         var snakeGameTask = new GameTask(gameLogic, eventHandler, gameSpeed, countdownTime, pauseRequested, cancelRequested);
-        var gameThread = new Thread(snakeGameTask);
+        var gameThread = new Thread(snakeGameTask, "gameplay-runner-thread");
         return new GameRunner(gameThread, pauseRequested, cancelRequested);
     }
 }
