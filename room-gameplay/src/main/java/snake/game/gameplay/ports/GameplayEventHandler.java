@@ -1,4 +1,4 @@
-package snake.game.gameplay;
+package snake.game.gameplay.ports;
 
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 

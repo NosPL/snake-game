@@ -5,7 +5,7 @@ import com.noscompany.snake.game.online.host.room.internal.chat.ChatCreator;
 import com.noscompany.snake.game.online.host.room.internal.playground.PlaygroundCreator;
 import com.noscompany.snake.game.online.host.room.internal.user.registry.UserRegistryCreator;
 import snake.game.gameplay.GameplayCreator;
-import snake.game.gameplay.GameplayEventHandler;
+import snake.game.gameplay.ports.GameplayEventHandler;
 
 class RoomCreatorImpl implements RoomCreator{
 

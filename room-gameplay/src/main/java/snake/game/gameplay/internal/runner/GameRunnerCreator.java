@@ -1,6 +1,6 @@
 package snake.game.gameplay.internal.runner;
 
-import snake.game.gameplay.GameplayEventHandler;
+import snake.game.gameplay.ports.GameplayEventHandler;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.CountdownTime;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameSpeed;
 import snake.game.gameplay.internal.logic.GameLogic;

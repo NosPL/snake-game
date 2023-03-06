@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;
-import snake.game.gameplay.internal.logic.internal.SnakesDidNotMoveBecauseAllAreDead;
+import snake.game.gameplay.internal.logic.internal.SnakesDidNotMove;
 import snake.game.gameplay.internal.logic.internal.SnakesGotMoved;
 
 import java.util.Collection;
@@ -16,7 +16,7 @@ import java.util.Map;
 import static io.vavr.control.Either.left;
 import static io.vavr.control.Either.right;
 import static java.util.stream.Collectors.toList;
-import static snake.game.gameplay.internal.logic.internal.SnakesDidNotMoveBecauseAllAreDead.SNAKES_DID_NOT_MOVE_BECAUSE_ALL_ARE_DEAD;
+import static snake.game.gameplay.internal.logic.internal.SnakesDidNotMove.ALL_SNAKES_ARE_DEAD;
 
 @AllArgsConstructor
 public class Snakes {
@@ -37,19 +37,19 @@ public class Snakes {
         return snakes()
                 .stream()
                 .map(Snake::toDto)
-                .collect(toList());
+                .toList();
     }
 
-    public Either<SnakesDidNotMoveBecauseAllAreDead, SnakesGotMoved> moveAndFeed(Option<Position> foodPosition) {
+    public Either<SnakesDidNotMove, SnakesGotMoved> moveAndFeed(Option<Position> foodPosition) {
         if (allSnakesAreDead())
-            return left(SNAKES_DID_NOT_MOVE_BECAUSE_ALL_ARE_DEAD);
+            return left(ALL_SNAKES_ARE_DEAD);
         moveSnakes();
         foodPosition.peek(this::feedSnakes);
         killCrashedSnakes();
         return snakesMoved();
     }
 
-    private Either<SnakesDidNotMoveBecauseAllAreDead, SnakesGotMoved> snakesMoved() {
+    private Either<SnakesDidNotMove, SnakesGotMoved> snakesMoved() {
         return right(new SnakesGotMoved(this.toDto()));
     }
 

@@ -6,7 +6,7 @@ import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import snake.game.gameplay.Gameplay;
 import snake.game.gameplay.GameplayCreator;
-import snake.game.gameplay.GameplayEventHandler;
+import snake.game.gameplay.ports.GameplayEventHandler;
 import snake.game.gameplay.dto.GameplayParams;
 
 import java.util.LinkedList;

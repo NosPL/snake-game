@@ -6,7 +6,7 @@ import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
 import snake.game.gameplay.Gameplay;
 import snake.game.gameplay.GameplayCreator;
-import snake.game.gameplay.GameplayEventHandler;
+import snake.game.gameplay.ports.GameplayEventHandler;
 import snake.game.gameplay.dto.GameplayParams;
 
 import java.util.LinkedList;
@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class GameRunningEndlesslyAfterStartCreator implements GameplayCreator {
 
     @Override
-    public Either<Error, Gameplay> createGame(GameplayParams gameplayParams, GameplayEventHandler gameplayEventHandler) {
+    public Either<Error, Gameplay> createGame(GameplayParams params, GameplayEventHandler gameplayEventHandler) {
         return Either.right(new AlwaysRunningGameplay(GridSize._10x10, Walls.ON));
     }
 

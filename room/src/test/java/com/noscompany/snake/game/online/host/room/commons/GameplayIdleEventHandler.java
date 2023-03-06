@@ -1,7 +1,7 @@
 package com.noscompany.snake.game.online.host.room.commons;
 
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
-import snake.game.gameplay.GameplayEventHandler;
+import snake.game.gameplay.ports.GameplayEventHandler;
 
 public class GameplayIdleEventHandler implements GameplayEventHandler {
 

@@ -3,6 +3,7 @@ package snake.game.gameplay;
 public class GameplayConfiguration {
 
     public GameplayCreator snakeGameplayCreator() {
-        return new GameplayCreatorImpl();
+        return new GameplayCreator() {
+        };
     }
 }

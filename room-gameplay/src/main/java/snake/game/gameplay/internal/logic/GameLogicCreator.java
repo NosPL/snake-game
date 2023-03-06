@@ -3,7 +3,6 @@ package snake.game.gameplay.internal.logic;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Walls;
-import snake.game.gameplay.internal.logic.internal.current.game.state.GameStateView;
 import snake.game.gameplay.internal.logic.internal.food.locator.FoodLocator;
 import snake.game.gameplay.internal.logic.internal.food.locator.FoodLocatorCreator;
 import snake.game.gameplay.internal.logic.internal.scoring.Scoring;
@@ -19,10 +18,7 @@ public class GameLogicCreator {
         Scoring scoring = ScoringCreator.create(playerNumbers);
         Snakes snakes = SnakesCreator.create(playerNumbers, gridSize, walls);
         FoodLocator foodLocator = FoodLocatorCreator.create(snakes.toDto(), gridSize, walls);
-        GameStateView gameStateView = GameStateView.create(
-                snakes.toDto(), foodLocator.getFoodPosition(), scoring.getScore(), walls, gridSize);
-        GameLogic gameLogic = new GameLogicImpl(snakes, scoring, foodLocator, gameStateView);
+        GameLogic gameLogic = new GameLogicFacade(snakes, scoring, foodLocator, gridSize, walls);
         return new GameLogicThreadSafetyDecorator(gameLogic);
     }
-
 }

@@ -3,7 +3,7 @@ package com.noscompany.snake.game.online.host.room.internal.playground;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameSpeed;
 import snake.game.gameplay.Gameplay;
 import snake.game.gameplay.GameplayCreator;
-import snake.game.gameplay.GameplayEventHandler;
+import snake.game.gameplay.ports.GameplayEventHandler;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Walls;

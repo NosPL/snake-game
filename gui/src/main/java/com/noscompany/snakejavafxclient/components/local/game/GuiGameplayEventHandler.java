@@ -8,19 +8,12 @@ import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButt
 import com.noscompany.snakejavafxclient.utils.Controllers;
 import javafx.application.Platform;
 import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import snake.game.gameplay.GameplayCreator;
-import snake.game.gameplay.GameplayEventHandler;
+import snake.game.gameplay.ports.GameplayEventHandler;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Walls;
-
-import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 @AllArgsConstructor
 public class GuiGameplayEventHandler implements GameplayEventHandler {

@@ -10,7 +10,7 @@ import snake.game.gameplay.internal.runner.GameRunner;
 import static lombok.AccessLevel.PACKAGE;
 
 @AllArgsConstructor(access = PACKAGE)
-class GameplayImpl implements Gameplay {
+class GameplayFacade implements Gameplay {
     private final GameLogic gameLogic;
     private final GameRunner gameRunner;
 
