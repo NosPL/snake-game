@@ -67,7 +67,7 @@ class NullHostEventHandler implements RoomEventHandlerForHost {
     }
 
     @Override
-    public void handle(TimeLeftToGameStartHasChanged event) {
+    public void handle(GameStartCountdown event) {
 
     }
 

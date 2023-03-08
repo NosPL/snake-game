@@ -14,7 +14,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Value
 @NoArgsConstructor(force = true, access = PRIVATE)
 @AllArgsConstructor
-public class TimeLeftToGameStartHasChanged implements GameEvent, OnlineMessage {
+public class GameStartCountdown implements GameEvent, OnlineMessage {
     OnlineMessage.MessageType messageType = MessageType.TIME_LEFT_TO_GAME_START_CHANGED;
     int secondsLeft;
     Collection<Snake> snakes;
@@ -23,8 +23,8 @@ public class TimeLeftToGameStartHasChanged implements GameEvent, OnlineMessage {
     Option<Position> foodPosition;
     Score score;
 
-    public static TimeLeftToGameStartHasChanged timeLeftToGameStartHasChanged(int secondsLeft, GameState currentState) {
-        return new TimeLeftToGameStartHasChanged(
+    public static GameStartCountdown timeLeftToGameStartHasChanged(int secondsLeft, GameState currentState) {
+        return new GameStartCountdown(
                 secondsLeft,
                 currentState.getSnakes(),
                 currentState.getGridSize(),

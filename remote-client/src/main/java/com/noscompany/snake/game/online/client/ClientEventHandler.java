@@ -53,7 +53,7 @@ public interface ClientEventHandler {
 
     void handle(UserLeftRoom event);
 
-    void handle(TimeLeftToGameStartHasChanged event);
+    void handle(GameStartCountdown event);
 
     void handle(GameStarted event);
 

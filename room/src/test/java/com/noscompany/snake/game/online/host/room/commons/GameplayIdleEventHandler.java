@@ -6,7 +6,7 @@ import snake.game.gameplay.ports.GameplayEventHandler;
 public class GameplayIdleEventHandler implements GameplayEventHandler {
 
     @Override
-    public void handle(TimeLeftToGameStartHasChanged event) {
+    public void handle(GameStartCountdown event) {
 
     }
 

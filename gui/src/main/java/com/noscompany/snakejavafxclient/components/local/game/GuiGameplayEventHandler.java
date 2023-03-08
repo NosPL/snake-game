@@ -33,7 +33,7 @@ public class GuiGameplayEventHandler implements GameplayEventHandler {
     }
 
     @Override
-    public void handle(TimeLeftToGameStartHasChanged event) {
+    public void handle(GameStartCountdown event) {
         Platform.runLater(() -> {
             gameGridController.initializeGrid(event.getGridSize(), event.getWalls());
             gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());

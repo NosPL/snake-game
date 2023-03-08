@@ -35,7 +35,7 @@ public interface RoomEventHandlerForHost {
 
     void handle(FailedToTakeASeat event);
 
-    void handle(TimeLeftToGameStartHasChanged event);
+    void handle(GameStartCountdown event);
 
     void handle(GameStarted event);
 

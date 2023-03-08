@@ -83,7 +83,7 @@ class MessageDeserializer {
                     .of(() -> objectMapper.readValue(serializedMessage, FailedToStartGame.class))
                     .map(event -> new DeserializedMessage(eventHandler -> eventHandler.handle(event)));
             case TIME_LEFT_TO_GAME_START_CHANGED -> Try
-                    .of(() -> objectMapper.readValue(serializedMessage, TimeLeftToGameStartHasChanged.class))
+                    .of(() -> objectMapper.readValue(serializedMessage, GameStartCountdown.class))
                     .map(event -> new DeserializedMessage(eventHandler -> eventHandler.handle(event)));
             case GAME_STARTED -> Try
                     .of(() -> objectMapper.readValue(serializedMessage, GameStarted.class))

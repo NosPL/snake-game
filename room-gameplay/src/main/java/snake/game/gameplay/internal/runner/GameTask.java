@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.noscompany.snake.game.online.contract.messages.gameplay.events.GameCancelled.gameCancelled;
 import static com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStarted.gameStarted;
-import static com.noscompany.snake.game.online.contract.messages.gameplay.events.TimeLeftToGameStartHasChanged.timeLeftToGameStartHasChanged;
+import static com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStartCountdown.timeLeftToGameStartHasChanged;
 
 @RequiredArgsConstructor
 class GameTask implements Runnable {

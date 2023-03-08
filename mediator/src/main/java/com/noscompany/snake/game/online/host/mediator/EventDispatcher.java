@@ -100,7 +100,7 @@ class EventDispatcher implements GameplayEventHandler {
     }
 
     @Override
-    public void handle(TimeLeftToGameStartHasChanged event) {
+    public void handle(GameStartCountdown event) {
         log.info("passing 'time left to game start has changed' event to server and host");
         server.sendToAllClients(event);
         host.handle(event);

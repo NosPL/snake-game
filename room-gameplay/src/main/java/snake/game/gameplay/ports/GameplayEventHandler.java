@@ -4,7 +4,7 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 
 public interface GameplayEventHandler {
 
-    void handle(TimeLeftToGameStartHasChanged event);
+    void handle(GameStartCountdown event);
 
     void handle(GameStarted event);
 

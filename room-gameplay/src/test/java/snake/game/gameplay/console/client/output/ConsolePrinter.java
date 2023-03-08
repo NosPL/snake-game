@@ -14,8 +14,8 @@ import java.util.Collection;
 public class ConsolePrinter implements GameplayEventHandler {
     private final PointToSignMapper mapper = new PointToSignMapper();
 
-    public void handle(TimeLeftToGameStartHasChanged timeLeftToGameStartHasChanged) {
-        var secondsToStart = timeLeftToGameStartHasChanged.getSecondsLeft();
+    public void handle(GameStartCountdown gameStartCountdown) {
+        var secondsToStart = gameStartCountdown.getSecondsLeft();
         System.out.println("game starts in " + secondsToStart + " seconds...");
     }
 
