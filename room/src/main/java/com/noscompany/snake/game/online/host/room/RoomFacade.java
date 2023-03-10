@@ -7,7 +7,7 @@ import com.noscompany.snake.game.online.contract.messages.game.options.GameOptio
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToStartGame;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.room.*;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
@@ -68,23 +68,31 @@ class RoomFacade implements Room {
     }
 
     @Override
-    public void changeSnakeDirection(UserId userId, Direction direction) {
-        playground.changeSnakeDirection(userId, direction);
+    public Option<FailedToChangeSnakeDirection> changeSnakeDirection(UserId userId, Direction direction) {
+        if (!userRegistry.containsId(userId))
+            return Option.of(FailedToChangeSnakeDirection.userNotInTheRoom());
+        return playground.changeSnakeDirection(userId, direction);
     }
 
     @Override
-    public void cancelGame(UserId userId) {
-        playground.cancelGame(userId);
+    public Option<FailedToCancelGame> cancelGame(UserId userId) {
+        if (!userRegistry.containsId(userId))
+            return Option.of(FailedToCancelGame.userNotInTheRoom());
+        return playground.cancelGame(userId);
     }
 
     @Override
-    public void pauseGame(UserId userId) {
-        playground.pauseGame(userId);
+    public Option<FailedToPauseGame> pauseGame(UserId userId) {
+        if (!userRegistry.containsId(userId))
+            return Option.of(FailedToPauseGame.userNotInTheRoom());
+        return playground.pauseGame(userId);
     }
 
     @Override
-    public void resumeGame(UserId userId) {
-        playground.resumeGame(userId);
+    public Option<FailedToResumeGame> resumeGame(UserId userId) {
+        if (!userRegistry.containsId(userId))
+            return Option.of(FailedToResumeGame.userNotInTheRoom());
+        return playground.resumeGame(userId);
     }
 
     @Override

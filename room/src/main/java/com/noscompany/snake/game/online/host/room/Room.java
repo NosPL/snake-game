@@ -7,7 +7,7 @@ import com.noscompany.snake.game.online.contract.messages.game.options.GameOptio
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToStartGame;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.room.*;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
@@ -23,10 +23,10 @@ public interface Room {
     Either<FailedToFreeUpSeat, PlayerFreedUpASeat> freeUpASeat(UserId userId);
     Either<FailedToChangeGameOptions, GameOptionsChanged> changeGameOptions(UserId userId, GameOptions gameOptions);
     Option<FailedToStartGame> startGame(UserId userId);
-    void changeSnakeDirection(UserId userId, Direction direction);
-    void cancelGame(UserId userId);
-    void pauseGame(UserId userId);
-    void resumeGame(UserId userId);
+    Option<FailedToChangeSnakeDirection> changeSnakeDirection(UserId userId, Direction direction);
+    Option<FailedToCancelGame> cancelGame(UserId userId);
+    Option<FailedToPauseGame> pauseGame(UserId userId);
+    Option<FailedToResumeGame> resumeGame(UserId userId);
     Either<FailedToSendChatMessage, UserSentChatMessage> sendChatMessage(UserId userId, String messageContent);
     Option<UserLeftRoom> leave(UserId userId);
     RoomState getState();

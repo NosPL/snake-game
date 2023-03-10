@@ -5,7 +5,7 @@ import com.noscompany.snake.game.online.contract.messages.game.options.FailedToC
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToStartGame;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
@@ -83,25 +83,49 @@ public class Playground {
         return Option.none();
     }
 
-    public void changeSnakeDirection(UserId userId, Direction direction) {
-        seats
+    public Option<FailedToChangeSnakeDirection> changeSnakeDirection(UserId userId, Direction direction) {
+        if (!seats.userIsSitting(userId))
+            return Option.of(FailedToChangeSnakeDirection.playerDidNotTakeASeat());
+        if (!gameplay.isRunning())
+            return Option.of(FailedToChangeSnakeDirection.gameNotStarted());
+        return seats
                 .getNumberFor(userId)
-                .peek(playerNumber -> gameplay.changeSnakeDirection(playerNumber, direction));
+                .peek(playerNumber -> gameplay.changeSnakeDirection(playerNumber, direction))
+                .toEither(FailedToChangeSnakeDirection.playerDidNotTakeASeat())
+                .swap().toOption();
     }
 
-    public void cancelGame(UserId userId) {
-        if (seats.userIsAdmin(userId))
-            gameplay.cancel();
+    public Option<FailedToCancelGame> cancelGame(UserId userId) {
+        if (!seats.userIsSitting(userId))
+            return Option.of(FailedToCancelGame.playerDidNotTakeASeat());
+        if (!seats.userIsAdmin(userId))
+            return Option.of(FailedToCancelGame.playerIsNotAdmin());
+        if (!gameplay.isRunning())
+            return Option.of(FailedToCancelGame.gameNotStarted());
+        gameplay.cancel();
+        return Option.none();
     }
 
-    public void pauseGame(UserId userId) {
-        if (seats.userIsAdmin(userId))
-            gameplay.pause();
+    public Option<FailedToPauseGame> pauseGame(UserId userId) {
+        if (!seats.userIsSitting(userId))
+            return Option.of(FailedToPauseGame.playerDidNotTakeASeat());
+        if (!seats.userIsAdmin(userId))
+            return Option.of(FailedToPauseGame.playerIsNotAdmin());
+        if (!gameplay.isRunning())
+            return Option.of(FailedToPauseGame.gameNotStarted());
+        gameplay.pause();
+        return Option.none();
     }
 
-    public void resumeGame(UserId userId) {
-        if (seats.userIsAdmin(userId))
-            gameplay.resume();
+    public Option<FailedToResumeGame> resumeGame(UserId userId) {
+        if (!seats.userIsSitting(userId))
+            return Option.of(FailedToResumeGame.playerDidNotTakeASeat());
+        if (!seats.userIsAdmin(userId))
+            return Option.of(FailedToResumeGame.playerIsNotAdmin());
+        if (!gameplay.isRunning())
+            return Option.of(FailedToResumeGame.gameNotStarted());
+        gameplay.resume();
+        return Option.none();
     }
 
     public PlaygroundState getPlaygroundState() {

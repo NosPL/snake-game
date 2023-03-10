@@ -7,7 +7,7 @@ import com.noscompany.snake.game.online.contract.messages.game.options.FailedToC
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.commands.*;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
-import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToStartGame;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.game.options.ChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.seats.FreeUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.TakeASeat;
@@ -22,6 +22,9 @@ import org.junit.Test;
 
 import java.util.Set;
 
+import static com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions.Reason.GAME_IS_ALREADY_RUNNING;
+import static com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToCancelGame.Reason.USER_NOT_IN_THE_ROOM;
+
 public class SerializationTest extends BaseTestClass {
 
     @Test
@@ -29,10 +32,15 @@ public class SerializationTest extends BaseTestClass {
     public void serialize() {
         testSerializationOf(new SendChatMessage("some message"));
         testSerializationOf(new CancelGame());
+        testSerializationOf(FailedToCancelGame.gameNotStarted());
         testSerializationOf(new ChangeSnakeDirection(Direction.DOWN));
+        testSerializationOf(FailedToChangeSnakeDirection.gameNotStarted());
         testSerializationOf(new PauseGame());
+        testSerializationOf(FailedToPauseGame.userNotInTheRoom());
         testSerializationOf(new ResumeGame());
+        testSerializationOf(FailedToResumeGame.gameNotStarted());
         testSerializationOf(new StartGame());
+        testSerializationOf(FailedToStartGame.gameIsAlreadyRunning());
         testSerializationOf(new ChangeGameOptions(GridSize._10x10, GameSpeed.x1, Walls.OFF));
         testSerializationOf(new FreeUpASeat());
         testSerializationOf(new TakeASeat(PlayerNumber._1));

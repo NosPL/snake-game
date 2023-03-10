@@ -7,7 +7,7 @@ import com.noscompany.snake.game.online.contract.messages.game.options.GameOptio
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToStartGame;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.room.*;
 import com.noscompany.snake.game.online.contract.messages.seats.*;
 import com.noscompany.snake.game.online.host.room.dto.UserId;
@@ -66,23 +66,35 @@ class LogsDecorator implements Room {
     }
 
     @Override
-    public void changeSnakeDirection(UserId userId, Direction direction) {
-        room.changeSnakeDirection(userId, direction);
+    public Option<FailedToChangeSnakeDirection> changeSnakeDirection(UserId userId, Direction direction) {
+        log.info("user with id {} tries change snake direction to {}", userId.getId(), direction);
+        return room
+                .changeSnakeDirection(userId, direction)
+                .peek(failure -> log.info("user with id {} failed to change snake direction, reason: {}", userId.getId(), asString(failure.getReason())));
     }
 
     @Override
-    public void cancelGame(UserId userId) {
-        room.cancelGame(userId);
+    public Option<FailedToCancelGame> cancelGame(UserId userId) {
+        log.info("user with id {} tries to cancel game", userId.getId());
+        return room
+                .cancelGame(userId)
+                .peek(failure -> log.info("user with id {} failed to cancel game, reason: {}",userId.getId(), asString(failure.getReason())));
     }
 
     @Override
-    public void pauseGame(UserId userId) {
-        room.pauseGame(userId);
+    public Option<FailedToPauseGame> pauseGame(UserId userId) {
+        log.info("user with id {} tries to pause game", userId.getId());
+        return room
+                .pauseGame(userId)
+                .peek(failure -> log.info("user with id {} failed to pause game, reason: {}", userId.getId(), asString(failure.getReason())));
     }
 
     @Override
-    public void resumeGame(UserId userId) {
-        room.resumeGame(userId);
+    public Option<FailedToResumeGame> resumeGame(UserId userId) {
+        log.info("user with id {} tries to resume game", userId.getId());
+        return room
+                .resumeGame(userId)
+                .peek(failure -> log.info("user with id {} failed to resume game, reason: {}", userId.getId(), asString(failure.getReason())));
     }
 
     @Override

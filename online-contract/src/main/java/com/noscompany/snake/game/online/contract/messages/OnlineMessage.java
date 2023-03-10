@@ -17,13 +17,13 @@ public interface OnlineMessage {
         NEW_USER_ENTERED_ROOM,
         USER_LEFT_ROOM,
 
-        //lobby commands
+        //playground commands
         START_GAME,
         TAKE_A_SEAT,
         FREE_UP_A_SEAT,
         CHANGE_GAME_OPTIONS,
 
-        //lobby events
+        //playground events
         GAME_OPTIONS_CHANGED,
         FAILED_TO_CHANGE_GAME_OPTIONS,
         PLAYER_TOOK_A_SEAT,
@@ -37,6 +37,10 @@ public interface OnlineMessage {
         CANCEL_GAME,
         PAUSE_GAME,
         RESUME_GAME,
+        FAILED_TO_CHANGE_DIRECTION,
+        FAILED_TO_CANCEL_GAME,
+        FAILED_TO_PAUSE_GAME,
+        FAILED_TO_RESUME_GAME,
 
         //game events
         TIME_LEFT_TO_GAME_START_CHANGED,

@@ -2,7 +2,7 @@ package com.noscompany.snake.game.online.host.room.after.entering;
 
 import org.junit.Test;
 
-public class RemoveActorTest extends ActorEnteredTheRoomSetup {
+public class LeavingRoomTest extends ActorEnteredTheRoomSetup {
 
     @Test
     public void actorShouldBeRemovedFromUsersList() {
