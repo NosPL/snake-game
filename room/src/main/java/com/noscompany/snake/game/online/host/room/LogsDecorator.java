@@ -8,6 +8,7 @@ import com.noscompany.snake.game.online.contract.messages.game.options.GameOptio
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
+import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.room.*;
 import com.noscompany.snake.game.online.contract.messages.seats.*;
 import com.noscompany.snake.game.online.host.room.dto.UserId;
@@ -23,7 +24,6 @@ class LogsDecorator implements Room {
 
     @Override
     public Either<FailedToEnterRoom, NewUserEnteredRoom> enter(UserId userId, UserName userName) {
-        log.info("user with id {} tries to enter room with name {}", userId.getId(), userName.getName());
         return room
                 .enter(userId, userName)
                 .peek(success -> log.info("user with id {} entered room with name {}", userId.getId(), userName.getName()))
@@ -32,7 +32,6 @@ class LogsDecorator implements Room {
 
     @Override
     public Either<FailedToTakeASeat, PlayerTookASeat> takeASeat(UserId userId, PlayerNumber playerNumber) {
-        log.info("user with id {} tries to take a seat with number {}", userId.getId(), playerNumber);
         return room
                 .takeASeat(userId, playerNumber)
                 .peek(success -> log.info("user with id {} took a seat {}", userId.getId(), success.getPlayerNumber()))
@@ -41,7 +40,6 @@ class LogsDecorator implements Room {
 
     @Override
     public Either<FailedToFreeUpSeat, PlayerFreedUpASeat> freeUpASeat(UserId userId) {
-        log.info("user with id {} tries to free up a seat", userId.getId());
         return room
                 .freeUpASeat(userId)
                 .peek(success -> log.info("user with id {} freed up a seat", userId.getId()))
@@ -50,7 +48,6 @@ class LogsDecorator implements Room {
 
     @Override
     public Either<FailedToChangeGameOptions, GameOptionsChanged> changeGameOptions(UserId userId, GameOptions gameOptions) {
-        log.info("user with id {} tries to change game options to {}", userId.getId(), gameOptions);
         return room
                 .changeGameOptions(userId, gameOptions)
                 .peek(success -> log.info("user with id {} changed game options to {}", userId.getId(), gameOptions))
@@ -59,66 +56,65 @@ class LogsDecorator implements Room {
 
     @Override
     public Option<FailedToStartGame> startGame(UserId userId) {
-        log.info("user with id {} tries to start game", userId.getId());
         return room
                 .startGame(userId)
-                .peek(failure -> log.info("user with id {} failed start the game, reason: {}", userId.getId(), asString(failure.getReason())));
+                .peek(failure -> log.info("user with id {} failed start the game, reason: {}", userId.getId(), asString(failure.getReason())))
+                .onEmpty(() -> log.info("start game command from user with id {} got accepted", userId.getId()));
     }
 
     @Override
     public Option<FailedToChangeSnakeDirection> changeSnakeDirection(UserId userId, Direction direction) {
-        log.info("user with id {} tries change snake direction to {}", userId.getId(), direction);
         return room
                 .changeSnakeDirection(userId, direction)
-                .peek(failure -> log.info("user with id {} failed to change snake direction, reason: {}", userId.getId(), asString(failure.getReason())));
+                .peek(failure -> log.info("user with id {} failed to change snake direction, reason: {}", userId.getId(), asString(failure.getReason())))
+                .onEmpty(() -> log.info("change snake direction command from user with id {} and direction {} got accepted", userId.getId(), direction));
     }
 
     @Override
     public Option<FailedToCancelGame> cancelGame(UserId userId) {
-        log.info("user with id {} tries to cancel game", userId.getId());
         return room
                 .cancelGame(userId)
-                .peek(failure -> log.info("user with id {} failed to cancel game, reason: {}",userId.getId(), asString(failure.getReason())));
+                .peek(failure -> log.info("user with id {} failed to cancel game, reason: {}",userId.getId(), asString(failure.getReason())))
+                .onEmpty(() -> log.info("cancel game command from user with id {} got accepted", userId.getId()));
     }
 
     @Override
     public Option<FailedToPauseGame> pauseGame(UserId userId) {
-        log.info("user with id {} tries to pause game", userId.getId());
         return room
                 .pauseGame(userId)
-                .peek(failure -> log.info("user with id {} failed to pause game, reason: {}", userId.getId(), asString(failure.getReason())));
+                .peek(failure -> log.info("user with id {} failed to pause game, reason: {}", userId.getId(), asString(failure.getReason())))
+                .onEmpty(() -> log.info("pause game command from user with id {} got accepted", userId.getId()));
     }
 
     @Override
     public Option<FailedToResumeGame> resumeGame(UserId userId) {
-        log.info("user with id {} tries to resume game", userId.getId());
         return room
                 .resumeGame(userId)
-                .peek(failure -> log.info("user with id {} failed to resume game, reason: {}", userId.getId(), asString(failure.getReason())));
+                .peek(failure -> log.info("user with id {} failed to resume game, reason: {}", userId.getId(), asString(failure.getReason())))
+                .onEmpty(() -> log.info("resume game command from user with id {} got accepted", userId.getId()));
     }
 
     @Override
     public Either<FailedToSendChatMessage, UserSentChatMessage> sendChatMessage(UserId userId, String messageContent) {
-        log.info("user with id {} tries to send chat message: {}", userId.getId(), messageContent);
         return room
                 .sendChatMessage(userId, messageContent)
-                .peek(success -> log.info("user with id {} sent chat message: {}", userId.getId(), messageContent))
+                .peek(success -> log.info("user with id {} and name {} sent chat message: {}", userId.getId(), success.getUserName(), messageContent))
                 .peekLeft(failure -> log.info("user with id {} failed to send chat message, reason: {}", userId.getId(), asString(failure.getReason())));
     }
 
     @Override
     public Option<UserLeftRoom> leave(UserId userId) {
-        log.info("user with id {} tries to leave the room", userId.getId());
         return room
                 .leave(userId)
                 .peek(success -> logIfUserFreedUpSeat(userId, success.getPlayerFreedUpASeat()))
-                .peek(success -> log.info("user with id {} and name {} left the room", userId.getId(), success.getUserName()));
+                .peek(success -> log.info("user with id {} and name {} left the room", userId.getId(), success.getUserName()))
+                .onEmpty(() -> log.info("user with id {} failed to leave the room because he is not in it", userId.getId()));
 
     }
 
     private void logIfUserFreedUpSeat(UserId userId, Option<PlayerFreedUpASeat> playerFreedUpASeat) {
         playerFreedUpASeat
-                .peek(event -> log.info("user with id {} freed up a seat with number {}", userId.getId(), event.getFreedUpPlayerNumber()));
+                .peek(event -> log.info("user with id {} and name {} freed up a seat with number {}", userId.getId(), event.getUserName(), event.getFreedUpPlayerNumber()));
     }
 
     @Override

@@ -73,9 +73,20 @@ class Seat {
     }
 
     void chooseAsAdmin() {
-        String userId = this.userId.map(UserId::getId).getOrElse("");
-        log.info("user with id {} and player number {} got chosen as admin", userId, playerNumber);
+        logSelectedAsAdmin();
         this.isAdmin = true;
+    }
+
+    private void logSelectedAsAdmin() {
+        log.info("seat {} selected as admin, user id {}, name {}", playerNumber, getUserIdString(), getUserNameString());
+    }
+
+    private String getUserIdString() {
+        return userId.map(UserId::getId).getOrElse("");
+    }
+
+    private String getUserNameString() {
+        return userName.map(UserName::getName).getOrElse("");
     }
 
     PlaygroundState.Seat toDto() {

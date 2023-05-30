@@ -29,13 +29,13 @@ class Seats {
         return findSeatBy(userId)
                 .map(currentUserSeat -> currentUserSeat.changeTo(desiredSeat))
                 .getOrElse(desiredSeat.take(userId, userName))
-                .peek(userSuccessfullyTookASeat -> chooseAdminIfNeeded());
+                .peek(userSuccessfullyTookASeat -> selectAdminIfThereIsNone());
     }
 
     Either<FailedToFreeUpSeat, Seat.UserFreedUpASeat> freeUpSeat(UserId userId) {
         return findSeatBy(userId)
                 .flatMap(Seat::freeUp)
-                .peek(userFreedUpASeat -> chooseAdminIfNeeded())
+                .peek(userFreedUpASeat -> selectAdminIfThereIsNone())
                 .toEither(FailedToFreeUpSeat.userDidNotTakeASeat());
     }
 
@@ -58,34 +58,23 @@ class Seats {
                 .collect(toSet());
     }
 
-    Set<PlayerNumber> getPlayerNumbers() {
+    Set<PlayerNumber> getTakenSeatsNumbers() {
         return seatsStream()
                 .filter(Seat::isTaken)
                 .map(Seat::getPlayerNumber)
                 .collect(toSet());
     }
 
-    private void chooseAdminIfNeeded() {
-        getAdminSeat()
-                .peek(this::logAdminIsAlreadyChosen)
-                .onEmpty(() -> log.info("room has no admin, going to choose one"))
-                .onEmpty(this::chooseNewAdmin);
-
+    private void selectAdminIfThereIsNone() {
+        if (adminIsSelected()) {
+            log.info("admin is already selected, no need to choose one");
+            return;
+        }
+        findAnyTakenPlace().peek(Seat::chooseAsAdmin);
     }
 
-    private void chooseNewAdmin() {
-        findAnyTakenPlace()
-                .peek(Seat::chooseAsAdmin)
-                .onEmpty(() -> log.info("all places are free, no admin has been selected"));
-    }
-
-    private void logAdminIsAlreadyChosen(Seat seat) {
-        String userId = seat.getUserId().map(UserId::getId).getOrElse("");
-        log.info("no need to choose new admin, current admin id {}, player number {}", userId, seat.getPlayerNumber());
-    }
-
-    private Option<Seat> getAdminSeat() {
-        return ofOptional(seatsStream().filter(Seat::isAdmin).findAny());
+    private boolean adminIsSelected() {
+        return seatsStream().anyMatch(Seat::isAdmin);
     }
 
     private Option<Seat> findAnyTakenPlace() {
