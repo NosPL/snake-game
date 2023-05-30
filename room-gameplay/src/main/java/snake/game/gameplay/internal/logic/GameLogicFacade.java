@@ -1,14 +1,17 @@
 package snake.game.gameplay.internal.logic;
 
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameFinished;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.SnakesMoved;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
-import com.noscompany.snake.game.online.contract.messages.gameplay.events.SnakesMoved;
-import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameFinished;
 import snake.game.gameplay.internal.logic.internal.food.locator.FoodLocator;
 import snake.game.gameplay.internal.logic.internal.scoring.Scoring;
 import snake.game.gameplay.internal.logic.internal.snakes.Snakes;
+
+import static io.vavr.control.Either.left;
+import static io.vavr.control.Either.right;
 
 @AllArgsConstructor
 class GameLogicFacade implements GameLogic {
@@ -35,12 +38,15 @@ class GameLogicFacade implements GameLogic {
 
     @Override
     public Either<GameFinished, SnakesMoved> moveSnakes() {
-        return snakes
-                .moveAndFeed(getFoodPosition())
-                .peek(scoring::updateScores)
-                .peek(foodLocator::updateFoodPosition)
-                .map(snakesGotMoved -> snakesMoved())
-                .mapLeft(snakesDidNotMoveBecauseAllAreDead -> gameFinished());
+        if (snakes.areAllDead())
+            return left(gameFinished());
+        snakes.move();
+        snakes.killCrashed();
+        snakes.feed(getFoodPosition());
+        var snakesDto = snakes.toDto();
+        scoring.updateScores(snakesDto);
+        foodLocator.updateFoodPosition(snakesDto);
+        return right(snakesMoved());
     }
 
     private Option<Position> getFoodPosition() {

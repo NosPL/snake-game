@@ -7,7 +7,7 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNum
 
 @Getter
 @AllArgsConstructor
-class Snake {
+class SnakeScore {
     private final PlayerNumber playerNumber;
     private Integer score;
 
@@ -19,7 +19,7 @@ class Snake {
         return new Score.Snake(playerNumber, true);
     }
 
-    static Snake create(PlayerNumber playerNumber) {
-        return new Snake(playerNumber, 0);
+    static SnakeScore create(PlayerNumber playerNumber) {
+        return new SnakeScore(playerNumber, 0);
     }
 }

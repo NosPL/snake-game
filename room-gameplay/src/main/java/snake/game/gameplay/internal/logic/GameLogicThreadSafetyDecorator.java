@@ -9,10 +9,12 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.events.Snakes
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameFinished;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 @RequiredArgsConstructor
 class GameLogicThreadSafetyDecorator implements GameLogic {
     private final GameLogic gameLogic;
+    private final AtomicReference<GameState> gameState;
     private final ConcurrentHashMap<PlayerNumber, Direction> directions = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<PlayerNumber, PlayerNumber> killRequests = new ConcurrentHashMap<>();
 
@@ -30,11 +32,26 @@ class GameLogicThreadSafetyDecorator implements GameLogic {
     public Either<GameFinished, SnakesMoved> moveSnakes() {
         killRequests.keySet().forEach(gameLogic::killSnake);
         directions.forEach(gameLogic::changeSnakeDirection);
-        return gameLogic.moveSnakes();
+        var moveResult = gameLogic.moveSnakes();
+        updateGameState(moveResult);
+        return moveResult;
     }
 
     @Override
     public GameState getGameState() {
-        return gameLogic.getGameState();
+        return gameState.get();
+    }
+
+    private void updateGameState(Either<GameFinished, SnakesMoved> snakesMoveResult) {
+        GameState gameState = snakesMoveResult.fold(this::toGameState, this::toGameState);
+        this.gameState.set(gameState);
+    }
+
+    private GameState toGameState(SnakesMoved snakesMoved) {
+        return new GameState(snakesMoved.getSnakes(), snakesMoved.getGridSize(), snakesMoved.getWalls(), snakesMoved.getFoodPosition(), snakesMoved.getScore());
+    }
+
+    private GameState toGameState(GameFinished gameFinished) {
+        return new GameState(gameFinished.getSnakes(), gameFinished.getGridSize(), gameFinished.getWalls(), gameFinished.getFoodPosition(), gameFinished.getScore());
     }
 }

@@ -1,22 +1,14 @@
 package snake.game.gameplay.internal.logic.internal.snakes;
 
-import io.vavr.control.Either;
-import io.vavr.control.Option;
-import lombok.AllArgsConstructor;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;
-import snake.game.gameplay.internal.logic.internal.SnakesDidNotMove;
-import snake.game.gameplay.internal.logic.internal.SnakesGotMoved;
+import io.vavr.control.Option;
+import lombok.AllArgsConstructor;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import static io.vavr.control.Either.left;
-import static io.vavr.control.Either.right;
-import static java.util.stream.Collectors.toList;
-import static snake.game.gameplay.internal.logic.internal.SnakesDidNotMove.ALL_SNAKES_ARE_DEAD;
 
 @AllArgsConstructor
 public class Snakes {
@@ -40,36 +32,27 @@ public class Snakes {
                 .toList();
     }
 
-    public Either<SnakesDidNotMove, SnakesGotMoved> moveAndFeed(Option<Position> foodPosition) {
-        if (allSnakesAreDead())
-            return left(ALL_SNAKES_ARE_DEAD);
-        moveSnakes();
-        foodPosition.peek(this::feedSnakes);
-        killCrashedSnakes();
-        return snakesMoved();
-    }
-
-    private Either<SnakesDidNotMove, SnakesGotMoved> snakesMoved() {
-        return right(new SnakesGotMoved(this.toDto()));
-    }
-
-    private boolean allSnakesAreDead() {
+    public boolean areAllDead() {
         return snakes().stream()
                 .noneMatch(Snake::isAlive);
     }
 
-    private void moveSnakes() {
+    public void move() {
         snakes().forEach(Snake::move);
+    }
+
+    public void killCrashed() {
+        snakeCollisionFinder
+                .findCrashedSnakesNumbers(snakes())
+                .forEach(this::killSnake);
+    }
+
+    public void feed(Option<Position> foodPosition) {
+        foodPosition.peek(this::feedSnakes);
     }
 
     private void feedSnakes(Position foodPosition) {
         snakes().forEach(snake -> snake.tryToEatFood(foodPosition));
-    }
-
-    private void killCrashedSnakes() {
-        snakeCollisionFinder
-                .findCrashedSnakesNumbers(snakes())
-                .forEach(this::killSnake);
     }
 
     private Option<Snake> findSnakeBy(PlayerNumber playerNumber) {

@@ -13,7 +13,8 @@ public class ScoringCreator {
     public static Scoring create(Set<PlayerNumber> playerNumbers) {
         ScoreCalculator scoreCalculator = new ScoreCalculator();
         var snakesMap = snakesBy(playerNumbers);
-        Score score = scoreCalculator.calculateScore(snakesMap);
+        Score score = scoreCalculator.calculateScore(snakesMap
+                .values());
         return new Scoring(
                 snakesMap,
                 scoreCalculator,
@@ -21,9 +22,9 @@ public class ScoringCreator {
                 score);
     }
 
-    private static Map<PlayerNumber, Snake> snakesBy(Set<PlayerNumber> playerNumbers) {
+    private static Map<PlayerNumber, SnakeScore> snakesBy(Set<PlayerNumber> playerNumbers) {
         return Vector.ofAll(playerNumbers)
-                .map(Snake::create)
-                .toMap(Snake::getPlayerNumber, snake -> snake);
+                .map(SnakeScore::create)
+                .toMap(SnakeScore::getPlayerNumber, snakeScore -> snakeScore);
     }
 }

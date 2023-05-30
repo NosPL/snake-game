@@ -1,5 +1,6 @@
 package snake.game.gameplay.internal.logic;
 
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Walls;
@@ -11,6 +12,7 @@ import snake.game.gameplay.internal.logic.internal.snakes.SnakesCreator;
 import snake.game.gameplay.internal.logic.internal.snakes.Snakes;
 
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class GameLogicCreator {
 
@@ -19,6 +21,7 @@ public class GameLogicCreator {
         Snakes snakes = SnakesCreator.create(playerNumbers, gridSize, walls);
         FoodLocator foodLocator = FoodLocatorCreator.create(snakes.toDto(), gridSize, walls);
         GameLogic gameLogic = new GameLogicFacade(snakes, scoring, foodLocator, gridSize, walls);
-        return new GameLogicThreadSafetyDecorator(gameLogic);
+        AtomicReference<GameState> gameState = new AtomicReference<>(gameLogic.getGameState());
+        return new GameLogicThreadSafetyDecorator(gameLogic, gameState);
     }
 }

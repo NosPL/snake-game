@@ -1,13 +1,13 @@
 package snake.game.gameplay.internal.logic.internal.food.locator;
 
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Snake;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;
-import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Snake;
-import snake.game.gameplay.internal.logic.internal.SnakesGotMoved;
+import snake.game.gameplay.internal.logic.internal.snakes.Snakes;
 
-import java.util.Collection;
+import java.util.List;
 
 import static lombok.AccessLevel.PACKAGE;
 
@@ -19,14 +19,23 @@ public class FoodLocator {
     private int snakeMoveCount;
     private int moveLimit;
 
-    public void updateFoodPosition(SnakesGotMoved snakesGotMoved) {
+    public void updateFoodPosition(List<Snake> snakes) {
         snakeMoveCount++;
-        boolean foodGotConsumed = snakesGotMoved.foodGotConsumed();
-        if (moveLimitReached() || foodGotConsumed) {
+        if (moveLimitReached() || foodGotConsumed(snakes)) {
             snakeMoveCount = 0;
-            Collection<Snake> snakes = snakesGotMoved.getSnakes();
             foodPosition = randomFreePositionFinder.find(snakes);
         }
+    }
+
+    private boolean foodGotConsumed(List<Snake> snakes) {
+        return snakes.stream()
+                .map(Snake::getHeadNode)
+                .map(Snake.Node::getPosition)
+                .anyMatch(this::headPositionEqualsFoodPosition);
+    }
+
+    private boolean headPositionEqualsFoodPosition(Position headPosition) {
+        return foodPosition.exists(position -> position.equals(headPosition));
     }
 
     private boolean moveLimitReached() {
