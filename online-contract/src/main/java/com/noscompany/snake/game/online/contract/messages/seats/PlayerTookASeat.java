@@ -14,7 +14,7 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 public class PlayerTookASeat implements OnlineMessage {
     MessageType messageType = MessageType.PLAYER_TOOK_A_SEAT;
-    String userId;
+    String userName;
     PlayerNumber playerNumber;
     PlaygroundState playgroundState;
 }
