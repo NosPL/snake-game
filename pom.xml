@@ -17,7 +17,7 @@
 
     <modules>
         <module>room</module>
-        <module>room-gameplay</module>
+        <module>gameplay</module>
         <module>gui</module>
         <module>online-contract</module>
         <module>remote-client</module>

@@ -41,10 +41,15 @@ class Snake {
             return;
         Node newHead = createNewHead();
         nodes.addFirst(newHead);
-        nodes.getLast()
+        tryToGrow();
+        nodes.removeLast();
+    }
+
+    private void tryToGrow() {
+        nodes
+                .getLast()
                 .tryToGrow()
                 .peek(nodes::addLast);
-        nodes.removeLast();
     }
 
     boolean tryToEatFood(Position foodPosition) {

@@ -151,8 +151,8 @@ class GameGrid extends GridPane {
             if (gridSize == _15x15)
                 return 20;
             if (gridSize == _20x20)
-                return 16;
-            return 14;
+                return 14;
+            return 11;
         }
 
         private static Cell[] column(int columnSize, int cellSize) {

@@ -50,5 +50,10 @@ class KeyPressedHandler implements EventHandler<KeyEvent> {
             localSnakeGame.changeSnakeDirection(_4, LEFT);
         else if (keyCode == KeyCode.NUMPAD6)
             localSnakeGame.changeSnakeDirection(_4, RIGHT);
+
+        else if (keyCode == KeyCode.OPEN_BRACKET)
+            localSnakeGame.pause();
+        else if (keyCode == KeyCode.CLOSE_BRACKET)
+            localSnakeGame.resume();
     }
 }
