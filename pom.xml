@@ -29,6 +29,7 @@
         <module>host-dependency-configurator</module>
         <module>server-websocket-nettosphere</module>
         <module>utils</module>
+        <module>message-publisher</module>
     </modules>
 
     <dependencies>
