@@ -2,7 +2,7 @@ package com.noscompany.snake.game.online.host.room.internal.user.registry;
 
 import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserName;
-import com.noscompany.snake.game.online.host.room.dto.UserId;
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import lombok.Value;
@@ -22,14 +22,14 @@ public class UserRegistry {
 
     public Option<FailedToEnterRoom> registerNewUser(UserId userId, UserName userName) {
         if (this.isFull())
-            return Option.of(FailedToEnterRoom.roomIsFull());
+            return Option.of(FailedToEnterRoom.roomIsFull(userId));
         UserName currentUserName = userNamesById.get(userId);
         if (currentUserName != null)
-            return Option.of(FailedToEnterRoom.userAlreadyInTheRoom());
+            return Option.of(FailedToEnterRoom.userAlreadyInTheRoom(userId));
         if (getUserNames().contains(userName))
-            return Option.of(FailedToEnterRoom.userNameAlreadyInUse());
+            return Option.of(FailedToEnterRoom.userNameAlreadyInUse(userId));
         if (!userNameIsValid(userName.getName()))
-            return Option.of(FailedToEnterRoom.incorrectUserNameFormat());
+            return Option.of(FailedToEnterRoom.incorrectUserNameFormat(userId));
         userNamesById.put(userId, userName);
         return Option.none();
     }

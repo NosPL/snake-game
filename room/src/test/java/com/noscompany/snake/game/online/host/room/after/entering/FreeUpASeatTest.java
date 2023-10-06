@@ -1,5 +1,6 @@
 package com.noscompany.snake.game.online.host.room.after.entering;
 
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
@@ -18,12 +19,12 @@ public class FreeUpASeatTest extends ActorEnteredTheRoomSetup {
 //        WHEN he tries to free up a seat
         var result = room.freeUpASeat(actorId);
 //        THEN he succeeds
-        var expected = success(playerFreedUpASeat(actorName.getName(), playerNumber));
+        var expected = success(playerFreedUpASeat(actorId, actorName.getName(), playerNumber));
         Assert.assertEquals(expected, result);
     }
 
-    private PlayerFreedUpASeat playerFreedUpASeat(String userName, PlayerNumber playerNumber) {
-        return new PlayerFreedUpASeat(userName, playerNumber, lobbyState());
+    private PlayerFreedUpASeat playerFreedUpASeat(UserId userId, String userName, PlayerNumber playerNumber) {
+        return new PlayerFreedUpASeat(userId, userName, playerNumber, lobbyState());
     }
 
     @Test
@@ -33,7 +34,7 @@ public class FreeUpASeatTest extends ActorEnteredTheRoomSetup {
 //        WHEN he tries to free up a seat
         var result = room.freeUpASeat(actorId);
 //        THEN he fails due to not being in the room
-        var expected = failure(FailedToFreeUpSeat.userDidNotTakeASeat());
+        var expected = failure(FailedToFreeUpSeat.userDidNotTakeASeat(actorId));
         Assert.assertEquals(expected, result);
     }
 }

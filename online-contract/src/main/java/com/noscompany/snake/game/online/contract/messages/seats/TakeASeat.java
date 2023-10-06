@@ -1,5 +1,6 @@
 package com.noscompany.snake.game.online.contract.messages.seats;
 
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
 import lombok.AllArgsConstructor;
@@ -13,5 +14,6 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 public class TakeASeat implements OnlineMessage {
     MessageType messageType = MessageType.TAKE_A_SEAT;
+    UserId userId;
     PlayerNumber playerNumber;
 }

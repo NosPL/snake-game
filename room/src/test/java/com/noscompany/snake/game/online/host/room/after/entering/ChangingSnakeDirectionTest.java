@@ -29,7 +29,7 @@ public class ChangingSnakeDirectionTest extends ActorEnteredTheRoomSetup {
 //        WHEN the actor tries to change direction
         var result = room.changeSnakeDirection(actorId, anyDirection());
 //        THEN he fails due to not taking a seat
-        var expected = Option.of(FailedToChangeSnakeDirection.playerDidNotTakeASeat());
+        var expected = Option.of(FailedToChangeSnakeDirection.playerDidNotTakeASeat(actorId));
         Assert.assertEquals(expected, result);
     }
 
@@ -40,7 +40,7 @@ public class ChangingSnakeDirectionTest extends ActorEnteredTheRoomSetup {
 //        WHEN the actor tries to change snake direction
         var result = room.changeSnakeDirection(actorId, anyDirection());
 //        THEN he fails because game is not running
-        var expected = Option.of(FailedToChangeSnakeDirection.gameNotStarted());
+        var expected = Option.of(FailedToChangeSnakeDirection.gameNotStarted(actorId));
         Assert.assertEquals(expected, result);
     }
 

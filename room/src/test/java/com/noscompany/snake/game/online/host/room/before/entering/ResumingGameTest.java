@@ -12,7 +12,7 @@ public class ResumingGameTest extends ActorNotInTheRoomSetup {
 //        WHEN the actor tries to resume game
         var result = room.resumeGame(actorId);
 //        THEN he fails due to not being in the room
-        var expected = Option.of(FailedToResumeGame.userNotInTheRoom());
+        var expected = Option.of(FailedToResumeGame.userNotInTheRoom(actorId));
         Assert.assertEquals(expected, result);
     }
 }

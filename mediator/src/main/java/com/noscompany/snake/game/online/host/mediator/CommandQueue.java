@@ -1,10 +1,17 @@
 package com.noscompany.snake.game.online.host.mediator;
 
+import com.noscompany.snake.game.online.contract.messages.chat.SendChatMessage;
+import com.noscompany.snake.game.online.contract.messages.game.options.ChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
+import com.noscompany.snake.game.online.contract.messages.gameplay.commands.*;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.room.EnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserName;
+import com.noscompany.snake.game.online.contract.messages.seats.FreeUpASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.TakeASeat;
 import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
+import com.noscompany.snake.game.online.host.server.ports.RoomApiForRemoteClients;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,67 +23,56 @@ class CommandQueue implements Mediator {
     private final ExecutorService executor;
     private final CommandHandler commandHandler;
 
-    @Override
-    public void enter(HostId hostId, UserName userName) {
+    public void enter(EnterRoom command) {
         log.info("host puts 'enter room' command in queue");
-        executor.submit(() -> commandHandler.enter(hostId, userName));
+        executor.submit(() -> commandHandler.enter(command));
     }
 
-    @Override
-    public void sendChatMessage(HostId hostId, String messageContent) {
+    public void sendChatMessage(SendChatMessage command) {
         log.info("host puts 'send chat message' command in queue");
-        executor.submit(() -> commandHandler.sendChatMessage(hostId, messageContent));
+        executor.submit(() -> commandHandler.sendChatMessage(command));
     }
 
-    @Override
-    public void cancelGame(HostId hostId) {
+    public void cancelGame(CancelGame command) {
         log.info("host puts 'cancel game' command in queue");
-        executor.submit(() -> commandHandler.cancelGame(hostId));
+        executor.submit(() -> commandHandler.cancelGame(command));
     }
 
-    @Override
-    public void changeSnakeDirection(HostId hostId, Direction direction) {
+    public void changeSnakeDirection(ChangeSnakeDirection command) {
         log.debug("host puts 'change snake direction' command in queue");
-        executor.submit(() -> commandHandler.changeSnakeDirection(hostId, direction));
+        executor.submit(() -> commandHandler.changeSnakeDirection(command));
     }
 
-    @Override
-    public void pauseGame(HostId hostId) {
+    public void pauseGame(PauseGame command) {
         log.info("host puts 'pause game' command in queue");
-        executor.submit(() -> commandHandler.pauseGame(hostId));
+        executor.submit(() -> commandHandler.pauseGame(command));
     }
 
-    @Override
-    public void resumeGame(HostId hostId) {
+    public void resumeGame(ResumeGame command) {
         log.info("host puts 'resume game' command in queue");
-        executor.submit(() -> commandHandler.resumeGame(hostId));
+        executor.submit(() -> commandHandler.resumeGame(command));
     }
 
-    @Override
-    public void startGame(HostId hostId) {
+    public void startGame(StartGame command) {
         log.info("host puts 'start game' command in queue");
-        executor.submit(() -> commandHandler.startGame(hostId));
+        executor.submit(() -> commandHandler.startGame(command));
     }
 
-    @Override
-    public void changeGameOptions(HostId hostId, GameOptions gameOptions) {
+    public void changeGameOptions(ChangeGameOptions command) {
         log.info("host puts 'change game options' command in queue");
-        executor.submit(() -> commandHandler.changeGameOptions(hostId, gameOptions));
+        executor.submit(() -> commandHandler.changeGameOptions(command));
     }
 
-    @Override
-    public void freeUpASeat(HostId hostId) {
+    public void freeUpASeat(FreeUpASeat command) {
         log.info("host puts 'free up a seat' command in queue");
-        executor.submit(() -> commandHandler.freeUpASeat(hostId));
+        executor.submit(() -> commandHandler.freeUpASeat(command));
     }
 
-    @Override
-    public void takeASeat(HostId hostId, PlayerNumber playerNumber) {
+    public void takeASeat(TakeASeat command) {
         log.info("host puts 'take a seat' command in queue");
-        executor.submit(() -> commandHandler.takeASeat(hostId, playerNumber));
+        executor.submit(() -> commandHandler.takeASeat(command));
     }
 
-    @Override
     public void shutdown() {
         log.info("shutting mediator command queue down");
         executor.shutdown();

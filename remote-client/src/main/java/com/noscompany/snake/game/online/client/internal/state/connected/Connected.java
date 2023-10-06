@@ -5,6 +5,7 @@ import com.noscompany.snake.game.online.client.ClientEventHandler;
 import com.noscompany.snake.game.online.client.HostAddress;
 import com.noscompany.snake.game.online.client.StartingClientError;
 import com.noscompany.snake.game.online.client.internal.state.ClientState;
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.chat.SendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.gameplay.commands.*;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
@@ -15,10 +16,13 @@ import com.noscompany.snake.game.online.contract.messages.room.EnterRoom;
 import com.noscompany.snake.game.online.client.internal.state.not.connected.Disconnected;
 import lombok.AllArgsConstructor;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 @AllArgsConstructor
 public class Connected implements ClientState {
     private final MessageSender messageSender;
     private final ClientEventHandler eventHandler;
+    private final AtomicReference<UserId> userId;
 
     @Override
     public ClientState connect(HostAddress hostAddress) {
@@ -32,7 +36,7 @@ public class Connected implements ClientState {
     @Override
     public ClientState enterTheRoom(String userName) {
         return messageSender
-                .send(new EnterRoom(userName))
+                .send(new EnterRoom(userId.get(), userName))
                 .map(this::handleError)
                 .getOrElse(this);
     }
@@ -40,7 +44,7 @@ public class Connected implements ClientState {
     @Override
     public ClientState takeASeat(PlayerNumber playerNumber) {
         return messageSender
-                .send(new TakeASeat(playerNumber))
+                .send(new TakeASeat(userId.get(), playerNumber))
                 .map(this::handleError)
                 .getOrElse(this);
     }
@@ -56,7 +60,7 @@ public class Connected implements ClientState {
     @Override
     public ClientState changeGameOptions(GridSize gridSize, GameSpeed gameSpeed, Walls walls) {
         return messageSender
-                .send(new ChangeGameOptions(gridSize, gameSpeed, walls))
+                .send(new ChangeGameOptions(userId.get(), gridSize, gameSpeed, walls))
                 .map(this::handleError)
                 .getOrElse(this);
     }
@@ -72,7 +76,7 @@ public class Connected implements ClientState {
     @Override
     public ClientState changeSnakeDirection(Direction direction) {
         return messageSender
-                .send(new ChangeSnakeDirection(direction))
+                .send(new ChangeSnakeDirection(userId.get(), direction))
                 .map(this::handleError)
                 .getOrElse(this);
     }
@@ -104,7 +108,7 @@ public class Connected implements ClientState {
     @Override
     public ClientState sendChatMessage(String chatMessageContent) {
         return messageSender
-                .send(new SendChatMessage(chatMessageContent))
+                .send(new SendChatMessage(userId.get(), chatMessageContent))
                 .map(this::handleError)
                 .getOrElse(this);
     }

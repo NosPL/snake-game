@@ -13,7 +13,7 @@ import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSe
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
-import com.noscompany.snake.game.online.host.room.dto.UserId;
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 

@@ -29,7 +29,7 @@ public class CancellingTest extends ActorEnteredTheRoomSetup {
 //        WHEN the actor tries to cancel game
         var result = room.cancelGame(actorId);
 //        THEN he fails due to not taking a seat
-        var expected = Option.of(FailedToCancelGame.playerDidNotTakeASeat());
+        var expected = Option.of(FailedToCancelGame.playerDidNotTakeASeat(actorId));
         Assert.assertEquals(expected, result);
     }
 
@@ -43,7 +43,7 @@ public class CancellingTest extends ActorEnteredTheRoomSetup {
 //        WHEN the actor tries to cancel game
         var result = room.cancelGame(actorId);
 //        THEN he fails due to not being an admin
-        var expected = Option.of(FailedToCancelGame.playerIsNotAdmin());
+        var expected = Option.of(FailedToCancelGame.playerIsNotAdmin(actorId));
         Assert.assertEquals(expected, result);
     }
 
@@ -56,7 +56,7 @@ public class CancellingTest extends ActorEnteredTheRoomSetup {
 //        WHEN actor tries to cancel game
         var result = room.cancelGame(actorId);
 //        THEN he fails because game is not running
-        var expected = Option.of(FailedToCancelGame.gameNotStarted());
+        var expected = Option.of(FailedToCancelGame.gameNotStarted(actorId));
         Assert.assertEquals(expected, result);
     }
 }

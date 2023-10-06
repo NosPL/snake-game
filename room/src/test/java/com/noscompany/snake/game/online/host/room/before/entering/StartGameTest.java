@@ -1,5 +1,6 @@
 package com.noscompany.snake.game.online.host.room.before.entering;
 
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToStartGame;
 import org.junit.Test;
 
@@ -11,9 +12,10 @@ public class StartGameTest extends ActorNotInTheRoomSetup {
     @Test
     public void actorShouldFailToStartGame() {
 //        WHEN the actor tries to start the game
-        var result = room.startGame(randomUserId());
+        UserId randomUserId = randomUserId();
+        var result = room.startGame(randomUserId);
 //        THEN he fails due to not being in the room
-        var expected = of(FailedToStartGame.userIsNotInTheRoom());
+        var expected = of(FailedToStartGame.userIsNotInTheRoom(randomUserId));
         assertEquals(expected, result);
     }
 }

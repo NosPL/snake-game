@@ -27,7 +27,7 @@ public class ResumingGameTest extends ActorEnteredTheRoomSetup {
 //        WHEN the actor tries to resume game
         var result = room.resumeGame(actorId);
 //        THEN he fails due to not taking a seat
-        var expected = Option.of(FailedToResumeGame.playerDidNotTakeASeat());
+        var expected = Option.of(FailedToResumeGame.playerDidNotTakeASeat(actorId));
         Assert.assertEquals(expected, result);
     }
 
@@ -41,7 +41,7 @@ public class ResumingGameTest extends ActorEnteredTheRoomSetup {
 //        WHEN the actor tries to resume game
         var result = room.resumeGame(actorId);
 //        THEN he fails due to not being an admin
-        var expected = Option.of(FailedToResumeGame.playerIsNotAdmin());
+        var expected = Option.of(FailedToResumeGame.playerIsNotAdmin(actorId));
         Assert.assertEquals(expected, result);
     }
 
@@ -54,7 +54,7 @@ public class ResumingGameTest extends ActorEnteredTheRoomSetup {
 //        WHEN actor tries to resume game
         var result = room.resumeGame(actorId);
 //        THEN he fails because game is not running
-        var expected = Option.of(FailedToResumeGame.gameNotStarted());
+        var expected = Option.of(FailedToResumeGame.gameNotStarted(actorId));
         Assert.assertEquals(expected, result);
     }
 }

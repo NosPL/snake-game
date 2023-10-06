@@ -1,5 +1,6 @@
 package com.noscompany.snake.game.online.host;
 
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.host.ports.RoomApiForHost;
 import com.noscompany.snake.game.online.host.server.Server;
 import com.noscompany.snake.game.online.host.server.ports.RoomApiForRemoteClients;
@@ -12,7 +13,8 @@ public class SnakeOnlineHostConfiguration {
                                            HostEventHandler hostEventHandler,
                                            RoomApiForHost roomApiForHost,
                                            RoomApiForRemoteClients remoteClients) {
-        RoomApiForHost.HostId hostId = new RoomApiForHost.HostId(UUID.randomUUID().toString());
-        return new SnakeOnlineHostImpl(hostId, server, hostEventHandler, roomApiForHost, remoteClients);
+        var hostId = new UserId(UUID.randomUUID().toString());
+        var decoratedEventHandler = new CheckIfHostIsRecipientOfFailureMessage(hostId, hostEventHandler);
+        return new SnakeOnlineHostImpl(hostId, server, decoratedEventHandler, roomApiForHost, remoteClients);
     }
 }

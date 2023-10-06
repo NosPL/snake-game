@@ -4,7 +4,7 @@ import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundS
 import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
-import com.noscompany.snake.game.online.host.room.dto.UserId;
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
@@ -33,7 +33,7 @@ class Seat {
 
     Either<FailedToTakeASeat, UserSuccessfullyTookASeat> take(UserId userId, UserName userName) {
         if (isTaken())
-            return left(FailedToTakeASeat.seatAlreadyTaken());
+            return left(FailedToTakeASeat.seatAlreadyTaken(userId));
         this.userId = Option.of(userId);
         this.userName = of(userName);
         this.isTaken = true;
@@ -61,9 +61,9 @@ class Seat {
         return this.userId.exists(userId::equals);
     }
 
-    Either<FailedToTakeASeat, UserSuccessfullyTookASeat> changeTo(Seat newSeat) {
+    Either<FailedToTakeASeat, UserSuccessfullyTookASeat> changeTo(UserId userId, Seat newSeat) {
         if (newSeat.isTaken())
-            return left(FailedToTakeASeat.seatAlreadyTaken());
+            return left(FailedToTakeASeat.seatAlreadyTaken(userId));
         newSeat.userId = this.userId;
         newSeat.userName = this.userName;
         newSeat.isAdmin = this.isAdmin;

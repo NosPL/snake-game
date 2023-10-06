@@ -1,5 +1,6 @@
 package com.noscompany.snake.game.online.host.room.after.entering;
 
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,11 +15,11 @@ public class SendChatMessageTest extends ActorEnteredTheRoomSetup {
         var messageContent = "sample message content";
         var result = room.sendChatMessage(actorId, messageContent);
 //        THEN he succeeds
-        var expected = success(userSentChatMessage(actorName.getName(), messageContent));
+        var expected = success(userSentChatMessage(actorId, actorName.getName(), messageContent));
         Assert.assertEquals(expected, result);
     }
 
-    private UserSentChatMessage userSentChatMessage(String userName, String messageContent) {
-        return new UserSentChatMessage(userName, messageContent);
+    private UserSentChatMessage userSentChatMessage(UserId userId, String userName, String messageContent) {
+        return new UserSentChatMessage(userId, userName, messageContent);
     }
 }

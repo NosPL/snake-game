@@ -1,5 +1,6 @@
 package com.noscompany.snake.game.online.host.room.after.entering;
 
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
@@ -19,12 +20,12 @@ public class TakeASeatTest extends ActorEnteredTheRoomSetup {
         var freeSeatNumber = freeSeatNumber();
         var result = room.takeASeat(actorId, freeSeatNumber);
 //        THEN he succeeds
-        var expected = success(playerTookASeat(actorName.getName(), freeSeatNumber));
+        var expected = success(playerTookASeat(actorId, actorName.getName(), freeSeatNumber));
         Assert.assertEquals(expected, result);
     }
 
-    private PlayerTookASeat playerTookASeat(String userName, PlayerNumber playerNumber) {
-        return new PlayerTookASeat(userName, playerNumber, lobbyState());
+    private PlayerTookASeat playerTookASeat(UserId actorId, String userName, PlayerNumber playerNumber) {
+        return new PlayerTookASeat(actorId, userName, playerNumber, lobbyState());
     }
 
     @Test
@@ -35,7 +36,7 @@ public class TakeASeatTest extends ActorEnteredTheRoomSetup {
 //        WHEN the actor tries to take this taken seat
         var result = room.takeASeat(actorId, takenSeatNumber);
 //        THEN he fails due to seat being already taken
-        var expected = failure(seatAlreadyTaken());
+        var expected = failure(seatAlreadyTaken(actorId));
         Assert.assertEquals(expected, result);
     }
 
@@ -49,7 +50,7 @@ public class TakeASeatTest extends ActorEnteredTheRoomSetup {
 //        WHEN some other user tries to take the seat
         var result = someRandomUserTakesASeat();
 //        THEN he fails because game is running
-        var expected = failure(FailedToTakeASeat.gameAlreadyRunning());
+        var expected = failure(FailedToTakeASeat.gameAlreadyRunning(result.getLeft().getUserId()));
         assertEquals(expected, result);
     }
 }

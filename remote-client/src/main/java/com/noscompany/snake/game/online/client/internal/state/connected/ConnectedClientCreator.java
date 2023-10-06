@@ -4,12 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noscompany.snake.game.online.client.ClientEventHandler;
 import com.noscompany.snake.game.online.client.HostAddress;
 import com.noscompany.snake.game.online.client.internal.state.ClientState;
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.object.mapper.ObjectMapperCreator;
 import io.vavr.control.Try;
 import lombok.extern.slf4j.Slf4j;
 import org.atmosphere.wasync.*;
 import org.atmosphere.wasync.impl.AtmosphereClient;
 import org.atmosphere.wasync.impl.DefaultOptions;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.atmosphere.wasync.Request.METHOD.GET;
 
@@ -19,9 +22,11 @@ public class ConnectedClientCreator {
 
     public static Try<ClientState> create(HostAddress hostAddress, ClientEventHandler eventHandler) {
         var objectMapper = ObjectMapperCreator.createInstance();
-        return createOpenSocket(hostAddress, eventHandler, objectMapper)
+        var userId = new AtomicReference<>(new UserId(""));
+        var decoratedHandler = new UpdateUserIdHandler(userId, eventHandler);
+        return createOpenSocket(hostAddress, decoratedHandler, objectMapper)
                 .map(socket -> new MessageSender(socket, objectMapper))
-                .map(messageSender -> new Connected(messageSender, eventHandler));
+                .map(messageSender -> new Connected(messageSender, decoratedHandler, userId));
     }
 
     private static Try<Socket> createOpenSocket(HostAddress hostAddress, ClientEventHandler clientEventHandler, ObjectMapper objectMapper) {

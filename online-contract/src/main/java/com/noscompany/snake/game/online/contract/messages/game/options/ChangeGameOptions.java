@@ -1,5 +1,6 @@
 package com.noscompany.snake.game.online.contract.messages.game.options;
 
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameSpeed;
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 public class ChangeGameOptions implements OnlineMessage {
     MessageType messageType = MessageType.CHANGE_GAME_OPTIONS;
+    UserId userId;
     GridSize gridSize;
     GameSpeed gameSpeed;
     Walls walls;

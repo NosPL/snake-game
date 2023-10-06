@@ -13,7 +13,7 @@ public class TakeASeatTest extends ActorNotInTheRoomSetup {
 //        WHEN the actor tries to take a seat
         var result = room.takeASeat(actorId, freeSeatNumber());
 //        THEN he fails due to not being in the room
-        var expected = failure(FailedToTakeASeat.userNotInTheRoom());
+        var expected = failure(FailedToTakeASeat.userNotInTheRoom(actorId));
         Assert.assertEquals(expected, result);
     }
 }

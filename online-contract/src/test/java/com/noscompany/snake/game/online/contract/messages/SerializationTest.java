@@ -21,6 +21,7 @@ import lombok.SneakyThrows;
 import org.junit.Test;
 
 import java.util.Set;
+import java.util.UUID;
 
 import static com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions.Reason.GAME_IS_ALREADY_RUNNING;
 import static com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToCancelGame.Reason.USER_NOT_IN_THE_ROOM;
@@ -30,38 +31,39 @@ public class SerializationTest extends BaseTestClass {
     @Test
     @SneakyThrows
     public void serialize() {
-        testSerializationOf(new SendChatMessage("some message"));
-        testSerializationOf(new CancelGame());
-        testSerializationOf(FailedToCancelGame.gameNotStarted());
-        testSerializationOf(new ChangeSnakeDirection(Direction.DOWN));
-        testSerializationOf(FailedToChangeSnakeDirection.gameNotStarted());
-        testSerializationOf(new PauseGame());
-        testSerializationOf(FailedToPauseGame.userNotInTheRoom());
-        testSerializationOf(new ResumeGame());
-        testSerializationOf(FailedToResumeGame.gameNotStarted());
-        testSerializationOf(new StartGame());
-        testSerializationOf(FailedToStartGame.gameIsAlreadyRunning());
-        testSerializationOf(new ChangeGameOptions(GridSize._10x10, GameSpeed.x1, Walls.OFF));
+        var userId = new UserId(UUID.randomUUID().toString());
+        testSerializationOf(new SendChatMessage(userId, "some message"));
+        testSerializationOf(new CancelGame(userId));
+        testSerializationOf(FailedToCancelGame.gameNotStarted(userId));
+        testSerializationOf(new ChangeSnakeDirection(userId, Direction.DOWN));
+        testSerializationOf(FailedToChangeSnakeDirection.gameNotStarted(userId));
+        testSerializationOf(new PauseGame(userId));
+        testSerializationOf(FailedToPauseGame.userNotInTheRoom(userId));
+        testSerializationOf(new ResumeGame(userId));
+        testSerializationOf(FailedToResumeGame.gameNotStarted(userId));
+        testSerializationOf(new StartGame(userId));
+        testSerializationOf(FailedToStartGame.gameIsAlreadyRunning(userId));
+        testSerializationOf(new ChangeGameOptions(userId, GridSize._10x10, GameSpeed.x1, Walls.OFF));
         testSerializationOf(new FreeUpASeat());
-        testSerializationOf(new TakeASeat(PlayerNumber._1));
-        testSerializationOf(new EnterRoom("some name"));
-        testSerializationOf(new UserSentChatMessage("some name", "some content"));
-        testSerializationOf(FailedToSendChatMessage.userIsNotInTheRoom());
-        testSerializationOf(FailedToChangeGameOptions.gameIsAlreadyRunning());
-        testSerializationOf(FailedToFreeUpSeat.userDidNotTakeASeat());
-        testSerializationOf(FailedToStartGame.gameIsAlreadyRunning());
-        testSerializationOf(FailedToTakeASeat.seatAlreadyTaken());
+        testSerializationOf(new TakeASeat(userId, PlayerNumber._1));
+        testSerializationOf(new EnterRoom(userId, "some name"));
+        testSerializationOf(new UserSentChatMessage(userId, "some name", "some content"));
+        testSerializationOf(FailedToSendChatMessage.userIsNotInTheRoom(userId));
+        testSerializationOf(FailedToChangeGameOptions.gameIsAlreadyRunning(userId));
+        testSerializationOf(FailedToFreeUpSeat.userDidNotTakeASeat(userId));
+        testSerializationOf(FailedToStartGame.gameIsAlreadyRunning(userId));
+        testSerializationOf(FailedToTakeASeat.seatAlreadyTaken(userId));
         testSerializationOf(new GameOptionsChanged(lobbyState()));
-        testSerializationOf(new PlayerFreedUpASeat("some name", PlayerNumber._1, lobbyState()));
-        testSerializationOf(new PlayerTookASeat("some name", PlayerNumber._1, lobbyState()));
-        testSerializationOf(FailedToEnterRoom.userNameAlreadyInUse());
-        testSerializationOf(new NewUserEnteredRoom("some name", roomState()));
-        testSerializationOf(new NewUserEnteredRoom("some name", roomState()));
-        testSerializationOf(new UserLeftRoom("some name", Set.of("a", "b", "c"), Option.of(playerFreedUpASeat())));
-        testSerializationOf(new UserLeftRoom("some name", Set.of("a", "b", "c"), Option.none()));
+        testSerializationOf(new PlayerFreedUpASeat(userId, "some name", PlayerNumber._1, lobbyState()));
+        testSerializationOf(new PlayerTookASeat(userId, "some name", PlayerNumber._1, lobbyState()));
+        testSerializationOf(FailedToEnterRoom.userNameAlreadyInUse(userId));
+        testSerializationOf(new NewUserEnteredRoom(userId, "some name", roomState()));
+        testSerializationOf(new NewUserEnteredRoom(userId, "some name", roomState()));
+        testSerializationOf(new UserLeftRoom(userId, "some name", Set.of("a", "b", "c"), Option.of(playerFreedUpASeat(userId))));
+        testSerializationOf(new UserLeftRoom(userId, "some name", Set.of("a", "b", "c"), Option.none()));
     }
 
-    private PlayerFreedUpASeat playerFreedUpASeat() {
-        return new PlayerFreedUpASeat("q", PlayerNumber._1, lobbyState());
+    private PlayerFreedUpASeat playerFreedUpASeat(UserId userId) {
+        return new PlayerFreedUpASeat(userId, "q", PlayerNumber._1, lobbyState());
     }
 }

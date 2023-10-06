@@ -5,7 +5,7 @@ import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundS
 import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
-import com.noscompany.snake.game.online.host.room.dto.UserId;
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
@@ -27,7 +27,7 @@ class Seats {
     Either<FailedToTakeASeat, Seat.UserSuccessfullyTookASeat> takeOrChangeSeat(UserId userId, UserName userName, PlayerNumber seatNumber) {
         Seat desiredSeat = seats.get(seatNumber);
         return findSeatBy(userId)
-                .map(currentUserSeat -> currentUserSeat.changeTo(desiredSeat))
+                .map(currentUserSeat -> currentUserSeat.changeTo(userId, desiredSeat))
                 .getOrElse(desiredSeat.take(userId, userName))
                 .peek(userSuccessfullyTookASeat -> selectAdminIfThereIsNone());
     }
@@ -36,7 +36,7 @@ class Seats {
         return findSeatBy(userId)
                 .flatMap(Seat::freeUp)
                 .peek(userFreedUpASeat -> selectAdminIfThereIsNone())
-                .toEither(FailedToFreeUpSeat.userDidNotTakeASeat());
+                .toEither(FailedToFreeUpSeat.userDidNotTakeASeat(userId));
     }
 
     Option<PlayerNumber> getNumberFor(UserId userId) {

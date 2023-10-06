@@ -35,7 +35,7 @@ public class ChangeGameOptionsTest extends ActorEnteredTheRoomSetup {
 //        WHEN he tries to change game options
         var result = room.changeGameOptions(actorId, newGameOptions());
 //        THEN he fails because he did not take a seat
-        var expected = failure(FailedToChangeGameOptions.requesterDidNotTakeASeat());
+        var expected = failure(FailedToChangeGameOptions.requesterDidNotTakeASeat(actorId));
         Assert.assertEquals(expected, result);
     }
 
@@ -51,7 +51,7 @@ public class ChangeGameOptionsTest extends ActorEnteredTheRoomSetup {
 //        WHEN the actor tries to change game options
         var result = room.changeGameOptions(actorId, newGameOptions());
 //        THEN he fails because game is running
-        var expected = failure(FailedToChangeGameOptions.gameIsAlreadyRunning());
+        var expected = failure(FailedToChangeGameOptions.gameIsAlreadyRunning(actorId));
         Assert.assertEquals(expected, result);
     }
 
@@ -65,7 +65,7 @@ public class ChangeGameOptionsTest extends ActorEnteredTheRoomSetup {
 //        WHEN the actor tries to change game options
         var result = room.changeGameOptions(actorId, newGameOptions());
 //        THEN he fails because he is not the admin
-        var expected = failure(FailedToChangeGameOptions.requesterIsNotAdmin());
+        var expected = failure(FailedToChangeGameOptions.requesterIsNotAdmin(actorId));
         Assert.assertEquals(expected, result);
     }
 }

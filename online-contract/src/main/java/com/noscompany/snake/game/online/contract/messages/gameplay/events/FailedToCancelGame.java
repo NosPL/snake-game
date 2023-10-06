@@ -1,6 +1,7 @@
 package com.noscompany.snake.game.online.contract.messages.gameplay.events;
 
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -13,22 +14,23 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PRIVATE)
 public class FailedToCancelGame implements OnlineMessage {
     OnlineMessage.MessageType messageType = MessageType.FAILED_TO_CANCEL_GAME;
+    UserId userId;
     Reason reason;
 
-    public static FailedToCancelGame userNotInTheRoom() {
-        return new FailedToCancelGame(USER_NOT_IN_THE_ROOM);
+    public static FailedToCancelGame userNotInTheRoom(UserId userId) {
+        return new FailedToCancelGame(userId, USER_NOT_IN_THE_ROOM);
     }
 
-    public static FailedToCancelGame gameNotStarted() {
-        return new FailedToCancelGame(GAME_NOT_STARTED);
+    public static FailedToCancelGame gameNotStarted(UserId userId) {
+        return new FailedToCancelGame(userId, GAME_NOT_STARTED);
     }
 
-    public static FailedToCancelGame playerDidNotTakeASeat() {
-        return new FailedToCancelGame(PLAYER_DID_NOT_TAKE_SEAT);
+    public static FailedToCancelGame playerDidNotTakeASeat(UserId userId) {
+        return new FailedToCancelGame(userId, PLAYER_DID_NOT_TAKE_SEAT);
     }
 
-    public static FailedToCancelGame playerIsNotAdmin() {
-        return new FailedToCancelGame(PLAYER_IS_NOT_ADMIN);
+    public static FailedToCancelGame playerIsNotAdmin(UserId userId) {
+        return new FailedToCancelGame(userId, PLAYER_IS_NOT_ADMIN);
     }
 
     public enum Reason {

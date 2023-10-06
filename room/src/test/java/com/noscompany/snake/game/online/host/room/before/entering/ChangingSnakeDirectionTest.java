@@ -13,7 +13,7 @@ public class ChangingSnakeDirectionTest extends ActorNotInTheRoomSetup {
 //        WHEN the actor tries to change snake direction
         var result = room.changeSnakeDirection(actorId, Direction.DOWN);
 //        THEN he fails due to not being in the room
-        var expected = Option.of(FailedToChangeSnakeDirection.userNotInTheRoom());
+        var expected = Option.of(FailedToChangeSnakeDirection.userNotInTheRoom(actorId));
         Assert.assertEquals(expected, result);
     }
 }

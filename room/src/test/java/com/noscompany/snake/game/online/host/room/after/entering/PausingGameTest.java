@@ -27,7 +27,7 @@ public class PausingGameTest extends ActorEnteredTheRoomSetup {
 //        WHEN the actor tries to pause game
         var result = room.pauseGame(actorId);
 //        THEN he fails due to not taking a seat
-        var expected = Option.of(FailedToPauseGame.playerDidNotTakeASeat());
+        var expected = Option.of(FailedToPauseGame.playerDidNotTakeASeat(actorId));
         Assert.assertEquals(expected, result);
     }
 
@@ -41,7 +41,7 @@ public class PausingGameTest extends ActorEnteredTheRoomSetup {
 //        WHEN the actor tries to pause game
         var result = room.pauseGame(actorId);
 //        THEN he fails due to not being an admin
-        var expected = Option.of(FailedToPauseGame.playerIsNotAdmin());
+        var expected = Option.of(FailedToPauseGame.playerIsNotAdmin(actorId));
         Assert.assertEquals(expected, result);
     }
 
@@ -54,7 +54,7 @@ public class PausingGameTest extends ActorEnteredTheRoomSetup {
 //        WHEN actor tries to pause game
         var result = room.pauseGame(actorId);
 //        THEN he fails because game is not running
-        var expected = Option.of(FailedToPauseGame.gameNotStarted());
+        var expected = Option.of(FailedToPauseGame.gameNotStarted(actorId));
         Assert.assertEquals(expected, result);
     }
 }

@@ -19,7 +19,7 @@ public class EnterTheRoomTest extends ActorNotInTheRoomSetup {
 //        WHEN the actor tries to enter the room
         var result = room.enter(actorId, actorName);
 //        THEN he succeeds
-        var expected = success(new NewUserEnteredRoom(actorName.getName(), room.getState()));
+        var expected = success(new NewUserEnteredRoom(actorId, actorName.getName(), room.getState()));
         Assert.assertEquals(expected, result);
     }
 
@@ -30,7 +30,7 @@ public class EnterTheRoomTest extends ActorNotInTheRoomSetup {
 //        WHEN the actor tries to enter the room with the same name
         var result = room.enter(actorId, actorName);
 //        THEN he fails due to name being already used
-        var expected = failure(FailedToEnterRoom.userNameAlreadyInUse());
+        var expected = failure(FailedToEnterRoom.userNameAlreadyInUse(actorId));
         Assert.assertEquals(expected, result);
     }
 
@@ -42,7 +42,7 @@ public class EnterTheRoomTest extends ActorNotInTheRoomSetup {
 //        WHEN the actor tries to enter the room
         var result = room.enter(actorId, actorName);
 //        THEN he fails due to room being full
-        var expected = failure(FailedToEnterRoom.roomIsFull());
+        var expected = failure(FailedToEnterRoom.roomIsFull(actorId));
         Assert.assertEquals(expected, result);
     }
 
@@ -58,7 +58,7 @@ public class EnterTheRoomTest extends ActorNotInTheRoomSetup {
 //        WHEN he tries to enter the room
         var result = room.enter(actorId, actorName);
 //        THEN he fails due to incorrect name format
-        var expected = failure(FailedToEnterRoom.incorrectUserNameFormat());
+        var expected = failure(FailedToEnterRoom.incorrectUserNameFormat(actorId));
         Assert.assertEquals(expected, result);
     }
 
@@ -70,7 +70,7 @@ public class EnterTheRoomTest extends ActorNotInTheRoomSetup {
 //        WHEN he tries to enter the room
         var result = room.enter(actorId, actorName);
 //        THEN he fails due to incorrect name format
-        var expected = failure(FailedToEnterRoom.incorrectUserNameFormat());
+        var expected = failure(FailedToEnterRoom.incorrectUserNameFormat(actorId));
         Assert.assertEquals(expected, result);
     }
 }

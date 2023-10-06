@@ -13,7 +13,7 @@ public class ChangeGameOptionsTest extends ActorNotInTheRoomSetup {
 //        WHEN the actor tries to change game options
         var result = room.changeGameOptions(actorId, newGameOptions());
 //        THEN he fails due to not being in the room
-        var expected = failure(FailedToChangeGameOptions.userNotInTheRoom());
+        var expected = failure(FailedToChangeGameOptions.userNotInTheRoom(actorId));
         Assert.assertEquals(expected, result);
     }
 }

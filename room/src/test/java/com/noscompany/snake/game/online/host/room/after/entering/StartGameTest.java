@@ -27,7 +27,7 @@ public class StartGameTest extends ActorEnteredTheRoomSetup {
 //        WHEN he tries to start game
         var result = room.startGame(actorId).get();
 //        THEN he fails due to not being in the room
-        var expected = FailedToStartGame.requesterDidNotTakeASeat();
+        var expected = FailedToStartGame.requesterDidNotTakeASeat(actorId);
         assertEquals(expected, result);
     }
 
@@ -43,7 +43,7 @@ public class StartGameTest extends ActorEnteredTheRoomSetup {
 //        WHEN he tries to start game again
         var result = room.startGame(actorId);
 //        THEN he fails because game is already running
-        var expected = Option.of(FailedToStartGame.gameIsAlreadyRunning());
+        var expected = Option.of(FailedToStartGame.gameIsAlreadyRunning(actorId));
         assertEquals(expected, result);
     }
 
@@ -57,7 +57,7 @@ public class StartGameTest extends ActorEnteredTheRoomSetup {
 //        WHEN the actor tries to start game
         var result = room.startGame(actorId);
 //        THEN the actor fails because he is not the admin
-        var expected = Option.of(FailedToStartGame.requesterIsNotAdmin());
+        var expected = Option.of(FailedToStartGame.requesterIsNotAdmin(actorId));
         assertEquals(expected, result);
     }
 }

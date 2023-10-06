@@ -13,7 +13,7 @@ import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSe
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
-import com.noscompany.snake.game.online.host.room.dto.UserId;
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.host.room.internal.chat.Chat;
 import com.noscompany.snake.game.online.host.room.internal.playground.Playground;
 import com.noscompany.snake.game.online.host.room.internal.user.registry.UserRegistry;
@@ -34,7 +34,7 @@ class RoomFacade implements Room {
     public Either<FailedToEnterRoom, NewUserEnteredRoom> enter(UserId userId, UserName userName) {
         return userRegistry
                 .registerNewUser(userId, userName)
-                .toEither(new NewUserEnteredRoom(userName.getName(), getState()))
+                .toEither(new NewUserEnteredRoom(userId, userName.getName(), getState()))
                 .swap();
     }
 
@@ -42,56 +42,56 @@ class RoomFacade implements Room {
     public Either<FailedToTakeASeat, PlayerTookASeat> takeASeat(UserId userId, PlayerNumber playerNumber) {
         return userRegistry
                 .findUserNameById(userId)
-                .toEither(FailedToTakeASeat.userNotInTheRoom())
+                .toEither(FailedToTakeASeat.userNotInTheRoom(userId))
                 .flatMap(userName -> playground.takeASeat(userId, userName, playerNumber));
     }
 
     @Override
     public Either<FailedToFreeUpSeat, PlayerFreedUpASeat> freeUpASeat(UserId userId) {
         if (!userRegistry.containsId(userId))
-            return left(FailedToFreeUpSeat.userNotInTheRoom());
+            return left(FailedToFreeUpSeat.userNotInTheRoom(userId));
         return playground.freeUpASeat(userId);
     }
 
     @Override
     public Either<FailedToChangeGameOptions, GameOptionsChanged> changeGameOptions(UserId userId, GameOptions gameOptions) {
         if (!userRegistry.containsId(userId))
-            return left(FailedToChangeGameOptions.userNotInTheRoom());
+            return left(FailedToChangeGameOptions.userNotInTheRoom(userId));
         return playground.changeGameOptions(userId, gameOptions);
     }
 
     @Override
     public Option<FailedToStartGame> startGame(UserId userId) {
         if (!userRegistry.containsId(userId))
-            return Option.of(FailedToStartGame.userIsNotInTheRoom());
+            return Option.of(FailedToStartGame.userIsNotInTheRoom(userId));
         return playground.startGame(userId);
     }
 
     @Override
     public Option<FailedToChangeSnakeDirection> changeSnakeDirection(UserId userId, Direction direction) {
         if (!userRegistry.containsId(userId))
-            return Option.of(FailedToChangeSnakeDirection.userNotInTheRoom());
+            return Option.of(FailedToChangeSnakeDirection.userNotInTheRoom(userId));
         return playground.changeSnakeDirection(userId, direction);
     }
 
     @Override
     public Option<FailedToCancelGame> cancelGame(UserId userId) {
         if (!userRegistry.containsId(userId))
-            return Option.of(FailedToCancelGame.userNotInTheRoom());
+            return Option.of(FailedToCancelGame.userNotInTheRoom(userId));
         return playground.cancelGame(userId);
     }
 
     @Override
     public Option<FailedToPauseGame> pauseGame(UserId userId) {
         if (!userRegistry.containsId(userId))
-            return Option.of(FailedToPauseGame.userNotInTheRoom());
+            return Option.of(FailedToPauseGame.userNotInTheRoom(userId));
         return playground.pauseGame(userId);
     }
 
     @Override
     public Option<FailedToResumeGame> resumeGame(UserId userId) {
         if (!userRegistry.containsId(userId))
-            return Option.of(FailedToResumeGame.userNotInTheRoom());
+            return Option.of(FailedToResumeGame.userNotInTheRoom(userId));
         return playground.resumeGame(userId);
     }
 
@@ -99,7 +99,7 @@ class RoomFacade implements Room {
     public Either<FailedToSendChatMessage, UserSentChatMessage> sendChatMessage(UserId userId, String messageContent) {
         return userRegistry
                 .findUserNameById(userId)
-                .toEither(FailedToSendChatMessage.userIsNotInTheRoom())
+                .toEither(FailedToSendChatMessage.userIsNotInTheRoom(userId))
                 .flatMap(userName -> chat.sendMessage(userId, userName, messageContent));
     }
 
@@ -107,11 +107,12 @@ class RoomFacade implements Room {
     public Option<UserLeftRoom> leave(UserId userId) {
         return userRegistry
                 .removeUser(userId)
-                .map(this::userLeftTheRoom);
+                .map(userRemoved -> userLeftTheRoom(userId, userRemoved));
     }
 
-    private UserLeftRoom userLeftTheRoom(UserRegistry.UserRemoved userRemoved) {
+    private UserLeftRoom userLeftTheRoom(UserId userId, UserRegistry.UserRemoved userRemoved) {
         return new UserLeftRoom(
+                userId,
                 userRemoved.getUserName().getName(),
                 userRegistry.getUserNames().stream().map(UserName::getName).collect(toSet()),
                 playground.freeUpASeat(userRemoved.getUserId()).toOption());

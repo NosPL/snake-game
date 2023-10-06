@@ -1,5 +1,6 @@
 package com.noscompany.snake.game.online.contract.messages.gameplay.commands;
 
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
 import lombok.AllArgsConstructor;
@@ -13,5 +14,6 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 public class ChangeSnakeDirection implements OnlineMessage {
     MessageType messageType = MessageType.CHANGE_SNAKE_DIRECTION;
+    UserId userId;
     Direction direction;
 }

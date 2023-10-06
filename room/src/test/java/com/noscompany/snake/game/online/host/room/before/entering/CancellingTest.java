@@ -12,7 +12,7 @@ public class CancellingTest extends ActorNotInTheRoomSetup {
 //        WHEN the actor tries to cancel game
         var result = room.cancelGame(actorId);
 //        THEN he fails due to not being in the room
-        var expected = Option.of(FailedToCancelGame.userNotInTheRoom());
+        var expected = Option.of(FailedToCancelGame.userNotInTheRoom(actorId));
         Assert.assertEquals(expected, result);
     }
 }

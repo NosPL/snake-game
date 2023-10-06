@@ -1,92 +1,87 @@
 package com.noscompany.snake.game.online.host.mediator;
 
+import com.noscompany.snake.game.online.contract.messages.chat.SendChatMessage;
+import com.noscompany.snake.game.online.contract.messages.game.options.ChangeGameOptions;
+import com.noscompany.snake.game.online.contract.messages.gameplay.commands.*;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.room.EnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserName;
+import com.noscompany.snake.game.online.contract.messages.seats.FreeUpASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.TakeASeat;
 import com.noscompany.snake.game.online.contract.messages.server.InitializeRemoteClientState;
 import com.noscompany.snake.game.online.host.room.Room;
-import com.noscompany.snake.game.online.host.room.dto.UserId;
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
+import com.noscompany.snake.game.online.host.server.ports.RoomApiForRemoteClients;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @AllArgsConstructor
-class CommandHandler implements Mediator {
+class CommandHandler implements Mediator  {
     private final Room room;
     private final EventDispatcher eventDispatcher;
 
-    @Override
-    public void enter(HostId hostId, UserName userName) {
+    public void enter(EnterRoom command) {
         room
-                .enter(toUserId(hostId), userName)
+                .enter(command.getUserId(), new UserName(command.getUserName()))
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(eventDispatcher::sendToHost);
     }
 
-    @Override
-    public void sendChatMessage(HostId hostId, String messageContent) {
+    public void sendChatMessage(SendChatMessage command) {
         room
-                .sendChatMessage(toUserId(hostId), messageContent)
+                .sendChatMessage(command.getUserId(), command.getMessageContent())
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(eventDispatcher::sendToHost);
     }
 
-    @Override
-    public void cancelGame(HostId hostId) {
-        room.cancelGame(toUserId(hostId));
+    public void cancelGame(CancelGame command) {
+        room.cancelGame(command.getUserId());
     }
 
-    @Override
-    public void changeSnakeDirection(HostId hostId, Direction direction) {
-        room.changeSnakeDirection(toUserId(hostId), direction);
+    public void changeSnakeDirection(ChangeSnakeDirection command) {
+        room.changeSnakeDirection(command.getUserId(), command.getDirection());
     }
 
-    @Override
-    public void pauseGame(HostId hostId) {
-        room.pauseGame(toUserId(hostId));
+    public void pauseGame(PauseGame command) {
+        room.pauseGame(command.getUserId());
     }
 
-    @Override
-    public void resumeGame(HostId hostId) {
-        room.resumeGame(toUserId(hostId));
+    public void resumeGame(ResumeGame command) {
+        room.resumeGame(command.getUserId());
     }
 
-    @Override
-    public void startGame(HostId hostId) {
+    public void startGame(StartGame command) {
         room
-                .startGame(toUserId(hostId))
+                .startGame(command.getUserId())
                 .peek(eventDispatcher::sendToHost);
     }
 
-    @Override
-    public void changeGameOptions(HostId hostId, GameOptions gameOptions) {
+    public void changeGameOptions(ChangeGameOptions command) {
         room
-                .changeGameOptions(toUserId(hostId), gameOptions)
+                .changeGameOptions(command.getUserId(), command.getOptions())
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(eventDispatcher::sendToHost);
     }
 
-    @Override
-    public void freeUpASeat(HostId hostId) {
+    public void freeUpASeat(FreeUpASeat command) {
         room
-                .freeUpASeat(toUserId(hostId))
+                .freeUpASeat(command.getUserId())
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(eventDispatcher::sendToHost);
     }
 
-    @Override
-    public void takeASeat(HostId hostId, PlayerNumber playerNumber) {
+    public void takeASeat(TakeASeat command) {
         room
-                .takeASeat(toUserId(hostId), playerNumber)
+                .takeASeat(command.getUserId(), command.getPlayerNumber())
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(eventDispatcher::sendToHost);
     }
 
-    @Override
     public void shutdown() {
-
     }
 
     @Override
@@ -165,12 +160,9 @@ class CommandHandler implements Mediator {
 
     @Override
     public void initializeClientState(RemoteClientId remoteClientId) {
-        var initializeRemoteClientState = new InitializeRemoteClientState(room.getState());
+        var userId = new UserId(remoteClientId.getId());
+        var initializeRemoteClientState = new InitializeRemoteClientState(userId, room.getState());
         eventDispatcher.sendToClient(remoteClientId, initializeRemoteClientState);
-    }
-
-    private UserId toUserId(HostId hostId) {
-        return new UserId(hostId.getId());
     }
 
     private UserId toUserId(RemoteClientId remoteClientId) {

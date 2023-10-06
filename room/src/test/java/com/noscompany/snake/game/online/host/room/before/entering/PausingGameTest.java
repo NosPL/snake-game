@@ -12,7 +12,7 @@ public class PausingGameTest extends ActorNotInTheRoomSetup {
 //        WHEN the actor tries to pause game
         var result = room.pauseGame(actorId);
 //        THEN he fails due to not being in the room
-        var expected = Option.of(FailedToPauseGame.userNotInTheRoom());
+        var expected = Option.of(FailedToPauseGame.userNotInTheRoom(actorId));
         Assert.assertEquals(expected, result);
     }
 }
