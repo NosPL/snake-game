@@ -22,6 +22,6 @@ public class SnakeOnlineTestClientConfiguration {
         var snakeGameplayCreator = new GameplayConfiguration().snakeGameplayCreator();
         var playersLimit = new UsersCountLimit(10);
         var roomMediator = new MediatorConfiguration().mediator(nullHostEventHandler, server, roomCreator, playersLimit, snakeGameplayCreator);
-        return new SnakeOnlineTestClient(snakeOnlineClient, clientEventHandler, server, roomMediator, Option.none());
+        return new SnakeOnlineTestClient(snakeOnlineClient, clientEventHandler, server, roomMediator);
     }
 }

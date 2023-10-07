@@ -12,8 +12,15 @@ import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSe
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
+import com.noscompany.snake.game.online.contract.messages.server.*;
 
 public interface RoomEventHandlerForHost {
+
+    void handle(FailedToStartServer serverFailedToStart);
+
+    void handle(ServerFailedToSendMessageToRemoteClients event);
+
+    void handle(ServerStarted serverStarted);
 
     void handle(FailedToEnterRoom failedToEnterRoom);
 
@@ -52,4 +59,8 @@ public interface RoomEventHandlerForHost {
     void handle(NewUserEnteredRoom event);
 
     void handle(UserLeftRoom event);
+
+    void handle(ServerGotShutdown event);
+
+    void hostEnteredRoom();
 }

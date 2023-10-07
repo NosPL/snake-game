@@ -2,6 +2,7 @@ package com.noscompany.snake.game.online.contract.messages.gameplay.commands;
 
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
 import com.noscompany.snake.game.online.contract.messages.UserId;
+import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;

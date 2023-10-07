@@ -1,9 +1,9 @@
 package com.noscompany.snakejavafxclient.components.online.game.host;
 
-import com.noscompany.snake.game.online.host.HostEventHandler;
+import com.noscompany.snake.game.online.contract.messages.UserId;
+import com.noscompany.snake.game.online.contract.messages.room.UsersCountLimit;
 import com.noscompany.snake.game.online.host.SnakeOnlineHost;
 import com.noscompany.snake.game.online.host.dependency.configurator.SnakeOnlineHostDependencyConfigurator;
-import com.noscompany.snake.game.online.contract.messages.room.UsersCountLimit;
 import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
 import com.noscompany.snakejavafxclient.components.mode.selection.GameModeSelectionStage;
 import com.noscompany.snakejavafxclient.components.online.game.commons.ChatController;
@@ -13,12 +13,17 @@ import com.noscompany.snakejavafxclient.components.online.game.commons.OnlineGam
 import com.noscompany.snakejavafxclient.utils.Controllers;
 import javafx.stage.Stage;
 
+import java.util.UUID;
+
 public class SnakeOnlineHostGuiConfiguration {
 
-    public static SnakeOnlineHost createConfiguredHost(UsersCountLimit usersCountLimit) {
-        Stage snakeOnlineHostStage = SnakeOnlineHostStage.get();
-        HostEventHandler hostEventHandler = GuiOnlineHostEventHandler.instance();
-        SnakeOnlineHost snakeOnlineHost = new SnakeOnlineHostDependencyConfigurator().snakeOnlineHost(hostEventHandler, usersCountLimit);
+    public static SnakeOnlineHost createConfiguredHost() {
+        var usersCountLimit = new UsersCountLimit(10);
+        var snakeOnlineHostStage = SnakeOnlineHostStage.get();
+        var hostEventHandler = GuiOnlineHostEventHandler.instance();
+        var hostId = new UserId(UUID.randomUUID().toString());
+        var decoratedEventHandler = new CheckIfHostIsRecipientOfMessage(hostId, hostEventHandler);
+        var snakeOnlineHost = new SnakeOnlineHostDependencyConfigurator().snakeOnlineHost(decoratedEventHandler, usersCountLimit, hostId);
         setStage(snakeOnlineHostStage, snakeOnlineHost);
         setControllers(snakeOnlineHost);
         return snakeOnlineHost;

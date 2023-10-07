@@ -13,6 +13,9 @@ import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSe
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
+import com.noscompany.snake.game.online.contract.messages.server.FailedToStartServer;
+import com.noscompany.snake.game.online.contract.messages.server.ServerGotShutdown;
+import com.noscompany.snake.game.online.contract.messages.server.ServerStarted;
 import com.noscompany.snake.game.online.host.RoomEventHandlerForHost;
 import com.noscompany.snake.game.online.host.server.Server;
 import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
@@ -145,6 +148,21 @@ class EventDispatcher implements GameplayEventHandler {
     public void handle(GameResumed event) {
         log.info("passing 'game resumed' event to server and host");
         server.sendToAllClients(event);
+        host.handle(event);
+    }
+
+    public void sendToHost(ServerStarted event) {
+        log.info("passing 'server started' event to host");
+        host.handle(event);
+    }
+
+    public void sendToHost(FailedToStartServer event) {
+        log.info("passing 'server failed to start' event to host");
+        host.handle(event);
+    }
+
+    public void sendToHost(ServerGotShutdown event) {
+        log.info("passing 'server failed to start' event to host");
         host.handle(event);
     }
 

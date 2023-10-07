@@ -131,7 +131,9 @@ class MonitoredExutorService implements ExecutorService {
                 long taskFinishedTime = System.currentTimeMillis() - startTaskTime;
                 log.debug("Task: '{}' finished in {} ms", task, taskFinishedTime);
             } catch (Exception e) {
-                log.error("Exception {} got thrown by task '{}' submitted by thread {} from here: ", e, task, clientThreadName, clientStack);
+                log.error("Exception thrown: ", e);
+                log.error("Thrown by task '{}'", task);
+                log.error("Submitted by thread {} from here: ",clientThreadName, clientStack);
                 throw e;
             }
         };

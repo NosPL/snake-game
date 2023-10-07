@@ -9,9 +9,11 @@ import com.noscompany.snake.game.online.contract.messages.room.EnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import com.noscompany.snake.game.online.contract.messages.seats.FreeUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.TakeASeat;
+import com.noscompany.snake.game.online.contract.messages.server.StartServer;
 import lombok.Value;
 
 public interface RoomApiForHost {
+    void startServer(StartServer command);
     void enter(EnterRoom command);
     void sendChatMessage(SendChatMessage command);
     void cancelGame(CancelGame command);

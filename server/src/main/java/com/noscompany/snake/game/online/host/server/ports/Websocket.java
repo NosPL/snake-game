@@ -1,7 +1,7 @@
 package com.noscompany.snake.game.online.host.server.ports;
 
+import com.noscompany.snake.game.online.contract.messages.server.ServerFailedToSendMessageToRemoteClients;
 import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
-import com.noscompany.snake.game.online.host.server.dto.SendMessageError;
 import io.vavr.control.Option;
 
 public interface Websocket {
@@ -9,7 +9,7 @@ public interface Websocket {
 
     void close();
 
-    Option<SendMessageError> sendToAllClients(String message);
+    Option<ServerFailedToSendMessageToRemoteClients> sendToAllClients(String message);
 
-    Option<SendMessageError> sendToClient(RemoteClientId remoteClientId, String message);
+    Option<ServerFailedToSendMessageToRemoteClients> sendToClient(RemoteClientId remoteClientId, String message);
 }

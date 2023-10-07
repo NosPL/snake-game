@@ -1,17 +1,13 @@
 package com.noscompany.snake.game.online.host.mediator;
 
 import com.noscompany.snake.game.online.contract.messages.room.UsersCountLimit;
-import com.noscompany.snake.game.online.host.HostEventHandler;
 import com.noscompany.snake.game.online.host.RoomEventHandlerForHost;
 import com.noscompany.snake.game.online.host.room.RoomCreator;
 import com.noscompany.snake.game.online.host.server.Server;
 import com.noscompany.snake.game.utils.monitored.executor.service.MonitoredExecutorServiceCreator;
 import snake.game.gameplay.GameplayCreator;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 
 
 public class MediatorConfiguration {
@@ -22,7 +18,7 @@ public class MediatorConfiguration {
                              RoomCreator roomCreator,
                              UsersCountLimit usersCountLimit,
                              GameplayCreator gameplayCreator) {
-        return mediator(executorService(), hostEventHandler, server, roomCreator, usersCountLimit, gameplayCreator);
+        return mediator(monitoredExecutorService(), hostEventHandler, server, roomCreator, usersCountLimit, gameplayCreator);
     }
 
     public Mediator mediator(ExecutorService executorService,
@@ -33,11 +29,11 @@ public class MediatorConfiguration {
                              GameplayCreator gameplayCreator) {
         var eventDispatcher = new EventDispatcher(hostEventHandler, server);
         var room = roomCreator.createRoom(eventDispatcher, gameplayCreator, usersCountLimit);
-        var commandHandler = new CommandHandler(room, eventDispatcher);
+        var commandHandler = new CommandHandler(server, room, eventDispatcher);
         return new CommandQueue(executorService, commandHandler);
     }
 
-    private ExecutorService executorService() {
+    private ExecutorService monitoredExecutorService() {
         return monitoredExecutorServiceCreator.create(
                 1, 1,
                 new LinkedBlockingDeque<>(100),

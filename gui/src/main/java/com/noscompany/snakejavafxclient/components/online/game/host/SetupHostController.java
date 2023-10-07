@@ -1,102 +1,109 @@
 package com.noscompany.snakejavafxclient.components.online.game.host;
 
+import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserName;
-import com.noscompany.snake.game.online.contract.messages.room.UsersCountLimit;
-import com.noscompany.snake.game.online.host.server.dto.ServerParams;
+import com.noscompany.snake.game.online.contract.messages.server.FailedToStartServer;
+import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
+import com.noscompany.snake.game.online.contract.messages.server.ServerStarted;
+import com.noscompany.snake.game.online.host.SnakeOnlineHost;
 import com.noscompany.snake.game.online.network.interfaces.analyzer.IpV4Address;
 import com.noscompany.snake.game.online.network.interfaces.analyzer.NetworkInterfacesAnalyzerConfiguration;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
-import io.vavr.control.Option;
-import io.vavr.control.Try;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static javafx.scene.paint.Color.GREEN;
 
 public class SetupHostController extends AbstractController {
     @FXML
-    private Label errorMessageLabel;
+    private Label messageForUserLabel;
     @FXML
     private ChoiceBox<String> ipAddressesChoiceBox;
     @FXML
     private TextField portTextField;
     @FXML
-    private TextField playerNameTextField;
+    private TextField hostNameTextField;
+    private SnakeOnlineHost snakeOnlineHost;
+    private AtomicBoolean isServerStarted;
 
     @FXML
-    public void startServer() {
-        errorMessageLabel.setText("");
-        getServerParams()
-                .peek(this::startServer);
+    public void startHost() {
+        if (!isServerStarted.get())
+            startServer();
+        else
+            enterRoom();
     }
 
-    private void startServer(ServerParams serverParams) {
-        getPlayerName()
-                .peek(playerName -> startServer(serverParams, playerName));
+    private void startServer() {
+        if (snakeOnlineHost == null)
+            snakeOnlineHost = SnakeOnlineHostGuiConfiguration.createConfiguredHost();
+        printMessage("starting server...");
+        var serverParams = new ServerParams(ipAddressesChoiceBox.getValue(), portTextField.getText());
+        snakeOnlineHost.startServer(serverParams);
     }
 
-    private void startServer(ServerParams serverParams, UserName userName) {
-        getPlayerLimit()
-                .peek(playersLimit -> startServer(serverParams, userName, playersLimit));
+    public void handle(ServerStarted serverStarted) {
+        isServerStarted.set(true);
+        printMessage("server started, entering the room...");
+        enterRoom();
     }
 
-    private void startServer(ServerParams serverParams, UserName userName, UsersCountLimit usersCountLimit) {
-        SnakeOnlineHostGuiConfiguration
-                .createConfiguredHost(usersCountLimit)
-                .startServer(serverParams, userName);
+    private void enterRoom() {
+        snakeOnlineHost.enterRoom(new UserName(hostNameTextField.getText()));
     }
 
-    private Option<UsersCountLimit> getPlayerLimit() {
-        return Option.of(new UsersCountLimit(10));
+    public void handle(FailedToStartServer event) {
+        isServerStarted.set(false);
+        printFailureMessage(toText(event.getReason()));
     }
 
-    private Option<ServerParams> getServerParams() {
-        String ipAddress = ipAddressesChoiceBox.getSelectionModel().getSelectedItem();
-        if (ipAddress == null) {
-            errorMessageLabel.setText("Ip address must be set");
-            return Option.none();
-        }
-        return getServerParams(ipAddress);
+    public void hostEnteredRoom() {
+        printMessage("loading host screen...");
+        Platform.runLater(() -> {
+            SnakeOnlineHostStage.get().show();
+            SetupHostStage.get().close();
+        });
     }
 
-    private Option<ServerParams> getServerParams(String ipAddress) {
-        String portStr = portTextField.getText();
-        if (portStr == null || portStr.isBlank()) {
-            errorMessageLabel.setText("Port must be set");
-            return Option.none();
-        }
-        var parsedPortValue = Try.of(() -> Integer.parseInt(portStr));
-        if (parsedPortValue.isFailure()) {
-            errorMessageLabel.setText("Port value must be numerical value");
-            return Option.none();
-        }
-        if (parsedPortValue.get() < 0) {
-            errorMessageLabel.setText("Port value must be > 0");
-            return Option.none();
-        }
-        return Option.of(new ServerParams(ipAddress, parsedPortValue.get()));
+    public void handle(FailedToEnterRoom event) {
+        printFailureMessage(toText(event.getReason()));
     }
 
-    private Option<UserName> getPlayerName() {
-        String playerNameStr = playerNameTextField.getText();
-        if (playerNameStr == null || playerNameStr.isBlank()) {
-            errorMessageLabel.setText("Player name cannot be empty");
-            return Option.none();
-        }
-        if (playerNameStr.length() > 10) {
-            errorMessageLabel.setText("Player name cannot be longer than 10 signs");
-            return Option.none();
-        }
-        return Option.of(new UserName(playerNameStr));
+    private void printMessage(String message) {
+        Platform.runLater(() -> {
+            messageForUserLabel.setTextFill(Color.BLACK);
+            messageForUserLabel.setText(message);
+        });
+    }
+
+    private void printFailureMessage(String message) {
+        Platform.runLater(() -> {
+            messageForUserLabel.setTextFill(Color.RED);
+            messageForUserLabel.setText(message);
+        });
+    }
+    
+    private String toText(Enum enumClass) {
+        return enumClass
+                .toString()
+                .toLowerCase()
+                .replace("_", " ");
     }
 
     @Override
     protected void doInitialize(URL location, ResourceBundle resources) {
+        super.doInitialize(location, resources);
         getAvailableIpV4Addresses().forEach(this::addToChoiceBox);
+        isServerStarted = new AtomicBoolean(false);
     }
 
     private void addToChoiceBox(String string) {

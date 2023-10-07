@@ -13,9 +13,11 @@ import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSe
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
-import com.noscompany.snake.game.online.host.HostEventHandler;
-import com.noscompany.snake.game.online.host.server.dto.ServerParams;
-import com.noscompany.snake.game.online.host.server.dto.ServerStartError;
+import com.noscompany.snake.game.online.contract.messages.server.FailedToStartServer;
+import com.noscompany.snake.game.online.contract.messages.server.ServerFailedToSendMessageToRemoteClients;
+import com.noscompany.snake.game.online.contract.messages.server.ServerGotShutdown;
+import com.noscompany.snake.game.online.contract.messages.server.ServerStarted;
+import com.noscompany.snake.game.online.host.RoomEventHandlerForHost;
 import com.noscompany.snakejavafxclient.components.commons.game.grid.GameGridController;
 import com.noscompany.snakejavafxclient.components.commons.message.MessageController;
 import com.noscompany.snakejavafxclient.components.commons.scoreboard.ScoreboardController;
@@ -26,12 +28,15 @@ import com.noscompany.snakejavafxclient.components.online.game.commons.LobbySeat
 import com.noscompany.snakejavafxclient.components.online.game.commons.OnlineGameOptionsController;
 import com.noscompany.snakejavafxclient.utils.Controllers;
 import javafx.application.Platform;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import lombok.AllArgsConstructor;
 
 import static lombok.AccessLevel.PRIVATE;
 
 @AllArgsConstructor(access = PRIVATE)
-class GuiOnlineHostEventHandler implements HostEventHandler {
+class GuiOnlineHostEventHandler implements RoomEventHandlerForHost {
+    private final SetupHostController setupHostController;
     private final ServerController serverController;
     private final OnlineGameOptionsController onlineGameOptionsController;
     private final LobbySeatsController lobbySeatsController;
@@ -43,9 +48,8 @@ class GuiOnlineHostEventHandler implements HostEventHandler {
     private final ScprButtonsController scprButtonsController;
 
     static GuiOnlineHostEventHandler instance() {
-        SetupHostStage.get();
-        SnakeOnlineHostStage.get();
         return new GuiOnlineHostEventHandler(
+                Controllers.get(SetupHostController.class),
                 Controllers.get(ServerController.class),
                 Controllers.get(OnlineGameOptionsController.class),
                 Controllers.get(LobbySeatsController.class),
@@ -74,17 +78,20 @@ class GuiOnlineHostEventHandler implements HostEventHandler {
 
     @Override
     public void handle(FailedToStartGame event) {
-        Platform.runLater(() -> {});
+        Platform.runLater(() -> {
+        });
     }
 
     @Override
     public void handle(FailedToTakeASeat event) {
-        Platform.runLater(() -> {});
+        Platform.runLater(() -> {
+        });
     }
 
     @Override
     public void handle(FailedToChangeGameOptions event) {
-        Platform.runLater(() -> {});
+        Platform.runLater(() -> {
+        });
     }
 
     @Override
@@ -174,14 +181,12 @@ class GuiOnlineHostEventHandler implements HostEventHandler {
 
     @Override
     public void handle(NewUserEnteredRoom event) {
-        Platform.runLater(() -> {
-            joinedUsersController.update(event.getRoomState().getUsers());
-        });
+        Platform.runLater(() -> joinedUsersController.update(event.getRoomState().getUsers()));
     }
 
     @Override
     public void handle(FailedToEnterRoom event) {
-        Platform.runLater(() -> {});
+        Platform.runLater(() -> setupHostController.handle(event));
     }
 
     @Override
@@ -204,6 +209,16 @@ class GuiOnlineHostEventHandler implements HostEventHandler {
         });
     }
 
+    @Override
+    public void handle(ServerGotShutdown event) {
+        Platform.runLater(() -> SnakeOnlineHostStage.get().close());
+    }
+
+    @Override
+    public void hostEnteredRoom() {
+        setupHostController.hostEnteredRoom();
+    }
+
     private void update(PlaygroundState playgroundState) {
         onlineGameOptionsController.update(playgroundState.getGameOptions());
         lobbySeatsController.update(playgroundState.getSeats());
@@ -213,21 +228,20 @@ class GuiOnlineHostEventHandler implements HostEventHandler {
     }
 
     @Override
-    public void handle(ServerStartError serverStartError) {
-        SetupHostStage.get().close();
-        SnakeOnlineHostStage.get().close();
-        serverController.handle(serverStartError);
+    public void handle(FailedToStartServer serverFailedToStart) {
+        Platform.runLater(() -> setupHostController.handle(serverFailedToStart));
     }
 
     @Override
-    public void failedToExecuteActionBecauseServerIsNotRunning() {
-        serverController.failedToExecuteActionBecauseServerIsNotRunning();
+    public void handle(ServerFailedToSendMessageToRemoteClients event) {
+        Platform.runLater(() -> serverController.handle(event));
     }
 
     @Override
-    public void serverStarted(ServerParams serverParams) {
-        SetupHostStage.get().close();
-        SnakeOnlineHostStage.get().show();
-        serverController.serverStarted(serverParams);
+    public void handle(ServerStarted serverStarted) {
+        Platform.runLater(() -> {
+            serverController.serverStarted(serverStarted.getServerParams());
+            setupHostController.handle(serverStarted);
+        });
     }
 }

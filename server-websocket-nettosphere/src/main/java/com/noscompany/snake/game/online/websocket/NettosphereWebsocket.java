@@ -1,7 +1,7 @@
 package com.noscompany.snake.game.online.websocket;
 
+import com.noscompany.snake.game.online.contract.messages.server.ServerFailedToSendMessageToRemoteClients;
 import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
-import com.noscompany.snake.game.online.host.server.dto.SendMessageError;
 import com.noscompany.snake.game.online.host.server.ports.Websocket;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
@@ -14,7 +14,7 @@ import org.atmosphere.nettosphere.Nettosphere;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import static com.noscompany.snake.game.online.host.server.dto.SendMessageError.CONNECTION_ISSUES;
+import static com.noscompany.snake.game.online.contract.messages.server.ServerFailedToSendMessageToRemoteClients.Reason.CONNECTION_ISSUES;
 
 @Slf4j
 @AllArgsConstructor
@@ -32,23 +32,25 @@ class NettosphereWebsocket implements Websocket {
     }
 
     @Override
-    public Option<SendMessageError> sendToAllClients(String message) {
+    public Option<ServerFailedToSendMessageToRemoteClients> sendToAllClients(String message) {
         try {
             getBroadcaster().peek(broadcaster -> broadcaster.broadcast(message));
             return Option.none();
         } catch (Throwable t) {
-            return Option.of(CONNECTION_ISSUES);
+            log.error("Failed to send message to all remote clients, cause: ", t);
+            return Option.of(new ServerFailedToSendMessageToRemoteClients(CONNECTION_ISSUES));
         }
     }
 
     @Override
-    public Option<SendMessageError> sendToClient(RemoteClientId remoteClientId, String message) {
+    public Option<ServerFailedToSendMessageToRemoteClients> sendToClient(RemoteClientId remoteClientId, String message) {
         try {
             findResourceById(remoteClientId)
                     .peek(resource -> send(message, resource));
             return Option.none();
         } catch (Throwable t) {
-            return Option.of(CONNECTION_ISSUES);
+            log.error("Failed to send message to remote client, cause: ", t);
+            return Option.of(new ServerFailedToSendMessageToRemoteClients(CONNECTION_ISSUES));
         }
     }
 

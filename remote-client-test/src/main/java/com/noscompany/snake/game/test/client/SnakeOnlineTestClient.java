@@ -7,106 +7,116 @@ import com.noscompany.snake.game.online.client.StartingClientError;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.host.mediator.Mediator;
 import com.noscompany.snake.game.online.host.server.Server;
-import com.noscompany.snake.game.online.host.server.dto.ServerParams;
+import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
 import io.vavr.control.Option;
-import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @AllArgsConstructor
 class SnakeOnlineTestClient implements SnakeOnlineClient {
     private final SnakeOnlineClient snakeOnlineClient;
     private final ClientEventHandler clientEventHandler;
     private final Server server;
     private final Mediator mediator;
-    private final Option<HostAddress> hostAddressOption;
 
     @Override
     public void connect(HostAddress hostAddress) {
         server
                 .start(serverParams(), mediator)
-                .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
-                .onEmpty(() -> snakeOnlineClient.connect(hostAddress));
-
+                .peek(serverStarted -> snakeOnlineClient.connect(hostAddress))
+                .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
+                .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
     }
     
     @Override
     public void enterTheRoom(String userName) {
         server
                 .start(serverParams(), mediator)
-                .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
-                .onEmpty(() -> snakeOnlineClient.enterTheRoom(userName));
+                .peek(serverStarted -> snakeOnlineClient.enterTheRoom(userName))
+                .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
+                .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
     }
 
     @Override
     public void takeASeat(PlayerNumber playerNumber) {
         server
                 .start(serverParams(), mediator)
-                .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
-                .onEmpty(() -> snakeOnlineClient.takeASeat(playerNumber));
+                .peek(serverStarted -> snakeOnlineClient.takeASeat(playerNumber))
+                .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
+                .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
     }
 
     @Override
     public void freeUpASeat() {
         server
                 .start(serverParams(), mediator)
-                .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
-                .onEmpty(snakeOnlineClient::freeUpASeat);
+                .peek(serverStarted -> snakeOnlineClient.freeUpASeat())
+                .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
+                .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
     }
 
     @Override
     public void changeGameOptions(GridSize gridSize, GameSpeed gameSpeed, Walls walls) {
         server
                 .start(serverParams(), mediator)
-                .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
-                .onEmpty(() -> snakeOnlineClient.changeGameOptions(gridSize, gameSpeed, walls));
+                .peek(serverStarted -> snakeOnlineClient.changeGameOptions(gridSize, gameSpeed, walls))
+                .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
+                .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
     }
 
     @Override
     public void startGame() {
         server
                 .start(serverParams(), mediator)
-                .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
-                .onEmpty(snakeOnlineClient::startGame);
+                .peek(serverStarted -> snakeOnlineClient.startGame())
+                .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
+                .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
     }
 
     @Override
     public void changeSnakeDirection(Direction direction) {
         server
                 .start(serverParams(), mediator)
-                .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
-                .onEmpty(() -> snakeOnlineClient.changeSnakeDirection(direction));
+                .peek(serverStarted -> snakeOnlineClient.changeSnakeDirection(direction))
+                .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
+                .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
     }
 
     @Override
     public void cancelGame() {
         server
                 .start(serverParams(), mediator)
-                .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
-                .onEmpty(snakeOnlineClient::cancelGame);
+                .peek(serverStarted -> snakeOnlineClient.cancelGame())
+                .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
+                .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
     }
 
     @Override
     public void pauseGame() {
         server
                 .start(serverParams(), mediator)
-                .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
-                .onEmpty(snakeOnlineClient::pauseGame);
+                .peek(serverStarted -> snakeOnlineClient.pauseGame())
+                .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
+                .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
     }
 
     @Override
     public void resumeGame() {
         server
                 .start(serverParams(), mediator)
-                .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
-                .onEmpty(snakeOnlineClient::resumeGame);
+                .peek(serverStarted -> snakeOnlineClient.resumeGame())
+                .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
+                .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
     }
 
     @Override
     public void sendChatMessage(String message) {
         server
                 .start(serverParams(), mediator)
-                .peek(serverStartError -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER))
-                .onEmpty(() -> snakeOnlineClient.sendChatMessage(message));
+                .peek(serverStarted -> snakeOnlineClient.sendChatMessage(message))
+                .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
+                .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
     }
 
     @Override
@@ -121,25 +131,6 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     }
 
     private ServerParams serverParams() {
-        return hostAddressOption
-                .map(this::toServerParams)
-                .getOrElse(this::defaultServerParams);
-    }
-
-    private ServerParams toServerParams(HostAddress hostAddress) {
-        String[] splitAddress = hostAddress.getAddress().split(":");
-        if (splitAddress.length != 2)
-            return defaultServerParams();
-        return new ServerParams(splitAddress[0], toPort(splitAddress[1]));
-    }
-
-    private int toPort(String port) {
-        return Try
-                .of(() -> Integer.valueOf(port))
-                .getOrElse(0);
-    }
-
-    private ServerParams defaultServerParams() {
-        return new ServerParams("127.0.0.1", 8080);
+        return new ServerParams("127.0.0.1", "8080");
     }
 }

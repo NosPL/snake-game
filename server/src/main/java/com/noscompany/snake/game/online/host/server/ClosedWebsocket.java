@@ -1,11 +1,11 @@
 package com.noscompany.snake.game.online.host.server;
 
+import com.noscompany.snake.game.online.contract.messages.server.ServerFailedToSendMessageToRemoteClients;
 import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
-import com.noscompany.snake.game.online.host.server.dto.SendMessageError;
 import com.noscompany.snake.game.online.host.server.ports.Websocket;
 import io.vavr.control.Option;
 
-import static com.noscompany.snake.game.online.host.server.dto.SendMessageError.SERVER_IS_NOT_STARTED;
+import static com.noscompany.snake.game.online.contract.messages.server.ServerFailedToSendMessageToRemoteClients.Reason.SERVER_IS_NOT_STARTED;
 
 class ClosedWebsocket implements Websocket {
 
@@ -19,12 +19,12 @@ class ClosedWebsocket implements Websocket {
     }
 
     @Override
-    public Option<SendMessageError> sendToAllClients(String message) {
-        return Option.of(SERVER_IS_NOT_STARTED);
+    public Option<ServerFailedToSendMessageToRemoteClients> sendToAllClients(String message) {
+        return Option.of(new ServerFailedToSendMessageToRemoteClients(SERVER_IS_NOT_STARTED));
     }
 
     @Override
-    public Option<SendMessageError> sendToClient(RemoteClientId remoteClientId, String message) {
-        return Option.of(SERVER_IS_NOT_STARTED);
+    public Option<ServerFailedToSendMessageToRemoteClients> sendToClient(RemoteClientId remoteClientId, String message) {
+        return Option.of(new ServerFailedToSendMessageToRemoteClients(SERVER_IS_NOT_STARTED));
     }
 }

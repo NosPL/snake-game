@@ -1,7 +1,8 @@
 package com.noscompany.snakejavafxclient.components.online.game.host;
 
-import com.noscompany.snake.game.online.host.server.dto.ServerParams;
-import com.noscompany.snake.game.online.host.server.dto.ServerStartError;
+import com.noscompany.snake.game.online.contract.messages.server.ServerFailedToSendMessageToRemoteClients;
+import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
+import com.noscompany.snake.game.online.contract.messages.server.FailedToStartServer;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -21,21 +22,21 @@ public class ServerController extends AbstractController {
     @FXML private Label ipAddressLabel;
     @FXML private Label portLabel;
 
-    public void handle(ServerStartError serverStartError) {
+    public void handle(FailedToStartServer serverFailedToStart) {
         statusLabel.setTextFill(Color.RED);
-        statusLabel.setText(STATUS_PREFIX + serverStartError.getCause().getMessage());
+        statusLabel.setText(STATUS_PREFIX + toText(serverFailedToStart.getReason()));
     }
 
     public void serverStarted(ServerParams serverParams) {
         statusLabel.setTextFill(Color.GREEN);
         statusLabel.setText(STATUS_PREFIX + "Server started");
-        ipAddressLabel.setText(IP_ADDRESS_PREFIX + serverParams.getHost());
+        ipAddressLabel.setText(IP_ADDRESS_PREFIX + serverParams.getIpAddress());
         portLabel.setText(PORT_PREFIX + serverParams.getPort());
     }
 
-    public void failedToExecuteActionBecauseServerIsNotRunning() {
-        statusLabel.setTextFill(Color.RED);
-        statusLabel.setText(STATUS_PREFIX + "Failed to start server!");
+    public void handle(ServerFailedToSendMessageToRemoteClients event) {
+        statusLabel.setTextFill(Color.ORANGE);
+        statusLabel.setText(STATUS_PREFIX + toText(event.getReason()));
         ipAddressLabel.setText(IP_ADDRESS_PREFIX);
         portLabel.setText(PORT_PREFIX);
     }
@@ -44,5 +45,19 @@ public class ServerController extends AbstractController {
     protected void doInitialize(URL location, ResourceBundle resources) {
         super.doInitialize(location, resources);
         statusLabel.setTextFill(BLACK);
+    }
+
+    private String toText(ServerFailedToSendMessageToRemoteClients.Reason cause) {
+        return cause
+                .toString()
+                .toLowerCase()
+                .replace("_", " ");
+    }
+
+    private String toText(FailedToStartServer.Reason reason) {
+        return reason
+                .toString()
+                .toLowerCase()
+                .replace("_", " ");
     }
 }

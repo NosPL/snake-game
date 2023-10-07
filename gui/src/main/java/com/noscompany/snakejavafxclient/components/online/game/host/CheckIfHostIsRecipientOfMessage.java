@@ -1,4 +1,4 @@
-package com.noscompany.snake.game.online.host;
+package com.noscompany.snakejavafxclient.components.online.game.host;
 
 import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
@@ -13,28 +13,31 @@ import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSe
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
-import com.noscompany.snake.game.online.host.server.dto.ServerParams;
-import com.noscompany.snake.game.online.host.server.dto.ServerStartError;
+import com.noscompany.snake.game.online.contract.messages.server.ServerFailedToSendMessageToRemoteClients;
+import com.noscompany.snake.game.online.contract.messages.server.FailedToStartServer;
+import com.noscompany.snake.game.online.contract.messages.server.ServerGotShutdown;
+import com.noscompany.snake.game.online.contract.messages.server.ServerStarted;
+import com.noscompany.snake.game.online.host.RoomEventHandlerForHost;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-final class CheckIfHostIsRecipientOfFailureMessage implements HostEventHandler {
+public final class CheckIfHostIsRecipientOfMessage implements RoomEventHandlerForHost {
     private final UserId hostId;
-    private final HostEventHandler hostEventHandler;
+    private final RoomEventHandlerForHost hostEventHandler;
 
     @Override
-    public void handle(ServerStartError serverStartError) {
-        hostEventHandler.handle(serverStartError);
+    public void handle(FailedToStartServer event) {
+        hostEventHandler.handle(event);
     }
 
     @Override
-    public void failedToExecuteActionBecauseServerIsNotRunning() {
-        hostEventHandler.failedToExecuteActionBecauseServerIsNotRunning();
+    public void handle(ServerFailedToSendMessageToRemoteClients event) {
+        hostEventHandler.handle(event);
     }
 
     @Override
-    public void serverStarted(ServerParams serverParams) {
-        hostEventHandler.serverStarted(serverParams);
+    public void handle(ServerStarted serverStarted) {
+        hostEventHandler.handle(serverStarted);
     }
 
     @Override
@@ -119,21 +122,34 @@ final class CheckIfHostIsRecipientOfFailureMessage implements HostEventHandler {
 
     @Override
     public void handle(GamePaused event) {
-
+        hostEventHandler.handle(event);
     }
 
     @Override
     public void handle(GameResumed event) {
-
+        hostEventHandler.handle(event);
     }
 
     @Override
     public void handle(NewUserEnteredRoom event) {
-
+        if (event.getUserId().equals(hostId))
+            hostEnteredRoom();
+        else
+            hostEventHandler.handle(event);
     }
 
     @Override
     public void handle(UserLeftRoom event) {
+        hostEventHandler.handle(event);
+    }
 
+    @Override
+    public void handle(ServerGotShutdown event) {
+        hostEventHandler.handle(event);
+    }
+
+    @Override
+    public void hostEnteredRoom() {
+        hostEventHandler.hostEnteredRoom();
     }
 }

@@ -12,9 +12,25 @@ import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSe
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
+import com.noscompany.snake.game.online.contract.messages.server.*;
 import com.noscompany.snake.game.online.host.RoomEventHandlerForHost;
 
 class NullHostEventHandler implements RoomEventHandlerForHost {
+
+    @Override
+    public void handle(FailedToStartServer serverFailedToStart) {
+
+    }
+
+    @Override
+    public void handle(ServerFailedToSendMessageToRemoteClients event) {
+
+    }
+
+    @Override
+    public void handle(ServerStarted serverStarted) {
+
+    }
 
     @Override
     public void handle(FailedToEnterRoom failedToEnterRoom) {
@@ -108,6 +124,16 @@ class NullHostEventHandler implements RoomEventHandlerForHost {
 
     @Override
     public void handle(UserLeftRoom event) {
+
+    }
+
+    @Override
+    public void handle(ServerGotShutdown event) {
+
+    }
+
+    @Override
+    public void hostEnteredRoom() {
 
     }
 }

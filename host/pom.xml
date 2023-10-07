@@ -12,12 +12,10 @@
     <artifactId>host</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>com.noscompany</groupId>
-            <artifactId>server</artifactId>
+            <artifactId>online-contract</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
     </dependencies>
 </project>
