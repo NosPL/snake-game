@@ -5,7 +5,6 @@ import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import com.noscompany.snake.game.online.contract.messages.server.FailedToStartServer;
 import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
 import com.noscompany.snake.game.online.contract.messages.server.ServerStarted;
-import com.noscompany.snake.game.online.host.SnakeOnlineHost;
 import com.noscompany.snake.game.online.network.interfaces.analyzer.IpV4Address;
 import com.noscompany.snake.game.online.network.interfaces.analyzer.NetworkInterfacesAnalyzerConfiguration;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
@@ -21,8 +20,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static javafx.scene.paint.Color.GREEN;
-
 public class SetupHostController extends AbstractController {
     @FXML
     private Label messageForUserLabel;
@@ -32,7 +29,7 @@ public class SetupHostController extends AbstractController {
     private TextField portTextField;
     @FXML
     private TextField hostNameTextField;
-    private SnakeOnlineHost snakeOnlineHost;
+    private MessagePublisherAdapter snakeOnlineHost;
     private AtomicBoolean isServerStarted;
 
     @FXML
@@ -71,6 +68,7 @@ public class SetupHostController extends AbstractController {
         Platform.runLater(() -> {
             SnakeOnlineHostStage.get().show();
             SetupHostStage.get().close();
+            SetupHostStage.remove();
         });
     }
 

@@ -10,10 +10,7 @@ import com.noscompany.snake.game.online.contract.messages.room.EnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import com.noscompany.snake.game.online.contract.messages.seats.FreeUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.TakeASeat;
-import com.noscompany.snake.game.online.contract.messages.server.InitializeRemoteClientState;
-import com.noscompany.snake.game.online.contract.messages.server.ServerGotShutdown;
-import com.noscompany.snake.game.online.contract.messages.server.ServerStarted;
-import com.noscompany.snake.game.online.contract.messages.server.StartServer;
+import com.noscompany.snake.game.online.contract.messages.server.*;
 import com.noscompany.snake.game.online.host.room.Room;
 import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.host.server.Server;
@@ -24,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @AllArgsConstructor
-final class CommandHandler  {
+final class CommandHandler implements RoomApiForRemoteClients  {
     private final Server server;
     private final Room room;
     private final EventDispatcher eventDispatcher;
@@ -93,85 +90,88 @@ final class CommandHandler  {
                 .peekLeft(eventDispatcher::sendToHost);
     }
 
-    void shutdown() {
-        server.shutdown();
-        eventDispatcher.sendToHost(new ServerGotShutdown());
+    void shutdownHost(ShutdownHost command) {
+        room.leave(command.getHostId());
+        eventDispatcher.sendToClientsAndHost(new ServerGotShutdown());
+        eventDispatcher.shutdown();
     }
 
-    
-    void sendChatMessage(RemoteClientId remoteClientId, String messageContent) {
+    @Override
+    public void sendChatMessage(RemoteClientId remoteClientId, String messageContent) {
         room
                 .sendChatMessage(toUserId(remoteClientId), messageContent)
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(failure -> eventDispatcher.sendToClient(remoteClientId, failure));
     }
 
-    
-    void cancelGame(RemoteClientId remoteClientId) {
+    @Override
+    public void cancelGame(RemoteClientId remoteClientId) {
         room.cancelGame(toUserId(remoteClientId));
     }
 
-    
-    void changeDirection(RemoteClientId remoteClientId, Direction direction) {
+    @Override
+    public void changeDirection(RemoteClientId remoteClientId, Direction direction) {
         room.changeSnakeDirection(toUserId(remoteClientId), direction);
     }
 
-    
-    void pauseGame(RemoteClientId remoteClientId) {
+    @Override
+    public void pauseGame(RemoteClientId remoteClientId) {
         room.pauseGame(toUserId(remoteClientId));
     }
 
-    
-    void resumeGame(RemoteClientId remoteClientId) {
+    @Override
+    public void resumeGame(RemoteClientId remoteClientId) {
         room.resumeGame(toUserId(remoteClientId));
     }
 
-    
-    void startGame(RemoteClientId remoteClientId) {
+    @Override
+    public void startGame(RemoteClientId remoteClientId) {
         room
                 .startGame(toUserId(remoteClientId))
                 .peek(failure -> eventDispatcher.sendToClient(remoteClientId, failure));
     }
 
-    
-    void changeGameOptions(RemoteClientId remoteClientId, GameOptions gameOptions) {
+    @Override
+    public void changeGameOptions(RemoteClientId remoteClientId, GameOptions gameOptions) {
         room
                 .changeGameOptions(toUserId(remoteClientId), gameOptions)
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(failure -> eventDispatcher.sendToClient(remoteClientId, failure));
     }
 
-    
-    void freeUpSeat(RemoteClientId remoteClientId) {
+    @Override
+    public void freeUpSeat(RemoteClientId remoteClientId) {
         room
                 .freeUpASeat(toUserId(remoteClientId))
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(failure -> eventDispatcher.sendToClient(remoteClientId, failure));
     }
 
-    
-    void takeASeat(RemoteClientId remoteClientId, PlayerNumber playerNumber) {
+    @Override
+    public void takeASeat(RemoteClientId remoteClientId, PlayerNumber playerNumber) {
         room
                 .takeASeat(toUserId(remoteClientId), playerNumber)
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(failure -> eventDispatcher.sendToClient(remoteClientId, failure));
     }
 
-    
-    void enterRoom(RemoteClientId remoteClientId, UserName userName) {
+    @Override
+    public void enterRoom(RemoteClientId remoteClientId, UserName userName) {
         room
                 .enter(toUserId(remoteClientId), userName)
                 .peek(eventDispatcher::sendToClientsAndHost)
                 .peekLeft(failure -> eventDispatcher.sendToClient(remoteClientId, failure));
     }
 
-    void leaveRoom(RemoteClientId remoteClientId) {
+    @Override
+    public void leaveRoom(RemoteClientId remoteClientId) {
         room
                 .leave(toUserId(remoteClientId))
                 .peek(eventDispatcher::sendToClientsAndHost);
     }
 
-    void initializeClientState(RemoteClientId remoteClientId) {
+    @Override
+    public void initializeClientState(RemoteClientId remoteClientId) {
         var userId = new UserId(remoteClientId.getId());
         var initializeRemoteClientState = new InitializeRemoteClientState(userId, room.getState());
         eventDispatcher.sendToClient(remoteClientId, initializeRemoteClientState);

@@ -1,5 +1,6 @@
-package com.noscompany.snake.game.online.host;
+package com.noscompany.snakejavafxclient.components.online.game.host;
 
+import com.noscompany.message.publisher.MessagePublisher;
 import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.chat.SendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.game.options.ChangeGameOptions;
@@ -10,72 +11,60 @@ import com.noscompany.snake.game.online.contract.messages.seats.FreeUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.TakeASeat;
 import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
 import com.noscompany.snake.game.online.contract.messages.room.UserName;
+import com.noscompany.snake.game.online.contract.messages.server.ShutdownHost;
 import com.noscompany.snake.game.online.contract.messages.server.StartServer;
-import com.noscompany.snake.game.online.host.ports.RoomApiForHost;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-class SnakeOnlineHostImpl implements SnakeOnlineHost {
+final class MessagePublisherAdapter {
     private final UserId hostId;
-    private final RoomApiForHost roomApiForHost;
+    private final MessagePublisher messagePublisher;
 
-    @Override
     public void startServer(ServerParams serverParams) {
-        roomApiForHost.startServer(new StartServer(serverParams));
+        messagePublisher.publishMessage(new StartServer(serverParams));
     }
 
-    @Override
     public void enterRoom(UserName userName) {
-        roomApiForHost.enter(new EnterRoom(hostId, userName.getName()));
+        messagePublisher.publishMessage(new EnterRoom(hostId, userName.getName()));
     }
 
-    @Override
     public void sendChatMessage(String messageContent) {
-        roomApiForHost.sendChatMessage(new SendChatMessage(hostId, messageContent));
+        messagePublisher.publishMessage(new SendChatMessage(hostId, messageContent));
     }
 
-    @Override
     public void cancelGame() {
-        roomApiForHost.cancelGame(new CancelGame(hostId));
+        messagePublisher.publishMessage(new CancelGame(hostId));
     }
 
-    @Override
     public void changeSnakeDirection(Direction direction) {
-        roomApiForHost.changeSnakeDirection(new ChangeSnakeDirection(hostId, direction));
+        messagePublisher.publishMessage(new ChangeSnakeDirection(hostId, direction));
     }
 
-    @Override
     public void pauseGame() {
-        roomApiForHost.pauseGame(new PauseGame(hostId));
+        messagePublisher.publishMessage(new PauseGame(hostId));
     }
 
-    @Override
     public void resumeGame() {
-        roomApiForHost.resumeGame(new ResumeGame(hostId));
+        messagePublisher.publishMessage(new ResumeGame(hostId));
     }
 
-    @Override
     public void startGame() {
-        roomApiForHost.startGame(new StartGame(hostId));
+        messagePublisher.publishMessage(new StartGame(hostId));
     }
 
-    @Override
     public void changeGameOptions(GridSize gridSize, GameSpeed gameSpeed, Walls walls) {
-        roomApiForHost.changeGameOptions(new ChangeGameOptions(hostId, gridSize, gameSpeed, walls));
+        messagePublisher.publishMessage(new ChangeGameOptions(hostId, gridSize, gameSpeed, walls));
     }
 
-    @Override
     public void freeUpASeat() {
-        roomApiForHost.freeUpASeat(new FreeUpASeat(hostId));
+        messagePublisher.publishMessage(new FreeUpASeat(hostId));
     }
 
-    @Override
     public void takeASeat(PlayerNumber playerNumber) {
-        roomApiForHost.takeASeat(new TakeASeat(hostId, playerNumber));
+        messagePublisher.publishMessage(new TakeASeat(hostId, playerNumber));
     }
 
-    @Override
-    public void shutDownServer() {
-        roomApiForHost.shutdown();
+    public void shutDownHost() {
+        messagePublisher.publishMessage(new ShutdownHost(hostId));
     }
 }

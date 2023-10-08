@@ -10,10 +10,10 @@ import com.noscompany.snake.game.online.contract.messages.room.EnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserName;
 import com.noscompany.snake.game.online.contract.messages.seats.FreeUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.TakeASeat;
+import com.noscompany.snake.game.online.contract.messages.server.ShutdownHost;
 import com.noscompany.snake.game.online.contract.messages.server.StartServer;
 import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
 import com.noscompany.snake.game.online.host.server.ports.RoomApiForRemoteClients;
-import com.noscompany.snake.game.utils.monitored.executor.service.NamedRunnable;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,80 +23,79 @@ import static com.noscompany.snake.game.utils.monitored.executor.service.NamedRu
 
 @Slf4j
 @AllArgsConstructor
-class CommandQueue implements Mediator {
+class CommandQueue implements RoomApiForRemoteClients {
     private final ExecutorService executor;
     private final CommandHandler commandHandler;
 
-    @Override
-    public void startServer(StartServer command) {
+    public void startServerAsHost(StartServer command) {
         log.info("host puts 'start server' command in queue");
         var namedTask = namedTask("start server", () -> commandHandler.startServer(command, this));
         executor.submit(namedTask);
     }
 
-    public void enter(EnterRoom command) {
+    public void enterAsHost(EnterRoom command) {
         log.info("host puts 'enter room' command in queue");
         var namedTask = namedTask("enter the room", () -> commandHandler.enter(command));
         executor.submit(namedTask);
     }
 
-    public void sendChatMessage(SendChatMessage command) {
+    public void sendChatMessageAsHost(SendChatMessage command) {
         log.info("host puts 'send chat message' command in queue");
         var namedTask = namedTask("send chat message", () -> commandHandler.sendChatMessage(command));
         executor.submit(namedTask);
     }
 
-    public void cancelGame(CancelGame command) {
+    public void cancelGameAsHost(CancelGame command) {
         log.info("host puts 'cancel game' command in queue");
         var namedTask = namedTask("cancel game", () -> commandHandler.cancelGame(command));
         executor.submit(namedTask);
     }
 
-    public void changeSnakeDirection(ChangeSnakeDirection command) {
+    public void changeSnakeDirectionAsHost(ChangeSnakeDirection command) {
         log.debug("host puts 'change snake direction' command in queue");
         var namedTask = namedTask("change snake direction", () -> commandHandler.changeSnakeDirection(command));
         executor.submit(namedTask);
     }
 
-    public void pauseGame(PauseGame command) {
+    public void pauseGameAsHost(PauseGame command) {
         log.info("host puts 'pause game' command in queue");
         var namedTask = namedTask("pause game", () -> commandHandler.pauseGame(command));
         executor.submit(namedTask);
     }
 
-    public void resumeGame(ResumeGame command) {
+    public void resumeGameAsHost(ResumeGame command) {
         log.info("host puts 'resume game' command in queue");
         var namedTask = namedTask("resume game", () -> commandHandler.resumeGame(command));
         executor.submit(namedTask);
     }
 
-    public void startGame(StartGame command) {
+    public void startGameAsHost(StartGame command) {
         log.info("host puts 'start game' command in queue");
         var namedTask = namedTask("start game", () -> commandHandler.startGame(command));
         executor.submit(namedTask);
     }
 
-    public void changeGameOptions(ChangeGameOptions command) {
+    public void changeGameOptionsAsHost(ChangeGameOptions command) {
         log.info("host puts 'change game options' command in queue");
         var namedTask = namedTask("change game options", () -> commandHandler.changeGameOptions(command));
         executor.submit(namedTask);
     }
 
-    public void freeUpASeat(FreeUpASeat command) {
+    public void freeUpASeatAsHost(FreeUpASeat command) {
         log.info("host puts 'free up a seat' command in queue");
         var namedTask = namedTask("free up a seat", () -> commandHandler.freeUpASeat(command));
         executor.submit(namedTask);
     }
 
-    public void takeASeat(TakeASeat command) {
+    public void takeASeatAsHost(TakeASeat command) {
         log.info("host puts 'take a seat' command in queue");
         var namedTask = namedTask("take a seat", () -> commandHandler.takeASeat(command));
         executor.submit(namedTask);
     }
 
-    public void shutdown() {
+    public void shutdown(ShutdownHost command) {
         log.info("shutting mediator command queue down");
-        var namedTask = namedTask("shutdown host", commandHandler::shutdown);
+        var namedTask = namedTask("shutdown host", () -> commandHandler.shutdownHost(command));
         executor.submit(namedTask);
         executor.shutdown();
     }

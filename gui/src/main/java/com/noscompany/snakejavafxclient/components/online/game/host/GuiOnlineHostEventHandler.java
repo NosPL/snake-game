@@ -1,5 +1,6 @@
 package com.noscompany.snakejavafxclient.components.online.game.host;
 
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
@@ -17,7 +18,6 @@ import com.noscompany.snake.game.online.contract.messages.server.FailedToStartSe
 import com.noscompany.snake.game.online.contract.messages.server.ServerFailedToSendMessageToRemoteClients;
 import com.noscompany.snake.game.online.contract.messages.server.ServerGotShutdown;
 import com.noscompany.snake.game.online.contract.messages.server.ServerStarted;
-import com.noscompany.snake.game.online.host.RoomEventHandlerForHost;
 import com.noscompany.snakejavafxclient.components.commons.game.grid.GameGridController;
 import com.noscompany.snakejavafxclient.components.commons.message.MessageController;
 import com.noscompany.snakejavafxclient.components.commons.scoreboard.ScoreboardController;
@@ -28,14 +28,12 @@ import com.noscompany.snakejavafxclient.components.online.game.commons.LobbySeat
 import com.noscompany.snakejavafxclient.components.online.game.commons.OnlineGameOptionsController;
 import com.noscompany.snakejavafxclient.utils.Controllers;
 import javafx.application.Platform;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
 import lombok.AllArgsConstructor;
 
 import static lombok.AccessLevel.PRIVATE;
 
 @AllArgsConstructor(access = PRIVATE)
-class GuiOnlineHostEventHandler implements RoomEventHandlerForHost {
+class GuiOnlineHostEventHandler {
     private final SetupHostController setupHostController;
     private final ServerController serverController;
     private final OnlineGameOptionsController onlineGameOptionsController;
@@ -46,8 +44,9 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost {
     private final MessageController messageController;
     private final ScoreboardController scoreboardController;
     private final ScprButtonsController scprButtonsController;
+    private final UserId hostId;
 
-    static GuiOnlineHostEventHandler instance() {
+    static GuiOnlineHostEventHandler instance(UserId userId) {
         return new GuiOnlineHostEventHandler(
                 Controllers.get(SetupHostController.class),
                 Controllers.get(ServerController.class),
@@ -58,49 +57,45 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost {
                 Controllers.get(JoinedUsersController.class),
                 Controllers.get(MessageController.class),
                 Controllers.get(ScoreboardController.class),
-                Controllers.get(ScprButtonsController.class));
+                Controllers.get(ScprButtonsController.class),
+                userId);
     }
 
-    @Override
-    public void handle(GameOptionsChanged event) {
+    public void gameOptionsChanged(GameOptionsChanged event) {
         Platform.runLater(() -> update(event.getPlaygroundState()));
     }
 
-    @Override
-    public void handle(PlayerTookASeat event) {
+    public void playerTookASeat(PlayerTookASeat event) {
         Platform.runLater(() -> update(event.getPlaygroundState()));
     }
 
-    @Override
-    public void handle(PlayerFreedUpASeat event) {
+    public void playerFreedUpASeat(PlayerFreedUpASeat event) {
         Platform.runLater(() -> update(event.getPlaygroundState()));
     }
 
-    @Override
-    public void handle(FailedToStartGame event) {
-        Platform.runLater(() -> {
-        });
+    public void failedToStartGame(FailedToStartGame event) {
+        if (event.getUserId().equals(hostId))
+            Platform.runLater(() -> {
+            });
     }
 
-    @Override
-    public void handle(FailedToTakeASeat event) {
-        Platform.runLater(() -> {
-        });
+    public void failedToTakeASeat(FailedToTakeASeat event) {
+        if (event.getUserId().equals(hostId))
+            Platform.runLater(() -> {
+            });
     }
 
-    @Override
-    public void handle(FailedToChangeGameOptions event) {
-        Platform.runLater(() -> {
-        });
+    public void failedToChangeGameOptions(FailedToChangeGameOptions event) {
+        if (event.getUserId().equals(hostId))
+            Platform.runLater(() -> {
+            });
     }
 
-    @Override
-    public void handle(UserSentChatMessage event) {
+    public void userSentChatMessage(UserSentChatMessage event) {
         Platform.runLater(() -> chatController.print(event));
     }
 
-    @Override
-    public void handle(GameStartCountdown event) {
+    public void gameStartCountdown(GameStartCountdown event) {
         Platform.runLater(() -> {
             gameGridController.initializeGrid(event.getGridSize(), event.getWalls());
             gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
@@ -113,8 +108,7 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost {
         });
     }
 
-    @Override
-    public void handle(GameStarted event) {
+    public void gameStarted(GameStarted event) {
         Platform.runLater(() -> {
             gameGridController.initializeGrid(event.getGridSize(), event.getWalls());
             gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
@@ -127,16 +121,14 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost {
         });
     }
 
-    @Override
-    public void handle(SnakesMoved event) {
+    public void snakesMoved(SnakesMoved event) {
         Platform.runLater(() -> {
             gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
             scoreboardController.print(event.getScore());
         });
     }
 
-    @Override
-    public void handle(GameFinished event) {
+    public void gameFinished(GameFinished event) {
         Platform.runLater(() -> {
             gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
             onlineGameOptionsController.enable();
@@ -149,8 +141,7 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost {
         });
     }
 
-    @Override
-    public void handle(GameCancelled event) {
+    public void gameCancelled(GameCancelled event) {
         Platform.runLater(() -> {
             onlineGameOptionsController.enable();
             messageController.printGameCanceled();
@@ -161,8 +152,7 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost {
         });
     }
 
-    @Override
-    public void handle(GamePaused event) {
+    public void gamePaused(GamePaused event) {
         Platform.runLater(() -> {
             messageController.printGamePaused();
             scprButtonsController.enableResume();
@@ -170,8 +160,7 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost {
         });
     }
 
-    @Override
-    public void handle(GameResumed event) {
+    public void gameResumed(GameResumed event) {
         Platform.runLater(() -> {
             messageController.printGameResumed();
             scprButtonsController.disableResume();
@@ -179,43 +168,42 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost {
         });
     }
 
-    @Override
-    public void handle(NewUserEnteredRoom event) {
-        Platform.runLater(() -> joinedUsersController.update(event.getRoomState().getUsers()));
+    public void newUserEnteredRoom(NewUserEnteredRoom event) {
+        if (event.getUserId().equals(hostId))
+            hostEnteredRoom();
+        else
+            Platform.runLater(() -> joinedUsersController.update(event.getRoomState().getUsers()));
     }
 
-    @Override
-    public void handle(FailedToEnterRoom event) {
-        Platform.runLater(() -> setupHostController.handle(event));
+    public void failedToEnterRoom(FailedToEnterRoom event) {
+        if (event.getUserId().equals(hostId))
+            Platform.runLater(() -> setupHostController.handle(event));
     }
 
-    @Override
-    public void handle(FailedToFreeUpSeat event) {
-        Platform.runLater(() -> {
-        });
+    public void failedToFreeUpSeat(FailedToFreeUpSeat event) {
+        if (event.getUserId().equals(hostId))
+            Platform.runLater(() -> {
+            });
     }
 
-    @Override
-    public void handle(FailedToSendChatMessage event) {
-        Platform.runLater(() -> {
-        });
+    public void failedToSendChatMessage(FailedToSendChatMessage event) {
+        if (event.getUserId().equals(hostId))
+            Platform.runLater(() -> {
+            });
     }
 
-    @Override
-    public void handle(UserLeftRoom event) {
+    public void userLeftRoom(UserLeftRoom event) {
         Platform.runLater(() -> {
             joinedUsersController.update(event.getUsersList());
-            event.getPlayerFreedUpASeat().peek(this::handle);
+            event.getPlayerFreedUpASeat().peek(this::playerFreedUpASeat);
         });
     }
 
-    @Override
-    public void handle(ServerGotShutdown event) {
+    public void serverGotShutdown(ServerGotShutdown event) {
         Platform.runLater(() -> SnakeOnlineHostStage.get().close());
     }
 
-    @Override
-    public void hostEnteredRoom() {
+    private void hostEnteredRoom() {
         setupHostController.hostEnteredRoom();
     }
 
@@ -227,18 +215,15 @@ class GuiOnlineHostEventHandler implements RoomEventHandlerForHost {
         messageController.clear();
     }
 
-    @Override
-    public void handle(FailedToStartServer serverFailedToStart) {
+    public void failedToStartServer(FailedToStartServer serverFailedToStart) {
         Platform.runLater(() -> setupHostController.handle(serverFailedToStart));
     }
 
-    @Override
-    public void handle(ServerFailedToSendMessageToRemoteClients event) {
+    public void serverFailedToSendMessageToRemoteClient(ServerFailedToSendMessageToRemoteClients event) {
         Platform.runLater(() -> serverController.handle(event));
     }
 
-    @Override
-    public void handle(ServerStarted serverStarted) {
+    public void serverStarted(ServerStarted serverStarted) {
         Platform.runLater(() -> {
             serverController.serverStarted(serverStarted.getServerParams());
             setupHostController.handle(serverStarted);
