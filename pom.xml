@@ -21,7 +21,6 @@
         <module>gui</module>
         <module>online-contract</module>
         <module>remote-client</module>
-        <module>mediator</module>
         <module>server</module>
         <module>remote-client-test</module>
         <module>network-interfaces-analyzer</module>

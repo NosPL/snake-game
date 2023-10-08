@@ -25,7 +25,8 @@ public class RoomTestSetup {
     public void init() {
         userIdCounter = 0;
         userNameCounter = 0;
-        room = new RoomConfiguration().roomCreator().createRoom(new GameplayIdleEventHandler(), new GameRunningEndlesslyAfterStartCreator(), new UsersCountLimit(5));
+        room = new RoomConfiguration().roomCreator()
+                .createRoom(new GameRunningEndlesslyAfterStartCreator(), new UsersCountLimit(5), new NullMessagePublisher());
         actorId = randomUserId();
         actorName = randomValidUserName();
     }

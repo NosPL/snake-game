@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.noscompany</groupId>
-            <artifactId>mediator</artifactId>
+            <artifactId>room</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

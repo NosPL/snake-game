@@ -1,4 +1,4 @@
-package com.noscompany.snake.game.online.host.mediator;
+package com.noscompany.snake.game.online.host.room.internal.playground;
 
 import com.noscompany.message.publisher.MessagePublisher;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import snake.game.gameplay.ports.GameplayEventHandler;
 
 @AllArgsConstructor
-final class GameplayEventHandlerMessagePublisherAdapter implements GameplayEventHandler {
+final class GamePlayEventsMessagePublisherAdapter implements GameplayEventHandler {
     private final MessagePublisher messagePublisher;
 
     @Override
