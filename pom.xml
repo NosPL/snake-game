@@ -28,6 +28,7 @@
         <module>server-websocket-nettosphere</module>
         <module>utils</module>
         <module>message-publisher</module>
+        <module>chat</module>
     </modules>
 
     <dependencies>

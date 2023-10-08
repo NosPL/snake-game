@@ -27,7 +27,6 @@ public interface Room {
     Option<FailedToCancelGame> cancelGame(UserId userId);
     Option<FailedToPauseGame> pauseGame(UserId userId);
     Option<FailedToResumeGame> resumeGame(UserId userId);
-    Either<FailedToSendChatMessage, UserSentChatMessage> sendChatMessage(UserId userId, String messageContent);
     Option<UserLeftRoom> leave(UserId userId);
     RoomState getState();
     boolean hasUserWithId(UserId userId);

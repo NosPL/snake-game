@@ -28,7 +28,6 @@ import static java.util.stream.Collectors.toSet;
 class RoomFacade implements Room {
     private final UserRegistry userRegistry;
     private final Playground playground;
-    private final Chat chat;
 
     @Override
     public Either<FailedToEnterRoom, NewUserEnteredRoom> enter(UserId userId, UserName userName) {
@@ -93,14 +92,6 @@ class RoomFacade implements Room {
         if (!userRegistry.containsId(userId))
             return Option.of(FailedToResumeGame.userNotInTheRoom(userId));
         return playground.resumeGame(userId);
-    }
-
-    @Override
-    public Either<FailedToSendChatMessage, UserSentChatMessage> sendChatMessage(UserId userId, String messageContent) {
-        return userRegistry
-                .findUserNameById(userId)
-                .toEither(FailedToSendChatMessage.userIsNotInTheRoom(userId))
-                .flatMap(userName -> chat.sendMessage(userId, userName, messageContent));
     }
 
     @Override

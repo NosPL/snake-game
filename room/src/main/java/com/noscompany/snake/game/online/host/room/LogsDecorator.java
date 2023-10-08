@@ -1,7 +1,6 @@
 package com.noscompany.snake.game.online.host.room;
 
-import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
-import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
@@ -9,8 +8,10 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.room.*;
-import com.noscompany.snake.game.online.contract.messages.seats.*;
-import com.noscompany.snake.game.online.contract.messages.UserId;
+import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
+import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
@@ -91,14 +92,6 @@ class LogsDecorator implements Room {
                 .resumeGame(userId)
                 .peek(failure -> log.info("user with id {} failed to resume game, reason: {}", userId.getId(), asString(failure.getReason())))
                 .onEmpty(() -> log.info("resume game command from user with id {} got accepted", userId.getId()));
-    }
-
-    @Override
-    public Either<FailedToSendChatMessage, UserSentChatMessage> sendChatMessage(UserId userId, String messageContent) {
-        return room
-                .sendChatMessage(userId, messageContent)
-                .peek(success -> log.info("user with id {} and name {} sent chat message: {}", userId.getId(), success.getUserName(), messageContent))
-                .peekLeft(failure -> log.info("user with id {} failed to send chat message, reason: {}", userId.getId(), asString(failure.getReason())));
     }
 
     @Override

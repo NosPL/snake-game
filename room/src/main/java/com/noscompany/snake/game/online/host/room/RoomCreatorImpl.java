@@ -25,8 +25,7 @@ class RoomCreatorImpl implements RoomCreator{
                            MessagePublisher messagePublisher) {
         var room = new LogsDecorator(new RoomFacade(
                 UserRegistryCreator.create(usersCountLimit),
-                PlaygroundCreator.create(messagePublisher, gameplayCreator),
-                ChatCreator.create()));
+                PlaygroundCreator.create(messagePublisher, gameplayCreator)));
         messagePublisher.subscribe(createSubscription(room));
         return room;
     }
@@ -36,8 +35,6 @@ class RoomCreatorImpl implements RoomCreator{
                 .subscriberName("mediator")
 //                user registry commands
                 .toMessage(EnterRoom.class, (EnterRoom msg) -> room.enter(msg.getUserId(), new UserName(msg.getUserName())))
-//                chat commands
-                .toMessage(SendChatMessage.class, (SendChatMessage msg) -> room.sendChatMessage(msg.getUserId(), msg.getMessageContent()))
 //                seats commands
                 .toMessage(FreeUpASeat.class, (FreeUpASeat msg) -> room.freeUpASeat(msg.getUserId()))
                 .toMessage(TakeASeat.class, (TakeASeat msg) -> room.takeASeat(msg.getUserId(), msg.getPlayerNumber()))

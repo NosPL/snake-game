@@ -1,5 +1,6 @@
 package com.noscompany.snake.game.online.host.room.commons;
 
+import com.noscompany.message.publisher.utils.NullMessagePublisher;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
