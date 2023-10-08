@@ -13,7 +13,7 @@ import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSe
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
-import com.noscompany.snake.game.online.contract.messages.server.InitializeRemoteClientState;
+import com.noscompany.snake.game.online.contract.messages.mediator.InitializeRemoteClientState;
 
 public interface ClientEventHandler {
 

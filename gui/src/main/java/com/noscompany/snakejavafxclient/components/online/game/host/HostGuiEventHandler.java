@@ -1,5 +1,6 @@
 package com.noscompany.snakejavafxclient.components.online.game.host;
 
+import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
@@ -14,10 +15,10 @@ import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSe
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
-import com.noscompany.snake.game.online.contract.messages.server.FailedToStartServer;
-import com.noscompany.snake.game.online.contract.messages.server.ServerFailedToSendMessageToRemoteClients;
-import com.noscompany.snake.game.online.contract.messages.server.ServerGotShutdown;
-import com.noscompany.snake.game.online.contract.messages.server.ServerStarted;
+import com.noscompany.snake.game.online.contract.messages.server.events.FailedToStartServer;
+import com.noscompany.snake.game.online.contract.messages.server.events.ServerFailedToSendMessageToRemoteClients;
+import com.noscompany.snake.game.online.contract.messages.server.events.ServerGotShutdown;
+import com.noscompany.snake.game.online.contract.messages.server.events.ServerStarted;
 import com.noscompany.snakejavafxclient.components.commons.game.grid.GameGridController;
 import com.noscompany.snakejavafxclient.components.commons.message.MessageController;
 import com.noscompany.snakejavafxclient.components.commons.scoreboard.ScoreboardController;
@@ -26,40 +27,23 @@ import com.noscompany.snakejavafxclient.components.online.game.commons.ChatContr
 import com.noscompany.snakejavafxclient.components.online.game.commons.JoinedUsersController;
 import com.noscompany.snakejavafxclient.components.online.game.commons.LobbySeatsController;
 import com.noscompany.snakejavafxclient.components.online.game.commons.OnlineGameOptionsController;
-import com.noscompany.snakejavafxclient.utils.Controllers;
 import javafx.application.Platform;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
-import static lombok.AccessLevel.PRIVATE;
-
-@AllArgsConstructor(access = PRIVATE)
-class GuiOnlineHostEventHandler {
-    private final SetupHostController setupHostController;
-    private final ServerController serverController;
-    private final OnlineGameOptionsController onlineGameOptionsController;
-    private final LobbySeatsController lobbySeatsController;
-    private final GameGridController gameGridController;
-    private final ChatController chatController;
-    private final JoinedUsersController joinedUsersController;
-    private final MessageController messageController;
-    private final ScoreboardController scoreboardController;
-    private final ScprButtonsController scprButtonsController;
-    private final UserId hostId;
-
-    static GuiOnlineHostEventHandler instance(UserId userId) {
-        return new GuiOnlineHostEventHandler(
-                Controllers.get(SetupHostController.class),
-                Controllers.get(ServerController.class),
-                Controllers.get(OnlineGameOptionsController.class),
-                Controllers.get(LobbySeatsController.class),
-                Controllers.get(GameGridController.class),
-                Controllers.get(ChatController.class),
-                Controllers.get(JoinedUsersController.class),
-                Controllers.get(MessageController.class),
-                Controllers.get(ScoreboardController.class),
-                Controllers.get(ScprButtonsController.class),
-                userId);
-    }
+@AllArgsConstructor
+class HostGuiEventHandler {
+    @NonNull private final SetupHostController setupHostController;
+    @NonNull private final ServerController serverController;
+    @NonNull private final OnlineGameOptionsController onlineGameOptionsController;
+    @NonNull private final LobbySeatsController lobbySeatsController;
+    @NonNull private final GameGridController gameGridController;
+    @NonNull private final ChatController chatController;
+    @NonNull private final JoinedUsersController joinedUsersController;
+    @NonNull private final MessageController messageController;
+    @NonNull private final ScoreboardController scoreboardController;
+    @NonNull private final ScprButtonsController scprButtonsController;
+    @NonNull private final UserId hostId;
 
     public void gameOptionsChanged(GameOptionsChanged event) {
         Platform.runLater(() -> update(event.getPlaygroundState()));
@@ -169,10 +153,9 @@ class GuiOnlineHostEventHandler {
     }
 
     public void newUserEnteredRoom(NewUserEnteredRoom event) {
+        Platform.runLater(() -> joinedUsersController.update(event.getRoomState().getUsers()));
         if (event.getUserId().equals(hostId))
-            hostEnteredRoom();
-        else
-            Platform.runLater(() -> joinedUsersController.update(event.getRoomState().getUsers()));
+            setupHostController.hostEnteredRoom();
     }
 
     public void failedToEnterRoom(FailedToEnterRoom event) {
@@ -203,10 +186,6 @@ class GuiOnlineHostEventHandler {
         Platform.runLater(() -> SnakeOnlineHostStage.get().close());
     }
 
-    private void hostEnteredRoom() {
-        setupHostController.hostEnteredRoom();
-    }
-
     private void update(PlaygroundState playgroundState) {
         onlineGameOptionsController.update(playgroundState.getGameOptions());
         lobbySeatsController.update(playgroundState.getSeats());
@@ -228,5 +207,39 @@ class GuiOnlineHostEventHandler {
             serverController.serverStarted(serverStarted.getServerParams());
             setupHostController.handle(serverStarted);
         });
+    }
+
+    Subscription createSubscription() {
+        return new Subscription()
+                .subscriberName("host gui event handler")
+//                user registry events
+                .toMessage(NewUserEnteredRoom.class, this::newUserEnteredRoom)
+                .toMessage(FailedToEnterRoom.class, this::failedToEnterRoom)
+                .toMessage(UserLeftRoom.class, this::userLeftRoom)
+//                chat events
+                .toMessage(UserSentChatMessage.class, this::userSentChatMessage)
+                .toMessage(FailedToSendChatMessage.class, this::failedToSendChatMessage)
+//                game options events
+                .toMessage(GameOptionsChanged.class, this::gameOptionsChanged)
+                .toMessage(FailedToChangeGameOptions.class, this::failedToChangeGameOptions)
+//                seats events
+                .toMessage(PlayerTookASeat.class, this::playerTookASeat)
+                .toMessage(FailedToTakeASeat.class, this::failedToTakeASeat)
+                .toMessage(PlayerFreedUpASeat.class, this::playerFreedUpASeat)
+                .toMessage(FailedToFreeUpSeat.class, this::failedToFreeUpSeat)
+//                gameplay events
+                .toMessage(GameStarted.class, this::gameStarted)
+                .toMessage(FailedToStartGame.class, this::failedToStartGame)
+                .toMessage(GameStartCountdown.class, this::gameStartCountdown)
+                .toMessage(SnakesMoved.class, this::snakesMoved)
+                .toMessage(GameFinished.class, this::gameFinished)
+                .toMessage(GameCancelled.class, this::gameCancelled)
+                .toMessage(GamePaused.class, this::gamePaused)
+                .toMessage(GameResumed.class, this::gameResumed)
+//                server events
+                .toMessage(ServerStarted.class, this::serverStarted)
+                .toMessage(FailedToStartServer.class, this::failedToStartServer)
+                .toMessage(ServerFailedToSendMessageToRemoteClients.class, this::serverFailedToSendMessageToRemoteClient)
+                .toMessage(ServerGotShutdown.class, this::serverGotShutdown);
     }
 }

@@ -7,7 +7,6 @@ import com.noscompany.snake.game.online.client.StartingClientError;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.host.server.Server;
 import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
-import com.noscompany.snake.game.online.host.server.ports.RoomApiForRemoteClients;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,12 +16,11 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     private final SnakeOnlineClient snakeOnlineClient;
     private final ClientEventHandler clientEventHandler;
     private final Server server;
-    private final RoomApiForRemoteClients roomApiForRemoteClients;
 
     @Override
     public void connect(HostAddress hostAddress) {
         server
-                .start(serverParams(), roomApiForRemoteClients)
+                .start(serverParams())
                 .peek(serverStarted -> snakeOnlineClient.connect(hostAddress))
                 .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
                 .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
@@ -31,7 +29,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void enterTheRoom(String userName) {
         server
-                .start(serverParams(), roomApiForRemoteClients)
+                .start(serverParams())
                 .peek(serverStarted -> snakeOnlineClient.enterTheRoom(userName))
                 .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
                 .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
@@ -40,7 +38,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void takeASeat(PlayerNumber playerNumber) {
         server
-                .start(serverParams(), roomApiForRemoteClients)
+                .start(serverParams())
                 .peek(serverStarted -> snakeOnlineClient.takeASeat(playerNumber))
                 .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
                 .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
@@ -49,7 +47,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void freeUpASeat() {
         server
-                .start(serverParams(), roomApiForRemoteClients)
+                .start(serverParams())
                 .peek(serverStarted -> snakeOnlineClient.freeUpASeat())
                 .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
                 .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
@@ -58,7 +56,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void changeGameOptions(GridSize gridSize, GameSpeed gameSpeed, Walls walls) {
         server
-                .start(serverParams(), roomApiForRemoteClients)
+                .start(serverParams())
                 .peek(serverStarted -> snakeOnlineClient.changeGameOptions(gridSize, gameSpeed, walls))
                 .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
                 .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
@@ -67,7 +65,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void startGame() {
         server
-                .start(serverParams(), roomApiForRemoteClients)
+                .start(serverParams())
                 .peek(serverStarted -> snakeOnlineClient.startGame())
                 .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
                 .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
@@ -76,7 +74,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void changeSnakeDirection(Direction direction) {
         server
-                .start(serverParams(), roomApiForRemoteClients)
+                .start(serverParams())
                 .peek(serverStarted -> snakeOnlineClient.changeSnakeDirection(direction))
                 .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
                 .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
@@ -85,7 +83,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void cancelGame() {
         server
-                .start(serverParams(), roomApiForRemoteClients)
+                .start(serverParams())
                 .peek(serverStarted -> snakeOnlineClient.cancelGame())
                 .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
                 .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
@@ -94,7 +92,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void pauseGame() {
         server
-                .start(serverParams(), roomApiForRemoteClients)
+                .start(serverParams())
                 .peek(serverStarted -> snakeOnlineClient.pauseGame())
                 .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
                 .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
@@ -103,7 +101,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void resumeGame() {
         server
-                .start(serverParams(), roomApiForRemoteClients)
+                .start(serverParams())
                 .peek(serverStarted -> snakeOnlineClient.resumeGame())
                 .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
                 .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));
@@ -112,7 +110,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     @Override
     public void sendChatMessage(String message) {
         server
-                .start(serverParams(), roomApiForRemoteClients)
+                .start(serverParams())
                 .peek(serverStarted -> snakeOnlineClient.sendChatMessage(message))
                 .peekLeft(failedToStartServer -> log.error("failed to start server: cause {}", failedToStartServer.getReason()))
                 .peekLeft(failedToStartServer -> clientEventHandler.handle(StartingClientError.FAILED_TO_CONNECT_TO_SERVER));

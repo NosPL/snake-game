@@ -1,8 +1,8 @@
 package com.noscompany.snakejavafxclient.components.online.game.host;
 
-import com.noscompany.snake.game.online.contract.messages.server.ServerFailedToSendMessageToRemoteClients;
+import com.noscompany.snake.game.online.contract.messages.server.events.ServerFailedToSendMessageToRemoteClients;
 import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
-import com.noscompany.snake.game.online.contract.messages.server.FailedToStartServer;
+import com.noscompany.snake.game.online.contract.messages.server.events.FailedToStartServer;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

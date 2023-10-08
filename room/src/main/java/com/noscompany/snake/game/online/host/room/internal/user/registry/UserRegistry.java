@@ -56,6 +56,10 @@ public class UserRegistry {
         return userNamesById.containsKey(userId);
     }
 
+    public void removeAllUsers() {
+        userNamesById.clear();
+    }
+
     @Value
     public
     class UserRemoved {

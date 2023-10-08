@@ -5,76 +5,53 @@ import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.contract.messages.chat.SendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.game.options.ChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.commands.*;
+import com.noscompany.snake.game.online.contract.messages.host.HostGotShutdown;
 import com.noscompany.snake.game.online.contract.messages.room.EnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UsersCountLimit;
 import com.noscompany.snake.game.online.contract.messages.seats.FreeUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.TakeASeat;
-import com.noscompany.snake.game.online.contract.messages.server.ShutdownHost;
-import com.noscompany.snake.game.online.contract.messages.server.StartServer;
+import com.noscompany.snake.game.online.contract.messages.server.events.RemoteClientDisconnected;
 import com.noscompany.snake.game.online.host.room.RoomCreator;
-import com.noscompany.snake.game.online.host.server.Server;
-import com.noscompany.snake.game.online.host.server.ports.RoomApiForRemoteClients;
-import com.noscompany.snake.game.utils.monitored.executor.service.MonitoredExecutorServiceCreator;
 import snake.game.gameplay.GameplayCreator;
-
-import java.util.concurrent.*;
 
 
 public class MediatorConfiguration {
 
-    public RoomApiForRemoteClients roomApiForRemoteClients(MessagePublisher messagePublisher,
-                                                           Server server,
-                                                           RoomCreator roomCreator,
-                                                           UsersCountLimit usersCountLimit,
-                                                           GameplayCreator gameplayCreator) {
-        return roomApiForRemoteClients(monitoredExecutorService(), messagePublisher, server, roomCreator, usersCountLimit, gameplayCreator);
-    }
-
-    public RoomApiForRemoteClients roomApiForRemoteClients(ExecutorService executorService,
-                                                           MessagePublisher messagePublisher,
-                                                           Server server,
-                                                           RoomCreator roomCreator,
-                                                           UsersCountLimit usersCountLimit,
-                                                           GameplayCreator gameplayCreator) {
-        var eventDispatcher = new EventDispatcher(messagePublisher, server);
-        var room = roomCreator.createRoom(eventDispatcher, gameplayCreator, usersCountLimit);
-        var commandHandler = new CommandHandler(server, room, eventDispatcher);
-        var commandQueue = new CommandQueue(executorService, commandHandler);
-        var subscription = createSubscription(commandQueue);
+    public void configureMediator(MessagePublisher messagePublisher,
+                                  RoomCreator roomCreator,
+                                  UsersCountLimit usersCountLimit,
+                                  GameplayCreator gameplayCreator) {
+        var gameplayEventHandler = new GameplayEventHandlerMessagePublisherAdapter(messagePublisher);
+        var room = roomCreator.createRoom(gameplayEventHandler, gameplayCreator, usersCountLimit);
+        var commandHandler = new Mediator(room, messagePublisher);
+        var subscription = createSubscription(commandHandler);
         messagePublisher.subscribe(subscription);
-        return commandQueue;
     }
 
-    Subscription createSubscription(CommandQueue commandQueue) {
+    Subscription createSubscription(Mediator commandQueue) {
         return new Subscription()
                 .subscriberName("mediator")
-                .toMessage(StartServer.class, commandQueue::startServerAsHost)
-                .toMessage(EnterRoom.class, commandQueue::enterAsHost)
-                .toMessage(SendChatMessage.class, commandQueue::sendChatMessageAsHost)
-                .toMessage(CancelGame.class, commandQueue::cancelGameAsHost)
-                .toMessage(ChangeSnakeDirection.class, commandQueue::changeSnakeDirectionAsHost)
-                .toMessage(PauseGame.class, commandQueue::pauseGameAsHost)
-                .toMessage(ResumeGame.class, commandQueue::resumeGameAsHost)
-                .toMessage(StartGame.class, commandQueue::startGameAsHost)
-                .toMessage(ChangeGameOptions.class, commandQueue::changeGameOptionsAsHost)
-                .toMessage(FreeUpASeat.class, commandQueue::freeUpASeatAsHost)
-                .toMessage(TakeASeat.class, commandQueue::takeASeatAsHost)
-                .toMessage(ShutdownHost.class, commandQueue::shutdown);
-    }
-
-    private ExecutorService monitoredExecutorService() {
-        return new MonitoredExecutorServiceCreator().create(
-                1, 1,
-                new LinkedBlockingDeque<>(100),
-                threadFactory(),
-                new ThreadPoolExecutor.DiscardPolicy());
-    }
-
-    private ThreadFactory threadFactory() {
-        return runnable -> {
-            Thread thread = new Thread(runnable, "mediator-command-queue-thread");
-            thread.setDaemon(true);
-            return thread;
-        };
+//                user registry commands
+                .toMessage(EnterRoom.class, commandQueue::enterRoom)
+//                chat commands
+                .toMessage(SendChatMessage.class, commandQueue::sendChatMessage)
+//                game options
+                .toMessage(ChangeGameOptions.class, commandQueue::changeGameOptions)
+//                seats commands
+                .toMessage(FreeUpASeat.class, commandQueue::freeUpASeat)
+                .toMessage(TakeASeat.class, commandQueue::takeASeat)
+//                gameplay commands
+                .toMessage(StartGame.class, commandQueue::startGame)
+                .toMessage(ChangeSnakeDirection.class, commandQueue::changeSnakeDirection)
+                .toMessage(CancelGame.class, commandQueue::cancelGame)
+                .toMessage(PauseGame.class, commandQueue::pauseGame)
+                .toMessage(ResumeGame.class, commandQueue::resumeGame)
+//                seats commands
+                .toMessage(FreeUpASeat.class, commandQueue::freeUpASeat)
+                .toMessage(TakeASeat.class, commandQueue::takeASeat)
+//                host events
+                .toMessage(HostGotShutdown.class, commandQueue::terminateRoom)
+//                server events
+                .toMessage(RemoteClientDisconnected.class, commandQueue::remoteClientDisconnected);
     }
 }

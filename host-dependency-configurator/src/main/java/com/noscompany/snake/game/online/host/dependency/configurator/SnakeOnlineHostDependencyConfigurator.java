@@ -10,11 +10,11 @@ import snake.game.gameplay.GameplayConfiguration;
 
 public class SnakeOnlineHostDependencyConfigurator {
 
-    public void snakeOnlineHost(UsersCountLimit usersCountLimit, MessagePublisher messagePublisher) {
+    public void configureDependencies(UsersCountLimit usersCountLimit, MessagePublisher messagePublisher) {
         var websocketCreator = new WebsocketConfiguration().websocketCreator();
-        var server = new ServerConfiguration().server(websocketCreator);
+        new ServerConfiguration().server(websocketCreator, messagePublisher);
         var roomCreator = new RoomConfiguration().roomCreator();
         var snakeGameplayCreator = new GameplayConfiguration().snakeGameplayCreator();
-        new MediatorConfiguration().roomApiForRemoteClients(messagePublisher, server, roomCreator, usersCountLimit, snakeGameplayCreator);
+        new MediatorConfiguration().configureMediator(messagePublisher, roomCreator, usersCountLimit, snakeGameplayCreator);
     }
 }

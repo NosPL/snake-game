@@ -44,7 +44,7 @@ public class SerializationTest extends BaseTestClass {
         testSerializationOf(new StartGame(userId));
         testSerializationOf(FailedToStartGame.gameIsAlreadyRunning(userId));
         testSerializationOf(new ChangeGameOptions(userId, GridSize._10x10, GameSpeed.x1, Walls.OFF));
-        testSerializationOf(new FreeUpASeat());
+        testSerializationOf(new FreeUpASeat(userId));
         testSerializationOf(new TakeASeat(userId, PlayerNumber._1));
         testSerializationOf(new EnterRoom(userId, "some name"));
         testSerializationOf(new UserSentChatMessage(userId, "some name", "some content"));

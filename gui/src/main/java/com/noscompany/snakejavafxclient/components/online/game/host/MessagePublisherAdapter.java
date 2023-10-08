@@ -11,8 +11,8 @@ import com.noscompany.snake.game.online.contract.messages.seats.FreeUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.TakeASeat;
 import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
 import com.noscompany.snake.game.online.contract.messages.room.UserName;
-import com.noscompany.snake.game.online.contract.messages.server.ShutdownHost;
-import com.noscompany.snake.game.online.contract.messages.server.StartServer;
+import com.noscompany.snake.game.online.contract.messages.host.HostGotShutdown;
+import com.noscompany.snake.game.online.contract.messages.server.commands.StartServer;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -65,6 +65,6 @@ final class MessagePublisherAdapter {
     }
 
     public void shutDownHost() {
-        messagePublisher.publishMessage(new ShutdownHost(hostId));
+        messagePublisher.publishMessage(new HostGotShutdown(hostId));
     }
 }

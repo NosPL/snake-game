@@ -145,4 +145,10 @@ class RoomFacade implements Room {
     public boolean isFull() {
         return userRegistry.isFull();
     }
+
+    @Override
+    public void terminate() {
+        userRegistry.removeAllUsers();
+        playground.cancelGame();
+    }
 }

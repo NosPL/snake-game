@@ -52,7 +52,7 @@ public class Connected implements ClientState {
     @Override
     public ClientState freeUpASeat() {
         return messageSender
-                .send(new FreeUpASeat())
+                .send(new FreeUpASeat(userId.get()))
                 .map(this::handleError)
                 .getOrElse(this);
     }
@@ -68,7 +68,7 @@ public class Connected implements ClientState {
     @Override
     public ClientState startGame() {
         return messageSender
-                .send(new StartGame())
+                .send(new StartGame(userId.get()))
                 .map(this::handleError)
                 .getOrElse(this);
     }
@@ -84,7 +84,7 @@ public class Connected implements ClientState {
     @Override
     public ClientState cancelGame() {
         return messageSender
-                .send(new CancelGame())
+                .send(new CancelGame(userId.get()))
                 .map(this::handleError)
                 .getOrElse(this);
     }
@@ -92,7 +92,7 @@ public class Connected implements ClientState {
     @Override
     public ClientState pauseGame() {
         return messageSender
-                .send(new PauseGame())
+                .send(new PauseGame(userId.get()))
                 .map(this::handleError)
                 .getOrElse(this);
     }
@@ -100,7 +100,7 @@ public class Connected implements ClientState {
     @Override
     public ClientState resumeGame() {
         return messageSender
-                .send(new ResumeGame())
+                .send(new ResumeGame(userId.get()))
                 .map(this::handleError)
                 .getOrElse(this);
     }

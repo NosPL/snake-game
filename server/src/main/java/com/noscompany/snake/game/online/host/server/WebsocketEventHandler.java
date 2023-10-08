@@ -1,12 +1,12 @@
 package com.noscompany.snake.game.online.host.server;
 
-import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
+import com.noscompany.snake.game.online.contract.messages.UserId;
 
 public interface WebsocketEventHandler {
 
-    void newClientConnected(RemoteClientId remoteClientId);
+    void newClientConnected(UserId remoteClientId);
 
-    void messageReceived(RemoteClientId remoteClientId, String message);
+    void messageReceived(UserId remoteClientId, String message);
 
-    void clientDisconnected(RemoteClientId remoteClientId);
+    void clientDisconnected(UserId remoteClientId);
 }

@@ -1,6 +1,7 @@
 package com.noscompany.snake.game.online.websocket;
 
-import com.noscompany.snake.game.online.contract.messages.server.ServerFailedToSendMessageToRemoteClients;
+import com.noscompany.snake.game.online.contract.messages.UserId;
+import com.noscompany.snake.game.online.contract.messages.server.events.ServerFailedToSendMessageToRemoteClients;
 import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
 import com.noscompany.snake.game.online.host.server.ports.Websocket;
 import io.vavr.control.Option;
@@ -14,7 +15,7 @@ import org.atmosphere.nettosphere.Nettosphere;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import static com.noscompany.snake.game.online.contract.messages.server.ServerFailedToSendMessageToRemoteClients.Reason.CONNECTION_ISSUES;
+import static com.noscompany.snake.game.online.contract.messages.server.events.ServerFailedToSendMessageToRemoteClients.Reason.CONNECTION_ISSUES;
 
 @Slf4j
 @AllArgsConstructor
@@ -43,7 +44,7 @@ class NettosphereWebsocket implements Websocket {
     }
 
     @Override
-    public Option<ServerFailedToSendMessageToRemoteClients> sendToClient(RemoteClientId remoteClientId, String message) {
+    public Option<ServerFailedToSendMessageToRemoteClients> sendToClient(UserId remoteClientId, String message) {
         try {
             findResourceById(remoteClientId)
                     .peek(resource -> send(message, resource));
@@ -71,7 +72,7 @@ class NettosphereWebsocket implements Websocket {
                 .getOrElse(new LinkedList<>());
     }
 
-    private Option<AtmosphereResource> findResourceById(RemoteClientId remoteClientId) {
+    private Option<AtmosphereResource> findResourceById(UserId remoteClientId) {
         return Option.ofOptional(
                 getAllResources()
                         .stream()

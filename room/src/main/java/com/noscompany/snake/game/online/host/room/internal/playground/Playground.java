@@ -152,4 +152,8 @@ public class Playground {
     private void recreateGame() {
         gameplay = gameCreatorAdapter.createGame(seats.getTakenSeatsNumbers(), gameOptions);
     }
+
+    public void cancelGame() {
+        gameplay.cancel();
+    }
 }

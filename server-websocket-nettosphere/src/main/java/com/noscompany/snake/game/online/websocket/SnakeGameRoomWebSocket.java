@@ -1,5 +1,6 @@
 package com.noscompany.snake.game.online.websocket;
 
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.host.server.dto.RemoteClientId;
 import com.noscompany.snake.game.online.host.server.WebsocketEventHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -18,19 +19,19 @@ public class SnakeGameRoomWebSocket {
 
     @Ready
     public void onConnect(AtmosphereResource resource) {
-        RemoteClientId remoteClientId = new RemoteClientId(resource.uuid());
+        var remoteClientId = new UserId(resource.uuid());
         websocketEventHandler.newClientConnected(remoteClientId);
     }
 
     @Message
     public void onMessage(AtmosphereResource resource, String message) {
-        RemoteClientId remoteClientId = new RemoteClientId(resource.uuid());
+        var remoteClientId = new UserId(resource.uuid());
         websocketEventHandler.messageReceived(remoteClientId, message);
     }
 
     @Disconnect
     public void onDisconnect(AtmosphereResourceEvent re) {
-        var remoteClientId = new RemoteClientId(re.getResource().uuid());
+        var remoteClientId = new UserId(re.getResource().uuid());
         websocketEventHandler.clientDisconnected(remoteClientId);
     }
 }

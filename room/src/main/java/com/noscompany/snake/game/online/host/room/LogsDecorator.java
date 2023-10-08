@@ -141,6 +141,12 @@ class LogsDecorator implements Room {
         return room.isFull();
     }
 
+    @Override
+    public void terminate() {
+        room.terminate();
+        log.info("Room got terminated");
+    }
+
     private String asString(Enum<?> enumm) {
         return enumm.toString().toLowerCase().replace('_', ' ');
     }

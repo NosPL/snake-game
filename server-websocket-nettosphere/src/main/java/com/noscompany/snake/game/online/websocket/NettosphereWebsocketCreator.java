@@ -1,6 +1,6 @@
 package com.noscompany.snake.game.online.websocket;
 
-import com.noscompany.snake.game.online.contract.messages.server.FailedToStartServer;
+import com.noscompany.snake.game.online.contract.messages.server.events.FailedToStartServer;
 import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
 import com.noscompany.snake.game.online.host.server.WebsocketEventHandler;
 import com.noscompany.snake.game.online.host.server.ports.Websocket;
@@ -12,8 +12,8 @@ import org.atmosphere.cpr.ApplicationConfig;
 import org.atmosphere.nettosphere.Config;
 import org.atmosphere.nettosphere.Nettosphere;
 
-import static com.noscompany.snake.game.online.contract.messages.server.FailedToStartServer.Reason.INCORRECT_IP_ADDRESS_FORMAT;
-import static com.noscompany.snake.game.online.contract.messages.server.FailedToStartServer.Reason.PORT_IS_NOT_A_NUMBER;
+import static com.noscompany.snake.game.online.contract.messages.server.events.FailedToStartServer.Reason.INCORRECT_IP_ADDRESS_FORMAT;
+import static com.noscompany.snake.game.online.contract.messages.server.events.FailedToStartServer.Reason.PORT_IS_NOT_A_NUMBER;
 
 @Slf4j
 class NettosphereWebsocketCreator implements WebsocketCreator {

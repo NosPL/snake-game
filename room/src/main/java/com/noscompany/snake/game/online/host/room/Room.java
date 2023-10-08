@@ -34,4 +34,5 @@ public interface Room {
     boolean userIsAdmin(UserId userId);
     boolean userIsSitting(UserId userId);
     boolean isFull();
+    void terminate();
 }

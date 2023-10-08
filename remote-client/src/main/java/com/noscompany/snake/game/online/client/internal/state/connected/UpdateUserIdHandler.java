@@ -17,7 +17,7 @@ import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSe
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
-import com.noscompany.snake.game.online.contract.messages.server.InitializeRemoteClientState;
+import com.noscompany.snake.game.online.contract.messages.mediator.InitializeRemoteClientState;
 import lombok.AllArgsConstructor;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -34,7 +34,7 @@ final class UpdateUserIdHandler implements ClientEventHandler {
 
     @Override
     public void handle(InitializeRemoteClientState initializeRemoteClientState) {
-        var userId = initializeRemoteClientState.getUserId();
+        var userId = initializeRemoteClientState.getRemoteClientId();
         userIdAtomicReference.set(userId);
         clientEventHandler.handle(initializeRemoteClientState);
     }

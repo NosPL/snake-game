@@ -1,5 +1,6 @@
-package com.noscompany.snake.game.online.contract.messages.server;
+package com.noscompany.snake.game.online.contract.messages.server.events;
 
+import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;

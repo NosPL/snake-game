@@ -2,9 +2,9 @@ package com.noscompany.snakejavafxclient.components.online.game.host;
 
 import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.room.UserName;
-import com.noscompany.snake.game.online.contract.messages.server.FailedToStartServer;
+import com.noscompany.snake.game.online.contract.messages.server.events.FailedToStartServer;
 import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
-import com.noscompany.snake.game.online.contract.messages.server.ServerStarted;
+import com.noscompany.snake.game.online.contract.messages.server.events.ServerStarted;
 import com.noscompany.snake.game.online.network.interfaces.analyzer.IpV4Address;
 import com.noscompany.snake.game.online.network.interfaces.analyzer.NetworkInterfacesAnalyzerConfiguration;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
@@ -90,7 +90,7 @@ public class SetupHostController extends AbstractController {
         });
     }
     
-    private String toText(Enum enumClass) {
+    private String toText(Enum<?> enumClass) {
         return enumClass
                 .toString()
                 .toLowerCase()

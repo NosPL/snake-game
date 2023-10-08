@@ -11,7 +11,7 @@ import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSe
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
-import com.noscompany.snake.game.online.contract.messages.server.InitializeRemoteClientState;
+import com.noscompany.snake.game.online.contract.messages.mediator.InitializeRemoteClientState;
 import com.noscompany.snakejavafxclient.components.online.game.commons.*;
 import com.noscompany.snakejavafxclient.utils.Controllers;
 import com.noscompany.snake.game.online.client.SendClientMessageError;
@@ -168,9 +168,7 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
 
     @Override
     public void connectionEstablished() {
-        Platform.runLater(() -> {
-            joinGameController.connectionEstablished();
-        });
+        Platform.runLater(joinGameController::connectionEstablished);
     }
 
     @Override
@@ -185,16 +183,12 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
 
     @Override
     public void handle(SendClientMessageError sendClientMessageError) {
-        Platform.runLater(() -> {
-            joinGameController.handle(sendClientMessageError);
-        });
+        Platform.runLater(() -> joinGameController.handle(sendClientMessageError));
     }
 
     @Override
     public void handle(StartingClientError startingClientError) {
-        Platform.runLater(() -> {
-            joinGameController.handle(startingClientError);
-        });
+        Platform.runLater(() -> joinGameController.handle(startingClientError));
     }
 
     @Override
