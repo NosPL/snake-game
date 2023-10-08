@@ -50,11 +50,11 @@ public class JoinGameController extends AbstractController {
     }
 
     public void connectionEstablished() {
-        errorMessageLabel.setText("connection established, initializing room...");
+        enterRoom();
     }
 
     public void enterRoom() {
-        errorMessageLabel.setText("Initialized room, entering...");
+        errorMessageLabel.setText("connection established, entering room...");
         getOrCreateSnakeOnlineClient().enterTheRoom(playerNameTextField.getText());
     }
 

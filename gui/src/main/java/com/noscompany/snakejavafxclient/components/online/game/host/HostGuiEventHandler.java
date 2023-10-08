@@ -6,6 +6,7 @@ import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatM
 import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
@@ -81,8 +82,8 @@ class HostGuiEventHandler {
 
     public void gameStartCountdown(GameStartCountdown event) {
         Platform.runLater(() -> {
-            gameGridController.initializeGrid(event.getGridSize(), event.getWalls());
-            gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
+            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
+            gameGridController.update(gameState);
             onlineGameOptionsController.disable();
             messageController.printSecondsLeftToStart(event.getSecondsLeft());
             scoreboardController.clear();
@@ -94,8 +95,8 @@ class HostGuiEventHandler {
 
     public void gameStarted(GameStarted event) {
         Platform.runLater(() -> {
-            gameGridController.initializeGrid(event.getGridSize(), event.getWalls());
-            gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
+            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
+            gameGridController.update(gameState);
             onlineGameOptionsController.disable();
             scoreboardController.print(event.getScore());
             scprButtonsController.disableStart();
@@ -107,14 +108,16 @@ class HostGuiEventHandler {
 
     public void snakesMoved(SnakesMoved event) {
         Platform.runLater(() -> {
-            gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
+            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
+            gameGridController.update(gameState);
             scoreboardController.print(event.getScore());
         });
     }
 
     public void gameFinished(GameFinished event) {
         Platform.runLater(() -> {
-            gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
+            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
+            gameGridController.update(gameState);
             onlineGameOptionsController.enable();
             messageController.printGameFinished();
             scoreboardController.print(event.getScore());

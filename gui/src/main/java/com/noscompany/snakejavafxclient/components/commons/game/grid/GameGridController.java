@@ -13,22 +13,19 @@ public class GameGridController extends AbstractController {
     private VBox gridVbox;
     private GameGrid gameGrid;
 
-    public void initializeGrid(GridSize gridSize, Walls walls) {
-        gridVbox.getChildren().clear();
-        gameGrid = GameGrid.Creator.createGrid(gridSize, walls);
-        gridVbox.getChildren().add(gameGrid);
-    }
-
-    public void updateGrid(Collection<Snake> snakes, Option<Position> foodPosition) {
-        gameGrid.update(snakes, foodPosition);
-    }
-
-    public void updateGrid(Collection<Snake> snakes) {
-        gameGrid.update(snakes);
-    }
-
     public void update(GameState gameState) {
         initializeGrid(gameState.getGridSize(), gameState.getWalls());
-        updateGrid(gameState.getSnakes());
+        gameGrid.update(gameState.getSnakes(), gameState.getFoodPosition());
+    }
+
+    public void update(GridSize gridSize, Walls walls) {
+        initializeGrid(gridSize, walls);
+    }
+
+    private void initializeGrid(GridSize gridSize, Walls walls) {
+        gridVbox.getChildren().clear();
+        if (gameGrid == null)
+        gameGrid = GameGrid.Creator.createGrid(gridSize, walls);
+        gridVbox.getChildren().add(gameGrid);
     }
 }

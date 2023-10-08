@@ -4,6 +4,7 @@ import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessa
 import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.room.*;
@@ -89,8 +90,8 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     @Override
     public void handle(GameStartCountdown event) {
         Platform.runLater(() -> {
-            gameGridController.initializeGrid(event.getGridSize(), event.getWalls());
-            gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
+            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
+            gameGridController.update(gameState);
             onlineGameOptionsController.disable();
             messageController.printSecondsLeftToStart(event.getSecondsLeft());
             scoreboardController.clear();
@@ -103,8 +104,8 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     @Override
     public void handle(GameStarted event) {
         Platform.runLater(() -> {
-            gameGridController.initializeGrid(event.getGridSize(), event.getWalls());
-            gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
+            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
+            gameGridController.update(gameState);
             onlineGameOptionsController.disable();
             scoreboardController.print(event.getScore());
             scprButtonsController.disableStart();
@@ -117,7 +118,8 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     @Override
     public void handle(SnakesMoved event) {
         Platform.runLater(() -> {
-            gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
+            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
+            gameGridController.update(gameState);
             scoreboardController.print(event.getScore());
         });
     }
@@ -125,7 +127,8 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     @Override
     public void handle(GameFinished event) {
         Platform.runLater(() -> {
-            gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
+            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
+            gameGridController.update(gameState);
             onlineGameOptionsController.enable();
             messageController.printGameFinished();
             scoreboardController.print(event.getScore());

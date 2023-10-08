@@ -35,8 +35,8 @@ public class GuiGameplayEventHandler implements GameplayEventHandler {
     @Override
     public void handle(GameStartCountdown event) {
         Platform.runLater(() -> {
-            gameGridController.initializeGrid(event.getGridSize(), event.getWalls());
-            gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
+            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
+            gameGridController.update(gameState);
             gameOptionsController.disable();
             messageController.printSecondsLeftToStart(event.getSecondsLeft());
             scoreboardController.print(event.getScore());
@@ -49,8 +49,8 @@ public class GuiGameplayEventHandler implements GameplayEventHandler {
     @Override
     public void handle(GameStarted event) {
         Platform.runLater(() -> {
-            gameGridController.initializeGrid(event.getGridSize(), event.getWalls());
-            gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
+            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
+            gameGridController.update(gameState);
             gameOptionsController.disable();
             scoreboardController.print(event.getScore());
             scprButtonsController.disableStart();
@@ -63,7 +63,8 @@ public class GuiGameplayEventHandler implements GameplayEventHandler {
     @Override
     public void handle(SnakesMoved event) {
         Platform.runLater(() -> {
-            gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
+            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
+            gameGridController.update(gameState);
             scoreboardController.print(event.getScore());
             messageController.clear();
         });
@@ -72,7 +73,8 @@ public class GuiGameplayEventHandler implements GameplayEventHandler {
     @Override
     public void handle(GameFinished event) {
         Platform.runLater(() -> {
-            gameGridController.updateGrid(event.getSnakes(), event.getFoodPosition());
+            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
+            gameGridController.update(gameState);
             gameOptionsController.enable();
             messageController.printFinishScore(event.getScore());
             scoreboardController.print(event.getScore());
@@ -123,8 +125,7 @@ public class GuiGameplayEventHandler implements GameplayEventHandler {
 
     public void gameCreated(GameState gameState) {
         Platform.runLater(() -> {
-            gameGridController.initializeGrid(gameState.getGridSize(), gameState.getWalls());
-            gameGridController.updateGrid(gameState.getSnakes());
+            gameGridController.update(gameState);
             scoreboardController.print(gameState.getScore());
             messageController.printPressStartWhenReady();
         });
@@ -134,7 +135,7 @@ public class GuiGameplayEventHandler implements GameplayEventHandler {
         Platform.runLater(() -> {
             GridSize gridSize = gameOptionsController.gridSize();
             Walls walls = gameOptionsController.walls();
-            gameGridController.initializeGrid(gridSize, walls);
+            gameGridController.update(gridSize, walls);
             scoreboardController.clear();
             messageController.print(error.toString());
         });
