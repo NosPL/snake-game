@@ -1,7 +1,7 @@
 package com.noscompany.snakejavafxclient.components.online.game.host;
 
-import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
-import com.noscompany.snake.game.online.contract.messages.room.UserName;
+import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import com.noscompany.snake.game.online.contract.messages.server.events.FailedToStartServer;
 import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerStarted;

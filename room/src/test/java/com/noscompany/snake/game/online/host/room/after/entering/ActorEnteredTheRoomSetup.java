@@ -13,7 +13,7 @@ public class ActorEnteredTheRoomSetup extends RoomTestSetup {
 
     @Before
     public void enterTheRoom() {
-        assert isSuccess(room.enter(actorId, actorName));
+        room.newUserEnteredRoom(actorId, actorName);
     }
 
     protected Either<FailedToTakeASeat, PlayerTookASeat> someRandomUserTakesASeat() {
@@ -22,9 +22,8 @@ public class ActorEnteredTheRoomSetup extends RoomTestSetup {
 
     protected Either<FailedToTakeASeat, PlayerTookASeat> takeASeatWithRandomUser(PlayerNumber seatNumber) {
         var randomUserId = randomUserId();
-        assert isSuccess(room.enter(randomUserId, randomValidUserName()));
-        var result = room.takeASeat(randomUserId, seatNumber);
-        return result;
+        room.newUserEnteredRoom(randomUserId, randomValidUserName());
+        return room.takeASeat(randomUserId, seatNumber);
     }
 
     protected boolean isSuccess(Option<FailedToStartGame> startGameResult) {

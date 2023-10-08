@@ -4,7 +4,7 @@ import com.noscompany.message.publisher.utils.NullMessagePublisher;
 import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
-import com.noscompany.snake.game.online.contract.messages.room.UserName;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import io.vavr.control.Either;
 import org.junit.Assert;
 import org.junit.Before;

@@ -1,4 +1,4 @@
-package com.noscompany.snake.game.online.contract.messages.room;
+package com.noscompany.snake.game.online.contract.messages.user.registry;
 
 import lombok.Value;
 

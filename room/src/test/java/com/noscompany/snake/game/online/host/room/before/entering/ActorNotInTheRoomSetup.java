@@ -7,6 +7,6 @@ public class ActorNotInTheRoomSetup extends RoomTestSetup {
 
     @Before
     public void assertThatActorDidNotEnterTheRoom() {
-        assert !room.hasUserWithId(actorId);
+        assert !room.containsUserWithId(actorId);
     }
 }

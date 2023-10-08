@@ -7,11 +7,13 @@ import com.noscompany.snake.game.online.contract.messages.game.options.GameOptio
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
-import com.noscompany.snake.game.online.contract.messages.room.*;
+import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
+import com.noscompany.snake.game.online.contract.messages.playground.SendPlaygroundStateToRemoteClient;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
@@ -23,11 +25,17 @@ class LogsDecorator implements Room {
     private final Room room;
 
     @Override
-    public Either<FailedToEnterRoom, NewUserEnteredRoom> enter(UserId userId, UserName userName) {
+    public void newUserEnteredRoom(UserId userId, UserName userName) {
+        log.info("new user with id {} and name {} entered room", userId.getId(), userName.getName());
+        room.newUserEnteredRoom(userId, userName);
+    }
+
+    @Override
+    public Option<PlayerFreedUpASeat> userLeftRoom(UserId userId) {
+        log.info("user with id {} left the room room", userId.getId());
         return room
-                .enter(userId, userName)
-                .peek(success -> log.info("user with id {} entered room with name {}", userId.getId(), userName.getName()))
-                .peekLeft(failure -> log.info("user with id {} failed to enter the room, reason: {}", userId.getId(), asString(failure.getReason())));
+                .userLeftRoom(userId)
+                .peek(event -> log.info("user with id {} freed up a seat with number {}", event.getUserId(), event.getFreedUpPlayerNumber()));
     }
 
     @Override
@@ -95,28 +103,19 @@ class LogsDecorator implements Room {
     }
 
     @Override
-    public Option<UserLeftRoom> leave(UserId userId) {
-        return room
-                .leave(userId)
-                .peek(success -> logIfUserFreedUpSeat(userId, success.getPlayerFreedUpASeat()))
-                .peek(success -> log.info("user with id {} and name {} left the room", userId.getId(), success.getUserName()))
-                .onEmpty(() -> log.info("user with id {} failed to leave the room because he is not in it", userId.getId()));
-
-    }
-
-    private void logIfUserFreedUpSeat(UserId userId, Option<PlayerFreedUpASeat> playerFreedUpASeat) {
-        playerFreedUpASeat
-                .peek(event -> log.info("user with id {} and name {} freed up a seat with number {}", userId.getId(), event.getUserName(), event.getFreedUpPlayerNumber()));
+    public SendPlaygroundStateToRemoteClient newRemoteClientConnected(UserId remoteClientId) {
+        log.info("Sending playground state to remote client with id {}", remoteClientId.getId());
+        return room.newRemoteClientConnected(remoteClientId);
     }
 
     @Override
-    public RoomState getState() {
-        return room.getState();
+    public PlaygroundState getPlaygroundState() {
+        return room.getPlaygroundState();
     }
 
     @Override
-    public boolean hasUserWithId(UserId userId) {
-        return room.hasUserWithId(userId);
+    public boolean containsUserWithId(UserId userId) {
+        return room.containsUserWithId(userId);
     }
 
     @Override
@@ -127,11 +126,6 @@ class LogsDecorator implements Room {
     @Override
     public boolean userIsSitting(UserId userId) {
         return room.userIsSitting(userId);
-    }
-
-    @Override
-    public boolean isFull() {
-        return room.isFull();
     }
 
     @Override

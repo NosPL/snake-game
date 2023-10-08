@@ -8,12 +8,10 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameFi
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStartCountdown;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStarted;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.SnakesMoved;
-import com.noscompany.snake.game.online.contract.messages.mediator.InitializeRemoteClientState;
-import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
+import com.noscompany.snake.game.online.contract.messages.playground.SendPlaygroundStateToRemoteClient;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
-import io.vavr.control.Option;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 
@@ -22,22 +20,13 @@ public class GameGridController extends AbstractController {
     private VBox gridVbox;
     private GameGrid gameGrid;
 
-    public void handle(InitializeRemoteClientState event) {
+    public void handle(SendPlaygroundStateToRemoteClient event) {
         if (gameGrid == null)
             initializeGrid(
-                    event.getRoomState().getPlaygroundState().getGameState().getGridSize(),
-                    event.getRoomState().getPlaygroundState().getGameState().getWalls());
+                    event.getPlaygroundState().getGameState().getGridSize(),
+                    event.getPlaygroundState().getGameState().getWalls());
         gameGrid.update(
-                event.getRoomState().getPlaygroundState().getGameState().getSnakes());
-    }
-
-    public void handle(NewUserEnteredRoom event) {
-        if (gameGrid == null)
-            initializeGrid(
-                    event.getRoomState().getPlaygroundState().getGameState().getGridSize(),
-                    event.getRoomState().getPlaygroundState().getGameState().getWalls());
-        gameGrid.update(
-                event.getRoomState().getPlaygroundState().getGameState().getSnakes());
+                event.getPlaygroundState().getGameState().getSnakes());
     }
 
     public void handle(PlayerTookASeat event) {

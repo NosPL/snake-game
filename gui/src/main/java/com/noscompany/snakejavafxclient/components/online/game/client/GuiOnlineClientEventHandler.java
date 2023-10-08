@@ -4,15 +4,16 @@ import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessa
 import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
-import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
-import com.noscompany.snake.game.online.contract.messages.room.*;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
-import com.noscompany.snake.game.online.contract.messages.mediator.InitializeRemoteClientState;
+import com.noscompany.snake.game.online.contract.messages.playground.SendPlaygroundStateToRemoteClient;
+import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
+import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserLeftRoom;
 import com.noscompany.snakejavafxclient.components.online.game.commons.*;
 import com.noscompany.snakejavafxclient.utils.Controllers;
 import com.noscompany.snake.game.online.client.SendClientMessageError;
@@ -180,12 +181,10 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     }
 
     @Override
-    public void handle(InitializeRemoteClientState event) {
+    public void handle(SendPlaygroundStateToRemoteClient command) {
         Platform.runLater(() -> {
-            RoomState roomState = event.getRoomState();
-            joinedUsersController.update(roomState.getUsers());
-            gameGridController.handle(event);
-            update(roomState.getPlaygroundState());
+            gameGridController.handle(command);
+            update(command.getPlaygroundState());
             joinGameController.enterRoom();
         });
     }
@@ -211,17 +210,9 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     @Override
     public void handle(NewUserEnteredRoom event) {
         Platform.runLater(() -> {
-            RoomState roomState = event.getRoomState();
-            gameGridController.handle(event);
             joinGameController.handle(event);
-            joinedUsersController.update(roomState.getUsers());
-            update(roomState.getPlaygroundState());
+            joinedUsersController.update(event.getUsersInTheRoom());
         });
-    }
-
-    @Override
-    public void handle(FailedToConnectToRoom event) {
-        Platform.runLater(() -> {});
     }
 
     @Override
@@ -243,10 +234,7 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
 
     @Override
     public void handle(UserLeftRoom event) {
-        Platform.runLater(() -> {
-            joinedUsersController.update(event.getUsersList());
-            event.getPlayerFreedUpASeat().peek(this::handle);
-        });
+        Platform.runLater(() -> joinedUsersController.update(event.getUsersInTheRoom()));
     }
 
     private void update(PlaygroundState playgroundState) {

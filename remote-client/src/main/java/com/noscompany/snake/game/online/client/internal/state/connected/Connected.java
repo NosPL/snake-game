@@ -12,7 +12,7 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.contract.messages.game.options.ChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.seats.FreeUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.TakeASeat;
-import com.noscompany.snake.game.online.contract.messages.room.EnterRoom;
+import com.noscompany.snake.game.online.contract.messages.user.registry.EnterRoom;
 import com.noscompany.snake.game.online.client.internal.state.not.connected.Disconnected;
 import lombok.AllArgsConstructor;
 

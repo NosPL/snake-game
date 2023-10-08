@@ -5,8 +5,8 @@ import com.noscompany.snake.game.online.contract.messages.game.options.GameOptio
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState.Seat;
-import com.noscompany.snake.game.online.contract.messages.room.UserName;
-import com.noscompany.snake.game.online.contract.messages.room.UsersCountLimit;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UsersCountLimit;
 import com.noscompany.snake.game.online.host.room.Room;
 import com.noscompany.snake.game.online.host.room.RoomConfiguration;
 import com.noscompany.snake.game.online.contract.messages.UserId;
@@ -53,7 +53,7 @@ public class RoomTestSetup {
     }
 
     protected PlaygroundState lobbyState() {
-        return room.getState().getPlaygroundState();
+        return room.getPlaygroundState();
     }
 
     protected boolean gameIsRunning() {

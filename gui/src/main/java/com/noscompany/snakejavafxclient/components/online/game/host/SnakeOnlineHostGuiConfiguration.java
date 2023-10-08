@@ -2,7 +2,7 @@ package com.noscompany.snakejavafxclient.components.online.game.host;
 
 import com.noscompany.message.publisher.MessagePublisherCreator;
 import com.noscompany.snake.game.online.contract.messages.UserId;
-import com.noscompany.snake.game.online.contract.messages.room.UsersCountLimit;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UsersCountLimit;
 import com.noscompany.snake.game.online.host.dependency.configurator.SnakeOnlineHostDependencyConfigurator;
 import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
 import com.noscompany.snakejavafxclient.components.mode.selection.GameModeSelectionStage;

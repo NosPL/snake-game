@@ -6,12 +6,8 @@ import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatM
 import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
-import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
-import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
-import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
-import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
@@ -20,6 +16,9 @@ import com.noscompany.snake.game.online.contract.messages.server.events.FailedTo
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerFailedToSendMessageToRemoteClients;
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerGotShutdown;
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerStarted;
+import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
+import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserLeftRoom;
 import com.noscompany.snakejavafxclient.components.commons.game.grid.GameGridController;
 import com.noscompany.snakejavafxclient.components.commons.message.MessageController;
 import com.noscompany.snakejavafxclient.components.commons.scoreboard.ScoreboardController;
@@ -162,11 +161,10 @@ class GuiHostEventHandler {
 
     public void newUserEnteredRoom(NewUserEnteredRoom event) {
         Platform.runLater(() -> {
-            joinedUsersController.update(event.getRoomState().getUsers());
-            gameGridController.handle(event);
+            joinedUsersController.update(event.getUsersInTheRoom());
+            if (event.getUserId().equals(hostId))
+                setupHostController.hostEnteredRoom();
         });
-        if (event.getUserId().equals(hostId))
-            setupHostController.hostEnteredRoom();
     }
 
     public void failedToEnterRoom(FailedToEnterRoom event) {
@@ -188,8 +186,7 @@ class GuiHostEventHandler {
 
     public void userLeftRoom(UserLeftRoom event) {
         Platform.runLater(() -> {
-            joinedUsersController.update(event.getUsersList());
-            event.getPlayerFreedUpASeat().peek(this::playerFreedUpASeat);
+            joinedUsersController.update(event.getUsersInTheRoom());
         });
     }
 

@@ -7,9 +7,9 @@ import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessa
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
-import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
-import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
-import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
+import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
+import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserLeftRoom;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
@@ -30,7 +30,7 @@ public class ServerConfiguration {
 
     private Subscription createSubscription(Server server) {
         return new Subscription()
-                .subscriberName("host")
+                .subscriberName("server")
 //                server commands
                 .toMessage(StartServer.class,  (StartServer msg) -> server.start(msg.getServerParams()))
 //                host events

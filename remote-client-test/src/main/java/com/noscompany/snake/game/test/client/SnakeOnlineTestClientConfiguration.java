@@ -4,7 +4,7 @@ import com.noscompany.message.publisher.MessagePublisherCreator;
 import com.noscompany.snake.game.online.client.ClientEventHandler;
 import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import com.noscompany.snake.game.online.client.SnakeOnlineClientConfiguration;
-import com.noscompany.snake.game.online.contract.messages.room.UsersCountLimit;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UsersCountLimit;
 import com.noscompany.snake.game.online.host.room.RoomConfiguration;
 import com.noscompany.snake.game.online.host.server.ServerConfiguration;
 import com.noscompany.snake.game.online.websocket.WebsocketConfiguration;

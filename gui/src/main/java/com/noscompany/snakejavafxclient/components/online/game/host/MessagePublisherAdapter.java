@@ -6,11 +6,11 @@ import com.noscompany.snake.game.online.contract.messages.chat.SendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.game.options.ChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.commands.*;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
-import com.noscompany.snake.game.online.contract.messages.room.EnterRoom;
+import com.noscompany.snake.game.online.contract.messages.user.registry.EnterRoom;
 import com.noscompany.snake.game.online.contract.messages.seats.FreeUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.TakeASeat;
 import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
-import com.noscompany.snake.game.online.contract.messages.room.UserName;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import com.noscompany.snake.game.online.contract.messages.host.HostGotShutdown;
 import com.noscompany.snake.game.online.contract.messages.server.commands.StartServer;
 import lombok.AllArgsConstructor;
@@ -66,5 +66,6 @@ final class MessagePublisherAdapter {
 
     public void shutDownHost() {
         messagePublisher.publishMessage(new HostGotShutdown(hostId));
+//        messagePublisher.shutdown();
     }
 }

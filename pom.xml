@@ -29,6 +29,7 @@
         <module>utils</module>
         <module>message-publisher</module>
         <module>chat</module>
+        <module>user-registry</module>
     </modules>
 
     <dependencies>

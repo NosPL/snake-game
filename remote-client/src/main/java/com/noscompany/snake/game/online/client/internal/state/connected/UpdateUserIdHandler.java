@@ -9,15 +9,14 @@ import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessa
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
-import com.noscompany.snake.game.online.contract.messages.room.FailedToConnectToRoom;
-import com.noscompany.snake.game.online.contract.messages.room.FailedToEnterRoom;
-import com.noscompany.snake.game.online.contract.messages.room.NewUserEnteredRoom;
-import com.noscompany.snake.game.online.contract.messages.room.UserLeftRoom;
+import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
+import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserLeftRoom;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
-import com.noscompany.snake.game.online.contract.messages.mediator.InitializeRemoteClientState;
+import com.noscompany.snake.game.online.contract.messages.playground.SendPlaygroundStateToRemoteClient;
 import lombok.AllArgsConstructor;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -33,10 +32,10 @@ final class UpdateUserIdHandler implements ClientEventHandler {
     }
 
     @Override
-    public void handle(InitializeRemoteClientState initializeRemoteClientState) {
-        var userId = initializeRemoteClientState.getRemoteClientId();
+    public void handle(SendPlaygroundStateToRemoteClient sendPlaygroundStateToRemoteClient) {
+        var userId = sendPlaygroundStateToRemoteClient.getRemoteClientId();
         userIdAtomicReference.set(userId);
-        clientEventHandler.handle(initializeRemoteClientState);
+        clientEventHandler.handle(sendPlaygroundStateToRemoteClient);
     }
 
     @Override
@@ -52,11 +51,6 @@ final class UpdateUserIdHandler implements ClientEventHandler {
     @Override
     public void connectionClosed() {
         clientEventHandler.connectionClosed();
-    }
-
-    @Override
-    public void handle(FailedToConnectToRoom event) {
-        clientEventHandler.handle(event);
     }
 
     @Override

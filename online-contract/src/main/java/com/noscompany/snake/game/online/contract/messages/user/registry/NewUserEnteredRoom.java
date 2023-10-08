@@ -1,24 +1,21 @@
-package com.noscompany.snake.game.online.contract.messages.room;
+package com.noscompany.snake.game.online.contract.messages.user.registry;
 
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
 import com.noscompany.snake.game.online.contract.messages.UserId;
-import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
-import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
-import java.util.Set;
+import java.util.Collection;
 
 import static lombok.AccessLevel.PRIVATE;
 
 @Value
 @NoArgsConstructor(force = true, access = PRIVATE)
 @AllArgsConstructor
-public class UserLeftRoom implements OnlineMessage {
-    MessageType messageType = MessageType.USER_LEFT_ROOM;
+public class NewUserEnteredRoom implements OnlineMessage {
+    MessageType messageType = MessageType.NEW_USER_ENTERED_ROOM;
     UserId userId;
     String userName;
-    Set<String> usersList;
-    Option<PlayerFreedUpASeat> playerFreedUpASeat;
+    Collection<UserName> usersInTheRoom;
 }

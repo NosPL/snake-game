@@ -2,21 +2,20 @@ package com.noscompany.snake.game.online.host.room;
 
 import com.noscompany.message.publisher.MessagePublisher;
 import com.noscompany.message.publisher.Subscription;
-import com.noscompany.snake.game.online.contract.messages.chat.SendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.game.options.ChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.commands.*;
 import com.noscompany.snake.game.online.contract.messages.host.HostGotShutdown;
-import com.noscompany.snake.game.online.contract.messages.room.EnterRoom;
-import com.noscompany.snake.game.online.contract.messages.room.UserName;
-import com.noscompany.snake.game.online.contract.messages.room.UsersCountLimit;
 import com.noscompany.snake.game.online.contract.messages.seats.FreeUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.TakeASeat;
-import com.noscompany.snake.game.online.contract.messages.server.events.RemoteClientDisconnected;
-import com.noscompany.snake.game.online.host.room.internal.chat.ChatCreator;
+import com.noscompany.snake.game.online.contract.messages.server.events.NewRemoteClientConnected;
+import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserLeftRoom;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UsersCountLimit;
 import com.noscompany.snake.game.online.host.room.internal.playground.PlaygroundCreator;
-import com.noscompany.snake.game.online.host.room.internal.user.registry.UserRegistryCreator;
 import snake.game.gameplay.GameplayCreator;
-import snake.game.gameplay.ports.GameplayEventHandler;
+
+import java.util.HashMap;
 
 class RoomCreatorImpl implements RoomCreator{
 
@@ -24,7 +23,7 @@ class RoomCreatorImpl implements RoomCreator{
                            UsersCountLimit usersCountLimit,
                            MessagePublisher messagePublisher) {
         var room = new LogsDecorator(new RoomFacade(
-                UserRegistryCreator.create(usersCountLimit),
+                new HashMap<>(),
                 PlaygroundCreator.create(messagePublisher, gameplayCreator)));
         messagePublisher.subscribe(createSubscription(room));
         return room;
@@ -32,9 +31,12 @@ class RoomCreatorImpl implements RoomCreator{
 
     Subscription createSubscription(Room room) {
         return new Subscription()
-                .subscriberName("mediator")
-//                user registry commands
-                .toMessage(EnterRoom.class, (EnterRoom msg) -> room.enter(msg.getUserId(), new UserName(msg.getUserName())))
+                .subscriberName("room")
+//                server events
+                .toMessage(NewRemoteClientConnected.class, (NewRemoteClientConnected msg) -> room.newRemoteClientConnected(msg.getRemoteClientId()))
+//                user registry events
+                .toMessage(NewUserEnteredRoom.class, (NewUserEnteredRoom msg) -> room.newUserEnteredRoom(msg.getUserId(), new UserName(msg.getUserName())))
+                .toMessage(UserLeftRoom.class, (UserLeftRoom msg) -> room.userLeftRoom(msg.getUserId()))
 //                seats commands
                 .toMessage(FreeUpASeat.class, (FreeUpASeat msg) -> room.freeUpASeat(msg.getUserId()))
                 .toMessage(TakeASeat.class, (TakeASeat msg) -> room.takeASeat(msg.getUserId(), msg.getPlayerNumber()))
@@ -48,8 +50,6 @@ class RoomCreatorImpl implements RoomCreator{
                 .toMessage(PauseGame.class, (PauseGame msg) -> room.pauseGame(msg.getUserId()))
                 .toMessage(ResumeGame.class, (ResumeGame msg) -> room.resumeGame(msg.getUserId()))
 //                host events
-                .toMessage(HostGotShutdown.class, (HostGotShutdown msg) -> room.terminate())
-//                server events
-                .toMessage(RemoteClientDisconnected.class, (RemoteClientDisconnected msg) -> room.leave(msg.getRemoteClientId()));
+                .toMessage(HostGotShutdown.class, (HostGotShutdown msg) -> room.terminate());
     }
 }
