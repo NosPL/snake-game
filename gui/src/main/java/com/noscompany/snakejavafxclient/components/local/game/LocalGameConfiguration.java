@@ -15,13 +15,13 @@ import snake.game.gameplay.GameplayConfiguration;
 import snake.game.gameplay.GameplayCreator;
 import snake.game.gameplay.dto.GameplayParams;
 
-import static com.noscompany.snakejavafxclient.components.local.game.GuiGameplayEventHandler.javaFxEventHandler;
+import static com.noscompany.snakejavafxclient.components.local.game.GuiLocalGameEventHandler.javaFxEventHandler;
 
 public class LocalGameConfiguration {
 
     public static void run() {
         Stage localGameStage = LocalGameStage.get();
-        var eventHandler = GuiGameplayEventHandler.javaFxEventHandler();
+        var eventHandler = GuiLocalGameEventHandler.javaFxEventHandler();
         var localSnakeGame = new LocalSnakeGame(eventHandler, new NullGameplay());
         localSnakeGame.updateGameView();
         Controllers.get(GameOptionsController.class).set(localSnakeGame);

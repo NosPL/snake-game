@@ -9,7 +9,7 @@ import snake.game.gameplay.GameplayCreator;
 
 @AllArgsConstructor
 public class LocalSnakeGame {
-    private final GuiGameplayEventHandler eventHandler;
+    private final GuiLocalGameEventHandler eventHandler;
     private Gameplay gameplay;
 
     public void start() {

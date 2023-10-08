@@ -53,23 +53,11 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     }
 
     @Override
-    public void handle(GameOptionsChanged event) {
-        Platform.runLater(() -> update(event.getPlaygroundState()));
-    }
-
-    @Override
     public void handle(PlayerTookASeat event) {
-        Platform.runLater(() -> update(event.getPlaygroundState()));
-    }
-
-    @Override
-    public void handle(PlayerFreedUpASeat event) {
-        Platform.runLater(() -> update(event.getPlaygroundState()));
-    }
-
-    @Override
-    public void handle(FailedToStartGame event) {
-        Platform.runLater(() -> {});
+        Platform.runLater(() -> {
+            gameGridController.handle(event);
+            update(event.getPlaygroundState());
+        });
     }
 
     @Override
@@ -78,7 +66,28 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     }
 
     @Override
+    public void handle(PlayerFreedUpASeat event) {
+        Platform.runLater(() -> {
+            gameGridController.handle(event);
+            update(event.getPlaygroundState());
+        });
+    }
+
+    @Override
+    public void handle(GameOptionsChanged event) {
+        Platform.runLater(() -> {
+            gameGridController.handle(event);
+            update(event.getPlaygroundState());
+        });
+    }
+
+    @Override
     public void handle(FailedToChangeGameOptions event) {
+        Platform.runLater(() -> {});
+    }
+
+    @Override
+    public void handle(FailedToStartGame event) {
         Platform.runLater(() -> {});
     }
 
@@ -90,8 +99,7 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     @Override
     public void handle(GameStartCountdown event) {
         Platform.runLater(() -> {
-            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
-            gameGridController.update(gameState);
+            gameGridController.handle(event);
             onlineGameOptionsController.disable();
             messageController.printSecondsLeftToStart(event.getSecondsLeft());
             scoreboardController.clear();
@@ -104,8 +112,7 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     @Override
     public void handle(GameStarted event) {
         Platform.runLater(() -> {
-            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
-            gameGridController.update(gameState);
+            gameGridController.handle(event);
             onlineGameOptionsController.disable();
             scoreboardController.print(event.getScore());
             scprButtonsController.disableStart();
@@ -118,8 +125,7 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     @Override
     public void handle(SnakesMoved event) {
         Platform.runLater(() -> {
-            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
-            gameGridController.update(gameState);
+            gameGridController.handle(event);
             scoreboardController.print(event.getScore());
         });
     }
@@ -127,8 +133,7 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     @Override
     public void handle(GameFinished event) {
         Platform.runLater(() -> {
-            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
-            gameGridController.update(gameState);
+            gameGridController.handle(event);
             onlineGameOptionsController.enable();
             messageController.printGameFinished();
             scoreboardController.print(event.getScore());
@@ -179,6 +184,7 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
         Platform.runLater(() -> {
             RoomState roomState = event.getRoomState();
             joinedUsersController.update(roomState.getUsers());
+            gameGridController.handle(event);
             update(roomState.getPlaygroundState());
             joinGameController.enterRoom();
         });
@@ -206,6 +212,7 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     public void handle(NewUserEnteredRoom event) {
         Platform.runLater(() -> {
             RoomState roomState = event.getRoomState();
+            gameGridController.handle(event);
             joinGameController.handle(event);
             joinedUsersController.update(roomState.getUsers());
             update(roomState.getPlaygroundState());
@@ -246,7 +253,6 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
         onlineGameOptionsController.update(playgroundState.getGameOptions());
         lobbySeatsController.update(playgroundState.getSeats());
         scoreboardController.update(playgroundState);
-        gameGridController.update(playgroundState.getGameState());
         messageController.clear();
     }
 }

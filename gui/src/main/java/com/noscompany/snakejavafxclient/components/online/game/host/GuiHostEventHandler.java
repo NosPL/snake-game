@@ -33,7 +33,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
 @AllArgsConstructor
-class HostGuiEventHandler {
+class GuiHostEventHandler {
     @NonNull private final SetupHostController setupHostController;
     @NonNull private final ServerController serverController;
     @NonNull private final OnlineGameOptionsController onlineGameOptionsController;
@@ -47,15 +47,24 @@ class HostGuiEventHandler {
     @NonNull private final UserId hostId;
 
     public void gameOptionsChanged(GameOptionsChanged event) {
-        Platform.runLater(() -> update(event.getPlaygroundState()));
+        Platform.runLater(() -> {
+            gameGridController.handle(event);
+            update(event.getPlaygroundState());
+        });
     }
 
     public void playerTookASeat(PlayerTookASeat event) {
-        Platform.runLater(() -> update(event.getPlaygroundState()));
+        Platform.runLater(() -> {
+            gameGridController.handle(event);
+            update(event.getPlaygroundState());
+        });
     }
 
     public void playerFreedUpASeat(PlayerFreedUpASeat event) {
-        Platform.runLater(() -> update(event.getPlaygroundState()));
+        Platform.runLater(() -> {
+            gameGridController.handle(event);
+            update(event.getPlaygroundState());
+        });
     }
 
     public void failedToStartGame(FailedToStartGame event) {
@@ -82,8 +91,7 @@ class HostGuiEventHandler {
 
     public void gameStartCountdown(GameStartCountdown event) {
         Platform.runLater(() -> {
-            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
-            gameGridController.update(gameState);
+            gameGridController.handle(event);
             onlineGameOptionsController.disable();
             messageController.printSecondsLeftToStart(event.getSecondsLeft());
             scoreboardController.clear();
@@ -95,8 +103,7 @@ class HostGuiEventHandler {
 
     public void gameStarted(GameStarted event) {
         Platform.runLater(() -> {
-            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
-            gameGridController.update(gameState);
+            gameGridController.handle(event);
             onlineGameOptionsController.disable();
             scoreboardController.print(event.getScore());
             scprButtonsController.disableStart();
@@ -108,16 +115,14 @@ class HostGuiEventHandler {
 
     public void snakesMoved(SnakesMoved event) {
         Platform.runLater(() -> {
-            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
-            gameGridController.update(gameState);
+            gameGridController.handle(event);
             scoreboardController.print(event.getScore());
         });
     }
 
     public void gameFinished(GameFinished event) {
         Platform.runLater(() -> {
-            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
-            gameGridController.update(gameState);
+            gameGridController.handle(event);
             onlineGameOptionsController.enable();
             messageController.printGameFinished();
             scoreboardController.print(event.getScore());
@@ -156,7 +161,10 @@ class HostGuiEventHandler {
     }
 
     public void newUserEnteredRoom(NewUserEnteredRoom event) {
-        Platform.runLater(() -> joinedUsersController.update(event.getRoomState().getUsers()));
+        Platform.runLater(() -> {
+            joinedUsersController.update(event.getRoomState().getUsers());
+            gameGridController.handle(event);
+        });
         if (event.getUserId().equals(hostId))
             setupHostController.hostEnteredRoom();
     }
@@ -193,7 +201,6 @@ class HostGuiEventHandler {
         onlineGameOptionsController.update(playgroundState.getGameOptions());
         lobbySeatsController.update(playgroundState.getSeats());
         scoreboardController.update(playgroundState);
-        gameGridController.update(playgroundState.getGameState());
         messageController.clear();
     }
 

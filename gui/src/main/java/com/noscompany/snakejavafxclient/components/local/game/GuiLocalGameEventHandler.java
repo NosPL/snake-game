@@ -16,15 +16,15 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNum
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Walls;
 
 @AllArgsConstructor
-public class GuiGameplayEventHandler implements GameplayEventHandler {
+public class GuiLocalGameEventHandler implements GameplayEventHandler {
     protected final GameGridController gameGridController;
     protected final GameOptionsController gameOptionsController;
     protected final MessageController messageController;
     protected final ScprButtonsController scprButtonsController;
     protected final ScoreboardController scoreboardController;
 
-    public static GuiGameplayEventHandler javaFxEventHandler() {
-        return new GuiGameplayEventHandler(
+    public static GuiLocalGameEventHandler javaFxEventHandler() {
+        return new GuiLocalGameEventHandler(
                 Controllers.get(GameGridController.class),
                 Controllers.get(GameOptionsController.class),
                 Controllers.get(MessageController.class),
@@ -35,8 +35,7 @@ public class GuiGameplayEventHandler implements GameplayEventHandler {
     @Override
     public void handle(GameStartCountdown event) {
         Platform.runLater(() -> {
-            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
-            gameGridController.update(gameState);
+            gameGridController.handle(event);
             gameOptionsController.disable();
             messageController.printSecondsLeftToStart(event.getSecondsLeft());
             scoreboardController.print(event.getScore());
@@ -49,8 +48,7 @@ public class GuiGameplayEventHandler implements GameplayEventHandler {
     @Override
     public void handle(GameStarted event) {
         Platform.runLater(() -> {
-            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
-            gameGridController.update(gameState);
+            gameGridController.handle(event);
             gameOptionsController.disable();
             scoreboardController.print(event.getScore());
             scprButtonsController.disableStart();
@@ -63,8 +61,7 @@ public class GuiGameplayEventHandler implements GameplayEventHandler {
     @Override
     public void handle(SnakesMoved event) {
         Platform.runLater(() -> {
-            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
-            gameGridController.update(gameState);
+            gameGridController.handle(event);
             scoreboardController.print(event.getScore());
             messageController.clear();
         });
@@ -73,8 +70,7 @@ public class GuiGameplayEventHandler implements GameplayEventHandler {
     @Override
     public void handle(GameFinished event) {
         Platform.runLater(() -> {
-            var gameState = new GameState(event.getSnakes(), event.getGridSize(), event.getWalls(), event.getFoodPosition(), event.getScore());
-            gameGridController.update(gameState);
+            gameGridController.handle(event);
             gameOptionsController.enable();
             messageController.printFinishScore(event.getScore());
             scoreboardController.print(event.getScore());
@@ -125,7 +121,7 @@ public class GuiGameplayEventHandler implements GameplayEventHandler {
 
     public void gameCreated(GameState gameState) {
         Platform.runLater(() -> {
-            gameGridController.update(gameState);
+            gameGridController.localGameOptionsChanged(gameState);
             scoreboardController.print(gameState.getScore());
             messageController.printPressStartWhenReady();
         });
@@ -135,7 +131,7 @@ public class GuiGameplayEventHandler implements GameplayEventHandler {
         Platform.runLater(() -> {
             GridSize gridSize = gameOptionsController.gridSize();
             Walls walls = gameOptionsController.walls();
-            gameGridController.update(gridSize, walls);
+            gameGridController.failedToCreateGamePlay(gridSize, walls);
             scoreboardController.clear();
             messageController.print(error.toString());
         });
