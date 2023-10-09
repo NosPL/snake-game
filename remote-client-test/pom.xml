@@ -14,6 +14,16 @@
     <dependencies>
         <dependency>
             <groupId>com.noscompany</groupId>
+            <artifactId>user-registry</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.noscompany</groupId>
+            <artifactId>chat</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.noscompany</groupId>
             <artifactId>server</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
@@ -29,7 +39,7 @@
         </dependency>
         <dependency>
             <groupId>com.noscompany</groupId>
-            <artifactId>room</artifactId>
+            <artifactId>playground</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

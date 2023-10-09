@@ -16,7 +16,6 @@
     </properties>
 
     <modules>
-        <module>room</module>
         <module>gameplay</module>
         <module>gui</module>
         <module>online-contract</module>
@@ -30,6 +29,7 @@
         <module>message-publisher</module>
         <module>chat</module>
         <module>user-registry</module>
+        <module>playground</module>
     </modules>
 
     <dependencies>
