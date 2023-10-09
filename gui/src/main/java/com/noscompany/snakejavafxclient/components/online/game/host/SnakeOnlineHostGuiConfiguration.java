@@ -23,7 +23,7 @@ class SnakeOnlineHostGuiConfiguration {
         var hostId = new UserId(UUID.randomUUID().toString());
         var messagePublisher = new MessagePublisherCreator().create();
         var messagePublisherAdapter = new MessagePublisherAdapter(hostId, messagePublisher);
-        var hostGuiEventHandler = new HostGuiEventHandlerCreator().create(hostId);
+        var hostGuiEventHandler = new GuiHostEventHandlerCreator().create(hostId);
         messagePublisher.subscribe(hostGuiEventHandler.createSubscription());
         snakeOnlineHostStage.setOnCloseRequest(windowEvent -> messagePublisherAdapter.shutDownHost());
         new SnakeOnlineHostDependencyConfigurator().configureDependencies(usersCountLimit, messagePublisher);

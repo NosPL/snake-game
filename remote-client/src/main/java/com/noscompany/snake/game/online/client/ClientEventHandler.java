@@ -5,6 +5,7 @@ import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessa
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
+import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
 import com.noscompany.snake.game.online.contract.messages.seats.*;
 import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
@@ -16,6 +17,8 @@ public interface ClientEventHandler {
     void connectionEstablished();
 
     void handle(InitializePlaygroundStateToRemoteClient initializePlaygroundStateToRemoteClient);
+
+    void handle(GameReinitialized gameReinitialized);
 
     void handle(SendClientMessageError sendClientMessageError);
 

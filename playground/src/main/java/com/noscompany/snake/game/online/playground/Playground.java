@@ -8,7 +8,7 @@ import com.noscompany.snake.game.online.contract.messages.game.options.GameOptio
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
-import com.noscompany.snake.game.online.contract.messages.host.HostGotShutdown;
+import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
 import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundStateToRemoteClient;
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.seats.AdminId;
@@ -37,18 +37,20 @@ public class Playground {
         return new InitializePlaygroundStateToRemoteClient(userId, getPlaygroundState());
     }
 
-    public void playerTookASeat(UserId userId, PlayerNumber playerNumber, AdminId adminId) {
+    public GameReinitialized playerTookASeat(UserId userId, PlayerNumber playerNumber, AdminId adminId) {
         playerNumbersByIds.put(userId, playerNumber);
         adminIdOption = Option.of(adminId);
         recreateGameIfItIsNotRunning();
+        return new GameReinitialized(gameplay.getGameState());
     }
 
-    public void playerFreedUpASeat(UserId userId, Option<AdminId> adminId) {
+    public GameReinitialized playerFreedUpASeat(UserId userId, Option<AdminId> adminId) {
         adminIdOption = adminId;
         Option
                 .of(playerNumbersByIds.remove(userId))
                 .peek(gameplay::killSnake);
         recreateGameIfItIsNotRunning();
+        return new GameReinitialized(gameplay.getGameState());
     }
 
     public Either<FailedToChangeGameOptions, GameOptionsChanged> changeGameOptions(UserId userId, GameOptions gameOptions) {

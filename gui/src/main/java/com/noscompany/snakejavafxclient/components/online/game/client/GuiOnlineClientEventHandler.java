@@ -5,6 +5,7 @@ import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatM
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
+import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.seats.*;
 import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundStateToRemoteClient;
@@ -184,6 +185,14 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
             gameGridController.handle(command);
             update(command.getPlaygroundState());
             joinGameController.enterRoom();
+        });
+    }
+
+    @Override
+    public void handle(GameReinitialized event) {
+        Platform.runLater(() -> {
+            scoreboardController.update(event.getGameState());
+            gameGridController.handle(event);
         });
     }
 

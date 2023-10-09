@@ -9,6 +9,7 @@ import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessa
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
+import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
 import com.noscompany.snake.game.online.contract.messages.seats.*;
 import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
@@ -32,6 +33,11 @@ final class UpdateUserIdHandler implements ClientEventHandler {
     public void handle(InitializePlaygroundStateToRemoteClient command) {
         userIdAtomicReference.set(command.getUserId());
         clientEventHandler.handle(command);
+    }
+
+    @Override
+    public void handle(GameReinitialized event) {
+        clientEventHandler.handle(event);
     }
 
     @Override

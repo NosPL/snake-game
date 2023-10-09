@@ -8,6 +8,7 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameFi
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStartCountdown;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStarted;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.SnakesMoved;
+import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
 import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundStateToRemoteClient;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
@@ -87,6 +88,11 @@ public class GameGridController extends AbstractController {
     public void localGameOptionsChanged(GameState gameState) {
         initializeGrid(gameState.getGridSize(), gameState.getWalls());
         gameGrid.update(gameState.getSnakes());
+    }
+
+    public void handle(GameReinitialized event) {
+        initializeGrid(event.getGameState().getGridSize(), event.getGameState().getWalls());
+        gameGrid.update(event.getGameState().getSnakes());
     }
 
     public void failedToCreateGamePlay(GridSize gridSize, Walls walls) {

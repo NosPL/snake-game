@@ -8,6 +8,7 @@ import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessa
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
+import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
 import com.noscompany.snake.game.online.contract.messages.seats.*;
 import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
@@ -40,6 +41,9 @@ class MessageDeserializer {
 
     private Try<DeserializedMessage> mapToObject(String serializedMessage, MessageType messageType) {
         return switch (messageType) {
+            case GAME_REINITIALIZED -> Try
+                    .of(() -> objectMapper.readValue(serializedMessage, GameReinitialized.class))
+                    .map(event -> new DeserializedMessage(eventHandler -> eventHandler.handle(event)));
             case INITIALIZE_PLAYGROUND_STATE -> Try
                     .of(() -> objectMapper.readValue(serializedMessage, InitializePlaygroundStateToRemoteClient.class))
                     .map(event -> new DeserializedMessage(eventHandler -> eventHandler.handle(event)));

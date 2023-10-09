@@ -13,11 +13,12 @@ public interface OnlineMessage {
         NEW_USER_ENTERED_ROOM,
         USER_LEFT_ROOM,
 
-        //game options
+        //playground
         CHANGE_GAME_OPTIONS,
         INITIALIZE_PLAYGROUND_STATE,
         GAME_OPTIONS_CHANGED,
         FAILED_TO_CHANGE_GAME_OPTIONS,
+        GAME_REINITIALIZED,
 
         //seats commands
         INITIALIZE_SEATS_TO_REMOTE_CLIENT,
@@ -52,6 +53,6 @@ public interface OnlineMessage {
         //chat
         SEND_CHAT_MESSAGE,
         USER_SENT_CHAT_MESSAGE,
-        FAILED_TO_SEND_CHAT_MESSAGE
+        FAILED_TO_SEND_CHAT_MESSAGE,
     }
 }

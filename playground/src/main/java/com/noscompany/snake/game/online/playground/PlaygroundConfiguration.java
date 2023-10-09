@@ -37,6 +37,7 @@ public final class PlaygroundConfiguration {
                 .toMessage(NewUserEnteredRoom.class, (NewUserEnteredRoom event) -> playground.newUserEnteredRoom(event.getUserId()))
 //                seats events
                 .toMessage(PlayerTookASeat.class, (PlayerTookASeat event) -> playground.playerTookASeat(event.getUserId(), event.getPlayerNumber(), event.getAdminId()))
+                .toMessage(PlayerFreedUpASeat.class, (PlayerFreedUpASeat event) -> playground.playerFreedUpASeat(event.getUserId(), event.getAdminId()))
 //                game options commands
                 .toMessage(ChangeGameOptions.class, (ChangeGameOptions msg) -> playground.changeGameOptions(msg.getUserId(), msg.getOptions()))
 //                gameplay commands

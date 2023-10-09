@@ -9,6 +9,7 @@ import com.noscompany.snake.game.online.contract.messages.game.options.GameOptio
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
+import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
 import com.noscompany.snake.game.online.contract.messages.seats.*;
 import com.noscompany.snake.game.online.contract.messages.server.events.FailedToStartServer;
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerFailedToSendMessageToRemoteClients;
@@ -57,6 +58,12 @@ class GuiHostEventHandler {
     @NonNull
     private final UserId hostId;
 
+    public void gameReinitialized(GameReinitialized event) {
+        Platform.runLater(() -> {
+            scoreboardController.update(event.getGameState());
+            gameGridController.handle(event);
+        });
+    }
     public void gameOptionsChanged(GameOptionsChanged event) {
         Platform.runLater(() -> {
             gameGridController.handle(event);
@@ -242,7 +249,8 @@ class GuiHostEventHandler {
 //                chat events
                 .toMessage(UserSentChatMessage.class, this::userSentChatMessage)
                 .toMessage(FailedToSendChatMessage.class, this::failedToSendChatMessage)
-//                game options events
+//                playground events
+                .toMessage(GameReinitialized.class, this::gameReinitialized)
                 .toMessage(GameOptionsChanged.class, this::gameOptionsChanged)
                 .toMessage(FailedToChangeGameOptions.class, this::failedToChangeGameOptions)
 //                seats events

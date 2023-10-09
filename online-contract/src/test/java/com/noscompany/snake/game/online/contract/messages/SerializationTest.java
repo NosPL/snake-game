@@ -9,6 +9,7 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.commands.*;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.game.options.ChangeGameOptions;
+import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
 import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundStateToRemoteClient;
 import com.noscompany.snake.game.online.contract.messages.seats.*;
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerGotShutdown;
@@ -31,11 +32,12 @@ public class SerializationTest extends BaseTestClass {
         testSerializationOf(FailedToEnterRoom.userNameAlreadyInUse(UserId.random()));
         testSerializationOf(new UserLeftRoom(UserId.random(), UserName.random(), randomUserNames()));
 
-//        game options messages
+//        playground messages
         testSerializationOf(new InitializePlaygroundStateToRemoteClient(UserId.random(), playgroundState()));
         testSerializationOf(new ChangeGameOptions(UserId.random(), GridSize._10x10, GameSpeed.x1, Walls.OFF));
         testSerializationOf(new GameOptionsChanged(playgroundState()));
         testSerializationOf(FailedToChangeGameOptions.gameIsAlreadyRunning(UserId.random()));
+        testSerializationOf(new GameReinitialized(gameState()));
 
 //        seats messages
         testSerializationOf(new InitializeSeatsToRemoteClient(UserId.random(), Option.of(AdminId.random()), randomSeats()));
@@ -45,7 +47,8 @@ public class SerializationTest extends BaseTestClass {
         testSerializationOf(new FreeUpASeat(UserId.random()));
         testSerializationOf(new PlayerFreedUpASeat(UserId.random(), PlayerNumber._1, Option.of(AdminId.random()), randomSeats()));
         testSerializationOf(FailedToFreeUpSeat.userDidNotTakeASeat(UserId.random()));
-//        gameplay messages
+        
+        //        gameplay messages
         testSerializationOf(new StartGame(UserId.random()));
         testSerializationOf(new ChangeSnakeDirection(UserId.random(), Direction.DOWN));
         testSerializationOf(new CancelGame(UserId.random()));

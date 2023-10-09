@@ -13,7 +13,7 @@ import com.noscompany.snakejavafxclient.utils.Controllers;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-final class HostGuiEventHandlerCreator {
+final class GuiHostEventHandlerCreator {
 
     GuiHostEventHandler create(UserId userId) {
         try {
