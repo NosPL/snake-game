@@ -5,10 +5,7 @@ import com.noscompany.snakejavafxclient.components.commons.game.grid.GameGridCon
 import com.noscompany.snakejavafxclient.components.commons.message.MessageController;
 import com.noscompany.snakejavafxclient.components.commons.scoreboard.ScoreboardController;
 import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
-import com.noscompany.snakejavafxclient.components.online.game.commons.ChatController;
-import com.noscompany.snakejavafxclient.components.online.game.commons.JoinedUsersController;
-import com.noscompany.snakejavafxclient.components.online.game.commons.LobbySeatsController;
-import com.noscompany.snakejavafxclient.components.online.game.commons.OnlineGameOptionsController;
+import com.noscompany.snakejavafxclient.components.online.game.commons.*;
 import com.noscompany.snakejavafxclient.utils.Controllers;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,6 +15,7 @@ final class GuiHostEventHandlerCreator {
     GuiHostEventHandler create(UserId userId) {
         try {
             return new GuiHostEventHandler(
+                    Controllers.get(FleetingMessageController.class),
                     Controllers.get(SetupHostController.class),
                     Controllers.get(ServerController.class),
                     Controllers.get(OnlineGameOptionsController.class),

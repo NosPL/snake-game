@@ -6,10 +6,7 @@ import com.noscompany.snake.game.online.contract.messages.user.registry.UsersCou
 import com.noscompany.snake.game.online.host.dependency.configurator.SnakeOnlineHostDependencyConfigurator;
 import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
 import com.noscompany.snakejavafxclient.components.mode.selection.GameModeSelectionStage;
-import com.noscompany.snakejavafxclient.components.online.game.commons.ChatController;
-import com.noscompany.snakejavafxclient.components.online.game.commons.KeyPressedHandler;
-import com.noscompany.snakejavafxclient.components.online.game.commons.LobbySeatsController;
-import com.noscompany.snakejavafxclient.components.online.game.commons.OnlineGameOptionsController;
+import com.noscompany.snakejavafxclient.components.online.game.commons.*;
 import com.noscompany.snakejavafxclient.utils.Controllers;
 import javafx.stage.Stage;
 
@@ -25,7 +22,10 @@ class SnakeOnlineHostGuiConfiguration {
         var messagePublisherAdapter = new MessagePublisherAdapter(hostId, messagePublisher);
         var hostGuiEventHandler = new GuiHostEventHandlerCreator().create(hostId);
         messagePublisher.subscribe(hostGuiEventHandler.createSubscription());
-        snakeOnlineHostStage.setOnCloseRequest(windowEvent -> messagePublisherAdapter.shutDownHost());
+        snakeOnlineHostStage.setOnCloseRequest(windowEvent -> {
+            messagePublisherAdapter.shutDownHost();
+            Controllers.get(FleetingMessageController.class).shutdown();
+        });
         new SnakeOnlineHostDependencyConfigurator().configureDependencies(usersCountLimit, messagePublisher);
         setStage(snakeOnlineHostStage, messagePublisherAdapter);
         setControllers(messagePublisherAdapter);

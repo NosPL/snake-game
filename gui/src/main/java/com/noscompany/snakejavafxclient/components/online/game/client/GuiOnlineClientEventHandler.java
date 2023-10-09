@@ -24,23 +24,26 @@ import com.noscompany.snakejavafxclient.components.commons.scoreboard.Scoreboard
 import io.vavr.control.Option;
 import javafx.application.Platform;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
 @AllArgsConstructor
 public class GuiOnlineClientEventHandler implements ClientEventHandler {
-    private final JoinGameController joinGameController;
-    private final OnlineGameOptionsController onlineGameOptionsController;
-    private final LobbySeatsController lobbySeatsController;
-    private final GameGridController gameGridController;
-    private final ChatController chatController;
-    private final JoinedUsersController joinedUsersController;
-    private final MessageController messageController;
-    private final ScoreboardController scoreboardController;
-    private final ScprButtonsController scprButtonsController;
+    @NonNull private final FleetingMessageController fleetingMessageController;
+    @NonNull private final JoinGameController joinGameController;
+    @NonNull private final OnlineGameOptionsController onlineGameOptionsController;
+    @NonNull private final LobbySeatsController lobbySeatsController;
+    @NonNull private final GameGridController gameGridController;
+    @NonNull private final ChatController chatController;
+    @NonNull private final JoinedUsersController joinedUsersController;
+    @NonNull private final MessageController messageController;
+    @NonNull private final ScoreboardController scoreboardController;
+    @NonNull private final ScprButtonsController scprButtonsController;
 
     public static GuiOnlineClientEventHandler instance() {
         JoinGameStage.get();
         SnakeOnlineClientStage.get();
         return new GuiOnlineClientEventHandler(
+                Controllers.get(FleetingMessageController.class),
                 Controllers.get(JoinGameController.class),
                 Controllers.get(OnlineGameOptionsController.class),
                 Controllers.get(LobbySeatsController.class),
@@ -62,7 +65,7 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
 
     @Override
     public void handle(FailedToTakeASeat event) {
-        Platform.runLater(() -> {});
+        Platform.runLater(() -> fleetingMessageController.print(event.getReason()));
     }
 
     @Override
@@ -83,12 +86,27 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
 
     @Override
     public void handle(FailedToChangeGameOptions event) {
-        Platform.runLater(() -> {});
+        Platform.runLater(() -> fleetingMessageController.print(event.getReason()));
     }
 
     @Override
     public void handle(FailedToStartGame event) {
-        Platform.runLater(() -> {});
+        Platform.runLater(() -> fleetingMessageController.print(event.getReason()));
+    }
+
+    @Override
+    public void handle(FailedToPauseGame event) {
+        Platform.runLater(() -> fleetingMessageController.print(event.getReason()));
+    }
+
+    @Override
+    public void handle(FailedToResumeGame event) {
+        Platform.runLater(() -> fleetingMessageController.print(event.getReason()));
+    }
+
+    @Override
+    public void handle(FailedToCancelGame event) {
+        Platform.runLater(() -> fleetingMessageController.print(event.getReason()));
     }
 
     @Override
@@ -103,9 +121,6 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
             onlineGameOptionsController.disable();
             messageController.printSecondsLeftToStart(event.getSecondsLeft());
             scoreboardController.clear();
-            scprButtonsController.disableStart();
-            scprButtonsController.enableCancel();
-            scprButtonsController.enablePause();
         });
     }
 
@@ -115,9 +130,6 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
             gameGridController.handle(event);
             onlineGameOptionsController.disable();
             scoreboardController.print(event.getScore());
-            scprButtonsController.disableStart();
-            scprButtonsController.enableCancel();
-            scprButtonsController.enablePause();
             messageController.clear();
         });
     }
@@ -137,10 +149,6 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
             onlineGameOptionsController.enable();
             messageController.printGameFinished();
             scoreboardController.print(event.getScore());
-            scprButtonsController.enableStart();
-            scprButtonsController.disableCancel();
-            scprButtonsController.disableResume();
-            scprButtonsController.disablePause();
         });
     }
 
@@ -149,29 +157,17 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
         Platform.runLater(() -> {
             onlineGameOptionsController.enable();
             messageController.printGameCanceled();
-            scprButtonsController.enableStart();
-            scprButtonsController.disableCancel();
-            scprButtonsController.disableResume();
-            scprButtonsController.disablePause();
         });
     }
 
     @Override
     public void handle(GamePaused event) {
-        Platform.runLater(() -> {
-            messageController.printGamePaused();
-            scprButtonsController.enableResume();
-            scprButtonsController.disablePause();
-        });
+        Platform.runLater(messageController::printGamePaused);
     }
 
     @Override
     public void handle(GameResumed event) {
-        Platform.runLater(() -> {
-            messageController.printGameResumed();
-            scprButtonsController.disableResume();
-            scprButtonsController.enablePause();
-        });
+        Platform.runLater(messageController::printGameResumed);
     }
 
     @Override
@@ -234,14 +230,12 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
 
     @Override
     public void handle(FailedToFreeUpSeat event) {
-        Platform.runLater(() -> {
-        });
+        Platform.runLater(() -> fleetingMessageController.print(event.getReason()));
     }
 
     @Override
     public void handle(FailedToSendChatMessage event) {
-        Platform.runLater(() -> {
-        });
+        Platform.runLater(() -> fleetingMessageController.print(event.getReason()));
     }
 
     @Override

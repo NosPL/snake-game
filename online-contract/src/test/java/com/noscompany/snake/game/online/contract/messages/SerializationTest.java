@@ -47,7 +47,7 @@ public class SerializationTest extends BaseTestClass {
         testSerializationOf(new FreeUpASeat(UserId.random()));
         testSerializationOf(new PlayerFreedUpASeat(UserId.random(), PlayerNumber._1, Option.of(AdminId.random()), randomSeats()));
         testSerializationOf(FailedToFreeUpSeat.userDidNotTakeASeat(UserId.random()));
-        
+
         //        gameplay messages
         testSerializationOf(new StartGame(UserId.random()));
         testSerializationOf(new ChangeSnakeDirection(UserId.random(), Direction.DOWN));

@@ -62,7 +62,13 @@ public interface ClientEventHandler {
 
     void handle(GameCancelled event);
 
+    void handle(FailedToCancelGame event);
+
     void handle(GamePaused event);
 
+    void handle(FailedToPauseGame event);
+
     void handle(GameResumed event);
+
+    void handle(FailedToResumeGame event);
 }

@@ -7,13 +7,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="vBox" prefHeight="423.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.components.online.game.client.JoinGameController">
+<VBox fx:id="vBox" prefHeight="423.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.components.online.game.client.JoinGameController">
     <children>
         <AnchorPane prefHeight="82.0" prefWidth="448.0">
             <children>
-                <Label layoutX="45.0" layoutY="8.0" text="SNAKE GAME">
+                <Label alignment="CENTER" layoutX="108.0" layoutY="19.0" text="SNAKE GAME">
                     <font>
-                        <Font size="54.0" />
+                        <Font size="35.0" />
                     </font>
                 </Label>
             </children>
@@ -34,15 +34,15 @@
                         <AnchorPane layoutX="97.0" layoutY="31.0" prefHeight="244.0" prefWidth="251.0">
                             <children>
                                 <Button fx:id="joinGameButton" layoutX="16.0" layoutY="235.0" mnemonicParsing="false" onAction="#joinGame" prefHeight="47.0" prefWidth="188.0" text="JOIN GAME" />
-                        <Label fx:id="hostAddress" layoutX="16.0" layoutY="61.0" text="IP ADDRESS" />
+                        <Label fx:id="hostAddress" layoutX="16.0" layoutY="61.0" prefHeight="16.0" prefWidth="165.0" text="IP ADDRESS" />
                         <TextField fx:id="ip1TextField" layoutX="16.0" layoutY="78.0" prefHeight="25.0" prefWidth="45.0" />
                         <TextField fx:id="ip2TextField" layoutX="72.0" layoutY="78.0" prefHeight="25.0" prefWidth="45.0" />
                         <TextField fx:id="ip3TextField" layoutX="134.0" layoutY="78.0" prefHeight="25.0" prefWidth="45.0" />
                         <TextField fx:id="ip4TextField" layoutX="194.0" layoutY="78.0" prefHeight="25.0" prefWidth="45.0" />
                         <TextField fx:id="portTextField" layoutX="18.0" layoutY="132.0" prefHeight="25.0" prefWidth="64.0" />
-                        <Label layoutX="20.0" layoutY="115.0" prefHeight="17.0" prefWidth="36.0" text="PORT" />
+                        <Label layoutX="20.0" layoutY="115.0" prefHeight="17.0" prefWidth="165.0" text="PORT" />
                         <Label fx:id="errorMessageLabel" layoutX="3.0" layoutY="24.0" prefHeight="17.0" prefWidth="245.0" style="-fx-text-fill: red;" />
-                        <Label layoutX="18.0" layoutY="172.0" prefHeight="17.0" prefWidth="98.0" text="PLAYER NAME" />
+                        <Label layoutX="18.0" layoutY="172.0" prefHeight="17.0" prefWidth="165.0" text="PLAYER NAME" />
                         <TextField fx:id="playerNameTextField" layoutX="14.0" layoutY="189.0" />
                             </children>
                         </AnchorPane>

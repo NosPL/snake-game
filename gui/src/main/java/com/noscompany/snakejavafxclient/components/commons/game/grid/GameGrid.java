@@ -149,7 +149,7 @@ class GameGrid extends GridPane {
             if (gridSize == _10x10)
                 return 25;
             if (gridSize == _15x15)
-                return 20;
+                return 18;
             if (gridSize == _20x20)
                 return 14;
             return 11;

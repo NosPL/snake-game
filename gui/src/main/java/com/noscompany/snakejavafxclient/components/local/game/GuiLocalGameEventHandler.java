@@ -39,9 +39,6 @@ public class GuiLocalGameEventHandler implements GameplayEventHandler {
             gameOptionsController.disable();
             messageController.printSecondsLeftToStart(event.getSecondsLeft());
             scoreboardController.print(event.getScore());
-            scprButtonsController.disableStart();
-            scprButtonsController.enableCancel();
-            scprButtonsController.enablePause();
         });
     }
 
@@ -51,9 +48,6 @@ public class GuiLocalGameEventHandler implements GameplayEventHandler {
             gameGridController.handle(event);
             gameOptionsController.disable();
             scoreboardController.print(event.getScore());
-            scprButtonsController.disableStart();
-            scprButtonsController.enableCancel();
-            scprButtonsController.enablePause();
             messageController.clear();
         });
     }
@@ -74,10 +68,6 @@ public class GuiLocalGameEventHandler implements GameplayEventHandler {
             gameOptionsController.enable();
             messageController.printFinishScore(event.getScore());
             scoreboardController.print(event.getScore());
-            scprButtonsController.enableStart();
-            scprButtonsController.disableCancel();
-            scprButtonsController.disableResume();
-            scprButtonsController.disablePause();
         });
     }
 
@@ -86,29 +76,17 @@ public class GuiLocalGameEventHandler implements GameplayEventHandler {
         Platform.runLater(() -> {
             gameOptionsController.enable();
             messageController.printGameCanceled();
-            scprButtonsController.enableStart();
-            scprButtonsController.disableCancel();
-            scprButtonsController.disableResume();
-            scprButtonsController.disablePause();
         });
     }
 
     @Override
     public void handle(GamePaused event) {
-        Platform.runLater(() -> {
-            messageController.printGamePaused();
-            scprButtonsController.enableResume();
-            scprButtonsController.disablePause();
-        });
+        Platform.runLater(messageController::printGamePaused);
     }
 
     @Override
     public void handle(GameResumed event) {
-        Platform.runLater(() -> {
-            messageController.printGameResumed();
-            scprButtonsController.disableResume();
-            scprButtonsController.enablePause();
-        });
+        Platform.runLater(messageController::printGameResumed);
     }
 
     public void snakeNameUpdated(PlayerNumber playerNumber, String newName) {

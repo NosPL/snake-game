@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-
-<HBox fx:id="mainHBox" prefHeight="668.0" prefWidth="1134.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.components.online.game.host.HostController">
+<?import javafx.scene.layout.*?>
+<HBox fx:id="mainHBox" prefHeight="668.0" prefWidth="1134.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.components.online.game.host.HostController">
     <children>
         <VBox fx:id="vBox1" prefHeight="769.0" prefWidth="300.0">
             <children>
@@ -21,6 +18,11 @@
             </children>
         </VBox>
         <VBox fx:id="vBox2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="563.0">
+         <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="530.0">
+             <children>
+                 <fx:include fx:id="fleetingMessage" source="../commons/fleeting-message-view.fxml"/>
+             </children>
+         </VBox>
             <HBox minHeight="164.0" minWidth="560.0" prefHeight="164.0" prefWidth="563.0">
                 <children>
                     <fx:include fx:id="scoreboard" source="../../../commons/scoreboard/scoreboard-view.fxml" />

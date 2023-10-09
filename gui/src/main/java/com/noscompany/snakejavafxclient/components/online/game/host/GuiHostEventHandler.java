@@ -22,10 +22,7 @@ import com.noscompany.snakejavafxclient.components.commons.game.grid.GameGridCon
 import com.noscompany.snakejavafxclient.components.commons.message.MessageController;
 import com.noscompany.snakejavafxclient.components.commons.scoreboard.ScoreboardController;
 import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
-import com.noscompany.snakejavafxclient.components.online.game.commons.ChatController;
-import com.noscompany.snakejavafxclient.components.online.game.commons.JoinedUsersController;
-import com.noscompany.snakejavafxclient.components.online.game.commons.LobbySeatsController;
-import com.noscompany.snakejavafxclient.components.online.game.commons.OnlineGameOptionsController;
+import com.noscompany.snakejavafxclient.components.online.game.commons.*;
 import io.vavr.control.Option;
 import javafx.application.Platform;
 import lombok.AllArgsConstructor;
@@ -35,6 +32,8 @@ import java.util.Set;
 
 @AllArgsConstructor
 class GuiHostEventHandler {
+    @NonNull
+    private final FleetingMessageController fleetingMessageController;
     @NonNull
     private final SetupHostController setupHostController;
     @NonNull
@@ -64,6 +63,7 @@ class GuiHostEventHandler {
             gameGridController.handle(event);
         });
     }
+
     public void gameOptionsChanged(GameOptionsChanged event) {
         Platform.runLater(() -> {
             gameGridController.handle(event);
@@ -87,21 +87,16 @@ class GuiHostEventHandler {
     }
 
     public void failedToStartGame(FailedToStartGame event) {
-        if (event.getUserId().equals(hostId))
-            Platform.runLater(() -> {
-            });
+        Platform.runLater(() -> fleetingMessageController.print(event.getReason()));
     }
 
     public void failedToTakeASeat(FailedToTakeASeat event) {
-        if (event.getUserId().equals(hostId))
-            Platform.runLater(() -> {
-            });
+        Platform.runLater(() -> fleetingMessageController.print(event.getReason()));
     }
 
     public void failedToChangeGameOptions(FailedToChangeGameOptions event) {
         if (event.getUserId().equals(hostId))
-            Platform.runLater(() -> {
-            });
+            Platform.runLater(() -> fleetingMessageController.print(event.getReason()));
     }
 
     public void userSentChatMessage(UserSentChatMessage event) {
@@ -114,9 +109,6 @@ class GuiHostEventHandler {
             onlineGameOptionsController.disable();
             messageController.printSecondsLeftToStart(event.getSecondsLeft());
             scoreboardController.clear();
-            scprButtonsController.disableStart();
-            scprButtonsController.enableCancel();
-            scprButtonsController.enablePause();
         });
     }
 
@@ -125,9 +117,6 @@ class GuiHostEventHandler {
             gameGridController.handle(event);
             onlineGameOptionsController.disable();
             scoreboardController.print(event.getScore());
-            scprButtonsController.disableStart();
-            scprButtonsController.enableCancel();
-            scprButtonsController.enablePause();
             messageController.clear();
         });
     }
@@ -145,10 +134,6 @@ class GuiHostEventHandler {
             onlineGameOptionsController.enable();
             messageController.printGameFinished();
             scoreboardController.print(event.getScore());
-            scprButtonsController.enableStart();
-            scprButtonsController.disableCancel();
-            scprButtonsController.disableResume();
-            scprButtonsController.disablePause();
         });
     }
 
@@ -156,27 +141,15 @@ class GuiHostEventHandler {
         Platform.runLater(() -> {
             onlineGameOptionsController.enable();
             messageController.printGameCanceled();
-            scprButtonsController.enableStart();
-            scprButtonsController.disableCancel();
-            scprButtonsController.disableResume();
-            scprButtonsController.disablePause();
         });
     }
 
     public void gamePaused(GamePaused event) {
-        Platform.runLater(() -> {
-            messageController.printGamePaused();
-            scprButtonsController.enableResume();
-            scprButtonsController.disablePause();
-        });
+        Platform.runLater(messageController::printGamePaused);
     }
 
     public void gameResumed(GameResumed event) {
-        Platform.runLater(() -> {
-            messageController.printGameResumed();
-            scprButtonsController.disableResume();
-            scprButtonsController.enablePause();
-        });
+        Platform.runLater(messageController::printGameResumed);
     }
 
     public void newUserEnteredRoom(NewUserEnteredRoom event) {
@@ -188,26 +161,23 @@ class GuiHostEventHandler {
     }
 
     public void failedToEnterRoom(FailedToEnterRoom event) {
-        if (event.getUserId().equals(hostId))
-            Platform.runLater(() -> setupHostController.handle(event));
+        Platform.runLater(() -> setupHostController.handle(event));
+    }
+
+    private void failedToCancelGame(FailedToCancelGame event) {
+        Platform.runLater(() -> fleetingMessageController.print(event.getReason()));
     }
 
     public void failedToFreeUpSeat(FailedToFreeUpSeat event) {
-        if (event.getUserId().equals(hostId))
-            Platform.runLater(() -> {
-            });
+        Platform.runLater(() -> fleetingMessageController.print(event.getReason()));
     }
 
     public void failedToSendChatMessage(FailedToSendChatMessage event) {
-        if (event.getUserId().equals(hostId))
-            Platform.runLater(() -> {
-            });
+        Platform.runLater(() -> fleetingMessageController.print(event.getReason()));
     }
 
     public void userLeftRoom(UserLeftRoom event) {
-        Platform.runLater(() -> {
-            joinedUsersController.update(event.getUsersInTheRoom());
-        });
+        Platform.runLater(() -> joinedUsersController.update(event.getUsersInTheRoom()));
     }
 
     public void serverGotShutdown(ServerGotShutdown event) {
@@ -220,8 +190,8 @@ class GuiHostEventHandler {
         messageController.clear();
     }
 
-    public void failedToStartServer(FailedToStartServer serverFailedToStart) {
-        Platform.runLater(() -> setupHostController.handle(serverFailedToStart));
+    public void failedToStartServer(FailedToStartServer event) {
+        Platform.runLater(() -> setupHostController.handle(event));
     }
 
     public void serverFailedToSendMessageToRemoteClient(ServerFailedToSendMessageToRemoteClients event) {
@@ -234,6 +204,15 @@ class GuiHostEventHandler {
             setupHostController.handle(serverStarted);
         });
     }
+
+    private void failedToResumeGame(FailedToResumeGame event) {
+        Platform.runLater(() -> fleetingMessageController.print(event.getReason()));
+    }
+
+    private void failedToPauseGame(FailedToPauseGame event) {
+        Platform.runLater(() -> fleetingMessageController.print(event.getReason()));
+    }
+
 
     private void update(Set<Seat> seats, Option<AdminId> adminId) {
         lobbySeatsController.update(seats, adminId);
@@ -265,8 +244,11 @@ class GuiHostEventHandler {
                 .toMessage(SnakesMoved.class, this::snakesMoved)
                 .toMessage(GameFinished.class, this::gameFinished)
                 .toMessage(GameCancelled.class, this::gameCancelled)
+                .toMessage(FailedToCancelGame.class, this::failedToCancelGame)
                 .toMessage(GamePaused.class, this::gamePaused)
+                .toMessage(FailedToPauseGame.class, this::failedToPauseGame)
                 .toMessage(GameResumed.class, this::gameResumed)
+                .toMessage(FailedToResumeGame.class, this::failedToResumeGame)
 //                server events
                 .toMessage(ServerStarted.class, this::serverStarted)
                 .toMessage(FailedToStartServer.class, this::failedToStartServer)

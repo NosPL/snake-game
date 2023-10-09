@@ -147,12 +147,27 @@ final class UpdateUserIdHandler implements ClientEventHandler {
     }
 
     @Override
+    public void handle(FailedToCancelGame event) {
+        clientEventHandler.handle(event);
+    }
+
+    @Override
     public void handle(GamePaused event) {
         clientEventHandler.handle(event);
     }
 
     @Override
+    public void handle(FailedToPauseGame event) {
+        clientEventHandler.handle(event);
+    }
+
+    @Override
     public void handle(GameResumed event) {
+        clientEventHandler.handle(event);
+    }
+
+    @Override
+    public void handle(FailedToResumeGame event) {
         clientEventHandler.handle(event);
     }
 }

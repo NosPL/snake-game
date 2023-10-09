@@ -46,12 +46,6 @@ public class ScprButtonsController extends AbstractController {
         onResume.run();
     }
 
-    @Override
-    protected void doInitialize(URL location, ResourceBundle resources) {
-        cancelButton.setDisable(true);
-        pauseButton.setDisable(true);
-        resumeButton.setDisable(true);
-    }
 
     public ScprButtonsController onStartButtonPress(Runnable runnable) {
         this.onStart = runnable;
@@ -71,37 +65,5 @@ public class ScprButtonsController extends AbstractController {
     public ScprButtonsController onResumeButtonPress(Runnable runnable) {
         this.onResume = runnable;
         return this;
-    }
-
-    public void enableStart() {
-        startButton.setDisable(false);
-    }
-
-    public void disableStart() {
-        startButton.setDisable(true);
-    }
-
-    public void enableCancel() {
-        cancelButton.setDisable(false);
-    }
-
-    public void disableCancel() {
-        cancelButton.setDisable(true);
-    }
-
-    public void enablePause() {
-        pauseButton.setDisable(false);
-    }
-
-    public void disablePause() {
-        pauseButton.setDisable(true);
-    }
-
-    public void enableResume() {
-        resumeButton.setDisable(false);
-    }
-
-    public void disableResume() {
-        resumeButton.setDisable(true);
     }
 }
