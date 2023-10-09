@@ -18,9 +18,9 @@ public class Setup {
 
     @Before
     public void init() {
+        userRegistry = new UserRegistryConfiguration().create(new UsersCountLimit(10), new NullMessagePublisher());
         actorId = UserId.random();
         actorName = correctUniqueUsername();
-        userRegistry = new UserRegistryConfiguration().create(new UsersCountLimit(10), new NullMessagePublisher());
     }
 
 

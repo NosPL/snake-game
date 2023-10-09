@@ -65,6 +65,8 @@ public final class EnteringRoomTest extends Setup {
 
     @Test
     public void actorShouldFailToEnterTheRoomForTheSecondTimeWithADifferentName() {
+//        GIVEN that actor entered room
+        assert userRegistry.enterRoom(actorId, correctUniqueUsername()).isRight();
 //        WHEN the actor tries to enter the room again with a different name
         var result = userRegistry.enterRoom(actorId, correctUniqueUsername());
 //        THEN he fails because he entered the room already
@@ -74,6 +76,8 @@ public final class EnteringRoomTest extends Setup {
 
     @Test
     public void actorShouldFailToEnterTheRoomForTheSecondTimeWithTheSameName() {
+//        GIVEN that actor entered room
+        assert userRegistry.enterRoom(actorId, actorName).isRight();
 //        WHEN the actor tries to enter the room again with the same name
         var result = userRegistry.enterRoom(actorId, actorName);
 //        THEN he fails due to being in the room already

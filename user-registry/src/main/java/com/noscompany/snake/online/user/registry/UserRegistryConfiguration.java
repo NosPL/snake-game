@@ -11,6 +11,7 @@ import com.noscompany.snake.game.online.contract.messages.server.events.RemoteCl
 import java.util.concurrent.ConcurrentHashMap;
 
 public class UserRegistryConfiguration {
+
     public UserRegistry create(UsersCountLimit usersCountLimit, MessagePublisher messagePublisher) {
         int userNameMaxLength = 15;
         var userRegistry = new UserRegistry(new ConcurrentHashMap<>(), usersCountLimit.getLimit(), userNameMaxLength);
