@@ -25,7 +25,6 @@ final class GuiHostEventHandlerCreator {
                     Controllers.get(JoinedUsersController.class),
                     Controllers.get(MessageController.class),
                     Controllers.get(ScoreboardController.class),
-                    Controllers.get(ScprButtonsController.class),
                     userId);
         } catch (Throwable throwable) {
             log.error("Failed to create gui host event handler, cause:", throwable);

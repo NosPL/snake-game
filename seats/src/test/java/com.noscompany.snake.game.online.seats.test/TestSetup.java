@@ -1,4 +1,4 @@
-package com.noscompany.snake.game.online.seats.test.commons;
+package com.noscompany.snake.game.online.seats.test;
 
 import com.noscompany.message.publisher.utils.NullMessagePublisher;
 import com.noscompany.snake.game.online.contract.messages.UserId;
@@ -10,7 +10,7 @@ import com.noscompany.snake.game.online.seats.SeatsConfiguration;
 import io.vavr.control.Either;
 import org.junit.Before;
 
-public class SeatsTestSetup {
+public class TestSetup {
     protected Seats seats;
     protected UserId actorId;
     protected UserName actorName;
@@ -20,6 +20,7 @@ public class SeatsTestSetup {
         seats = new SeatsConfiguration().create(new NullMessagePublisher());
         actorId = UserId.random();
         actorName = UserName.random();
+        seats.newUserEnteredRoom(actorId, actorName);
     }
 
     protected <L, R> Either<L, R> failure(L failure) {
@@ -47,14 +48,20 @@ public class SeatsTestSetup {
         return seats.adminIsChosen();
     }
 
-    protected Either someRandomUserTakesASeat() {
-        return takeASeatWithRandomUser(freeSeatNumber());
+    protected Either randomUserTakesASeat() {
+        return randomUserTakesASeat(UserId.random(), freeSeatNumber());
     }
 
-    protected Either takeASeatWithRandomUser(PlayerNumber playerNumber) {
-        var userId = UserId.random();
-        var userName = UserName.random();
-        seats.newUserEnteredRoom(userId, userName);
+    protected Either randomUserTakesASeat(UserId userId) {
+        return randomUserTakesASeat(userId, freeSeatNumber());
+    }
+
+    protected Either randomUserTakesASeat(PlayerNumber playerNumber) {
+        return randomUserTakesASeat(UserId.random(), playerNumber);
+    }
+
+    protected Either randomUserTakesASeat(UserId userId, PlayerNumber playerNumber) {
+        seats.newUserEnteredRoom(userId, UserName.random());
         return seats.takeOrChangeSeat(userId, playerNumber);
     }
 }

@@ -4,13 +4,12 @@ import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
-import com.noscompany.snake.game.online.seats.test.commons.AfterEnteringRoom;
-import com.noscompany.snake.game.online.seats.test.commons.SeatsTestSetup;
 import io.vavr.control.Option;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
-public class FreeUpASeatAfterEnteringTest extends AfterEnteringRoom {
+public class FreeUpASeatAfterEnteringTest extends TestSetup {
 
     @Test
     public void actorShouldFreeUpASeatAfterTakingASeat() {
@@ -49,5 +48,28 @@ public class FreeUpASeatAfterEnteringTest extends AfterEnteringRoom {
 //        THEN he succeeds
         var expected = Option.of(playerFreedUpASeat(actorId, playerNumber));
         Assert.assertEquals(expected, result);
+    }
+
+    @Test
+    public void actorShouldFailToFreeUpASeat() {
+//        WHEN the actor tries to free up a seat
+        UserId randomUserId = UserId.random();
+        var result = seats.freeUpSeat(randomUserId);
+//        THEN he fails due to not being in the room
+        var expected = failure(FailedToFreeUpSeat.userNotInTheRoom(randomUserId));
+        Assert.assertEquals(expected, result);
+    }
+
+    @Test
+    public void reactionToUserLeavingTheRoomShouldBeEmpty() {
+//        WHEN actor left the room
+        var result = seats.userLeftRoom(actorId);
+//        THEN nothing happens
+        var expected = Option.none();
+        Assert.assertEquals(expected, result);
+    }
+
+    @Before
+    public void AfterEnteringRoomInit() {
     }
 }

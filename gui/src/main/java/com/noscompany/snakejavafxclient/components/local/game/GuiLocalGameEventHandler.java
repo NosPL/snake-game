@@ -20,7 +20,6 @@ public class GuiLocalGameEventHandler implements GameplayEventHandler {
     protected final GameGridController gameGridController;
     protected final GameOptionsController gameOptionsController;
     protected final MessageController messageController;
-    protected final ScprButtonsController scprButtonsController;
     protected final ScoreboardController scoreboardController;
 
     public static GuiLocalGameEventHandler javaFxEventHandler() {
@@ -28,7 +27,6 @@ public class GuiLocalGameEventHandler implements GameplayEventHandler {
                 Controllers.get(GameGridController.class),
                 Controllers.get(GameOptionsController.class),
                 Controllers.get(MessageController.class),
-                Controllers.get(ScprButtonsController.class),
                 Controllers.get(ScoreboardController.class));
     }
 

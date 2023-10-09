@@ -37,7 +37,6 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     @NonNull private final JoinedUsersController joinedUsersController;
     @NonNull private final MessageController messageController;
     @NonNull private final ScoreboardController scoreboardController;
-    @NonNull private final ScprButtonsController scprButtonsController;
 
     public static GuiOnlineClientEventHandler instance() {
         JoinGameStage.get();
@@ -51,8 +50,7 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
                 Controllers.get(ChatController.class),
                 Controllers.get(JoinedUsersController.class),
                 Controllers.get(MessageController.class),
-                Controllers.get(ScoreboardController.class),
-                Controllers.get(ScprButtonsController.class));
+                Controllers.get(ScoreboardController.class));
     }
 
     @Override

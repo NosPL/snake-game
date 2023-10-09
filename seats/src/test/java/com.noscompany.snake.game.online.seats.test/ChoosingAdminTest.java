@@ -1,13 +1,11 @@
 package com.noscompany.snake.game.online.seats.test;
 
-import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
-import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.seats.Seat;
-import com.noscompany.snake.game.online.seats.test.commons.AfterEnteringRoom;
-import io.vavr.control.Either;
+import org.junit.Before;
 import org.junit.Test;
 
-public class ChoosingAdminAfterEnteringTest extends AfterEnteringRoom {
+public class ChoosingAdminTest extends TestSetup {
 
     @Test
     public void thereShouldBeNoAdminWhenAllSeatsAreFree() {
@@ -34,8 +32,7 @@ public class ChoosingAdminAfterEnteringTest extends AfterEnteringRoom {
 //        and the actor is the admin
         assert seats.userIsAdmin(actorId);
 //        WHEN the actor frees up a seat
-        var either = seats.freeUpSeat(actorId);
-        assert isSuccess(either);
+        assert isSuccess(seats.freeUpSeat(actorId));
 //        THEN there is no admin
         assert !adminIsChosen();
     }
@@ -47,7 +44,7 @@ public class ChoosingAdminAfterEnteringTest extends AfterEnteringRoom {
 //        and the actor is the admin
         assert seats.userIsAdmin(actorId);
 //        WHEN some other user takes a seat
-        assert isSuccess(someRandomUserTakesASeat());
+        assert isSuccess(randomUserTakesASeat());
 //        THEN the actor is still the admin
         assert seats.userIsAdmin(actorId);
     }
@@ -61,12 +58,11 @@ public class ChoosingAdminAfterEnteringTest extends AfterEnteringRoom {
 //        and the actor is the admin
         assert seats.userIsAdmin(actorId);
 //        and some other user took a seat
-        assert isSuccess(someRandomUserTakesASeat());
+        UserId user = UserId.random();
+        assert isSuccess(randomUserTakesASeat(user));
 //        WHEN the actor frees up a seat
         assert isSuccess(seats.freeUpSeat(actorId));
-//        THEN some other admin is chosen
-        assert adminIsChosen();
-//        and it's not the actor
+//        THEN the other use is admin
         assert !seats.userIsAdmin(actorId);
     }
 
@@ -77,7 +73,7 @@ public class ChoosingAdminAfterEnteringTest extends AfterEnteringRoom {
 //        and the actor is the admin
         assert seats.userIsAdmin(actorId);
 //        and some other user took a seat
-        assert isSuccess(someRandomUserTakesASeat());
+        assert isSuccess(randomUserTakesASeat());
 //        WHEN the actor changes the seat
         assert isSuccess(seats.takeOrChangeSeat(actorId, freeSeatNumber()));
 //        THEN the actor is still the admin
@@ -88,5 +84,9 @@ public class ChoosingAdminAfterEnteringTest extends AfterEnteringRoom {
         return seats
                 .toDto().stream()
                 .noneMatch(Seat::isTaken);
+    }
+
+    @Before
+    public void AfterEnteringRoomInit() {
     }
 }

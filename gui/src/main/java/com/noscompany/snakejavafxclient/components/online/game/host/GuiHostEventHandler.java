@@ -53,8 +53,6 @@ class GuiHostEventHandler {
     @NonNull
     private final ScoreboardController scoreboardController;
     @NonNull
-    private final ScprButtonsController scprButtonsController;
-    @NonNull
     private final UserId hostId;
 
     public void gameReinitialized(GameReinitialized event) {
