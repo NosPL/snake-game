@@ -39,8 +39,9 @@ public class Playground {
     }
 
     public Option<PlayerFreedUpASeat> userLeftRoom(UserId userId) {
-        userRegistry.remove(userId);
-        return freeUpASeat(userId).toOption();
+        return freeUpASeat(userId)
+                .peekLeft(success -> userRegistry.remove(userId))
+                .toOption();
     }
 
     public Either<FailedToTakeASeat, PlayerTookASeat> takeASeat(UserId userId, PlayerNumber seatNumber) {
