@@ -61,10 +61,6 @@ public class SerializationTest extends BaseTestClass {
         testSerializationOf(new UserLeftRoom(userId, new UserName("some name"), Set.of(new UserName("a"), new UserName("b"), new UserName("c"))));
     }
 
-    private PlayerFreedUpASeat playerFreedUpASeat(UserId userId) {
-        return new PlayerFreedUpASeat(userId, "q", PlayerNumber._1, lobbyState());
-    }
-
     private Collection<UserName> randomUserNames() {
         return IntStream.range(0, 5).mapToObj(i -> UserName.random()).toList();
     }
