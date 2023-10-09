@@ -29,7 +29,7 @@ public class Chat {
     }
 
     private Either<FailedToSendChatMessage, UserSentChatMessage> sendChatMessage(UserId userId, UserName userName, String messageContent) {
-        return Either.right(new UserSentChatMessage(userId, userName.getName(), messageContent));
+        return Either.right(new UserSentChatMessage(userId, userName, messageContent));
     }
 
     private Option<UserName> findUserName(UserId userId) {

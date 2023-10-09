@@ -55,7 +55,7 @@ public final class ChatTest {
         var messageContent = "sample message content";
         var result = chat.sendMessage(userId, messageContent);
 //        THEN he succeeds
-        var expected = Either.right(new UserSentChatMessage(userId, userName.getName(), messageContent));
+        var expected = Either.right(new UserSentChatMessage(userId, userName, messageContent));
         Assert.assertEquals(expected, result);
     }
 }

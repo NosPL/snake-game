@@ -54,6 +54,6 @@ public class ChatController extends AbstractController {
     }
 
     private String toString(UserSentChatMessage event) {
-        return event.getUserName() + ": " + event.getMessage();
+        return event.getUserName().getName() + ": " + event.getMessage();
     }
 }
