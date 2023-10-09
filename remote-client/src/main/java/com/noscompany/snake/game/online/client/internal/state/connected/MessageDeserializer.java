@@ -8,14 +8,11 @@ import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessa
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
+import com.noscompany.snake.game.online.contract.messages.seats.*;
 import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserLeftRoom;
-import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
-import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
-import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
-import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
-import com.noscompany.snake.game.online.contract.messages.playground.SendPlaygroundStateToRemoteClient;
+import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundStateToRemoteClient;
 import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,8 +40,8 @@ class MessageDeserializer {
 
     private Try<DeserializedMessage> mapToObject(String serializedMessage, MessageType messageType) {
         return switch (messageType) {
-            case USER_CONNECTED_TO_THE_SERVER -> Try
-                    .of(() -> objectMapper.readValue(serializedMessage, SendPlaygroundStateToRemoteClient.class))
+            case INITIALIZE_PLAYGROUND_STATE -> Try
+                    .of(() -> objectMapper.readValue(serializedMessage, InitializePlaygroundStateToRemoteClient.class))
                     .map(event -> new DeserializedMessage(eventHandler -> eventHandler.handle(event)));
             case NEW_USER_ENTERED_ROOM -> Try
                     .of(() -> objectMapper.readValue(serializedMessage, NewUserEnteredRoom.class))
@@ -57,6 +54,9 @@ class MessageDeserializer {
                     .map(event -> new DeserializedMessage(eventHandler -> eventHandler.handle(event)));
             case FAILED_TO_CHANGE_GAME_OPTIONS -> Try
                     .of(() -> objectMapper.readValue(serializedMessage, FailedToChangeGameOptions.class))
+                    .map(event -> new DeserializedMessage(eventHandler -> eventHandler.handle(event)));
+            case INITIALIZE_SEATS_TO_REMOTE_CLIENT -> Try
+                    .of(() -> objectMapper.readValue(serializedMessage, InitializeSeatsToRemoteClient.class))
                     .map(event -> new DeserializedMessage(eventHandler -> eventHandler.handle(event)));
             case PLAYER_TOOK_A_SEAT -> Try
                     .of(() -> objectMapper.readValue(serializedMessage, PlayerTookASeat.class))

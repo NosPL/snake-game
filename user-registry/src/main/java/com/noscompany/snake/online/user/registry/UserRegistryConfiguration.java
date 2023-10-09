@@ -22,7 +22,7 @@ public class UserRegistryConfiguration {
 
     private Subscription createSubscription(UserRegistry userRegistry) {
         return new Subscription()
-                .toMessage(EnterRoom.class, (EnterRoom command) -> userRegistry.enterRoom(command.getUserId(), new UserName(command.getUserName())))
+                .toMessage(EnterRoom.class, (EnterRoom command) -> userRegistry.enterRoom(command.getUserId(), command.getUserName()))
                 .toMessage(RemoteClientDisconnected.class, (RemoteClientDisconnected msg) -> userRegistry.leaveTheRoom(msg.getRemoteClientId()))
                 .toMessage(HostGotShutdown.class, (HostGotShutdown msg) -> userRegistry.removeAllUsers())
                 .subscriberName("user registry");

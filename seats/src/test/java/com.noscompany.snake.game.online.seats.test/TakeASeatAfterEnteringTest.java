@@ -1,31 +1,34 @@
-package com.noscompany.snake.game.online.playground.test.after.entering;
+package com.noscompany.snake.game.online.seats.test;
 
 import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
+import com.noscompany.snake.game.online.seats.test.commons.AfterEnteringRoom;
+import com.noscompany.snake.game.online.seats.test.commons.SeatsTestSetup;
 import org.junit.Assert;
 import org.junit.Test;
 
 import static com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat.seatAlreadyTaken;
 import static org.junit.Assert.assertEquals;
 
-public class TakeASeatTest extends ActorEnteredTheRoomSetup {
+public class TakeASeatAfterEnteringTest extends AfterEnteringRoom {
 
     @Test
     public void actorShouldTakeAFreeLobbySeat() {
 //        GIVEN that the actor did not take a seat
-        assert !playground.userIsSitting(actorId);
+        assert !seats.userIsSitting(actorId);
 //        WHEN he tries to take any free seat
         var freeSeatNumber = freeSeatNumber();
-        var result = playground.takeASeat(actorId, freeSeatNumber);
+        var result = seats.takeOrChangeSeat(actorId, freeSeatNumber);
 //        THEN he succeeds
-        var expected = success(playerTookASeat(actorId, actorName.getName(), freeSeatNumber));
+        var expected = success(playerTookASeat(actorId, actorName, freeSeatNumber));
         Assert.assertEquals(expected, result);
     }
 
-    private PlayerTookASeat playerTookASeat(UserId actorId, String userName, PlayerNumber playerNumber) {
-        return new PlayerTookASeat(actorId, userName, playerNumber, lobbyState());
+    private PlayerTookASeat playerTookASeat(UserId actorId, UserName userName, PlayerNumber playerNumber) {
+        return new PlayerTookASeat(actorId, userName, playerNumber, seats.getAdminId().get(), seats.toDto());
     }
 
     @Test
@@ -34,23 +37,9 @@ public class TakeASeatTest extends ActorEnteredTheRoomSetup {
         var takenSeatNumber = freeSeatNumber();
         assert isSuccess(takeASeatWithRandomUser(takenSeatNumber));
 //        WHEN the actor tries to take this taken seat
-        var result = playground.takeASeat(actorId, takenSeatNumber);
+        var result = seats.takeOrChangeSeat(actorId, takenSeatNumber);
 //        THEN he fails due to seat being already taken
         var expected = failure(seatAlreadyTaken(actorId));
         Assert.assertEquals(expected, result);
-    }
-
-    @Test
-    public void userShouldFailToTakeAFreeSeatIfGameIsRunning() {
-//        GIVEN that the actor took a seat
-        assert isSuccess(playground.takeASeat(actorId, freeSeatNumber()));
-//        and game is running
-        playground.startGame(actorId);
-        assert gameIsRunning();
-//        WHEN some other user tries to take the seat
-        var result = someRandomUserTakesASeat();
-//        THEN he fails because game is running
-        var expected = failure(FailedToTakeASeat.gameAlreadyRunning(result.getLeft().getUserId()));
-        assertEquals(expected, result);
     }
 }

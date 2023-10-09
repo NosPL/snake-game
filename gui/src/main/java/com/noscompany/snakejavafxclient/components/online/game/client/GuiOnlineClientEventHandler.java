@@ -6,11 +6,8 @@ import com.noscompany.snake.game.online.contract.messages.game.options.FailedToC
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
-import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
-import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
-import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
-import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
-import com.noscompany.snake.game.online.contract.messages.playground.SendPlaygroundStateToRemoteClient;
+import com.noscompany.snake.game.online.contract.messages.seats.*;
+import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundStateToRemoteClient;
 import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserLeftRoom;
@@ -23,6 +20,7 @@ import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButt
 import com.noscompany.snakejavafxclient.components.commons.message.MessageController;
 import com.noscompany.snakejavafxclient.components.commons.game.grid.GameGridController;
 import com.noscompany.snakejavafxclient.components.commons.scoreboard.ScoreboardController;
+import io.vavr.control.Option;
 import javafx.application.Platform;
 import lombok.AllArgsConstructor;
 
@@ -57,7 +55,7 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     public void handle(PlayerTookASeat event) {
         Platform.runLater(() -> {
             gameGridController.handle(event);
-            update(event.getPlaygroundState());
+            lobbySeatsController.update(event.getSeats(), Option.of(event.getAdminId()));
         });
     }
 
@@ -70,7 +68,7 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     public void handle(PlayerFreedUpASeat event) {
         Platform.runLater(() -> {
             gameGridController.handle(event);
-            update(event.getPlaygroundState());
+            lobbySeatsController.update(event.getSeats(), event.getAdminId());
         });
     }
 
@@ -181,7 +179,7 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     }
 
     @Override
-    public void handle(SendPlaygroundStateToRemoteClient command) {
+    public void handle(InitializePlaygroundStateToRemoteClient command) {
         Platform.runLater(() -> {
             gameGridController.handle(command);
             update(command.getPlaygroundState());
@@ -221,6 +219,11 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
     }
 
     @Override
+    public void handle(InitializeSeatsToRemoteClient command) {
+        lobbySeatsController.update(command.getSeats(), command.getAdminIdOption());
+    }
+
+    @Override
     public void handle(FailedToFreeUpSeat event) {
         Platform.runLater(() -> {
         });
@@ -239,8 +242,7 @@ public class GuiOnlineClientEventHandler implements ClientEventHandler {
 
     private void update(PlaygroundState playgroundState) {
         onlineGameOptionsController.update(playgroundState.getGameOptions());
-        lobbySeatsController.update(playgroundState.getSeats());
-        scoreboardController.update(playgroundState);
+        scoreboardController.update(playgroundState.getGameState());
         messageController.clear();
     }
 }

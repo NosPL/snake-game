@@ -9,12 +9,10 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameSpeed
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Walls;
 import com.noscompany.snake.game.online.contract.messages.host.HostGotShutdown;
-import com.noscompany.snake.game.online.contract.messages.seats.FreeUpASeat;
-import com.noscompany.snake.game.online.contract.messages.seats.TakeASeat;
-import com.noscompany.snake.game.online.contract.messages.server.events.NewRemoteClientConnected;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
 import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
-import com.noscompany.snake.game.online.contract.messages.user.registry.UserLeftRoom;
-import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
+import io.vavr.control.Option;
 import snake.game.gameplay.GameplayCreator;
 
 import java.util.HashMap;
@@ -27,7 +25,7 @@ public final class PlaygroundConfiguration {
         var gameCreatorAdapter = new GameCreatorAdapter(gameplayCreator, gameplayEventHandler);
         var gameOptions = new GameOptions(GridSize._10x10, GameSpeed.x1, Walls.ON);
         var snakeGame = gameCreatorAdapter.createGame(Set.of(), gameOptions);
-        var playground = new Playground(new HashMap<>(), SeatsCreator.create(), gameCreatorAdapter, gameOptions, snakeGame);
+        var playground = new Playground(new HashMap<>(), Option.none(), gameCreatorAdapter, gameOptions, snakeGame);
         var subscription = createSubscription(playground);
         messagePublisher.subscribe(subscription);
         return playground;
@@ -36,14 +34,11 @@ public final class PlaygroundConfiguration {
     private Subscription createSubscription(Playground playground) {
         return new Subscription()
 //                user registry events
-                .toMessage(NewUserEnteredRoom.class, (NewUserEnteredRoom msg) -> playground.newUserEnteredRoom(msg.getUserId(), new UserName(msg.getUserName())))
-                .toMessage(UserLeftRoom.class, (UserLeftRoom msg) -> playground.userLeftRoom(msg.getUserId()))
-//                seats commands
-                .toMessage(FreeUpASeat.class, (FreeUpASeat msg) -> playground.freeUpASeat(msg.getUserId()))
-                .toMessage(TakeASeat.class, (TakeASeat msg) -> playground.takeASeat(msg.getUserId(), msg.getPlayerNumber()))
-//                game options
+                .toMessage(NewUserEnteredRoom.class, (NewUserEnteredRoom event) -> playground.newUserEnteredRoom(event.getUserId()))
+//                seats events
+                .toMessage(PlayerTookASeat.class, (PlayerTookASeat event) -> playground.playerTookASeat(event.getUserId(), event.getPlayerNumber(), event.getAdminId()))
+//                game options commands
                 .toMessage(ChangeGameOptions.class, (ChangeGameOptions msg) -> playground.changeGameOptions(msg.getUserId(), msg.getOptions()))
-                .toMessage(TakeASeat.class, (TakeASeat msg) -> playground.takeASeat(msg.getUserId(), msg.getPlayerNumber()))
 //                gameplay commands
                 .toMessage(StartGame.class, (StartGame msg) -> playground.startGame(msg.getUserId()))
                 .toMessage(ChangeSnakeDirection.class, (ChangeSnakeDirection msg) -> playground.changeSnakeDirection(msg.getUserId(), msg.getDirection()))

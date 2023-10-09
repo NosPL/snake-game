@@ -21,7 +21,7 @@ public final class ChatConfiguration {
         return new Subscription()
                 .subscriberName("chat")
                 .toMessage(SendChatMessage.class, (SendChatMessage command) -> chat.sendMessage(command.getUserId(), command.getMessageContent()))
-                .toMessage(NewUserEnteredRoom.class, (NewUserEnteredRoom event) -> chat.newUserEnteredRoom(event.getUserId(), new UserName(event.getUserName())))
+                .toMessage(NewUserEnteredRoom.class, (NewUserEnteredRoom event) -> chat.newUserEnteredRoom(event.getUserId(), event.getUserName()))
                 .toMessage(UserLeftRoom.class, (UserLeftRoom event) -> chat.userLeftRoom(event.getUserId()));
     }
 }

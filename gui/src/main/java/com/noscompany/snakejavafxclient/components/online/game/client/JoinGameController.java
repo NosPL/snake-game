@@ -6,6 +6,7 @@ import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import com.noscompany.snake.game.online.client.StartingClientError;
 import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
@@ -55,7 +56,8 @@ public class JoinGameController extends AbstractController {
 
     public void enterRoom() {
         errorMessageLabel.setText("connection established, entering room...");
-        getOrCreateSnakeOnlineClient().enterTheRoom(playerNameTextField.getText());
+        var userNameString = playerNameTextField.getText();
+        getOrCreateSnakeOnlineClient().enterTheRoom(new UserName(userNameString));
     }
 
     public void handle(NewUserEnteredRoom event) {
@@ -126,8 +128,8 @@ public class JoinGameController extends AbstractController {
         errorMessageLabel.setText(message);
     }
 
-    private boolean nameOfNewlyConnectedUserEqualsNameTypedInTextField(String userName) {
-        return userName.equals(playerNameTextField.getText());
+    private boolean nameOfNewlyConnectedUserEqualsNameTypedInTextField(UserName userName) {
+        return userName.getName().equals(playerNameTextField.getText());
     }
 
     private String getErrorMessage(FailedToEnterRoom event) {

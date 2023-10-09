@@ -7,6 +7,7 @@ import com.noscompany.snake.game.online.client.StartingClientError;
 import com.noscompany.snake.game.online.client.internal.state.ClientState;
 import com.noscompany.snake.game.online.client.internal.state.connected.ConnectedClientCreator;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -23,7 +24,7 @@ public class Disconnected implements ClientState {
     }
 
     @Override
-    public ClientState enterTheRoom(String userName) {
+    public ClientState enterTheRoom(UserName userName) {
         eventHandler.handle(SendClientMessageError.CLIENT_NOT_CONNECTED);
         return this;
     }

@@ -3,10 +3,12 @@ package com.noscompany.snake.game.online.contract.messages.seats;
 import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
-import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
+import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Value;
+
+import java.util.Set;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -16,7 +18,7 @@ import static lombok.AccessLevel.PRIVATE;
 public class PlayerFreedUpASeat implements OnlineMessage {
     MessageType messageType = MessageType.PLAYER_FREED_UP_SEAT;
     UserId userId;
-    String userName;
     PlayerNumber freedUpPlayerNumber;
-    PlaygroundState playgroundState;
+    Option<AdminId> adminId;
+    Set<Seat> seats;
 }

@@ -9,59 +9,64 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.commands.*;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.game.options.ChangeGameOptions;
-import com.noscompany.snake.game.online.contract.messages.seats.FreeUpASeat;
-import com.noscompany.snake.game.online.contract.messages.seats.TakeASeat;
-import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
-import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
-import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
-import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
+import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundStateToRemoteClient;
+import com.noscompany.snake.game.online.contract.messages.seats.*;
+import com.noscompany.snake.game.online.contract.messages.server.events.ServerGotShutdown;
 import com.noscompany.snake.game.online.contract.messages.user.registry.*;
 import io.vavr.control.Option;
 import lombok.SneakyThrows;
 import org.junit.Test;
-
-import java.util.Collection;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.IntStream;
 
 public class SerializationTest extends BaseTestClass {
 
     @Test
     @SneakyThrows
     public void serialize() {
-        var userId = new UserId(UUID.randomUUID().toString());
-        testSerializationOf(new SendChatMessage(userId, "some message"));
-        testSerializationOf(new CancelGame(userId));
-        testSerializationOf(FailedToCancelGame.gameNotStarted(userId));
-        testSerializationOf(new ChangeSnakeDirection(userId, Direction.DOWN));
-        testSerializationOf(FailedToChangeSnakeDirection.gameNotStarted(userId));
-        testSerializationOf(new PauseGame(userId));
-        testSerializationOf(FailedToPauseGame.userNotInTheRoom(userId));
-        testSerializationOf(new ResumeGame(userId));
-        testSerializationOf(FailedToResumeGame.gameNotStarted(userId));
-        testSerializationOf(new StartGame(userId));
-        testSerializationOf(FailedToStartGame.gameIsAlreadyRunning(userId));
-        testSerializationOf(new ChangeGameOptions(userId, GridSize._10x10, GameSpeed.x1, Walls.OFF));
-        testSerializationOf(new FreeUpASeat(userId));
-        testSerializationOf(new TakeASeat(userId, PlayerNumber._1));
-        testSerializationOf(new EnterRoom(userId, "some name"));
-        testSerializationOf(new UserSentChatMessage(userId, new UserName("some name"), "some content"));
-        testSerializationOf(FailedToSendChatMessage.userIsNotInTheRoom(userId));
-        testSerializationOf(FailedToChangeGameOptions.gameIsAlreadyRunning(userId));
-        testSerializationOf(FailedToFreeUpSeat.userDidNotTakeASeat(userId));
-        testSerializationOf(FailedToStartGame.gameIsAlreadyRunning(userId));
-        testSerializationOf(FailedToTakeASeat.seatAlreadyTaken(userId));
-        testSerializationOf(new GameOptionsChanged(lobbyState()));
-        testSerializationOf(new PlayerFreedUpASeat(userId, "some name", PlayerNumber._1, lobbyState()));
-        testSerializationOf(new PlayerTookASeat(userId, "some name", PlayerNumber._1, lobbyState()));
-        testSerializationOf(FailedToEnterRoom.userNameAlreadyInUse(userId));
-        testSerializationOf(new NewUserEnteredRoom(userId, "some name", randomUserNames()));
-        testSerializationOf(new UserLeftRoom(userId, new UserName("some name"), Set.of(new UserName("a"), new UserName("b"), new UserName("c"))));
-        testSerializationOf(new UserLeftRoom(userId, new UserName("some name"), Set.of(new UserName("a"), new UserName("b"), new UserName("c"))));
-    }
+//        server events
+        testSerializationOf(new ServerGotShutdown());
 
-    private Collection<UserName> randomUserNames() {
-        return IntStream.range(0, 5).mapToObj(i -> UserName.random()).toList();
+//        user registry messages
+        testSerializationOf(new EnterRoom(UserId.random(), UserName.random()));
+        testSerializationOf(new NewUserEnteredRoom(UserId.random(), UserName.random(), randomUserNames()));
+        testSerializationOf(FailedToEnterRoom.userNameAlreadyInUse(UserId.random()));
+        testSerializationOf(new UserLeftRoom(UserId.random(), UserName.random(), randomUserNames()));
+
+//        game options messages
+        testSerializationOf(new InitializePlaygroundStateToRemoteClient(UserId.random(), playgroundState()));
+        testSerializationOf(new ChangeGameOptions(UserId.random(), GridSize._10x10, GameSpeed.x1, Walls.OFF));
+        testSerializationOf(new GameOptionsChanged(playgroundState()));
+        testSerializationOf(FailedToChangeGameOptions.gameIsAlreadyRunning(UserId.random()));
+
+//        seats messages
+        testSerializationOf(new InitializeSeatsToRemoteClient(UserId.random(), Option.of(AdminId.random()), randomSeats()));
+        testSerializationOf(new TakeASeat(UserId.random(), PlayerNumber._1));
+        testSerializationOf(new PlayerTookASeat(UserId.random(), UserName.random(), PlayerNumber._1, AdminId.random(),  randomSeats()));
+        testSerializationOf(FailedToTakeASeat.seatAlreadyTaken(UserId.random()));
+        testSerializationOf(new FreeUpASeat(UserId.random()));
+        testSerializationOf(new PlayerFreedUpASeat(UserId.random(), PlayerNumber._1, Option.of(AdminId.random()), randomSeats()));
+        testSerializationOf(FailedToFreeUpSeat.userDidNotTakeASeat(UserId.random()));
+//        gameplay messages
+        testSerializationOf(new StartGame(UserId.random()));
+        testSerializationOf(new ChangeSnakeDirection(UserId.random(), Direction.DOWN));
+        testSerializationOf(new CancelGame(UserId.random()));
+        testSerializationOf(new PauseGame(UserId.random()));
+        testSerializationOf(new ResumeGame(UserId.random()));
+        testSerializationOf(gameStartCountdown());
+        testSerializationOf(gameStarted());
+        testSerializationOf(snakesMoved());
+        testSerializationOf(gameFinished());
+        testSerializationOf(new GamePaused());
+        testSerializationOf(new GameResumed());
+        testSerializationOf(new GameCancelled());
+        testSerializationOf(FailedToStartGame.gameIsAlreadyRunning(UserId.random()));
+        testSerializationOf(FailedToCancelGame.gameNotStarted(UserId.random()));
+        testSerializationOf(FailedToChangeSnakeDirection.gameNotStarted(UserId.random()));
+        testSerializationOf(FailedToPauseGame.userNotInTheRoom(UserId.random()));
+        testSerializationOf(FailedToResumeGame.gameNotStarted(UserId.random()));
+
+//        chat messages
+        testSerializationOf(new SendChatMessage(UserId.random(), "some message"));
+        testSerializationOf(new UserSentChatMessage(UserId.random(), UserName.random(), "some content"));
+        testSerializationOf(FailedToSendChatMessage.userIsNotInTheRoom(UserId.random()));
     }
 }

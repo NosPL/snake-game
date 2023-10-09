@@ -25,7 +25,7 @@ final class MessagePublisherAdapter {
     }
 
     public void enterRoom(UserName userName) {
-        messagePublisher.publishMessage(new EnterRoom(hostId, userName.getName()));
+        messagePublisher.publishMessage(new EnterRoom(hostId, userName));
     }
 
     public void sendChatMessage(String messageContent) {
@@ -66,6 +66,6 @@ final class MessagePublisherAdapter {
 
     public void shutDownHost() {
         messagePublisher.publishMessage(new HostGotShutdown(hostId));
-//        messagePublisher.shutdown();
+        messagePublisher.shutdown();
     }
 }

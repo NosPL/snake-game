@@ -2,6 +2,7 @@ package com.noscompany.snake.game.online.client;
 
 import com.noscompany.snake.game.online.client.internal.state.ClientState;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -14,7 +15,7 @@ class SnakeOnlineClientImpl implements SnakeOnlineClient {
     }
 
     @Override
-    public void enterTheRoom(String userName) {
+    public void enterTheRoom(UserName userName) {
         clientState = clientState.enterTheRoom(userName);
     }
 

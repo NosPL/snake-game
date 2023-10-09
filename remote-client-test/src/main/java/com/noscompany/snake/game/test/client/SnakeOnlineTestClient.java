@@ -5,6 +5,7 @@ import com.noscompany.snake.game.online.client.HostAddress;
 import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import com.noscompany.snake.game.online.client.StartingClientError;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import com.noscompany.snake.game.online.host.server.Server;
 import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,7 @@ class SnakeOnlineTestClient implements SnakeOnlineClient {
     }
     
     @Override
-    public void enterTheRoom(String userName) {
+    public void enterTheRoom(UserName userName) {
         server
                 .start(serverParams())
                 .peek(serverStarted -> snakeOnlineClient.enterTheRoom(userName))

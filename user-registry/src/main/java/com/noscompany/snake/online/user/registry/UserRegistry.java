@@ -38,7 +38,7 @@ public class UserRegistry {
         if (!userNameIsValid(userName.getName()))
             return Either.left(FailedToEnterRoom.incorrectUserNameFormat(userId));
         userNamesById.put(userId, userName);
-        return Either.right(new NewUserEnteredRoom(userId, userName.getName(), getUserNames()));
+        return Either.right(new NewUserEnteredRoom(userId, userName, getUserNames()));
     }
 
     private boolean userNameIsValid(String userName) {

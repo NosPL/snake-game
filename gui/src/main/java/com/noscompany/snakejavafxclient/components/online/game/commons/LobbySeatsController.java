@@ -1,6 +1,8 @@
 package com.noscompany.snakejavafxclient.components.online.game.commons;
 
-import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
+import com.noscompany.snake.game.online.contract.messages.seats.AdminId;
+import com.noscompany.snake.game.online.contract.messages.seats.Seat;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import com.noscompany.snakejavafxclient.utils.SnakesColors;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
 import io.vavr.control.Option;
@@ -74,16 +76,16 @@ public class LobbySeatsController extends AbstractController {
         freeUpASeatAction.run();
     }
 
-    public void update(Set<PlaygroundState.Seat> seats) {
+    public void update(Set<Seat> seats, Option<AdminId> adminId) {
         resetSeatsLabels();
-        updateSeats(seats);
+        updateSeats(seats, adminId);
     }
 
-    private void updateSeats(Set<PlaygroundState.Seat> seats) {
-        seats.forEach(seat -> seatTook(seat.getUserName(), seat.getPlayerNumber(), seat.isAdmin()));
+    private void updateSeats(Set<Seat> seats, Option<AdminId> adminId) {
+        seats.forEach(seat -> seatTook(seat.getUserName(), seat.getPlayerNumber(), seat.isAdmin(adminId)));
     }
 
-    private void seatTook(Option<String> userName, PlayerNumber playerNumber, boolean isAdmin) {
+    private void seatTook(Option<UserName> userName, PlayerNumber playerNumber, boolean isAdmin) {
         findSeatLabelBy(playerNumber).setText(format(userName, isAdmin));
     }
 
@@ -100,8 +102,9 @@ public class LobbySeatsController extends AbstractController {
             throw new RuntimeException("Cannot find seat label for player number: " + playerNumber);
     }
 
-    private String format(Option<String> userName, boolean isAdmin) {
+    private String format(Option<UserName> userName, boolean isAdmin) {
         return userName
+                .map(UserName::getName)
                 .map(name -> name + adminSuffix(isAdmin))
                 .getOrElse("");
     }

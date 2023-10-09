@@ -14,5 +14,5 @@ import static lombok.AccessLevel.PRIVATE;
 public class EnterRoom implements OnlineMessage {
     MessageType messageType = MessageType.ENTER_THE_ROOM;
     UserId userId;
-    String userName;
+    UserName userName;
 }

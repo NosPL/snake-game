@@ -5,13 +5,11 @@ import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
+import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
-import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
-import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
-import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
-import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
-import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.*;
 import com.noscompany.snake.game.online.contract.messages.server.events.FailedToStartServer;
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerFailedToSendMessageToRemoteClients;
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerGotShutdown;
@@ -27,42 +25,57 @@ import com.noscompany.snakejavafxclient.components.online.game.commons.ChatContr
 import com.noscompany.snakejavafxclient.components.online.game.commons.JoinedUsersController;
 import com.noscompany.snakejavafxclient.components.online.game.commons.LobbySeatsController;
 import com.noscompany.snakejavafxclient.components.online.game.commons.OnlineGameOptionsController;
+import io.vavr.control.Option;
 import javafx.application.Platform;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
+import java.util.Set;
+
 @AllArgsConstructor
 class GuiHostEventHandler {
-    @NonNull private final SetupHostController setupHostController;
-    @NonNull private final ServerController serverController;
-    @NonNull private final OnlineGameOptionsController onlineGameOptionsController;
-    @NonNull private final LobbySeatsController lobbySeatsController;
-    @NonNull private final GameGridController gameGridController;
-    @NonNull private final ChatController chatController;
-    @NonNull private final JoinedUsersController joinedUsersController;
-    @NonNull private final MessageController messageController;
-    @NonNull private final ScoreboardController scoreboardController;
-    @NonNull private final ScprButtonsController scprButtonsController;
-    @NonNull private final UserId hostId;
+    @NonNull
+    private final SetupHostController setupHostController;
+    @NonNull
+    private final ServerController serverController;
+    @NonNull
+    private final OnlineGameOptionsController onlineGameOptionsController;
+    @NonNull
+    private final LobbySeatsController lobbySeatsController;
+    @NonNull
+    private final GameGridController gameGridController;
+    @NonNull
+    private final ChatController chatController;
+    @NonNull
+    private final JoinedUsersController joinedUsersController;
+    @NonNull
+    private final MessageController messageController;
+    @NonNull
+    private final ScoreboardController scoreboardController;
+    @NonNull
+    private final ScprButtonsController scprButtonsController;
+    @NonNull
+    private final UserId hostId;
 
     public void gameOptionsChanged(GameOptionsChanged event) {
         Platform.runLater(() -> {
             gameGridController.handle(event);
-            update(event.getPlaygroundState());
+            update(event.getPlaygroundState().getGameOptions(),
+                    event.getPlaygroundState().getGameState());
         });
     }
 
     public void playerTookASeat(PlayerTookASeat event) {
         Platform.runLater(() -> {
             gameGridController.handle(event);
-            update(event.getPlaygroundState());
+            update(event.getSeats(), Option.of(event.getAdminId()));
         });
     }
 
     public void playerFreedUpASeat(PlayerFreedUpASeat event) {
         Platform.runLater(() -> {
             gameGridController.handle(event);
-            update(event.getPlaygroundState());
+            update(event.getSeats(), event.getAdminId());
         });
     }
 
@@ -194,10 +207,9 @@ class GuiHostEventHandler {
         Platform.runLater(() -> SnakeOnlineHostStage.get().close());
     }
 
-    private void update(PlaygroundState playgroundState) {
-        onlineGameOptionsController.update(playgroundState.getGameOptions());
-        lobbySeatsController.update(playgroundState.getSeats());
-        scoreboardController.update(playgroundState);
+    private void update(GameOptions gameOptions, GameState gameState) {
+        onlineGameOptionsController.update(gameOptions);
+        scoreboardController.update(gameState);
         messageController.clear();
     }
 
@@ -214,6 +226,10 @@ class GuiHostEventHandler {
             serverController.serverStarted(serverStarted.getServerParams());
             setupHostController.handle(serverStarted);
         });
+    }
+
+    private void update(Set<Seat> seats, Option<AdminId> adminId) {
+        lobbySeatsController.update(seats, adminId);
     }
 
     Subscription createSubscription() {

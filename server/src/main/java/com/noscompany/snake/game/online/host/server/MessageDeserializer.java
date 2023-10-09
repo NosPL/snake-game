@@ -11,6 +11,7 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.contract.messages.user.registry.EnterRoom;
 import com.noscompany.snake.game.online.contract.messages.seats.FreeUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.TakeASeat;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import io.vavr.control.Try;
 import lombok.extern.slf4j.Slf4j;
 
@@ -60,7 +61,7 @@ class MessageDeserializer {
 
     private OnlineMessage toEnterTheRoom(UserId remoteClientId, DocumentContext parsedMessage) {
         String userName = parsedMessage.read("$.userName");
-        return new EnterRoom(remoteClientId, userName);
+        return new EnterRoom(remoteClientId, new UserName(userName));
     }
 
     private OnlineMessage changeGameOptions(UserId remoteClientId, DocumentContext parsedMessage) {

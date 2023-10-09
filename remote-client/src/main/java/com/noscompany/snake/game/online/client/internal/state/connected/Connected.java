@@ -14,6 +14,7 @@ import com.noscompany.snake.game.online.contract.messages.seats.FreeUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.TakeASeat;
 import com.noscompany.snake.game.online.contract.messages.user.registry.EnterRoom;
 import com.noscompany.snake.game.online.client.internal.state.not.connected.Disconnected;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import lombok.AllArgsConstructor;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -34,7 +35,7 @@ public class Connected implements ClientState {
     }
 
     @Override
-    public ClientState enterTheRoom(String userName) {
+    public ClientState enterTheRoom(UserName userName) {
         return messageSender
                 .send(new EnterRoom(userId.get(), userName))
                 .map(this::handleError)

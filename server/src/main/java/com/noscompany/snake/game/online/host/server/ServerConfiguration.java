@@ -7,13 +7,11 @@ import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessa
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
+import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundStateToRemoteClient;
+import com.noscompany.snake.game.online.contract.messages.seats.*;
 import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserLeftRoom;
-import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
-import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
-import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
-import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
 import com.noscompany.snake.game.online.contract.messages.host.HostGotShutdown;
 import com.noscompany.snake.game.online.contract.messages.server.commands.StartServer;
 import com.noscompany.snake.game.online.contract.object.mapper.ObjectMapperCreator;
@@ -42,9 +40,13 @@ public class ServerConfiguration {
 //                chat events
                 .toMessage(UserSentChatMessage.class, (UserSentChatMessage msg) -> server.sendToClientWithGivenId(msg.getUserId(), msg))
                 .toMessage(FailedToSendChatMessage.class, (FailedToSendChatMessage msg) -> server.sendToClientWithGivenId(msg.getUserId(), msg))
-//                game options events
+//                playground commands
+                .toMessage(InitializePlaygroundStateToRemoteClient.class, (InitializePlaygroundStateToRemoteClient msg) -> server.sendToClientWithGivenId(msg.getUserId(), msg))
+//                playground events
                 .toMessage(GameOptionsChanged.class, server::sendToAllClients)
                 .toMessage(FailedToChangeGameOptions.class, (FailedToChangeGameOptions msg) -> server.sendToClientWithGivenId(msg.getUserId(), msg))
+//                seats commands
+                .toMessage(InitializeSeatsToRemoteClient.class, (InitializeSeatsToRemoteClient msg) -> server.sendToClientWithGivenId(msg.getUserId(), msg))
 //                seats events
                 .toMessage(PlayerTookASeat.class, server::sendToAllClients)
                 .toMessage(FailedToTakeASeat.class, (FailedToTakeASeat msg) -> server.sendToClientWithGivenId(msg.getUserId(), msg))

@@ -8,19 +8,32 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameFi
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStartCountdown;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStarted;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.SnakesMoved;
-import com.noscompany.snake.game.online.contract.messages.playground.SendPlaygroundStateToRemoteClient;
+import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundStateToRemoteClient;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
+import io.vavr.API;
+import io.vavr.control.Option;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class GameGridController extends AbstractController {
     @FXML
     private VBox gridVbox;
     private GameGrid gameGrid;
+    private Option<GridSize> gridSizeOption;
+    private Option<Walls> wallsOption;
 
-    public void handle(SendPlaygroundStateToRemoteClient event) {
+    @Override
+    protected void doInitialize(URL location, ResourceBundle resources) {
+        super.doInitialize(location, resources);
+        initializeGrid(GridSize._10x10, Walls.ON);
+    }
+
+    public void handle(InitializePlaygroundStateToRemoteClient event) {
         if (gameGrid == null)
             initializeGrid(
                     event.getPlaygroundState().getGameState().getGridSize(),
@@ -30,19 +43,13 @@ public class GameGridController extends AbstractController {
     }
 
     public void handle(PlayerTookASeat event) {
-            initializeGrid(
-                    event.getPlaygroundState().getGameState().getGridSize(),
-                    event.getPlaygroundState().getGameState().getWalls());
-        gameGrid.update(
-                event.getPlaygroundState().getGameState().getSnakes());
+        gridSizeOption.peek(gridSize ->
+                wallsOption.peek(walls -> initializeGrid(gridSize, walls)));
     }
 
     public void handle(PlayerFreedUpASeat event) {
-            initializeGrid(
-                    event.getPlaygroundState().getGameState().getGridSize(),
-                    event.getPlaygroundState().getGameState().getWalls());
-        gameGrid.update(
-                event.getPlaygroundState().getGameState().getSnakes());
+        gridSizeOption.peek(gridSize ->
+                wallsOption.peek(walls -> initializeGrid(gridSize, walls)));
     }
 
     public void handle(GameOptionsChanged event) {
@@ -90,5 +97,7 @@ public class GameGridController extends AbstractController {
         gridVbox.getChildren().clear();
         gameGrid = GameGrid.Creator.createGrid(gridSize, walls);
         gridVbox.getChildren().add(gameGrid);
+        this.gridSizeOption = Option.of(gridSize);
+        this.wallsOption = Option.of(walls);
     }
 }

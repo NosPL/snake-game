@@ -1,18 +1,18 @@
 package com.noscompany.snake.game.online.playground.test.after.entering;
 
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToPauseGame;
+import com.noscompany.snake.game.online.contract.messages.seats.AdminId;
+import com.noscompany.snake.game.online.playground.test.commons.PlaygroundTestSetup;
 import io.vavr.control.Option;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class PausingGameTest extends ActorEnteredTheRoomSetup {
+public class PausingGameTest extends PlaygroundTestSetup {
 
     @Test
-    public void pausingGameShouldNotReturnFailure() {
-//        GIVEN that actor took a seat
-        assert isSuccess(playground.takeASeat(actorId, freeSeatNumber()));
-//        AND actor is the admin
-        assert playground.userIsAdmin(actorId);
+    public void pausingGameHappyPath() {
+//        GIVEN that actor took a seat as admin
+        playground.playerTookASeat(actorId, anyPlayerNumber(), AdminId.of(actorId));
 //        AND game is started
         isSuccess(playground.startGame(actorId));
 //        WHEN the actor tries to pause game
@@ -23,21 +23,9 @@ public class PausingGameTest extends ActorEnteredTheRoomSetup {
     }
 
     @Test
-    public void actorShouldFailToPauseGameWithoutTakingASeat() {
-//        WHEN the actor tries to pause game
-        var result = playground.pauseGame(actorId);
-//        THEN he fails due to not taking a seat
-        var expected = Option.of(FailedToPauseGame.playerDidNotTakeASeat(actorId));
-        Assert.assertEquals(expected, result);
-    }
-
-    @Test
     public void actorShouldFailToPauseGameWithoutBeingAdmin() {
-//        GIVEN that someone else is an admin
-        someRandomUserTakesASeat();
-        adminIsChosen();
-//        AND actor took a seat
-        assert isSuccess(playground.takeASeat(actorId, freeSeatNumber()));
+//        GIVEN that actor took a seat but not as admin
+        playground.playerTookASeat(actorId, anyPlayerNumber(), AdminId.random());
 //        WHEN the actor tries to pause game
         var result = playground.pauseGame(actorId);
 //        THEN he fails due to not being an admin
@@ -47,10 +35,8 @@ public class PausingGameTest extends ActorEnteredTheRoomSetup {
 
     @Test
     public void actorShouldFailToPauseGameWhenGameIsNotStarted() {
-//        GIVEN that actor took a seat
-        assert isSuccess(playground.takeASeat(actorId, freeSeatNumber()));
-//        AND actor is the admin
-        assert playground.userIsAdmin(actorId);
+//        GIVEN that actor took a seat as admin
+        playground.playerTookASeat(actorId, anyPlayerNumber(), AdminId.of(actorId));
 //        WHEN actor tries to pause game
         var result = playground.pauseGame(actorId);
 //        THEN he fails because game is not running

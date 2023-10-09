@@ -30,6 +30,7 @@
         <module>chat</module>
         <module>user-registry</module>
         <module>playground</module>
+        <module>seats</module>
     </modules>
 
     <dependencies>

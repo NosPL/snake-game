@@ -7,12 +7,13 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameSpeed
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Walls;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToStartGame;
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
-import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState.Seat;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import com.noscompany.snake.game.online.playground.Playground;
 import com.noscompany.snake.game.online.playground.PlaygroundConfiguration;
 import io.vavr.control.Either;
+import io.vavr.control.Option;
 import org.junit.Before;
 
 import java.util.stream.Stream;
@@ -29,8 +30,16 @@ public class PlaygroundTestSetup {
         userIdCounter = 0;
         userNameCounter = 0;
         playground = new PlaygroundConfiguration().createPlayground(new NullMessagePublisher(), new GameRunningEndlesslyAfterStartCreator());
-        actorId = randomUserId();
-        actorName = randomValidUserName();
+        actorId = UserId.random();
+        actorName = UserName.random();
+    }
+
+    protected PlayerNumber anyPlayerNumber() {
+        return Stream.of(PlayerNumber.values()).findAny().get();
+    }
+
+    protected boolean isSuccess(Option<FailedToStartGame> startGameResult) {
+        return startGameResult.isEmpty();
     }
 
     protected <L, R> Either<L, R> failure(L failure) {
@@ -41,42 +50,12 @@ public class PlaygroundTestSetup {
         return Either.right(success);
     }
 
-    protected <L, R> boolean isSuccess(Either<L, R> either) {
-        return either.isRight();
-    }
-
-    protected UserId randomUserId() {
-        return new UserId("id-" + userIdCounter++);
-    }
-
-    protected UserName randomValidUserName() {
-        return new UserName("name-" + userNameCounter++);
-    }
-
-    protected PlaygroundState lobbyState() {
+    protected PlaygroundState playgroundState() {
         return playground.getPlaygroundState();
     }
 
-    protected boolean gameIsRunning() {
-        return lobbyState().isGameRunning();
-    }
-
     protected GameOptions currentGameOptions() {
-        return lobbyState().getGameOptions();
-    }
-
-    protected PlayerNumber freeSeatNumber() {
-        return lobbyState()
-                .getSeats().stream()
-                .filter(seat -> !seat.isTaken())
-                .map(Seat::getPlayerNumber)
-                .findAny().get();
-    }
-
-    protected boolean adminIsChosen() {
-        return lobbyState()
-                .getSeats().stream()
-                .anyMatch(Seat::isAdmin);
+        return playgroundState().getGameOptions();
     }
 
     protected GameOptions newGameOptions() {

@@ -22,7 +22,7 @@ public final class EnteringRoomTest extends Setup {
 //        WHEN the actor tries to enter the room
         var result = userRegistry.enterRoom(actorId, actorName);
 //        THEN he succeeds
-        var expected = Either.right(new NewUserEnteredRoom(actorId, actorName.getName(), Set.of(actorName)));
+        var expected = Either.right(new NewUserEnteredRoom(actorId, actorName, Set.of(actorName)));
         Assert.assertEquals(expected, result);
     }
 

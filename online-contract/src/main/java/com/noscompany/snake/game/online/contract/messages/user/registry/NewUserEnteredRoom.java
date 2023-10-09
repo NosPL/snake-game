@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Value;
 
 import java.util.Collection;
+import java.util.Set;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -16,6 +17,6 @@ import static lombok.AccessLevel.PRIVATE;
 public class NewUserEnteredRoom implements OnlineMessage {
     MessageType messageType = MessageType.NEW_USER_ENTERED_ROOM;
     UserId userId;
-    String userName;
-    Collection<UserName> usersInTheRoom;
+    UserName userName;
+    Set<UserName> usersInTheRoom;
 }

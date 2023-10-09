@@ -1,12 +1,13 @@
 package com.noscompany.snake.game.online.client;
 
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 
 public interface SnakeOnlineClient {
 
     void connect(HostAddress hostAddress);
 
-    void enterTheRoom(String userName);
+    void enterTheRoom(UserName userName);
 
     void takeASeat(PlayerNumber playerNumber);
 

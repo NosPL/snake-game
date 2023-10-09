@@ -1,20 +1,20 @@
 package snake.game.gameplay.internal.runner;
 
-import lombok.RequiredArgsConstructor;
-import snake.game.gameplay.ports.GameplayEventHandler;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.CountdownTime;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameSpeed;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameCancelled;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameFinished;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.GamePaused;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameResumed;
+import lombok.RequiredArgsConstructor;
 import snake.game.gameplay.internal.logic.GameLogic;
+import snake.game.gameplay.ports.GameplayEventHandler;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.noscompany.snake.game.online.contract.messages.gameplay.events.GameCancelled.gameCancelled;
-import static com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStarted.gameStarted;
 import static com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStartCountdown.timeLeftToGameStartHasChanged;
+import static com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStarted.gameStarted;
 
 @RequiredArgsConstructor
 class GameTask implements Runnable {
@@ -67,7 +67,7 @@ class GameTask implements Runnable {
 
     private void cancelIfRequested() {
         if (cancelRequested.get()) {
-            eventHandler.handle(gameCancelled(getGameState()));
+            eventHandler.handle(new GameCancelled());
             shouldBeRunning = false;
         }
     }
