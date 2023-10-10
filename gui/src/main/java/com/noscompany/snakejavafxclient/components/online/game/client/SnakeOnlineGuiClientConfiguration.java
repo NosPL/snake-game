@@ -5,10 +5,7 @@ import com.noscompany.snake.game.online.client.SnakeOnlineClientConfiguration;
 import com.noscompany.snake.game.test.client.SnakeOnlineTestClientConfiguration;
 import com.noscompany.snakejavafxclient.ApplicationProfile;
 import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
-import com.noscompany.snakejavafxclient.components.online.game.commons.ChatController;
-import com.noscompany.snakejavafxclient.components.online.game.commons.KeyPressedHandler;
-import com.noscompany.snakejavafxclient.components.online.game.commons.LobbySeatsController;
-import com.noscompany.snakejavafxclient.components.online.game.commons.OnlineGameOptionsController;
+import com.noscompany.snakejavafxclient.components.online.game.commons.*;
 import com.noscompany.snakejavafxclient.utils.Controllers;
 
 class SnakeOnlineGuiClientConfiguration {
@@ -48,5 +45,8 @@ class SnakeOnlineGuiClientConfiguration {
         Controllers
                 .get(OnlineClientController.class)
                 .setSnakeOnlineClient(snakeOnlineClient);
+        SnakeOnlineClientStage
+                .get()
+                .setOnCloseRequest(w -> Controllers.get(FleetingMessageController.class).shutdown());
     }
 }

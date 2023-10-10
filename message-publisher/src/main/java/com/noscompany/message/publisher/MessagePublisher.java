@@ -1,12 +1,10 @@
 package com.noscompany.message.publisher;
 
-import io.vavr.control.Option;
-
 public interface MessagePublisher {
 
-    Option<Throwable> publishMessage(Object message);
+    void publishMessage(Object message);
 
-    Option<Throwable> subscribe(Subscription subscription);
+    void subscribe(Subscription subscription);
 
-    Option<Throwable> shutdown();
+    void shutdown();
 }

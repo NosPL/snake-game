@@ -22,10 +22,6 @@ class SnakeOnlineHostGuiConfiguration {
         var messagePublisherAdapter = new MessagePublisherAdapter(hostId, messagePublisher);
         var hostGuiEventHandler = new GuiHostEventHandlerCreator().create(hostId);
         messagePublisher.subscribe(hostGuiEventHandler.createSubscription());
-        snakeOnlineHostStage.setOnCloseRequest(windowEvent -> {
-            messagePublisherAdapter.shutDownHost();
-            Controllers.get(FleetingMessageController.class).shutdown();
-        });
         new SnakeOnlineHostDependencyConfigurator().configureDependencies(usersCountLimit, messagePublisher);
         setStage(snakeOnlineHostStage, messagePublisherAdapter);
         setControllers(messagePublisherAdapter);
@@ -37,6 +33,7 @@ class SnakeOnlineHostGuiConfiguration {
         Controllers.get(HostController.class).set(keyEventEventHandler);
         snakeOnlineHostStage.getScene().setOnKeyPressed(keyEventEventHandler);
         snakeOnlineHostStage.setOnCloseRequest(e -> {
+            Controllers.get(FleetingMessageController.class).shutdown();
             snakeOnlineHost.shutDownHost();
             SnakeOnlineHostStage.remove();
             GameModeSelectionStage.get().show();

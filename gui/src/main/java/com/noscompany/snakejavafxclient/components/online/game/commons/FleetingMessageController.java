@@ -46,7 +46,7 @@ public class FleetingMessageController extends AbstractController {
     @Override
     protected void doInitialize(URL location, ResourceBundle resources) {
         super.doInitialize(location, resources);
-        messageDuration = Duration.ofSeconds(3);
+        messageDuration = Duration.ofSeconds(5);
         executorService = Executors.newSingleThreadExecutor();
         currentTask = completedFuture(new Object());
     }

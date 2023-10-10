@@ -1,9 +1,5 @@
 package com.noscompany.message.publisher;
 
-import com.codahale.metrics.InstrumentedExecutorService;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.SharedMetricRegistries;
-import com.codahale.metrics.Slf4jReporter;
 import io.vavr.Tuple2;
 import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static com.codahale.metrics.Slf4jReporter.LoggingLevel.DEBUG;
 import static io.vavr.API.Tuple;
-import static java.util.concurrent.TimeUnit.MICROSECONDS;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.stream.Collectors.toMap;
 import static lombok.AccessLevel.PACKAGE;
 
@@ -39,10 +32,7 @@ final class SubscriberCreator {
         var handlerName = handlerName(subscription);
         var messageHandlersByMsgType = createMessageHandlers(subscription.getFunctions(), handlerName);
         var executorService = subscription.getExecutorService().getOrElse(executorServiceSupplier);
-        var metricRegistry = SharedMetricRegistries.getOrCreate(handlerName);
-        executorService = new InstrumentedExecutorService(executorService, metricRegistry, handlerName);
-        var reporter = createReporter(metricRegistry);
-        return Option.of(new Subscriber(handlerName, messagePublisher, messageHandlersByMsgType, executorService, reporter));
+        return Option.of(new Subscriber(handlerName, messagePublisher, messageHandlersByMsgType, executorService));
     }
 
     private String handlerName(Subscription subscription) {
@@ -56,14 +46,5 @@ final class SubscriberCreator {
                 .entrySet().stream()
                 .map(entry -> Tuple(entry.getKey(), new MessageHandler(entry.getValue(), handlerName)))
                 .collect(toMap(Tuple2::_1, Tuple2::_2));
-    }
-
-    private Slf4jReporter createReporter(MetricRegistry metricRegistry) {
-        return Slf4jReporter
-                .forRegistry(metricRegistry)
-                .withLoggingLevel(DEBUG)
-                .convertDurationsTo(MICROSECONDS)
-                .convertRatesTo(MILLISECONDS)
-                .build();
     }
 }

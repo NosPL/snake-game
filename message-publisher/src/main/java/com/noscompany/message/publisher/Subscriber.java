@@ -1,6 +1,5 @@
 package com.noscompany.message.publisher;
 
-import com.codahale.metrics.ScheduledReporter;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,7 +19,6 @@ final class Subscriber {
     private final MessagePublisher messagePublisher;
     private final Map<Class, MessageHandler> handlersByMsgType;
     private final ExecutorService executorService;
-    private final ScheduledReporter reporter;
 
     boolean accepts(Class messageType) {
         return handlersByMsgType.containsKey(messageType);
@@ -38,10 +36,9 @@ final class Subscriber {
     private void tryToProcessMessage(Object message, MethodCaller methodCaller) {
         log.debug("{} received a message: {}, type: {}, looking for a handler", subscriberName, message, message.getClass().getName());
         findHandler(message.getClass())
-                    .flatMap(handler -> handler.processMessage(message, methodCaller))
-                    .peek(result -> log.debug("{} processed the message with a result: {}, passing the result to the message publisher...", subscriberName, result))
-                    .peek(messagePublisher::publishMessage);
-        reporter.report();
+                .flatMap(handler -> handler.processMessage(message, methodCaller))
+                .peek(result -> log.debug("{} processed the message with a result: {}, passing the result to the message publisher...", subscriberName, result))
+                .peek(messagePublisher::publishMessage);
     }
 
     private Option<MessageHandler> findHandler(Class<?> messageType) {
@@ -52,7 +49,7 @@ final class Subscriber {
     }
 
     void shutdown() {
-        try{
+        try {
             log.debug("{} - shutting down executor service...", subscriberName);
             executorService.shutdown();
         } catch (Throwable t) {
