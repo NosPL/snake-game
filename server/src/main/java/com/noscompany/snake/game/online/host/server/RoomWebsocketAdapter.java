@@ -1,8 +1,10 @@
 package com.noscompany.snake.game.online.host.server;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noscompany.message.publisher.MessagePublisher;
 import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.server.events.RemoteClientDisconnected;
+import com.noscompany.snake.game.online.contract.object.mapper.ObjectMapperCreator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,7 +23,7 @@ class RoomWebsocketAdapter implements WebsocketEventHandler {
     public void messageReceived(UserId remoteClientId, String message) {
         log.info("Remote client with id {} sent a message: {}",remoteClientId.getId(), message);
         messageDeserializer
-                .deserialize(remoteClientId, message)
+                .deserialize(message)
                 .onSuccess(messagePublisher::publishMessage)
                 .onFailure(t -> log.error("Failed to serialize incoming message, reason: ", t));
     }
@@ -33,7 +35,8 @@ class RoomWebsocketAdapter implements WebsocketEventHandler {
     }
 
     static RoomWebsocketAdapter create(MessagePublisher messagePublisher) {
-        return new RoomWebsocketAdapter(messagePublisher, new MessageDeserializer());
+        ObjectMapper objectMapper = ObjectMapperCreator.createInstance();
+        return new RoomWebsocketAdapter(messagePublisher, new MessageDeserializer(objectMapper));
     }
 }
 

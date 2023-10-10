@@ -101,11 +101,20 @@ class MessageDeserializer {
             case GAME_CANCELLED -> Try
                     .of(() -> objectMapper.readValue(serializedMessage, GameCancelled.class))
                     .map(event -> new DeserializedMessage(eventHandler -> eventHandler.handle(event)));
+            case FAILED_TO_CANCEL_GAME -> Try
+                    .of(() -> objectMapper.readValue(serializedMessage, FailedToCancelGame.class))
+                    .map(event -> new DeserializedMessage(eventHandler -> eventHandler.handle(event)));
             case GAME_PAUSED -> Try
                     .of(() -> objectMapper.readValue(serializedMessage, GamePaused.class))
                     .map(event -> new DeserializedMessage(eventHandler -> eventHandler.handle(event)));
+            case FAILED_TO_PAUSE_GAME -> Try
+                    .of(() -> objectMapper.readValue(serializedMessage, FailedToPauseGame.class))
+                    .map(event -> new DeserializedMessage(eventHandler -> eventHandler.handle(event)));
             case GAME_RESUMED -> Try
                     .of(() -> objectMapper.readValue(serializedMessage, GameResumed.class))
+                    .map(event -> new DeserializedMessage(eventHandler -> eventHandler.handle(event)));
+            case FAILED_TO_RESUME_GAME -> Try
+                    .of(() -> objectMapper.readValue(serializedMessage, FailedToResumeGame.class))
                     .map(event -> new DeserializedMessage(eventHandler -> eventHandler.handle(event)));
             default -> failure(new NotSupportedMessageTypeException(messageType));
         };

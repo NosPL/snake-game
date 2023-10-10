@@ -51,6 +51,7 @@ public class SeatsConfiguration {
                 .toMessage(GameCancelled.class, (GameCancelled msg) -> seats.gameFinished())
                 .toMessage(GameFinished.class, (GameFinished msg) -> seats.gameFinished())
 //                host event
-                .toMessage(HostGotShutdown.class, (HostGotShutdown msg) -> seats.terminate());
+                .toMessage(HostGotShutdown.class, (HostGotShutdown msg) -> seats.terminate())
+                .subscriberName("seats");
     }
 }

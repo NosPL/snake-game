@@ -1,5 +1,6 @@
 package com.noscompany.snake.game.online.host.server;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
@@ -12,20 +13,25 @@ import com.noscompany.snake.game.online.contract.messages.user.registry.EnterRoo
 import com.noscompany.snake.game.online.contract.messages.seats.FreeUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.TakeASeat;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
+import com.noscompany.snake.game.online.contract.object.mapper.ObjectMapperCreator;
 import io.vavr.control.Try;
+import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import static io.vavr.control.Try.failure;
 import static io.vavr.control.Try.success;
 
 @Slf4j
+@AllArgsConstructor
 class MessageDeserializer {
+    private final ObjectMapper objectMapper;
 
-    Try<OnlineMessage> deserialize(UserId remoteClientId, String serializedMessage) {
+    Try<OnlineMessage> deserialize(String serializedMessage) {
         try {
             var parsedMessage = JsonPath.parse(serializedMessage);
             var messageType = getMessageType(parsedMessage);
-            var deserializedMessage = mapToObject(remoteClientId, parsedMessage, messageType);
+            var deserializedMessage = mapToObject(messageType, serializedMessage);
             log.info("message deserialized, passing it to command handler");
             return success(deserializedMessage);
         } catch (Exception e) {
@@ -38,18 +44,19 @@ class MessageDeserializer {
         return OnlineMessage.MessageType.valueOf(messageTypeName);
     }
 
-    private OnlineMessage mapToObject(UserId remoteClientId, DocumentContext parsedMessage, OnlineMessage.MessageType messageType) {
+    @SneakyThrows
+    private OnlineMessage mapToObject(OnlineMessage.MessageType messageType, String serializedMessage) {
         return switch (messageType) {
-            case CHANGE_SNAKE_DIRECTION -> changeSnakeDirection(remoteClientId, parsedMessage);
-            case SEND_CHAT_MESSAGE -> toSendChat(remoteClientId, parsedMessage);
-            case TAKE_A_SEAT -> takeASeat(remoteClientId, parsedMessage);
-            case CHANGE_GAME_OPTIONS -> changeGameOptions(remoteClientId, parsedMessage);
-            case FREE_UP_A_SEAT -> new FreeUpASeat(remoteClientId);
-            case START_GAME -> new StartGame(remoteClientId);
-            case CANCEL_GAME -> new CancelGame(remoteClientId);
-            case PAUSE_GAME -> new PauseGame(remoteClientId);
-            case RESUME_GAME -> new ResumeGame(remoteClientId);
-            case ENTER_THE_ROOM -> toEnterTheRoom(remoteClientId, parsedMessage);
+            case CHANGE_SNAKE_DIRECTION -> objectMapper.readValue(serializedMessage, ChangeSnakeDirection.class);
+            case SEND_CHAT_MESSAGE -> objectMapper.readValue(serializedMessage, SendChatMessage.class);
+            case TAKE_A_SEAT -> objectMapper.readValue(serializedMessage, TakeASeat.class);
+            case CHANGE_GAME_OPTIONS -> objectMapper.readValue(serializedMessage, ChangeGameOptions.class);
+            case FREE_UP_A_SEAT -> objectMapper.readValue(serializedMessage, FreeUpASeat.class);
+            case START_GAME -> objectMapper.readValue(serializedMessage, StartGame.class);
+            case CANCEL_GAME -> objectMapper.readValue(serializedMessage, CancelGame.class);
+            case PAUSE_GAME -> objectMapper.readValue(serializedMessage, PauseGame.class);
+            case RESUME_GAME -> objectMapper.readValue(serializedMessage, ResumeGame.class);
+            case ENTER_THE_ROOM -> objectMapper.readValue(serializedMessage, EnterRoom.class);
             default -> throw new RuntimeException("Failed to deserialize message because of unknown message type: " + messageType);
         };
     }
