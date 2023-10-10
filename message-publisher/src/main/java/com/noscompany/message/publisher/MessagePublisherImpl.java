@@ -16,14 +16,16 @@ final class MessagePublisherImpl implements MessagePublisher {
 
     @Override
     public void publishMessage(@NonNull Object message) {
+        if (executorService.isShutdown()) {
+            log.debug("publisher is shutdown, ignoring message: {}", message);
+            return;
+        }
         try {
             log.debug("received a message: {}, putting it in queue", message);
             var methodCaller = new MethodCaller();
-            executorService.submit(() -> {
-                subscribers.stream()
-                        .filter(handler -> handler.accepts(message.getClass()))
-                        .forEach(handler -> handler.processMsg(message, methodCaller));
-            });
+            executorService.submit(() ->
+                    subscribers
+                            .forEach(handler -> handler.processMsg(message, methodCaller)));
         } catch (Throwable t) {
             log.error("Failed to put message in queue, reason: ", t);
         }

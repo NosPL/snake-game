@@ -13,10 +13,14 @@ import java.util.function.Function;
 @AllArgsConstructor
 @Slf4j
 final class MessageHandler {
+    private final Class<?> handledMessageType;
     private final Function<Object, Object> function;
     private final String subscriberName;
 
-    public Option<Object> processMessage(Object message, MethodCaller methodCaller) {
+    Option<Object> processMessage(Object message, MethodCaller methodCaller) {
+        if (!acceptsMessageType(message.getClass())) {
+            return Option.none();
+        }
         try {
             Object result = function.apply(message);
             return flatten(result);
@@ -26,6 +30,10 @@ final class MessageHandler {
             log.debug("{} - message author stack trace: ", subscriberName, methodCaller.getStackTrace());
             return Option.of(t);
         }
+    }
+
+    boolean acceptsMessageType(Class<?> incomingMessageType) {
+        return handledMessageType.isAssignableFrom(incomingMessageType);
     }
 
     private Option<Object> flatten(Object result) {
@@ -50,7 +58,7 @@ final class MessageHandler {
         }
     }
 
-    static  <T> Function<T, Option> toFunction(Consumer<T> consumer) {
+    static <T> Function<T, Option> toFunction(Consumer<T> consumer) {
         return (T t) -> {
             consumer.accept(t);
             return Option.none();

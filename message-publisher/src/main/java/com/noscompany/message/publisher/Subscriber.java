@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
 
@@ -17,14 +19,14 @@ final class Subscriber {
     @Getter
     private final String subscriberName;
     private final MessagePublisher messagePublisher;
-    private final Map<Class, MessageHandler> handlersByMsgType;
+    private final Collection<MessageHandler> handlersByMsgType;
     private final ExecutorService executorService;
 
-    boolean accepts(Class messageType) {
-        return handlersByMsgType.containsKey(messageType);
-    }
-
     void processMsg(Object message, MethodCaller methodCaller) {
+        if (executorService.isShutdown()) {
+            log.debug("{} is shutdown, ignoring message: {}",subscriberName, message);
+            return;
+        }
         try {
             executorService.submit(() -> tryToProcessMessage(message, methodCaller));
         } catch (RejectedExecutionException t) {
@@ -42,8 +44,11 @@ final class Subscriber {
     }
 
     private Option<MessageHandler> findHandler(Class<?> messageType) {
-        return Option
-                .of(handlersByMsgType.get(messageType))
+        return handlersByMsgType
+                .stream()
+                .filter(messageHandler -> messageHandler.acceptsMessageType(messageType))
+                .findFirst()
+                .map(Option::of).orElse(Option.none())
                 .peek(messageHandler -> log.debug("{} found the handler, processing the message...", subscriberName))
                 .onEmpty(() -> log.warn("{} did not find the handler", subscriberName));
     }
