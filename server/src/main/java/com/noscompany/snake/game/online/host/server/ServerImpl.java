@@ -49,9 +49,9 @@ class ServerImpl implements Server {
     }
 
     @Override
-    public Option<ServerFailedToSendMessageToRemoteClients> sendPublicClientMessage(PublicClientMessage publicClientMessage) {
+    public Option<ServerFailedToSendMessageToRemoteClients> sendPublicClientMessage(PublicClientMessage publicMessage) {
         return onlineMessageSerializer
-                .serialize(publicClientMessage)
+                .serialize(publicMessage)
                 .map(websocket::sendToAllClients)
                 .toEither()
                 .mapLeft(t -> new ServerFailedToSendMessageToRemoteClients(FAILED_TO_SERIALIZE_MESSAGE))
@@ -59,10 +59,10 @@ class ServerImpl implements Server {
     }
 
     @Override
-    public Option<ServerFailedToSendMessageToRemoteClients> sendDedicatedClientMessage(DedicatedClientMessage dedicatedClientMessage) {
-        var userId = dedicatedClientMessage.getUserId();
+    public Option<ServerFailedToSendMessageToRemoteClients> sendDedicatedClientMessage(DedicatedClientMessage dedicatedMessage) {
+        var userId = dedicatedMessage.getUserId();
         return onlineMessageSerializer
-                .serialize(dedicatedClientMessage)
+                .serialize(dedicatedMessage)
                 .map(msgString -> websocket.sendToClient(userId, msgString))
                 .toEither()
                 .mapLeft(t -> new ServerFailedToSendMessageToRemoteClients(FAILED_TO_SERIALIZE_MESSAGE))

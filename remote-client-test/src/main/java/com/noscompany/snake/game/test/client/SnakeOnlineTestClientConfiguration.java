@@ -10,6 +10,7 @@ import com.noscompany.snake.game.online.host.server.ServerConfiguration;
 import com.noscompany.snake.game.online.online.contract.serialization.ObjectTypeMapper;
 import com.noscompany.snake.game.online.online.contract.serialization.OnlineMessageDeserializer;
 import com.noscompany.snake.game.online.online.contract.serialization.OnlineMessageSerializer;
+import com.noscompany.snake.game.online.online.contract.serialization.object.type.mappers.*;
 import com.noscompany.snake.game.online.playground.PlaygroundConfiguration;
 import com.noscompany.snake.game.online.websocket.WebsocketConfiguration;
 import com.noscompany.snake.online.user.registry.UserRegistryConfiguration;
@@ -24,7 +25,7 @@ public class SnakeOnlineTestClientConfiguration {
         var websocketCreator = new WebsocketConfiguration().websocketCreator();
         var messagePublisher = new MessagePublisherCreator().create();
         var serializer = OnlineMessageSerializer.instance();
-        var deserializer = OnlineMessageDeserializer.instance(getObjectTypeMappers());
+        var deserializer = OnlineMessageDeserializer.instance(allTypeMappers());
         var server = new ServerConfiguration()
                 .server(websocketCreator, messagePublisher, serializer, deserializer);
         new UserRegistryConfiguration().create(new UsersCountLimit(10), messagePublisher);
@@ -34,7 +35,14 @@ public class SnakeOnlineTestClientConfiguration {
         return new SnakeOnlineTestClient(snakeOnlineClient, clientEventHandler, server);
     }
 
-    private List<ObjectTypeMapper> getObjectTypeMappers() {
-        return List.of();
+    private List<ObjectTypeMapper> allTypeMappers() {
+        return List.of(
+                new ChatMessageTypeMapper(),
+                new GameOptionsTypeMapper(),
+                new GameplayTypeMapper(),
+                new PlaygroundMessageTypeMapper(),
+                new SeatsMessageTypeMapper(),
+                new ServerMessageTypeMapper(),
+                new UserRegistryMessageTypeMapper());
     }
 }
