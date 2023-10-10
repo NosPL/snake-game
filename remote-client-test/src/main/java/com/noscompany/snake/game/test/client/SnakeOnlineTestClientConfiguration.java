@@ -7,10 +7,15 @@ import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import com.noscompany.snake.game.online.client.SnakeOnlineClientConfiguration;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UsersCountLimit;
 import com.noscompany.snake.game.online.host.server.ServerConfiguration;
+import com.noscompany.snake.game.online.online.contract.serialization.ObjectTypeMapper;
+import com.noscompany.snake.game.online.online.contract.serialization.OnlineMessageDeserializer;
+import com.noscompany.snake.game.online.online.contract.serialization.OnlineMessageSerializer;
 import com.noscompany.snake.game.online.playground.PlaygroundConfiguration;
 import com.noscompany.snake.game.online.websocket.WebsocketConfiguration;
 import com.noscompany.snake.online.user.registry.UserRegistryConfiguration;
 import snake.game.gameplay.GameplayConfiguration;
+
+import java.util.List;
 
 public class SnakeOnlineTestClientConfiguration {
 
@@ -18,11 +23,18 @@ public class SnakeOnlineTestClientConfiguration {
         var snakeOnlineClient = new SnakeOnlineClientConfiguration().create(clientEventHandler);
         var websocketCreator = new WebsocketConfiguration().websocketCreator();
         var messagePublisher = new MessagePublisherCreator().create();
-        var server = new ServerConfiguration().server(websocketCreator, messagePublisher);
+        var serializer = OnlineMessageSerializer.instance();
+        var deserializer = OnlineMessageDeserializer.instance(getObjectTypeMappers());
+        var server = new ServerConfiguration()
+                .server(websocketCreator, messagePublisher, serializer, deserializer);
         new UserRegistryConfiguration().create(new UsersCountLimit(10), messagePublisher);
         new ChatConfiguration().createChat(messagePublisher);
         var gameplayCreator = new GameplayConfiguration().snakeGameplayCreator();
         new PlaygroundConfiguration().createPlayground(messagePublisher, gameplayCreator);
         return new SnakeOnlineTestClient(snakeOnlineClient, clientEventHandler, server);
+    }
+
+    private List<ObjectTypeMapper> getObjectTypeMappers() {
+        return List.of();
     }
 }

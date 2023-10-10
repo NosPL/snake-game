@@ -1,6 +1,7 @@
 package com.noscompany.snake.game.online.contract.messages.gameplay.events;
 
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
+import com.noscompany.snake.game.online.contract.messages.PublicClientMessage;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Value
 @NoArgsConstructor(force = true, access = PRIVATE)
 @AllArgsConstructor
-public class GameFinished implements GameEvent, OnlineMessage {
+public class GameFinished implements GameEvent, PublicClientMessage {
     OnlineMessage.MessageType messageType = MessageType.GAME_FINISHED;
     Collection<Snake> snakes;
     GridSize gridSize;

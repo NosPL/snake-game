@@ -1,5 +1,6 @@
 package com.noscompany.snake.game.online.contract.messages.gameplay.events;
 
+import com.noscompany.snake.game.online.contract.messages.DedicatedClientMessage;
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
 import com.noscompany.snake.game.online.contract.messages.UserId;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Value
 @NoArgsConstructor(force = true, access = PRIVATE)
 @AllArgsConstructor(access = PRIVATE)
-public class FailedToResumeGame implements OnlineMessage {
+public class FailedToResumeGame implements DedicatedClientMessage {
     OnlineMessage.MessageType messageType = MessageType.FAILED_TO_RESUME_GAME;
     UserId userId;
     Reason reason;

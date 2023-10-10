@@ -1,6 +1,6 @@
 package com.noscompany.snake.game.online.contract.messages.seats;
 
-import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
+import com.noscompany.snake.game.online.contract.messages.DedicatedClientMessage;
 import com.noscompany.snake.game.online.contract.messages.UserId;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Value
 @NoArgsConstructor(force = true, access = PRIVATE)
 @AllArgsConstructor
-public class InitializeSeatsToRemoteClient implements OnlineMessage {
+public class InitializeSeatsToRemoteClient implements DedicatedClientMessage {
     MessageType messageType = INITIALIZE_SEATS_TO_REMOTE_CLIENT;
     UserId userId;
     Option<AdminId> adminIdOption;

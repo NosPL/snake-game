@@ -1,6 +1,6 @@
 package com.noscompany.snake.game.online.contract.messages.gameplay.events;
 
-import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
+import com.noscompany.snake.game.online.contract.messages.DedicatedClientMessage;
 import com.noscompany.snake.game.online.contract.messages.UserId;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Value
 @NoArgsConstructor(force = true, access = PRIVATE)
 @AllArgsConstructor(access = PRIVATE)
-public class FailedToStartGame implements OnlineMessage {
+public class FailedToStartGame implements DedicatedClientMessage {
     MessageType messageType = MessageType.FAILED_TO_START_GAME;
     UserId userId;
     Reason reason;

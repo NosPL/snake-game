@@ -1,6 +1,6 @@
 package com.noscompany.snake.game.online.contract.messages.seats;
 
-import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
+import com.noscompany.snake.game.online.contract.messages.DedicatedClientMessage;
 import com.noscompany.snake.game.online.contract.messages.UserId;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Value
 @NoArgsConstructor(force = true, access = PRIVATE)
 @AllArgsConstructor(access = PRIVATE)
-public class FailedToFreeUpSeat implements OnlineMessage {
+public class FailedToFreeUpSeat implements DedicatedClientMessage {
     MessageType messageType = MessageType.FAILED_TO_FREE_UP_A_SEAT;
     UserId userId;
     Reason reason;

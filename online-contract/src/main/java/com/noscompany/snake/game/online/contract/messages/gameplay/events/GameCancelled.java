@@ -1,17 +1,10 @@
 package com.noscompany.snake.game.online.contract.messages.gameplay.events;
 
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
-import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
-import io.vavr.control.Option;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import com.noscompany.snake.game.online.contract.messages.PublicClientMessage;
 import lombok.Value;
 
-import java.util.Collection;
-
-import static lombok.AccessLevel.PRIVATE;
-
 @Value
-public class GameCancelled implements GameEvent, OnlineMessage {
+public class GameCancelled implements GameEvent, PublicClientMessage {
     OnlineMessage.MessageType messageType = MessageType.GAME_CANCELLED;
 }
