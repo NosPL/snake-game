@@ -19,6 +19,7 @@
         <module>gameplay</module>
         <module>gui</module>
         <module>online-contract</module>
+        <module>online-contract-serialization</module>
         <module>remote-client</module>
         <module>server</module>
         <module>remote-client-test</module>

@@ -1,7 +1,8 @@
-package com.noscompany.snake.game.online.contract.messages;
+package com.noscompany.snake.game.online.online.contract.serialization;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameFinished;
@@ -11,21 +12,21 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.events.Snakes
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.seats.Seat;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
-import com.noscompany.snake.game.online.contract.object.mapper.ObjectMapperCreator;
 import io.vavr.control.Option;
-import org.junit.Assert;
+import lombok.SneakyThrows;
 
 import java.util.List;
 import java.util.Set;
 
-public class BaseTestClass {
+public class SerializationBaseTestClass {
 
-    protected <T extends OnlineMessage> void testSerializationOf(T onlineMessage) throws JsonProcessingException {
-        ObjectMapper objectMapper = ObjectMapperCreator.createInstance();
+    @SneakyThrows
+    protected <T extends OnlineMessage> void testSerializationOf(T onlineMessage) {
+        ObjectMapper objectMapper = ConfiguredObjectMapperCreator.createInstance();
         String string = objectMapper.writeValueAsString(onlineMessage);
         Class<T> aClass = (Class<T>) onlineMessage.getClass();
         T serialized = objectMapper.readValue(string, aClass);
-        Assert.assertEquals(onlineMessage, serialized);
+        assert onlineMessage.equals(serialized);
     }
 
     protected GameStarted gameStarted() {

@@ -1,24 +1,23 @@
-package com.noscompany.snake.game.online.contract.messages;
+package com.noscompany.snake.game.onlin.online.contract.serialization.test;
 
-import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
-import com.noscompany.snake.game.online.contract.messages.chat.SendChatMessage;
-import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
+import com.noscompany.snake.game.online.contract.messages.UserId;
+import com.noscompany.snake.game.online.contract.messages.game.options.ChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.commands.*;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
-import com.noscompany.snake.game.online.contract.messages.game.options.ChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
 import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundStateToRemoteClient;
 import com.noscompany.snake.game.online.contract.messages.seats.*;
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerGotShutdown;
 import com.noscompany.snake.game.online.contract.messages.user.registry.*;
+import com.noscompany.snake.game.online.online.contract.serialization.SerializationBaseTestClass;
 import io.vavr.control.Option;
 import lombok.SneakyThrows;
 import org.junit.Test;
 
-public class SerializationTest extends BaseTestClass {
+public class SerializationTest extends SerializationBaseTestClass {
 
     @Test
     @SneakyThrows
@@ -66,10 +65,5 @@ public class SerializationTest extends BaseTestClass {
         testSerializationOf(FailedToChangeSnakeDirection.gameNotStarted(UserId.random()));
         testSerializationOf(FailedToPauseGame.userNotInTheRoom(UserId.random()));
         testSerializationOf(FailedToResumeGame.gameNotStarted(UserId.random()));
-
-//        chat messages
-        testSerializationOf(new SendChatMessage(UserId.random(), "some message"));
-        testSerializationOf(new UserSentChatMessage(UserId.random(), UserName.random(), "some content"));
-        testSerializationOf(FailedToSendChatMessage.userIsNotInTheRoom(UserId.random()));
     }
 }
