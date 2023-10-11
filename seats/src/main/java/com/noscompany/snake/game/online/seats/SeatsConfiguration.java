@@ -4,9 +4,7 @@ import com.noscompany.message.publisher.MessagePublisher;
 import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.CountdownTime;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
-import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameCancelled;
-import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameFinished;
-import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStarted;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.host.HostGotShutdown;
 import com.noscompany.snake.game.online.contract.messages.seats.FreeUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.TakeASeat;
@@ -46,9 +44,11 @@ public class SeatsConfiguration {
                 .toMessage(FreeUpASeat.class, (FreeUpASeat msg) -> seats.freeUpSeat(msg.getUserId()))
                 .toMessage(TakeASeat.class, (TakeASeat msg) -> seats.takeOrChangeSeat(msg.getUserId(), msg.getPlayerNumber()))
 //                gameplay events
-                .toMessage(CountdownTime.class, (CountdownTime msg) -> seats.gameStarted())
-                .toMessage(GameStarted.class, (GameStarted msg) -> seats.gameFinished())
+                .toMessage(GameStartCountdown.class, (GameStartCountdown msg) -> seats.gameStarted())
+                .toMessage(GameStarted.class, (GameStarted msg) -> seats.gameStarted())
                 .toMessage(GameCancelled.class, (GameCancelled msg) -> seats.gameFinished())
+                .toMessage(GamePaused.class, (GamePaused msg) -> seats.gameStarted())
+                .toMessage(GameResumed.class, (GameResumed msg) -> seats.gameStarted())
                 .toMessage(GameFinished.class, (GameFinished msg) -> seats.gameFinished())
 //                host event
                 .toMessage(HostGotShutdown.class, (HostGotShutdown msg) -> seats.terminate())

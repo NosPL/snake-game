@@ -44,6 +44,8 @@ public final class Seats {
     }
 
     public Either<FailedToTakeASeat, PlayerTookASeat> takeOrChangeSeat(UserId userId, PlayerNumber seatNumber) {
+        if (gameIsRunning.get())
+            return Either.left(FailedToTakeASeat.gameAlreadyRunning(userId));
         var desiredSeat = seats.get(seatNumber);
         return changeSeat(userId, desiredSeat)
                 .getOrElse(takeASeat(userId, desiredSeat))
@@ -165,7 +167,7 @@ public final class Seats {
     }
 
     public void gameFinished() {
-        gameIsRunning.set(true);
+        gameIsRunning.set(false);
     }
 
     public boolean adminIsChosen() {

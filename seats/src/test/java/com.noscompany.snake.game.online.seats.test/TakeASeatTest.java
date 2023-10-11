@@ -67,9 +67,10 @@ public class TakeASeatTest extends TestSetup {
 //        AND game was finished
         seats.gameFinished();
 //        WHEN the actor tries to take a seat
-        var result = seats.takeOrChangeSeat(actorId, freeSeatNumber());
+        var seatNumber = freeSeatNumber();
+        var result = seats.takeOrChangeSeat(actorId, seatNumber);
 //        THEN he fails due to not being in the room
-        var expected = failure(FailedToTakeASeat.gameAlreadyRunning(actorId));
+        var expected = success(playerTookASeat(actorId, actorName, seatNumber));
         Assert.assertEquals(expected, result);
     }
 
