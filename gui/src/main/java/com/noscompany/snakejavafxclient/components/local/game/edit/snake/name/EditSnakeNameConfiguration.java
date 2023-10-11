@@ -1,6 +1,6 @@
 package com.noscompany.snakejavafxclient.components.local.game.edit.snake.name;
 
-import com.noscompany.snakejavafxclient.utils.Controllers;
+import com.noscompany.snake.game.online.gui.commons.Controllers;
 import javafx.stage.Stage;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 

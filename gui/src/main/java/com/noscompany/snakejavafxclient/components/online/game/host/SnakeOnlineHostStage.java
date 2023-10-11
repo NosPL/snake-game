@@ -1,6 +1,6 @@
 package com.noscompany.snakejavafxclient.components.online.game.host;
 
-import com.noscompany.snakejavafxclient.utils.Stages;
+import com.noscompany.snake.game.online.gui.commons.Stages;
 import javafx.stage.Stage;
 
 public class SnakeOnlineHostStage {

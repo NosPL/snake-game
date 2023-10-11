@@ -2,7 +2,7 @@ package com.noscompany.snakejavafxclient.components.online.game.client;
 
 import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import com.noscompany.snakejavafxclient.components.online.game.commons.KeyPressedHandler;
-import com.noscompany.snakejavafxclient.utils.AbstractController;
+import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;

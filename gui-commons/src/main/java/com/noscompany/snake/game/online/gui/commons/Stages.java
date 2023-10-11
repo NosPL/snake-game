@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.utils;
+package com.noscompany.snake.game.online.gui.commons;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

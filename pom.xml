@@ -32,6 +32,7 @@
         <module>user-registry</module>
         <module>playground</module>
         <module>seats</module>
+        <module>gui-commons</module>
     </modules>
 
     <dependencies>

@@ -1,7 +1,7 @@
 package com.noscompany.snakejavafxclient.components.local.game;
 
 import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
-import com.noscompany.snakejavafxclient.utils.Controllers;
+import com.noscompany.snake.game.online.gui.commons.Controllers;
 import com.noscompany.snakejavafxclient.components.mode.selection.GameModeSelectionStage;
 import io.vavr.control.Either;
 import javafx.event.EventHandler;

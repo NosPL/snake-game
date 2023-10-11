@@ -7,7 +7,7 @@ import com.noscompany.snake.game.online.client.StartingClientError;
 import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
-import com.noscompany.snakejavafxclient.utils.AbstractController;
+import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import javafx.fxml.FXML;

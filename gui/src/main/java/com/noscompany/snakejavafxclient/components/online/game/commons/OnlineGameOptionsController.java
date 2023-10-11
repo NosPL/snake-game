@@ -1,7 +1,7 @@
 package com.noscompany.snakejavafxclient.components.online.game.commons;
 
-import com.noscompany.snakejavafxclient.utils.AbstractController;
-import com.noscompany.snakejavafxclient.utils.Consumer3;
+import com.noscompany.snake.game.online.gui.commons.AbstractController;
+import com.noscompany.snake.game.online.gui.commons.Consumer3;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;

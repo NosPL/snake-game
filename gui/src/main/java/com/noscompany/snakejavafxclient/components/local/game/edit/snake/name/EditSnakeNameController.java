@@ -1,6 +1,6 @@
 package com.noscompany.snakejavafxclient.components.local.game.edit.snake.name;
 
-import com.noscompany.snakejavafxclient.utils.AbstractController;
+import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import com.noscompany.snakejavafxclient.components.local.game.GuiLocalGameEventHandler;
 import io.vavr.control.Option;
 import javafx.fxml.FXML;

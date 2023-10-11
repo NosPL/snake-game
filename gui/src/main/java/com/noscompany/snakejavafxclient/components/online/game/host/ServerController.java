@@ -3,7 +3,7 @@ package com.noscompany.snakejavafxclient.components.online.game.host;
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerFailedToSendMessageToRemoteClients;
 import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
 import com.noscompany.snake.game.online.contract.messages.server.events.FailedToStartServer;
-import com.noscompany.snakejavafxclient.utils.AbstractController;
+import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;

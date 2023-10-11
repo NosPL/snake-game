@@ -6,7 +6,7 @@ import com.noscompany.snake.game.test.client.SnakeOnlineTestClientConfiguration;
 import com.noscompany.snakejavafxclient.ApplicationProfile;
 import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
 import com.noscompany.snakejavafxclient.components.online.game.commons.*;
-import com.noscompany.snakejavafxclient.utils.Controllers;
+import com.noscompany.snake.game.online.gui.commons.Controllers;
 
 class SnakeOnlineGuiClientConfiguration {
 

@@ -15,7 +15,7 @@ import com.noscompany.snake.game.online.contract.messages.user.registry.FailedTo
 import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserLeftRoom;
 import com.noscompany.snakejavafxclient.components.online.game.commons.*;
-import com.noscompany.snakejavafxclient.utils.Controllers;
+import com.noscompany.snake.game.online.gui.commons.Controllers;
 import com.noscompany.snakejavafxclient.components.commons.message.MessageController;
 import com.noscompany.snakejavafxclient.components.commons.game.grid.GameGridController;
 import com.noscompany.snakejavafxclient.components.commons.scoreboard.ScoreboardController;

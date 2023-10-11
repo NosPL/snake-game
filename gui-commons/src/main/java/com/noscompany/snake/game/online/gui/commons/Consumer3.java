@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.utils;
+package com.noscompany.snake.game.online.gui.commons;
 
 @FunctionalInterface
 public interface Consumer3<T, Y, U> {

@@ -1,7 +1,7 @@
 package com.noscompany.snakejavafxclient.components.online.game.mode.selection;
 
 import com.noscompany.snakejavafxclient.components.mode.selection.GameModeSelectionStage;
-import com.noscompany.snakejavafxclient.utils.Stages;
+import com.noscompany.snake.game.online.gui.commons.Stages;
 import javafx.stage.Stage;
 
 public class OnlineModeSelectionStage {

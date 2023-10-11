@@ -1,12 +1,11 @@
 package com.noscompany.snakejavafxclient.components.online.game.commons;
 
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
-import com.noscompany.snakejavafxclient.utils.AbstractController;
+import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
 import java.util.Collection;
-import java.util.Set;
 
 public class JoinedUsersController extends AbstractController {
     @FXML

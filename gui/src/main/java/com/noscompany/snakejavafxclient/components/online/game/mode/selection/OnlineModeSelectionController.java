@@ -2,7 +2,7 @@ package com.noscompany.snakejavafxclient.components.online.game.mode.selection;
 
 import com.noscompany.snakejavafxclient.components.online.game.client.JoinGameStage;
 import com.noscompany.snakejavafxclient.components.online.game.host.SetupHostStage;
-import com.noscompany.snakejavafxclient.utils.AbstractController;
+import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import javafx.fxml.FXML;
 import lombok.SneakyThrows;
 

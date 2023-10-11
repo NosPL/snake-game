@@ -7,7 +7,7 @@ import com.noscompany.snake.game.online.host.dependency.configurator.SnakeOnline
 import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
 import com.noscompany.snakejavafxclient.components.mode.selection.GameModeSelectionStage;
 import com.noscompany.snakejavafxclient.components.online.game.commons.*;
-import com.noscompany.snakejavafxclient.utils.Controllers;
+import com.noscompany.snake.game.online.gui.commons.Controllers;
 import javafx.stage.Stage;
 
 import java.util.UUID;

@@ -4,9 +4,8 @@ import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snakejavafxclient.components.commons.game.grid.GameGridController;
 import com.noscompany.snakejavafxclient.components.commons.message.MessageController;
 import com.noscompany.snakejavafxclient.components.commons.scoreboard.ScoreboardController;
-import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
 import com.noscompany.snakejavafxclient.components.online.game.commons.*;
-import com.noscompany.snakejavafxclient.utils.Controllers;
+import com.noscompany.snake.game.online.gui.commons.Controllers;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

@@ -7,7 +7,7 @@ import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerStarted;
 import com.noscompany.snake.game.online.network.interfaces.analyzer.IpV4Address;
 import com.noscompany.snake.game.online.network.interfaces.analyzer.NetworkInterfacesAnalyzerConfiguration;
-import com.noscompany.snakejavafxclient.utils.AbstractController;
+import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;

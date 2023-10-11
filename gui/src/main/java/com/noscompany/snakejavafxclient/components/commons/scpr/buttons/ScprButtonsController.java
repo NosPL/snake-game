@@ -1,11 +1,8 @@
 package com.noscompany.snakejavafxclient.components.commons.scpr.buttons;
 
-import com.noscompany.snakejavafxclient.utils.AbstractController;
+import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class ScprButtonsController extends AbstractController {
     @FXML

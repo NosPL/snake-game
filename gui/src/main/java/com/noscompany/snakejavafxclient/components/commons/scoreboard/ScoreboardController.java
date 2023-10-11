@@ -1,9 +1,8 @@
 package com.noscompany.snakejavafxclient.components.commons.scoreboard;
 
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
-import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
-import com.noscompany.snakejavafxclient.utils.AbstractController;
-import com.noscompany.snakejavafxclient.utils.SnakesColors;
+import com.noscompany.snake.game.online.gui.commons.AbstractController;
+import com.noscompany.snakejavafxclient.SnakesColors;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;

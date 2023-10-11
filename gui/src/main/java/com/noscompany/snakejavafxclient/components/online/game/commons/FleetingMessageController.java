@@ -1,6 +1,6 @@
 package com.noscompany.snakejavafxclient.components.online.game.commons;
 
-import com.noscompany.snakejavafxclient.utils.AbstractController;
+import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import io.vavr.control.Try;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -9,7 +9,6 @@ import javafx.scene.control.Label;
 import java.net.URL;
 import java.time.Duration;
 import java.util.ResourceBundle;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;

@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.utils;
+package com.noscompany.snakejavafxclient;
 
 import javafx.scene.paint.Color;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;

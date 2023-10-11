@@ -12,7 +12,7 @@ import com.noscompany.snake.game.online.contract.messages.playground.GameReiniti
 import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundToRemoteClient;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
-import com.noscompany.snakejavafxclient.utils.AbstractController;
+import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import io.vavr.control.Option;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;

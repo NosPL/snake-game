@@ -3,7 +3,7 @@ package com.noscompany.snakejavafxclient.components.commons.message;
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToStartGame;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
-import com.noscompany.snakejavafxclient.utils.AbstractController;
+import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Score;
