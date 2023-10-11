@@ -7,6 +7,8 @@ import com.noscompany.snake.game.online.client.internal.state.ClientState;
 import com.noscompany.snake.game.online.client.internal.state.connected.ConnectedClientCreator;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
+import com.noscompany.snake.game.online.online.contract.serialization.OnlineMessageDeserializer;
+import com.noscompany.snake.game.online.online.contract.serialization.OnlineMessageSerializer;
 import lombok.AllArgsConstructor;
 
 import static com.noscompany.snake.game.online.client.SendClientMessageError.CLIENT_NOT_CONNECTED;
@@ -15,11 +17,13 @@ import static com.noscompany.snake.game.online.client.StartingClientError.FAILED
 @AllArgsConstructor
 public class Disconnected implements ClientState {
     private final MessagePublisher messagePublisher;
+    private final OnlineMessageDeserializer deserializer;
+    private final OnlineMessageSerializer serializer;
 
     @Override
     public ClientState connect(HostAddress hostAddress) {
-        return ConnectedClientCreator
-                .create(hostAddress, messagePublisher)
+        return new ConnectedClientCreator()
+                .create(hostAddress, messagePublisher, deserializer, serializer)
                 .onSuccess(connected -> messagePublisher.publishMessage(new ConnectionEstablished()))
                 .onFailure(t -> messagePublisher.publishMessage(FAILED_TO_CONNECT_TO_SERVER))
                 .getOrElse(this);

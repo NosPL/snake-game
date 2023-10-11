@@ -21,11 +21,11 @@ import java.util.List;
 public class SnakeOnlineTestClientConfiguration {
 
     public SnakeOnlineClient snakeOnlineTestClient(ClientEventHandler clientEventHandler) {
-        var snakeOnlineClient = new SnakeOnlineClientConfiguration().create(clientEventHandler, new MessagePublisherCreator().create());
-        var hostMessagePublisher = new MessagePublisherCreator().create();
-        var websocketCreator = new WebsocketConfiguration().websocketCreator();
         var serializer = OnlineMessageSerializer.instance();
         var deserializer = OnlineMessageDeserializer.instance(allTypeMappers());
+        var snakeOnlineClient = new SnakeOnlineClientConfiguration().create(clientEventHandler, new MessagePublisherCreator().create(), deserializer, serializer);
+        var hostMessagePublisher = new MessagePublisherCreator().create();
+        var websocketCreator = new WebsocketConfiguration().websocketCreator();
         var server = new ServerConfiguration()
                 .server(websocketCreator, hostMessagePublisher, serializer, deserializer);
         new UserRegistryConfiguration().create(new UsersCountLimit(10), hostMessagePublisher);

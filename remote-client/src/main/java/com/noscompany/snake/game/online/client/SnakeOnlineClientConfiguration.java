@@ -18,20 +18,41 @@ import com.noscompany.snake.game.online.contract.messages.seats.*;
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerGotShutdown;
 import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
+import com.noscompany.snake.game.online.online.contract.serialization.ObjectTypeMapper;
+import com.noscompany.snake.game.online.online.contract.serialization.OnlineMessageDeserializer;
+import com.noscompany.snake.game.online.online.contract.serialization.OnlineMessageSerializer;
+import com.noscompany.snake.game.online.online.contract.serialization.object.type.mappers.*;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class SnakeOnlineClientConfiguration {
 
     public SnakeOnlineClient create(ClientEventHandler eventHandler) {
-        MessagePublisher messagePublisher = new MessagePublisherCreator().create();
-        return create(eventHandler, messagePublisher);
+        var messagePublisher = new MessagePublisherCreator().create();
+
+        var serializer = OnlineMessageSerializer.instance();
+        var deserializer = OnlineMessageDeserializer.instance(typeMappers());
+        return create(eventHandler, messagePublisher, deserializer,serializer);
     }
 
-    public SnakeOnlineClientImpl create(ClientEventHandler eventHandler, MessagePublisher messagePublisher) {
+    private List<ObjectTypeMapper> typeMappers() {
+        return List.of(
+                new ChatMessageTypeMapper(),
+                new GameOptionsTypeMapper(),
+                new GameplayTypeMapper(),
+                new PlaygroundMessageTypeMapper(),
+                new SeatsMessageTypeMapper(),
+                new ServerMessageTypeMapper(),
+                new UserRegistryMessageTypeMapper());
+    }
+
+    public SnakeOnlineClientImpl create(ClientEventHandler eventHandler,
+                                        MessagePublisher messagePublisher, OnlineMessageDeserializer deserializer,
+                                        OnlineMessageSerializer serializer) {
         eventHandler = new UpdateUserIdHandler(new AtomicReference<>(UserId.random()), eventHandler);
         messagePublisher.subscribe(createSubscription(eventHandler));
-        return new SnakeOnlineClientImpl(new Disconnected(messagePublisher));
+        return new SnakeOnlineClientImpl(new Disconnected(messagePublisher, deserializer, serializer));
     }
 
     private Subscription createSubscription(ClientEventHandler eventHandler) {
