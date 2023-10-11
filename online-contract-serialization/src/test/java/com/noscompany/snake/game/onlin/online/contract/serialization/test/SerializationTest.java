@@ -8,7 +8,7 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.commands.*;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
-import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundStateToRemoteClient;
+import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundToRemoteClient;
 import com.noscompany.snake.game.online.contract.messages.seats.*;
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerGotShutdown;
 import com.noscompany.snake.game.online.contract.messages.user.registry.*;
@@ -32,7 +32,7 @@ public class SerializationTest extends SerializationBaseTestClass {
         testSerializationOf(new UserLeftRoom(UserId.random(), UserName.random(), randomUserNames()));
 
 //        playground messages
-        testSerializationOf(new InitializePlaygroundStateToRemoteClient(UserId.random(), playgroundState()));
+        testSerializationOf(new InitializePlaygroundToRemoteClient(UserId.random(), playgroundState()));
         testSerializationOf(new ChangeGameOptions(UserId.random(), GridSize._10x10, GameSpeed.x1, Walls.OFF));
         testSerializationOf(new GameOptionsChanged(playgroundState()));
         testSerializationOf(FailedToChangeGameOptions.gameIsAlreadyRunning(UserId.random()));

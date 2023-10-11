@@ -1,6 +1,7 @@
 package com.noscompany.snake.game.online.client.internal.state.connected;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.noscompany.message.publisher.MessagePublisher;
 import com.noscompany.snake.game.online.client.ClientEventHandler;
 import com.noscompany.snake.game.online.client.HostAddress;
 import com.noscompany.snake.game.online.client.internal.state.ClientState;
@@ -20,17 +21,16 @@ import static org.atmosphere.wasync.Request.METHOD.GET;
 public class ConnectedClientCreator {
     private static final String URL_PROTOCOL_PREFIX = "ws://";
 
-    public static Try<ClientState> create(HostAddress hostAddress, ClientEventHandler eventHandler) {
+    public static Try<ClientState> create(HostAddress hostAddress, MessagePublisher messagePublisher) {
         var objectMapper = ObjectMapperCreator.createInstance();
         var userId = new AtomicReference<>(new UserId(""));
-        var decoratedHandler = new UpdateUserIdHandler(userId, eventHandler);
-        return createOpenSocket(hostAddress, decoratedHandler, objectMapper)
+        return createOpenSocket(hostAddress, messagePublisher, objectMapper)
                 .map(socket -> new MessageSender(socket, objectMapper))
-                .map(messageSender -> new Connected(messageSender, decoratedHandler, userId));
+                .map(messageSender -> new Connected(messageSender, messagePublisher, userId));
     }
 
-    private static Try<Socket> createOpenSocket(HostAddress hostAddress, ClientEventHandler clientEventHandler, ObjectMapper objectMapper) {
-        SocketMessageHandler socketMessageHandler = SocketMessageHandler.create(clientEventHandler, objectMapper);
+    private static Try<Socket> createOpenSocket(HostAddress hostAddress, MessagePublisher messagePublisher, ObjectMapper objectMapper) {
+        SocketMessageHandler socketMessageHandler = SocketMessageHandler.create(messagePublisher, objectMapper);
         AtmosphereClient client = ClientFactory.getDefault().newClient(AtmosphereClient.class);
         var socket = createSocket(client, socketMessageHandler);
         var request = createRequest(hostAddress, client);

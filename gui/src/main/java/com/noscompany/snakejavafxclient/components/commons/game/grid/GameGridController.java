@@ -9,11 +9,10 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameSt
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStarted;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.SnakesMoved;
 import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
-import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundStateToRemoteClient;
+import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundToRemoteClient;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
 import com.noscompany.snakejavafxclient.utils.AbstractController;
-import io.vavr.API;
 import io.vavr.control.Option;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
@@ -34,7 +33,7 @@ public class GameGridController extends AbstractController {
         initializeGrid(GridSize._10x10, Walls.ON);
     }
 
-    public void handle(InitializePlaygroundStateToRemoteClient event) {
+    public void handle(InitializePlaygroundToRemoteClient event) {
         if (gameGrid == null)
             initializeGrid(
                     event.getPlaygroundState().getGameState().getGridSize(),

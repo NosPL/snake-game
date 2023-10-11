@@ -1,5 +1,6 @@
 package com.noscompany.snake.game.online.client.internal.state.connected;
 
+import com.noscompany.message.publisher.MessagePublisher;
 import com.noscompany.snake.game.online.client.SendClientMessageError;
 import com.noscompany.snake.game.online.client.ClientEventHandler;
 import com.noscompany.snake.game.online.client.HostAddress;
@@ -19,19 +20,21 @@ import lombok.AllArgsConstructor;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.noscompany.snake.game.online.client.StartingClientError.CONNECTION_ALREADY_ESTABLISHED;
+
 @AllArgsConstructor
 public class Connected implements ClientState {
     private final MessageSender messageSender;
-    private final ClientEventHandler eventHandler;
+    private final MessagePublisher messagePublisher;
     private final AtomicReference<UserId> userId;
 
     @Override
     public ClientState connect(HostAddress hostAddress) {
         if (messageSender.isConnected()) {
-            eventHandler.handle(StartingClientError.CONNECTION_ALREADY_ESTABLISHED);
+            messagePublisher.publishMessage(CONNECTION_ALREADY_ESTABLISHED);
             return this;
         } else
-            return new Disconnected(eventHandler).connect(hostAddress);
+            return new Disconnected(messagePublisher).connect(hostAddress);
     }
 
     @Override
@@ -117,7 +120,7 @@ public class Connected implements ClientState {
     @Override
     public ClientState closeConnection() {
         messageSender.closeConnection();
-        return new Disconnected(eventHandler);
+        return new Disconnected(messagePublisher);
     }
 
     @Override
@@ -126,7 +129,7 @@ public class Connected implements ClientState {
     }
 
     private ClientState handleError(SendClientMessageError sendClientMessageError) {
-        eventHandler.handle(sendClientMessageError);
+        messagePublisher.publishMessage(sendClientMessageError);
         if (sendClientMessageError == SendClientMessageError.CONNECTION_CLOSED)
             return closeConnection();
         else

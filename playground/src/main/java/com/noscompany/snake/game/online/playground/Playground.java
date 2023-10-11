@@ -9,7 +9,7 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
-import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundStateToRemoteClient;
+import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundToRemoteClient;
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.seats.AdminId;
 import io.vavr.control.Either;
@@ -33,8 +33,8 @@ public class Playground {
     private GameOptions gameOptions;
     private Gameplay gameplay;
 
-    public InitializePlaygroundStateToRemoteClient newUserEnteredRoom(UserId userId) {
-        return new InitializePlaygroundStateToRemoteClient(userId, getPlaygroundState());
+    public InitializePlaygroundToRemoteClient newUserEnteredRoom(UserId userId) {
+        return new InitializePlaygroundToRemoteClient(userId, getPlaygroundState());
     }
 
     public GameReinitialized playerTookASeat(UserId userId, PlayerNumber playerNumber, AdminId adminId) {

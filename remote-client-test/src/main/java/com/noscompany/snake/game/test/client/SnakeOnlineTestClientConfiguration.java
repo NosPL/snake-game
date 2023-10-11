@@ -21,17 +21,17 @@ import java.util.List;
 public class SnakeOnlineTestClientConfiguration {
 
     public SnakeOnlineClient snakeOnlineTestClient(ClientEventHandler clientEventHandler) {
-        var snakeOnlineClient = new SnakeOnlineClientConfiguration().create(clientEventHandler);
+        var snakeOnlineClient = new SnakeOnlineClientConfiguration().create(clientEventHandler, new MessagePublisherCreator().create());
+        var hostMessagePublisher = new MessagePublisherCreator().create();
         var websocketCreator = new WebsocketConfiguration().websocketCreator();
-        var messagePublisher = new MessagePublisherCreator().create();
         var serializer = OnlineMessageSerializer.instance();
         var deserializer = OnlineMessageDeserializer.instance(allTypeMappers());
         var server = new ServerConfiguration()
-                .server(websocketCreator, messagePublisher, serializer, deserializer);
-        new UserRegistryConfiguration().create(new UsersCountLimit(10), messagePublisher);
-        new ChatConfiguration().createChat(messagePublisher);
+                .server(websocketCreator, hostMessagePublisher, serializer, deserializer);
+        new UserRegistryConfiguration().create(new UsersCountLimit(10), hostMessagePublisher);
+        new ChatConfiguration().createChat(hostMessagePublisher);
         var gameplayCreator = new GameplayConfiguration().snakeGameplayCreator();
-        new PlaygroundConfiguration().createPlayground(messagePublisher, gameplayCreator);
+        new PlaygroundConfiguration().createPlayground(hostMessagePublisher, gameplayCreator);
         return new SnakeOnlineTestClient(snakeOnlineClient, clientEventHandler, server);
     }
 

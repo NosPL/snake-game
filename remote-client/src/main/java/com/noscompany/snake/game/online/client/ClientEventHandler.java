@@ -7,68 +7,71 @@ import com.noscompany.snake.game.online.contract.messages.game.options.GameOptio
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
 import com.noscompany.snake.game.online.contract.messages.seats.*;
+import com.noscompany.snake.game.online.contract.messages.server.events.ServerGotShutdown;
 import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserLeftRoom;
-import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundStateToRemoteClient;
+import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundToRemoteClient;
 
 public interface ClientEventHandler {
 
-    void connectionEstablished();
+    void connectionEstablished(ConnectionEstablished event);
 
-    void handle(InitializePlaygroundStateToRemoteClient initializePlaygroundStateToRemoteClient);
+    void sendClientMessage(SendClientMessageError sendClientMessageError);
 
-    void handle(GameReinitialized gameReinitialized);
+    void startingClientError(StartingClientError startingClientError);
 
-    void handle(SendClientMessageError sendClientMessageError);
+    void connectionClosed(ConnectionClosed event);
 
-    void handle(StartingClientError startingClientError);
+    void newUserEnteredRoom(NewUserEnteredRoom event);
 
-    void connectionClosed();
+    void failedToEnterRoom(FailedToEnterRoom event);
 
-    void handle(NewUserEnteredRoom event);
+    void userLeftRoom(UserLeftRoom event);
 
-    void handle(FailedToEnterRoom event);
+    void initializeSeats(InitializeSeatsToRemoteClient event);
 
-    void handle(InitializeSeatsToRemoteClient initializePlaygroundStateToRemoteClient);
+    void playerTookASeat(PlayerTookASeat event);
 
-    void handle(PlayerTookASeat event);
+    void failedToTakeASeat(FailedToTakeASeat event);
 
-    void handle(FailedToTakeASeat event);
+    void playerFreedUpASeat(PlayerFreedUpASeat event);
 
-    void handle(PlayerFreedUpASeat event);
+    void failedToFreeUpASeat(FailedToFreeUpSeat event);
 
-    void handle(FailedToFreeUpSeat event);
+    void initializePlayground(InitializePlaygroundToRemoteClient event);
 
-    void handle(GameOptionsChanged event);
+    void gameReinitialized(GameReinitialized event);
 
-    void handle(FailedToChangeGameOptions event);
+    void gameOptionsChanged(GameOptionsChanged event);
 
-    void handle(FailedToStartGame event);
+    void failedToChangeGameOptions(FailedToChangeGameOptions event);
 
-    void handle(UserSentChatMessage event);
+    void userSentChatMessage(UserSentChatMessage event);
 
-    void handle(FailedToSendChatMessage event);
+    void failedToSendChatMessage(FailedToSendChatMessage event);
 
-    void handle(UserLeftRoom event);
+    void failedToStartGame(FailedToStartGame event);
 
-    void handle(GameStartCountdown event);
+    void gameStartCountdown(GameStartCountdown event);
 
-    void handle(GameStarted event);
+    void gameStarted(GameStarted event);
 
-    void handle(SnakesMoved event);
+    void snakesMoved(SnakesMoved event);
 
-    void handle(GameFinished event);
+    void gameFinished(GameFinished event);
 
-    void handle(GameCancelled event);
+    void gameCancelled(GameCancelled event);
 
-    void handle(FailedToCancelGame event);
+    void failedToCancelGame(FailedToCancelGame event);
 
-    void handle(GamePaused event);
+    void gamePaused(GamePaused event);
 
-    void handle(FailedToPauseGame event);
+    void failedToPauseGame(FailedToPauseGame event);
 
-    void handle(GameResumed event);
+    void gameResumed(GameResumed event);
 
-    void handle(FailedToResumeGame event);
+    void failedToResumeGame(FailedToResumeGame event);
+
+    void serverGotShutdown(ServerGotShutdown event);
 }

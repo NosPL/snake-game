@@ -1,6 +1,8 @@
 package com.noscompany.snake.game.online.client.internal.state.connected;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.noscompany.message.publisher.MessagePublisher;
+import com.noscompany.snake.game.online.client.ConnectionClosed;
 import com.noscompany.snake.game.online.client.SendClientMessageError;
 import com.noscompany.snake.game.online.client.ClientEventHandler;
 import lombok.AccessLevel;
@@ -11,30 +13,30 @@ import org.atmosphere.wasync.Function;
 @Slf4j
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 class SocketMessageHandler implements Function<String> {
-    private final ClientEventHandler eventHandler;
+    private final MessagePublisher messagePublisher;
     private final MessageDeserializer messageDeserializer;
 
     void connectionClosedBecauseOfError() {
-        eventHandler.handle(SendClientMessageError.CONNECTION_CLOSED);
+       messagePublisher.publishMessage(SendClientMessageError.CONNECTION_CLOSED);
     }
 
     void connectionClosed() {
-        eventHandler.connectionClosed();
+        messagePublisher.publishMessage(new ConnectionClosed());
     }
 
     @Override
-    public void on(String messageFromSocket) {
-        log.info("received message from websocket: {}", messageFromSocket);
+    public void on(String stringMessage) {
+        log.info("received message from websocket: {}", stringMessage);
         log.info("deserializing message");
         messageDeserializer
-                .deserialize(messageFromSocket)
+                .deserialize(stringMessage)
                 .onFailure(throwable -> log.warn("Failed to deserialize message, cause: ", throwable))
                 .onSuccess(deserializedMessage -> log.info("Message successfully serialized, passing it to client event handler"))
-                .onSuccess(deserializedMessage -> deserializedMessage.applyTo(eventHandler));
+                .onSuccess(deserializedMessage -> deserializedMessage.applyTo(messagePublisher));
     }
 
-    static SocketMessageHandler create(ClientEventHandler eventHandler, ObjectMapper objectMapper) {
+    static SocketMessageHandler create(MessagePublisher messagePublisher, ObjectMapper objectMapper) {
         MessageDeserializer messageDeserializer = new MessageDeserializer(objectMapper);
-        return new SocketMessageHandler(eventHandler, messageDeserializer);
+        return new SocketMessageHandler(messagePublisher, messageDeserializer);
     }
 }

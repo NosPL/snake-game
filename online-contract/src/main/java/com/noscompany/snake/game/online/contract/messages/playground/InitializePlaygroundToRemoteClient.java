@@ -12,7 +12,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Value
 @NoArgsConstructor(force = true, access = PRIVATE)
 @AllArgsConstructor
-public class InitializePlaygroundStateToRemoteClient implements DedicatedClientMessage {
+public class InitializePlaygroundToRemoteClient implements DedicatedClientMessage {
     OnlineMessage.MessageType messageType = OnlineMessage.MessageType.INITIALIZE_PLAYGROUND_STATE;
     UserId userId;
     PlaygroundState playgroundState;
