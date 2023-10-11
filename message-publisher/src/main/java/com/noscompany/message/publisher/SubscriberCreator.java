@@ -26,7 +26,7 @@ final class SubscriberCreator {
 
     Option<Subscriber> createSubscriber(Subscription subscription) {
         if (subscription.getFunctions().isEmpty()) {
-            log.warn("subscriber was not created, subscription did not have any messages");
+            log.trace("subscriber was not created, subscription did not have any messages");
             return Option.none();
         }
         var handlerName = handlerName(subscription);

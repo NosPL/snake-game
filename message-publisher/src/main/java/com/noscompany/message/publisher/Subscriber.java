@@ -24,7 +24,7 @@ final class Subscriber {
 
     void processMsg(Object message, MethodCaller methodCaller) {
         if (executorService.isShutdown()) {
-            log.debug("{} is shutdown, ignoring message: {}",subscriberName, message);
+            log.trace("{} is shutdown, ignoring message: {}",subscriberName, message);
             return;
         }
         try {
@@ -36,10 +36,10 @@ final class Subscriber {
     }
 
     private void tryToProcessMessage(Object message, MethodCaller methodCaller) {
-        log.debug("{} received a message: {}, type: {}, looking for a handler", subscriberName, message, message.getClass().getName());
+        log.trace("{} received a message: {}, type: {}, looking for a handler", subscriberName, message, message.getClass().getName());
         findHandler(message.getClass())
                 .flatMap(handler -> handler.processMessage(message, methodCaller))
-                .peek(result -> log.debug("{} processed the message with a result: {}, passing the result to the message publisher...", subscriberName, result))
+                .peek(result -> log.trace("{} processed the message with a result: {}, passing the result to the message publisher...", subscriberName, result))
                 .peek(messagePublisher::publishMessage);
     }
 
@@ -49,13 +49,13 @@ final class Subscriber {
                 .filter(messageHandler -> messageHandler.acceptsMessageType(messageType))
                 .findFirst()
                 .map(Option::of).orElse(Option.none())
-                .peek(messageHandler -> log.debug("{} found the handler, processing the message...", subscriberName))
-                .onEmpty(() -> log.warn("{} did not find the handler", subscriberName));
+                .peek(messageHandler -> log.trace("{} found the handler, processing the message...", subscriberName))
+                .onEmpty(() -> log.trace("{} did not find the handler", subscriberName));
     }
 
     void shutdown() {
         try {
-            log.debug("{} - shutting down executor service...", subscriberName);
+            log.trace("{} - shutting down executor service...", subscriberName);
             executorService.shutdown();
         } catch (Throwable t) {
             log.error("{} - failed to shutdown executor service, reason: ", subscriberName, t);

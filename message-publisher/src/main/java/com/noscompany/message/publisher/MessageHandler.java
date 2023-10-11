@@ -25,9 +25,9 @@ final class MessageHandler {
             Object result = function.apply(message);
             return flatten(result);
         } catch (Throwable t) {
-            log.debug("{} threw an exception: ", subscriberName, t);
-            log.debug("{} - message author thread name: {}", subscriberName, methodCaller.getThreadName());
-            log.debug("{} - message author stack trace: ", subscriberName, methodCaller.getStackTrace());
+            log.trace("{} threw an exception: ", subscriberName, t);
+            log.trace("{} - message author thread name: {}", subscriberName, methodCaller.getThreadName());
+            log.trace("{} - message author stack trace: ", subscriberName, methodCaller.getStackTrace());
             return Option.of(t);
         }
     }
