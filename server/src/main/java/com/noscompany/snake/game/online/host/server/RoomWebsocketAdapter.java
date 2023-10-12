@@ -2,6 +2,7 @@ package com.noscompany.snake.game.online.host.server;
 
 import com.noscompany.message.publisher.MessagePublisher;
 import com.noscompany.snake.game.online.contract.messages.UserId;
+import com.noscompany.snake.game.online.contract.messages.network.YourIdGotInitialized;
 import com.noscompany.snake.game.online.contract.messages.server.events.RemoteClientDisconnected;
 import com.noscompany.snake.game.online.online.contract.serialization.OnlineMessageDeserializer;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ class RoomWebsocketAdapter implements WebsocketEventHandler {
     @Override
     public void newClientConnected(UserId remoteClientId) {
         log.info("New remote client got connected, id: {}", remoteClientId.getId());
+        messagePublisher.publishMessage(new YourIdGotInitialized(remoteClientId));
     }
 
     @Override

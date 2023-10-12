@@ -4,13 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
+import com.noscompany.snake.game.online.online.contract.serialization.object.type.mappers.*;
 import io.vavr.control.Option;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import static com.noscompany.snake.game.online.contract.messages.OnlineMessage.MessageType;
@@ -54,10 +53,20 @@ public final class OnlineMessageDeserializer {
         return MessageType.valueOf(messageTypeName);
     }
 
-    public static OnlineMessageDeserializer instance(List<ObjectTypeMapper> objectTypeMappers) {
-        objectTypeMappers = new LinkedList<>(objectTypeMappers);
-        objectTypeMappers.add(new OnlineContractObjectTypeMapper());
+    public static OnlineMessageDeserializer instance() {
         var objectMapper = ConfiguredObjectMapperCreator.createInstance();
-        return new OnlineMessageDeserializer(objectMapper, objectTypeMappers);
+        return new OnlineMessageDeserializer(objectMapper, allTypeMappers());
+    }
+
+    private static List<ObjectTypeMapper> allTypeMappers() {
+        return List.of(
+                new ChatMessageTypeMapper(),
+                new GameOptionsTypeMapper(),
+                new GameplayTypeMapper(),
+                new IdInitializationTypeMapper(),
+                new PlaygroundMessageTypeMapper(),
+                new SeatsMessageTypeMapper(),
+                new ServerMessageTypeMapper(),
+                new UserRegistryMessageTypeMapper());
     }
 }

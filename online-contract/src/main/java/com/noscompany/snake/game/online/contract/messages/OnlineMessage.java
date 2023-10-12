@@ -54,5 +54,7 @@ public interface OnlineMessage {
         SEND_CHAT_MESSAGE,
         USER_SENT_CHAT_MESSAGE,
         FAILED_TO_SEND_CHAT_MESSAGE,
+
+        YOUR_ID_GOT_INITIALIZED,
     }
 }

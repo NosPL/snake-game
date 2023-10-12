@@ -22,7 +22,7 @@ public class SnakeOnlineTestClientConfiguration {
 
     public SnakeOnlineClient snakeOnlineTestClient(ClientEventHandler clientEventHandler) {
         var serializer = OnlineMessageSerializer.instance();
-        var deserializer = OnlineMessageDeserializer.instance(allTypeMappers());
+        var deserializer = OnlineMessageDeserializer.instance();
         var snakeOnlineClient = new SnakeOnlineClientConfiguration().create(clientEventHandler, new MessagePublisherCreator().create(), deserializer, serializer);
         var hostMessagePublisher = new MessagePublisherCreator().create();
         var websocketCreator = new WebsocketConfiguration().websocketCreator();
@@ -33,16 +33,5 @@ public class SnakeOnlineTestClientConfiguration {
         var gameplayCreator = new GameplayConfiguration().snakeGameplayCreator();
         new PlaygroundConfiguration().createPlayground(hostMessagePublisher, gameplayCreator);
         return new SnakeOnlineTestClient(snakeOnlineClient, clientEventHandler, server);
-    }
-
-    private List<ObjectTypeMapper> allTypeMappers() {
-        return List.of(
-                new ChatMessageTypeMapper(),
-                new GameOptionsTypeMapper(),
-                new GameplayTypeMapper(),
-                new PlaygroundMessageTypeMapper(),
-                new SeatsMessageTypeMapper(),
-                new ServerMessageTypeMapper(),
-                new UserRegistryMessageTypeMapper());
     }
 }

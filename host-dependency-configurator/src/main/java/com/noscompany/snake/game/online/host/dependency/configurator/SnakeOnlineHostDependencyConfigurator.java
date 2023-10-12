@@ -24,20 +24,9 @@ public class SnakeOnlineHostDependencyConfigurator {
         new ChatConfiguration().createChat(messagePublisher);
         var websocketCreator = new WebsocketConfiguration().websocketCreator();
         var serializer = OnlineMessageSerializer.instance();
-        var deserializer = OnlineMessageDeserializer.instance(allTypeMappers());
+        var deserializer = OnlineMessageDeserializer.instance();
         new ServerConfiguration().server(websocketCreator, messagePublisher, serializer, deserializer);
         var gameplayCreator = new GameplayConfiguration().snakeGameplayCreator();
         new PlaygroundConfiguration().createPlayground(messagePublisher, gameplayCreator);
-    }
-
-    private List<ObjectTypeMapper> allTypeMappers() {
-        return List.of(
-                new ChatMessageTypeMapper(),
-                new GameOptionsTypeMapper(),
-                new GameplayTypeMapper(),
-                new PlaygroundMessageTypeMapper(),
-                new SeatsMessageTypeMapper(),
-                new ServerMessageTypeMapper(),
-                new UserRegistryMessageTypeMapper());
     }
 }

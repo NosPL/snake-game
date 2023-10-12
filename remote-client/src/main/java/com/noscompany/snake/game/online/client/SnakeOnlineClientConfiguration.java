@@ -12,6 +12,7 @@ import com.noscompany.snake.game.online.contract.messages.game.options.GameOptio
 import com.noscompany.snake.game.online.contract.messages.gameplay.commands.ResumeGame;
 import com.noscompany.snake.game.online.contract.messages.gameplay.commands.StartGame;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
+import com.noscompany.snake.game.online.contract.messages.network.YourIdGotInitialized;
 import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
 import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundToRemoteClient;
 import com.noscompany.snake.game.online.contract.messages.seats.*;
@@ -29,35 +30,23 @@ import java.util.concurrent.atomic.AtomicReference;
 public class SnakeOnlineClientConfiguration {
 
     public SnakeOnlineClient create(ClientEventHandler eventHandler) {
+
         var messagePublisher = new MessagePublisherCreator().create();
-
         var serializer = OnlineMessageSerializer.instance();
-        var deserializer = OnlineMessageDeserializer.instance(typeMappers());
+        var deserializer = OnlineMessageDeserializer.instance();
         return create(eventHandler, messagePublisher, deserializer,serializer);
-    }
-
-    private List<ObjectTypeMapper> typeMappers() {
-        return List.of(
-                new ChatMessageTypeMapper(),
-                new GameOptionsTypeMapper(),
-                new GameplayTypeMapper(),
-                new PlaygroundMessageTypeMapper(),
-                new SeatsMessageTypeMapper(),
-                new ServerMessageTypeMapper(),
-                new UserRegistryMessageTypeMapper());
     }
 
     public SnakeOnlineClientImpl create(ClientEventHandler eventHandler,
                                         MessagePublisher messagePublisher, OnlineMessageDeserializer deserializer,
                                         OnlineMessageSerializer serializer) {
-        eventHandler = new UpdateUserIdHandler(new AtomicReference<>(UserId.random()), eventHandler);
         messagePublisher.subscribe(createSubscription(eventHandler));
         return new SnakeOnlineClientImpl(new Disconnected(messagePublisher, deserializer, serializer));
     }
 
     private Subscription createSubscription(ClientEventHandler eventHandler) {
         return new Subscription()
-
+                .toMessage(YourIdGotInitialized.class, (YourIdGotInitialized event) -> UserIdHolder.set(event.getUserId()))
 //                chat events
                 .toMessage(UserSentChatMessage.class, eventHandler::userSentChatMessage)
                 .toMessage(FailedToSendChatMessage.class, eventHandler::failedToSendChatMessage)

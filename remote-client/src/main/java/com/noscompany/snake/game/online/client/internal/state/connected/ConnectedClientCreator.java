@@ -2,6 +2,7 @@ package com.noscompany.snake.game.online.client.internal.state.connected;
 
 import com.noscompany.message.publisher.MessagePublisher;
 import com.noscompany.snake.game.online.client.HostAddress;
+import com.noscompany.snake.game.online.client.UserIdHolder;
 import com.noscompany.snake.game.online.client.internal.state.ClientState;
 import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.online.contract.serialization.OnlineMessageDeserializer;
@@ -19,9 +20,9 @@ public class ConnectedClientCreator {
                                           MessagePublisher messagePublisher,
                                           OnlineMessageDeserializer deserializer,
                                           OnlineMessageSerializer serializer) {
-        var userId = new AtomicReference<>(new UserId(""));
+        UserIdHolder.reset();
         return socketCreator
                 .create(hostAddress, messagePublisher, deserializer, serializer)
-                .map(websocket -> new Connected(websocket, messagePublisher, userId, deserializer, serializer));
+                .map(websocket -> new Connected(websocket, messagePublisher, deserializer, serializer));
     }
 }
