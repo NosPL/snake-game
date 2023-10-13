@@ -1,6 +1,6 @@
 package com.noscompany.snakejavafxclient.components.commons.game.grid;
 
-import com.noscompany.snakejavafxclient.SnakesColors;
+import com.noscompany.snake.game.online.gui.commons.SnakesColors;
 import javafx.scene.paint.Color;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;

@@ -9,7 +9,7 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameSt
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStarted;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.SnakesMoved;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
-import com.noscompany.snakejavafxclient.SnakesColors;
+import com.noscompany.snake.game.online.gui.commons.SnakesColors;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;

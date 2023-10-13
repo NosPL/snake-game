@@ -6,7 +6,7 @@ import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASe
 import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.Seat;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
-import com.noscompany.snakejavafxclient.SnakesColors;
+import com.noscompany.snake.game.online.gui.commons.SnakesColors;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import io.vavr.control.Option;
 import javafx.application.Platform;
