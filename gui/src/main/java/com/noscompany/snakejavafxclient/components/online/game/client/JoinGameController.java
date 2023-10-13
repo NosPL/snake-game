@@ -1,9 +1,8 @@
 package com.noscompany.snakejavafxclient.components.online.game.client;
 
-import com.noscompany.snake.game.online.client.HostAddress;
-import com.noscompany.snake.game.online.client.SendClientMessageError;
-import com.noscompany.snake.game.online.client.SnakeOnlineClient;
-import com.noscompany.snake.game.online.client.StartingClientError;
+import com.noscompany.message.publisher.Subscription;
+import com.noscompany.snake.game.online.client.*;
+import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
@@ -30,10 +29,14 @@ public class JoinGameController extends AbstractController {
     @FXML
     private Label errorMessageLabel;
     private final HostAddressCreator hostAddressCreator = new HostAddressCreator();
-    private volatile Option<SnakeOnlineClient> snakeOnlineClientOption = Option.none();
+    private SnakeOnlineClient snakeOnlineClient;
+
+    public void setSnakeOnlineClient(SnakeOnlineClient snakeOnlineClient) {
+        this.snakeOnlineClient = snakeOnlineClient;
+    }
 
     public void disconnect() {
-        snakeOnlineClientOption.peek(SnakeOnlineClient::disconnect);
+        snakeOnlineClient.disconnect();
     }
 
     @FXML
@@ -44,30 +47,37 @@ public class JoinGameController extends AbstractController {
     }
 
     private void joinGame(HostAddress hostAddress) {
-        if (!isClientConnected())
-            getOrCreateSnakeOnlineClient().connect(hostAddress);
+        if (!snakeOnlineClient.isConnected())
+            snakeOnlineClient.connect(hostAddress);
         else
-            connectionEstablished();
+            enterRoom();
     }
 
-    public void connectionEstablished() {
+    public void connectionEstablished(ConnectionEstablished event) {
         enterRoom();
     }
 
     public void enterRoom() {
         errorMessageLabel.setText("connection established, entering room...");
         var userNameString = playerNameTextField.getText();
-        getOrCreateSnakeOnlineClient().enterTheRoom(new UserName(userNameString));
+        snakeOnlineClient.enterTheRoom(new UserName(userNameString));
     }
 
-    public void handle(NewUserEnteredRoom event) {
-        if (nameOfNewlyConnectedUserEqualsNameTypedInTextField(event.getUserName())) {
+    public void newUserEnteredRoom(NewUserEnteredRoom event) {
+        if (itsYourId(event.getUserId())) {
             JoinGameStage.get().close();
             SnakeOnlineClientStage.get().show();
         }
     }
 
-    public void handle(FailedToEnterRoom event) {
+    private Boolean itsYourId(UserId userId) {
+        return RemoteClientIdHolder
+                .userId()
+                .map(userId::equals)
+                .getOrElse(false);
+    }
+
+    public void failedToEnterRoom(FailedToEnterRoom event) {
         String errorMessage = getErrorMessage(event);
         errorMessageLabel.setText(errorMessage);
         if (event.getReason() == FailedToEnterRoom.Reason.USER_ALREADY_IN_THE_ROOM) {
@@ -76,24 +86,12 @@ public class JoinGameController extends AbstractController {
         }
     }
 
-    public void handle(SendClientMessageError sendClientMessageError) {
+    public void sendClientMessageError(SendClientMessageError sendClientMessageError) {
         errorMessageLabel.setText(toErrorMessage(sendClientMessageError));
     }
 
-    public void handle(StartingClientError startingClientError) {
+    public void startingClientError(StartingClientError startingClientError) {
         errorMessageLabel.setText(toErrorMessage(startingClientError));
-    }
-
-    private SnakeOnlineClient getOrCreateSnakeOnlineClient() {
-        if (snakeOnlineClientOption.isEmpty())
-            snakeOnlineClientOption = Option.of(SnakeOnlineGuiClientConfiguration.createOnlineClient());
-        return snakeOnlineClientOption.get();
-    }
-
-    private boolean isClientConnected() {
-        return snakeOnlineClientOption
-                .map(SnakeOnlineClient::isConnected)
-                .getOrElse(false);
     }
 
     private Either<HostAddressCreator.Error, HostAddress> getIpAddress() {
@@ -128,16 +126,23 @@ public class JoinGameController extends AbstractController {
         errorMessageLabel.setText(message);
     }
 
-    private boolean nameOfNewlyConnectedUserEqualsNameTypedInTextField(UserName userName) {
-        return userName.getName().equals(playerNameTextField.getText());
-    }
-
     private String getErrorMessage(FailedToEnterRoom event) {
         return event.getReason().toString().toLowerCase().replace("_", " ");
     }
 
-    public void connectionClosed() {
-        snakeOnlineClientOption = Option.none();
+    public void connectionClosed(ConnectionClosed event) {
         errorMessageLabel.setText("Connection got closed");
+    }
+
+    @Override
+    public Subscription getSubscription() {
+        return new Subscription()
+                .toMessage(NewUserEnteredRoom.class, this::newUserEnteredRoom)
+                .toMessage(FailedToEnterRoom.class, this::failedToEnterRoom)
+                .toMessage(StartingClientError.class, this::startingClientError)
+                .toMessage(SendClientMessageError.class, this::sendClientMessageError)
+                .toMessage(ConnectionClosed.class, this::connectionClosed)
+                .toMessage(ConnectionEstablished.class, this::connectionEstablished)
+                .subscriberName("online-client-join-game-gui");
     }
 }

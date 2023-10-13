@@ -1,5 +1,8 @@
 package com.noscompany.snakejavafxclient.components.online.game.commons;
 
+import com.noscompany.message.publisher.Subscription;
+import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
+import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundToRemoteClient;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import com.noscompany.snake.game.online.gui.commons.Consumer3;
 import javafx.fxml.FXML;
@@ -50,11 +53,19 @@ public class OnlineGameOptionsController extends AbstractController {
     }
 
     @FXML
-    public void gameOptionsChanged() {
+    public void gameOptionsChangedPressed() {
         gameOptionsChangedAction.accept(gridSize(), gameSpeed(), walls());
     }
 
-    public void update(GameOptions gameOptions) {
+    public void gameOptionsChanged(GameOptionsChanged event) {
+        update(event.getPlaygroundState().getGameOptions());
+    }
+
+    private void initializePlaygroundState(InitializePlaygroundToRemoteClient command) {
+        update(command.getPlaygroundState().getGameOptions());
+    }
+
+    private void update(GameOptions gameOptions) {
         update(
                 gameOptions.getGameSpeed(),
                 gameOptions.getGridSize(),
@@ -144,11 +155,11 @@ public class OnlineGameOptionsController extends AbstractController {
             wallsOff.setSelected(true);
     }
 
-    public void disable() {
-
-    }
-
-    public void enable() {
-
+    @Override
+    public Subscription getSubscription() {
+        return new Subscription()
+                .toMessage(GameOptionsChanged.class, this::gameOptionsChanged)
+                .toMessage(InitializePlaygroundToRemoteClient.class, this::initializePlaygroundState)
+                .subscriberName("game-options-gui");
     }
 }

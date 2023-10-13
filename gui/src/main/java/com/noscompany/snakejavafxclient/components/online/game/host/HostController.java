@@ -1,5 +1,6 @@
 package com.noscompany.snakejavafxclient.components.online.game.host;
 
+import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snakejavafxclient.components.online.game.commons.KeyPressedHandler;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import javafx.fxml.FXML;
@@ -21,5 +22,10 @@ public class HostController extends AbstractController {
         vBox1.setOnKeyPressed(keyPressedEventHandler);
         vBox2.setOnKeyPressed(keyPressedEventHandler);
         vBox3.setOnKeyPressed(keyPressedEventHandler);
+    }
+
+    @Override
+    public Subscription getSubscription() {
+        return new Subscription();
     }
 }

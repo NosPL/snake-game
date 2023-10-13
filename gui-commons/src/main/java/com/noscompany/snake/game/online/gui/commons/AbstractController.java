@@ -1,5 +1,6 @@
 package com.noscompany.snake.game.online.gui.commons;
 
+import com.noscompany.message.publisher.Subscription;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
@@ -12,8 +13,8 @@ public abstract class AbstractController implements Initializable {
         doInitialize(location, resources);
         Controllers.put(this);
     }
-
     protected void doInitialize(URL location, ResourceBundle resources) {
-
     }
+
+    public abstract Subscription getSubscription();
 }

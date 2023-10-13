@@ -1,5 +1,13 @@
 package com.noscompany.snakejavafxclient.components.online.game.commons;
 
+import com.noscompany.message.publisher.Subscription;
+import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToCancelGame;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToPauseGame;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToResumeGame;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToStartGame;
+import com.noscompany.snake.game.online.contract.messages.seats.FailedToFreeUpSeat;
+import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import io.vavr.control.Try;
 import javafx.application.Platform;
@@ -48,5 +56,46 @@ public class FleetingMessageController extends AbstractController {
         messageDuration = Duration.ofSeconds(5);
         executorService = Executors.newSingleThreadExecutor();
         currentTask = completedFuture(new Object());
+    }
+
+    @Override
+    public Subscription getSubscription() {
+        return new Subscription()
+                .toMessage(FailedToTakeASeat.class, this::failedToTakeASeat)
+                .toMessage(FailedToFreeUpSeat.class, this::failedToFreeUpASeat)
+                .toMessage(FailedToChangeGameOptions.class, this::failedToChangeGameOptions)
+                .toMessage(FailedToStartGame.class, this::failedToStartGame)
+                .toMessage(FailedToCancelGame.class, this::failedCancelGame)
+                .toMessage(FailedToPauseGame.class, this::failedToPauseGame)
+                .toMessage(FailedToResumeGame.class, this::failedToResumeGame)
+                .subscriberName("fleeting-message-gui");
+    }
+
+    private void failedToTakeASeat(FailedToTakeASeat event) {
+        print(event.getReason());
+    }
+
+    private void failedToFreeUpASeat(FailedToFreeUpSeat event) {
+        print(event.getReason());
+    }
+
+    private void failedToChangeGameOptions(FailedToChangeGameOptions event) {
+        print(event.getReason());
+    }
+
+    private void failedToStartGame(FailedToStartGame event) {
+        print(event.getReason());
+    }
+
+    private void failedCancelGame(FailedToCancelGame event) {
+        print(event.getReason());
+    }
+
+    private void failedToPauseGame(FailedToPauseGame event) {
+        print(event.getReason());
+    }
+
+    private void failedToResumeGame(FailedToResumeGame event) {
+        print(event.getReason());
     }
 }

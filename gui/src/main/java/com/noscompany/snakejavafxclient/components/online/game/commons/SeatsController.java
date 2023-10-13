@@ -1,11 +1,15 @@
 package com.noscompany.snakejavafxclient.components.online.game.commons;
 
+import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.contract.messages.seats.AdminId;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
 import com.noscompany.snake.game.online.contract.messages.seats.Seat;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import com.noscompany.snakejavafxclient.SnakesColors;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import io.vavr.control.Option;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,7 +22,7 @@ import java.util.function.Consumer;
 
 import static com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber.*;
 
-public class LobbySeatsController extends AbstractController {
+public class SeatsController extends AbstractController {
     @FXML
     private Label firstSeatLabel;
     @FXML
@@ -41,12 +45,12 @@ public class LobbySeatsController extends AbstractController {
     private Runnable freeUpASeatAction = () -> {
     };
 
-    public LobbySeatsController onTakeASeatButtonPress(Consumer<PlayerNumber> takeASeatAction) {
+    public SeatsController onTakeASeatButtonPress(Consumer<PlayerNumber> takeASeatAction) {
         this.takeASeatAction = takeASeatAction;
         return this;
     }
 
-    public LobbySeatsController onFreeUpASeatButtonPress(Runnable freeUpASeatAction) {
+    public SeatsController onFreeUpASeatButtonPress(Runnable freeUpASeatAction) {
         this.freeUpASeatAction = freeUpASeatAction;
         return this;
     }
@@ -76,7 +80,15 @@ public class LobbySeatsController extends AbstractController {
         freeUpASeatAction.run();
     }
 
-    public void update(Set<Seat> seats, Option<AdminId> adminId) {
+    public void playerTookASeat(PlayerTookASeat event) {
+        Platform.runLater(() -> update(event.getSeats(), Option.of(event.getAdminId())));
+    }
+
+    public void playerFreedUpASeat(PlayerFreedUpASeat event) {
+        Platform.runLater(() -> update(event.getSeats(), event.getAdminId()));
+    }
+
+    private void update(Set<Seat> seats, Option<AdminId> adminId) {
         resetSeatsLabels();
         updateSeats(seats, adminId);
     }
@@ -86,7 +98,7 @@ public class LobbySeatsController extends AbstractController {
     }
 
     private void seatTook(Option<UserName> userName, PlayerNumber playerNumber, boolean isAdmin) {
-        findSeatLabelBy(playerNumber).setText(format(userName, isAdmin));
+        Platform.runLater(() -> findSeatLabelBy(playerNumber).setText(format(userName, isAdmin)));
     }
 
     private Label findSeatLabelBy(PlayerNumber playerNumber) {
@@ -124,6 +136,14 @@ public class LobbySeatsController extends AbstractController {
     protected void doInitialize(URL location, ResourceBundle resources) {
         setColors();
         resetSeatsLabels();
+    }
+
+    @Override
+    public Subscription getSubscription() {
+        return new Subscription()
+                .toMessage(PlayerTookASeat.class, this::playerTookASeat)
+                .toMessage(PlayerFreedUpASeat.class, this::playerFreedUpASeat)
+                .subscriberName("seats-gui");
     }
 
     private void setColors() {

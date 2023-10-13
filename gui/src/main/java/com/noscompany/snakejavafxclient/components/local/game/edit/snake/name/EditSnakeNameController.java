@@ -1,5 +1,6 @@
 package com.noscompany.snakejavafxclient.components.local.game.edit.snake.name;
 
+import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import com.noscompany.snakejavafxclient.components.local.game.GuiLocalGameEventHandler;
 import io.vavr.control.Option;
@@ -67,5 +68,10 @@ public class EditSnakeNameController extends AbstractController {
             if (key.getCode().equals(KeyCode.ENTER))
                 changeName();
         });
+    }
+
+    @Override
+    public Subscription getSubscription() {
+        return new Subscription();
     }
 }

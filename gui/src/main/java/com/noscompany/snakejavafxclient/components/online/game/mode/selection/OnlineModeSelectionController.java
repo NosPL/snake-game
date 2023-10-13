@@ -1,8 +1,9 @@
 package com.noscompany.snakejavafxclient.components.online.game.mode.selection;
 
-import com.noscompany.snakejavafxclient.components.online.game.client.JoinGameStage;
-import com.noscompany.snakejavafxclient.components.online.game.host.SetupHostStage;
+import com.noscompany.message.publisher.Subscription;
+import com.noscompany.snakejavafxclient.components.online.game.client.SnakeOnlineGuiClientConfiguration;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
+import com.noscompany.snakejavafxclient.components.online.game.host.SnakeOnlineHostGuiConfiguration;
 import javafx.fxml.FXML;
 import lombok.SneakyThrows;
 
@@ -12,13 +13,18 @@ public class OnlineModeSelectionController extends AbstractController {
     @SneakyThrows
     public void runHost() {
         OnlineModeSelectionStage.get().close();
-        SetupHostStage.get().show();
+        new SnakeOnlineHostGuiConfiguration().configure();
     }
 
     @FXML
     @SneakyThrows
     public void runClient() {
         OnlineModeSelectionStage.get().close();
-        JoinGameStage.get().show();
+        new SnakeOnlineGuiClientConfiguration().configure();
+    }
+
+    @Override
+    public Subscription getSubscription() {
+        return new Subscription();
     }
 }

@@ -1,5 +1,7 @@
 package com.noscompany.snakejavafxclient.components.online.game.commons;
 
+import com.noscompany.message.publisher.Subscription;
+import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import javafx.collections.FXCollections;
@@ -31,9 +33,21 @@ public class ChatController extends AbstractController {
         });
     }
 
+    @Override
+    public Subscription getSubscription() {
+        return new Subscription()
+                .toMessage(UserSentChatMessage.class, this::userSentChatMessage)
+                .toMessage(FailedToSendChatMessage.class, this::failedToSendChatMessage)
+                .subscriberName("chat-gui");
+    }
+
     public ChatController onSendChatMessageButtonPress(Consumer<String> sendChatMessageAction) {
         this.sendChatMessageAction = sendChatMessageAction;
         return this;
+    }
+
+    private void failedToSendChatMessage(FailedToSendChatMessage event) {
+        print(asString(event));
     }
 
     @FXML
@@ -45,15 +59,23 @@ public class ChatController extends AbstractController {
         chatMessageTextField.setText("");
     }
 
-    public void print(UserSentChatMessage event) {
+    public void userSentChatMessage(UserSentChatMessage event) {
+        print(asString(event));
+    }
+
+    private void print(String string) {
         if (messages.size() > 20) {
             messages.pollFirst();
         }
-        messages.addLast(toString(event));
+        messages.addLast(string);
         stringListView.setItems(FXCollections.observableArrayList(messages));
     }
 
-    private String toString(UserSentChatMessage event) {
+    private String asString(UserSentChatMessage event) {
         return event.getUserName().getName() + ": " + event.getMessage();
+    }
+
+    private String asString(FailedToSendChatMessage event) {
+        return event.getReason().toString().replace("_", " ");
     }
 }

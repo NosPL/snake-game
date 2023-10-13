@@ -3,7 +3,6 @@ package com.noscompany.snake.game.online.client.internal.state.connected;
 import com.noscompany.message.publisher.MessagePublisher;
 import com.noscompany.snake.game.online.client.SendClientMessageError;
 import com.noscompany.snake.game.online.client.HostAddress;
-import com.noscompany.snake.game.online.client.UserIdHolder;
 import com.noscompany.snake.game.online.client.internal.state.ClientState;
 import com.noscompany.snake.game.online.contract.messages.chat.SendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.gameplay.commands.*;
@@ -19,7 +18,7 @@ import com.noscompany.snake.game.online.online.contract.serialization.OnlineMess
 import lombok.AllArgsConstructor;
 
 import static com.noscompany.snake.game.online.client.StartingClientError.CONNECTION_ALREADY_ESTABLISHED;
-import static com.noscompany.snake.game.online.client.UserIdHolder.userId;
+import static com.noscompany.snake.game.online.client.RemoteClientIdHolder.userId;
 
 @AllArgsConstructor
 public class Connected implements ClientState {

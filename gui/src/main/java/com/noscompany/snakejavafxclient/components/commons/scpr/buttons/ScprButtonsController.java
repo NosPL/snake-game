@@ -1,5 +1,6 @@
 package com.noscompany.snakejavafxclient.components.commons.scpr.buttons;
 
+import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -62,5 +63,10 @@ public class ScprButtonsController extends AbstractController {
     public ScprButtonsController onResumeButtonPress(Runnable runnable) {
         this.onResume = runnable;
         return this;
+    }
+
+    @Override
+    public Subscription getSubscription() {
+        return new Subscription();
     }
 }

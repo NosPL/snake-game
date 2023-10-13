@@ -1,5 +1,6 @@
 package com.noscompany.snakejavafxclient.components.commons.game.grid;
 
+import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
@@ -10,10 +11,8 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameSt
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.SnakesMoved;
 import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
 import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundToRemoteClient;
-import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
-import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
-import io.vavr.control.Option;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 
@@ -24,8 +23,8 @@ public class GameGridController extends AbstractController {
     @FXML
     private VBox gridVbox;
     private GameGrid gameGrid;
-    private Option<GridSize> gridSizeOption;
-    private Option<Walls> wallsOption;
+    private GridSize gridSize;
+    private Walls walls;
 
     @Override
     protected void doInitialize(URL location, ResourceBundle resources) {
@@ -33,65 +32,63 @@ public class GameGridController extends AbstractController {
         initializeGrid(GridSize._10x10, Walls.ON);
     }
 
-    public void handle(InitializePlaygroundToRemoteClient event) {
-        if (gameGrid == null)
-            initializeGrid(
-                    event.getPlaygroundState().getGameState().getGridSize(),
-                    event.getPlaygroundState().getGameState().getWalls());
-        gameGrid.update(
-                event.getPlaygroundState().getGameState().getSnakes());
+    @Override
+    public Subscription getSubscription() {
+        return new Subscription()
+                .toMessage(InitializePlaygroundToRemoteClient.class, this::initializePlayground)
+                .toMessage(GameOptionsChanged.class, this::gameOptionsChanged)
+                .toMessage(GameReinitialized.class, this::gameReinitialized)
+                .toMessage(GameStartCountdown.class, this::gameStartCountdown)
+                .toMessage(GameStarted.class, this::gameStarted)
+                .toMessage(SnakesMoved.class, this::snakesMoved)
+                .toMessage(GameFinished.class, this::gameFinished)
+                .subscriberName("gameplay-grid-gui");
     }
 
-    public void handle(PlayerTookASeat event) {
-        gridSizeOption.peek(gridSize ->
-                wallsOption.peek(walls -> initializeGrid(gridSize, walls)));
+    public void initializePlayground(InitializePlaygroundToRemoteClient event) {
+        initializeGrid(
+                event.getPlaygroundState().getGameState().getGridSize(),
+                event.getPlaygroundState().getGameState().getWalls());
+        Platform
+                .runLater(() -> gameGrid.update(event.getPlaygroundState().getGameState().getSnakes()));
     }
 
-    public void handle(PlayerFreedUpASeat event) {
-        gridSizeOption.peek(gridSize ->
-                wallsOption.peek(walls -> initializeGrid(gridSize, walls)));
+    public void gameOptionsChanged(GameOptionsChanged event) {
+        initializeGrid(
+                event.getPlaygroundState().getGameState().getGridSize(),
+                event.getPlaygroundState().getGameState().getWalls());
+        Platform
+                .runLater(() -> gameGrid.update(event.getPlaygroundState().getGameState().getSnakes()));
     }
 
-    public void handle(GameOptionsChanged event) {
-            initializeGrid(
-                    event.getPlaygroundState().getGameState().getGridSize(),
-                    event.getPlaygroundState().getGameState().getWalls());
-        gameGrid.update(
-                event.getPlaygroundState().getGameState().getSnakes());
+    public void gameStartCountdown(GameStartCountdown event) {
+        initializeGrid(event.getGridSize(), event.getWalls());
+        Platform.runLater(() -> gameGrid.update(event.getSnakes(), event.getFoodPosition()));
     }
 
-    public void handle(GameStartCountdown event) {
-        if (gameGrid == null)
-            initializeGrid(event.getGridSize(), event.getWalls());
-        gameGrid.update(event.getSnakes(), event.getFoodPosition());
+    public void gameStarted(GameStarted event) {
+        initializeGrid(event.getGridSize(), event.getWalls());
+        Platform.runLater(() -> gameGrid.update(event.getSnakes(), event.getFoodPosition()));
     }
 
-    public void handle(GameStarted event) {
-        if (gameGrid == null)
-            initializeGrid(event.getGridSize(), event.getWalls());
-        gameGrid.update(event.getSnakes(), event.getFoodPosition());
+    public void snakesMoved(SnakesMoved event) {
+        initializeGrid(event.getGridSize(), event.getWalls());
+        Platform.runLater(() -> gameGrid.update(event.getSnakes(), event.getFoodPosition()));
     }
 
-    public void handle(SnakesMoved event) {
-        if (gameGrid == null)
-            initializeGrid(event.getGridSize(), event.getWalls());
-        gameGrid.update(event.getSnakes(), event.getFoodPosition());
-    }
-
-    public void handle(GameFinished event) {
-        if (gameGrid == null)
-            initializeGrid(event.getGridSize(), event.getWalls());
-        gameGrid.update(event.getSnakes(), event.getFoodPosition());
+    public void gameFinished(GameFinished event) {
+        initializeGrid(event.getGridSize(), event.getWalls());
+        Platform.runLater(() -> gameGrid.update(event.getSnakes(), event.getFoodPosition()));
     }
 
     public void localGameOptionsChanged(GameState gameState) {
         initializeGrid(gameState.getGridSize(), gameState.getWalls());
-        gameGrid.update(gameState.getSnakes());
+        Platform.runLater(() -> gameGrid.update(gameState.getSnakes()));
     }
 
-    public void handle(GameReinitialized event) {
+    public void gameReinitialized(GameReinitialized event) {
         initializeGrid(event.getGameState().getGridSize(), event.getGameState().getWalls());
-        gameGrid.update(event.getGameState().getSnakes());
+        Platform.runLater(() -> gameGrid.update(event.getGameState().getSnakes()));
     }
 
     public void failedToCreateGamePlay(GridSize gridSize, Walls walls) {
@@ -99,10 +96,14 @@ public class GameGridController extends AbstractController {
     }
 
     private void initializeGrid(GridSize gridSize, Walls walls) {
-        gridVbox.getChildren().clear();
-        gameGrid = GameGrid.Creator.createGrid(gridSize, walls);
-        gridVbox.getChildren().add(gameGrid);
-        this.gridSizeOption = Option.of(gridSize);
-        this.wallsOption = Option.of(walls);
+        Platform.runLater(() -> {
+            if (this.gridSize != gridSize || this.walls != walls) {
+                gridVbox.getChildren().clear();
+                gameGrid = GameGrid.Creator.createGrid(gridSize, walls);
+                gridVbox.getChildren().add(gameGrid);
+                this.gridSize = gridSize;
+                this.walls = walls;
+            }
+        });
     }
 }

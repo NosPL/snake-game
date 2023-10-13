@@ -1,13 +1,15 @@
 package com.noscompany.snakejavafxclient.components.online.game.host;
 
-import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
-import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
-import com.noscompany.snake.game.online.contract.messages.server.events.FailedToStartServer;
+import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
+import com.noscompany.snake.game.online.contract.messages.server.events.FailedToStartServer;
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerStarted;
+import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
+import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
+import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import com.noscompany.snake.game.online.network.interfaces.analyzer.IpV4Address;
 import com.noscompany.snake.game.online.network.interfaces.analyzer.NetworkInterfacesAnalyzerConfiguration;
-import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
@@ -19,6 +21,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 public class SetupHostController extends AbstractController {
     @FXML
@@ -29,41 +32,50 @@ public class SetupHostController extends AbstractController {
     private TextField portTextField;
     @FXML
     private TextField hostNameTextField;
-    private MessagePublisherAdapter snakeOnlineHost;
     private AtomicBoolean isServerStarted;
+    private Consumer<ServerParams> startServer = sp -> {};
+    private Consumer<UserName> enterRoom = un -> {};
+
+    public void configure(Consumer<ServerParams> startServer, Consumer<UserName> enterRoom) {
+        this.startServer = startServer;
+        this.enterRoom = enterRoom;
+    }
 
     @FXML
     public void startHost() {
-        if (!isServerStarted.get())
+        if (!isServerStarted.get()) {
             startServer();
-        else
-            enterRoom();
+        } else {
+            enterRoom.accept(new UserName(hostNameTextField.getText()));
+        }
     }
 
     private void startServer() {
-        if (snakeOnlineHost == null)
-            snakeOnlineHost = SnakeOnlineHostGuiConfiguration.createConfiguredHost();
         printMessage("starting server...");
-        var serverParams = new ServerParams(ipAddressesChoiceBox.getValue(), portTextField.getText());
-        snakeOnlineHost.startServer(serverParams);
+        getServerParams();
+        startServer.accept(getServerParams());
     }
 
-    public void handle(ServerStarted serverStarted) {
+    private ServerParams getServerParams() {
+        return new ServerParams(ipAddressesChoiceBox.getValue(), portTextField.getText());
+    }
+
+    public void serverStarted(ServerStarted event) {
         isServerStarted.set(true);
         printMessage("server started, entering the room...");
-        enterRoom();
+        enterRoom.accept(new UserName(hostNameTextField.getText()));
     }
 
-    private void enterRoom() {
-        snakeOnlineHost.enterRoom(new UserName(hostNameTextField.getText()));
-    }
-
-    public void handle(FailedToStartServer event) {
+    private void failedToStartServer(FailedToStartServer event) {
         isServerStarted.set(false);
         printFailureMessage(toText(event.getReason()));
     }
 
-    public void hostEnteredRoom() {
+    private void newUserEnteredRoom(NewUserEnteredRoom event) {
+        hostEnteredRoom();
+    }
+
+    private void hostEnteredRoom() {
         printMessage("loading host screen...");
         Platform.runLater(() -> {
             SnakeOnlineHostStage.get().show();
@@ -72,7 +84,7 @@ public class SetupHostController extends AbstractController {
         });
     }
 
-    public void handle(FailedToEnterRoom event) {
+    private void failedToEnterRoom(FailedToEnterRoom event) {
         printFailureMessage(toText(event.getReason()));
     }
 
@@ -89,7 +101,7 @@ public class SetupHostController extends AbstractController {
             messageForUserLabel.setText(message);
         });
     }
-    
+
     private String toText(Enum<?> enumClass) {
         return enumClass
                 .toString()
@@ -106,6 +118,16 @@ public class SetupHostController extends AbstractController {
 
     private void addToChoiceBox(String string) {
         ipAddressesChoiceBox.getItems().add(string);
+    }
+
+    @Override
+    public Subscription getSubscription() {
+        return new Subscription()
+                .toMessage(NewUserEnteredRoom.class, this::newUserEnteredRoom)
+                .toMessage(FailedToEnterRoom.class, this::failedToEnterRoom)
+                .toMessage(FailedToStartServer.class, this::failedToStartServer)
+                .toMessage(ServerStarted.class, this::serverStarted)
+                .subscriberName("setup-host-gui");
     }
 
     private List<String> getAvailableIpV4Addresses() {

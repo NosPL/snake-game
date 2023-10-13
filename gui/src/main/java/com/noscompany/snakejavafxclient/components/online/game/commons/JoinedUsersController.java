@@ -1,5 +1,8 @@
 package com.noscompany.snakejavafxclient.components.online.game.commons;
 
+import com.noscompany.message.publisher.Subscription;
+import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
+import com.noscompany.snake.game.online.contract.messages.user.registry.UserLeftRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import javafx.fxml.FXML;
@@ -11,8 +14,12 @@ public class JoinedUsersController extends AbstractController {
     @FXML
     private Label usersListLabel;
 
-    public void update(Collection<UserName> users) {
-        usersListLabel.setText(toString(users));
+    public void newUserEnteredRoom(NewUserEnteredRoom event) {
+        usersListLabel.setText(toString(event.getUsersInTheRoom()));
+    }
+
+    private void userLeftRoom(UserLeftRoom event) {
+        usersListLabel.setText(toString(event.getUsersInTheRoom()));
     }
 
     private String toString(Collection<UserName> userNames) {
@@ -20,5 +27,13 @@ public class JoinedUsersController extends AbstractController {
                 .stream()
                 .map(UserName::getName)
                 .reduce("", (u1, u2) -> u1 + System.lineSeparator() + u2);
+    }
+
+    @Override
+    public Subscription getSubscription() {
+        return new Subscription()
+                .toMessage(NewUserEnteredRoom.class, this::newUserEnteredRoom)
+                .toMessage(UserLeftRoom.class, this::userLeftRoom)
+                .subscriberName("joined-users-gui");
     }
 }

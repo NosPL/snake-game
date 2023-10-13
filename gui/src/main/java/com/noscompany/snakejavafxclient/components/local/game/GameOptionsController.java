@@ -1,5 +1,6 @@
 package com.noscompany.snakejavafxclient.components.local.game;
 
+import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snakejavafxclient.SnakesColors;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
@@ -66,6 +67,11 @@ public class GameOptionsController extends AbstractController {
         playerNumber2.setTextFill(SnakesColors.get(PlayerNumber._2));
         playerNumber3.setTextFill(SnakesColors.get(PlayerNumber._3));
         playerNumber4.setTextFill(SnakesColors.get(PlayerNumber._4));
+    }
+
+    @Override
+    public Subscription getSubscription() {
+        return new Subscription();
     }
 
     public void set(LocalSnakeGame localSnakeGame) {

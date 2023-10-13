@@ -1,5 +1,6 @@
 package com.noscompany.snakejavafxclient.components.online.game.client;
 
+import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import com.noscompany.snakejavafxclient.components.online.game.commons.KeyPressedHandler;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
@@ -29,5 +30,10 @@ public class OnlineClientController extends AbstractController {
     public void disconnectClient() {
         if (snakeOnlineClient != null)
             snakeOnlineClient.disconnect();
+    }
+
+    @Override
+    public Subscription getSubscription() {
+        return new Subscription();
     }
 }

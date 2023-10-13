@@ -1,13 +1,19 @@
 package com.noscompany.snakejavafxclient.components.commons.scoreboard;
 
+import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Score;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameFinished;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStartCountdown;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStarted;
+import com.noscompany.snake.game.online.contract.messages.gameplay.events.SnakesMoved;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import com.noscompany.snakejavafxclient.SnakesColors;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Score;
-import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 
 import java.net.URL;
 import java.util.*;
@@ -30,18 +36,30 @@ public class ScoreboardController extends AbstractController {
         vBox.getChildren().add(scoreBoard);
     }
 
+    @Override
+    public Subscription getSubscription() {
+        return new Subscription()
+                .toMessage(GameStartCountdown.class, (GameStartCountdown e) -> print(e.getScore()))
+                .toMessage(GameStarted.class, (GameStarted e) -> print(e.getScore()))
+                .toMessage(SnakesMoved.class, (SnakesMoved e) -> print(e.getScore()))
+                .toMessage(GameFinished.class, (GameFinished e) -> print(e.getScore()))
+                .subscriberName("scoreboard-gui");
+    }
+
     public void update(GameState gameState) {
         print(gameState.getScore());
     }
 
     public void clear() {
-        scoreBoard.clear();
+        Platform.runLater(() -> scoreBoard.clear());
     }
 
     public void print(Score score) {
-        this.currentScore = score;
-        Collection<Scoreboard.Entry> scoreEntries = toScoreboardEntries(score);
-        scoreBoard.update(scoreEntries);
+        Platform.runLater(() -> {
+            this.currentScore = score;
+            Collection<Scoreboard.Entry> scoreEntries = toScoreboardEntries(score);
+            scoreBoard.update(scoreEntries);
+        });
     }
 
     private Collection<Scoreboard.Entry> toScoreboardEntries(Score score) {

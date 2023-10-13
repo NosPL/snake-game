@@ -38,7 +38,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="vBox" prefHeight="293.0" prefWidth="181.0" style="-fx-border-color: black;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.components.online.game.commons.LobbySeatsController">
+<VBox fx:id="vBox" prefHeight="293.0" prefWidth="181.0" style="-fx-border-color: black;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.components.online.game.commons.SeatsController">
     <children>
         <AnchorPane prefHeight="238.0" prefWidth="257.0" style="-fx-border-color: 10;">
             <children>

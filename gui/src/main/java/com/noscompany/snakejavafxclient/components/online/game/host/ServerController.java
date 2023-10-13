@@ -1,8 +1,11 @@
 package com.noscompany.snakejavafxclient.components.online.game.host;
 
+import com.noscompany.message.publisher.Subscription;
+import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerFailedToSendMessageToRemoteClients;
 import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
 import com.noscompany.snake.game.online.contract.messages.server.events.FailedToStartServer;
+import com.noscompany.snake.game.online.contract.messages.server.events.ServerStarted;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -22,19 +25,27 @@ public class ServerController extends AbstractController {
     @FXML private Label ipAddressLabel;
     @FXML private Label portLabel;
 
-    public void handle(FailedToStartServer serverFailedToStart) {
+    @Override
+    public Subscription getSubscription() {
+        return new Subscription()
+                .toMessage(FailedToStartServer.class, this::failedToStartServer)
+                .toMessage(ServerStarted.class, this::serverStarted)
+                .subscriberName("host-server-gui");
+    }
+
+    public void failedToStartServer(FailedToStartServer serverFailedToStart) {
         statusLabel.setTextFill(Color.RED);
         statusLabel.setText(STATUS_PREFIX + toText(serverFailedToStart.getReason()));
     }
 
-    public void serverStarted(ServerParams serverParams) {
+    public void serverStarted(ServerStarted event) {
         statusLabel.setTextFill(Color.GREEN);
         statusLabel.setText(STATUS_PREFIX + "Server started");
-        ipAddressLabel.setText(IP_ADDRESS_PREFIX + serverParams.getIpAddress());
-        portLabel.setText(PORT_PREFIX + serverParams.getPort());
+        ipAddressLabel.setText(IP_ADDRESS_PREFIX + event.getServerParams().getIpAddress());
+        portLabel.setText(PORT_PREFIX + event.getServerParams().getPort());
     }
 
-    public void handle(ServerFailedToSendMessageToRemoteClients event) {
+    public void failedToSendMessage(ServerFailedToSendMessageToRemoteClients event) {
         statusLabel.setTextFill(Color.ORANGE);
         statusLabel.setText(STATUS_PREFIX + toText(event.getReason()));
         ipAddressLabel.setText(IP_ADDRESS_PREFIX);

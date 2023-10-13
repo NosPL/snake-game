@@ -32,7 +32,7 @@ public class GuiLocalGameEventHandler implements GameplayEventHandler {
     @Override
     public void handle(GameStartCountdown event) {
         Platform.runLater(() -> {
-            gameGridController.handle(event);
+            gameGridController.gameStartCountdown(event);
             gameOptionsController.disable();
             messageController.printSecondsLeftToStart(event.getSecondsLeft());
             scoreboardController.print(event.getScore());
@@ -42,7 +42,7 @@ public class GuiLocalGameEventHandler implements GameplayEventHandler {
     @Override
     public void handle(GameStarted event) {
         Platform.runLater(() -> {
-            gameGridController.handle(event);
+            gameGridController.gameStarted(event);
             gameOptionsController.disable();
             scoreboardController.print(event.getScore());
             messageController.clear();
@@ -52,7 +52,7 @@ public class GuiLocalGameEventHandler implements GameplayEventHandler {
     @Override
     public void handle(SnakesMoved event) {
         Platform.runLater(() -> {
-            gameGridController.handle(event);
+            gameGridController.snakesMoved(event);
             scoreboardController.print(event.getScore());
             messageController.clear();
         });
@@ -61,7 +61,7 @@ public class GuiLocalGameEventHandler implements GameplayEventHandler {
     @Override
     public void handle(GameFinished event) {
         Platform.runLater(() -> {
-            gameGridController.handle(event);
+            gameGridController.gameFinished(event);
             gameOptionsController.enable();
             messageController.printFinishScore(event.getScore());
             scoreboardController.print(event.getScore());
