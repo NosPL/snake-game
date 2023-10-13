@@ -2,6 +2,7 @@ package com.noscompany.snakejavafxclient.components.online.game.client;
 
 import com.noscompany.message.publisher.MessagePublisher;
 import com.noscompany.message.publisher.MessagePublisherCreator;
+import com.noscompany.snake.game.online.chat.gui.ChatController;
 import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import com.noscompany.snake.game.online.client.SnakeOnlineClientConfiguration;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
