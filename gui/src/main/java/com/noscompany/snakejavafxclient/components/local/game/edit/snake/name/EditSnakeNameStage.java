@@ -16,4 +16,8 @@ public class EditSnakeNameStage {
         }
         return stage;
     }
+
+    public static void remove() {
+        Stages.remove(LOCAL_GAME_EDIT_SNAKE_NAME_VIEW);
+    }
 }

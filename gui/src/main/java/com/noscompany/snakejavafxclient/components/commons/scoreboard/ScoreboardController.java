@@ -1,13 +1,13 @@
 package com.noscompany.snakejavafxclient.components.commons.scoreboard;
 
 import com.noscompany.message.publisher.Subscription;
-import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameState;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Score;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameFinished;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStartCountdown;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStarted;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.SnakesMoved;
+import com.noscompany.snakejavafxclient.components.local.game.SnakeNameUpdated;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import com.noscompany.snake.game.online.gui.commons.SnakesColors;
 import javafx.application.Platform;
@@ -43,11 +43,13 @@ public class ScoreboardController extends AbstractController {
                 .toMessage(GameStarted.class, (GameStarted e) -> print(e.getScore()))
                 .toMessage(SnakesMoved.class, (SnakesMoved e) -> print(e.getScore()))
                 .toMessage(GameFinished.class, (GameFinished e) -> print(e.getScore()))
+                .toMessage(SnakeNameUpdated.class, this::snakeNameUpdated)
                 .subscriberName("scoreboard-gui");
     }
 
-    public void update(GameState gameState) {
-        print(gameState.getScore());
+    void snakeNameUpdated(SnakeNameUpdated event) {
+        nickNames.put(event.getPlayerNumber(), event.getNewName() + SPACE);
+        print(currentScore);
     }
 
     public void clear() {
@@ -86,11 +88,6 @@ public class ScoreboardController extends AbstractController {
                 name,
                 color,
                 snake.isAlive());
-    }
-
-    public void updateSnakeName(String newName, PlayerNumber playerNumber) {
-        nickNames.put(playerNumber, newName + SPACE);
-        print(currentScore);
     }
 
     private Map<PlayerNumber, String> defaultNickNames() {

@@ -71,7 +71,8 @@ public class GameOptionsController extends AbstractController {
 
     @Override
     public Subscription getSubscription() {
-        return new Subscription();
+        return new Subscription()
+                .toMessage(SnakeNameUpdated.class, this::snakeNameUpdated);
     }
 
     public void set(LocalSnakeGame localSnakeGame) {
@@ -80,7 +81,7 @@ public class GameOptionsController extends AbstractController {
 
     @FXML
     public void gameOptionsChanged() {
-        localSnakeGame.updateGameView();
+        localSnakeGame.updateGameGrid();
     }
 
     @FXML
@@ -163,9 +164,9 @@ public class GameOptionsController extends AbstractController {
         throw new IllegalStateException("Non of walls radio buttons is selected");
     }
 
-    public void updateSnakeName(String newName, PlayerNumber playerNumber) {
-        CheckBox player = getCheckBox(playerNumber);
-        player.setText(newName);
+    void snakeNameUpdated(SnakeNameUpdated event) {
+        CheckBox player = getCheckBox(event.getPlayerNumber());
+        player.setText(event.getNewName());
     }
 
     private CheckBox getCheckBox(PlayerNumber playerNumber) {

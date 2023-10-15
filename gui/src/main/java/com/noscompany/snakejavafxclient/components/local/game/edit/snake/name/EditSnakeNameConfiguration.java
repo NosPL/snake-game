@@ -8,8 +8,7 @@ public class EditSnakeNameConfiguration {
 
     public static void run(PlayerNumber playerNumber, String currentName) {
         Stage stage = EditSnakeNameStage.get();
-        var editSnakeNameController = Controllers.get(EditSnakeNameController.class);
-        editSnakeNameController.init(playerNumber, currentName);
+        Controllers.get(EditSnakeNameController.class).init(playerNumber, currentName);
         stage.show();
     }
 }

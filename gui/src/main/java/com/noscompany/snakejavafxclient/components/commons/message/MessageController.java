@@ -5,11 +5,13 @@ import com.noscompany.snake.game.online.contract.messages.game.options.FailedToC
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Score;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
+import com.noscompany.snakejavafxclient.components.local.game.SnakeNameUpdated;
 import com.noscompany.snake.game.online.contract.messages.seats.FailedToTakeASeat;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import snake.game.gameplay.GameplayCreator;
 
 import java.net.URL;
 import java.util.*;
@@ -32,7 +34,8 @@ public class MessageController extends AbstractController {
                 .toMessage(GameStartCountdown.class, (GameStartCountdown e) -> printSecondsLeftToStart(e.getSecondsLeft()))
                 .toMessage(GameStarted.class, (GameStarted e) -> clear())
                 .toMessage(SnakesMoved.class, (SnakesMoved e) -> clear())
-                .toMessage(GameFinished.class, (GameFinished e) -> printGameFinished())
+                .toMessage(GameFinished.class, this::printGameFinished)
+                .toMessage(SnakeNameUpdated.class, this::snakeNameUpdated)
                 .toMessage(GameCancelled.class, (GameCancelled e) -> printGameCanceled())
                 .toMessage(GamePaused.class, (GamePaused e) -> printGamePaused())
                 .toMessage(GameResumed.class, (GameResumed e) -> printGameResumed())
@@ -59,8 +62,15 @@ public class MessageController extends AbstractController {
         Platform.runLater(() -> messageLabel.setText(msg));
     }
 
-    public void printGameFinished() {
-        Platform.runLater(() -> messageLabel.setText("GAME FINISHED"));
+    public void printGameFinished(GameFinished event) {
+        Platform.runLater(() -> {
+            var score = event.getScore();
+            if (numberOfSnakes(score) == 1)
+                printSinglePlayerFinish(score);
+            else {
+                printMultiplayerFinish(score);
+            }
+        });
     }
 
     public void print(FailedToStartGame.Reason reason) {
@@ -81,14 +91,6 @@ public class MessageController extends AbstractController {
 
     public void printPressStartWhenReady() {
         Platform.runLater(() -> messageLabel.setText("PRESS START WHEN READY"));
-    }
-
-    public void printFinishScore(Score score) {
-        if (numberOfSnakes(score) == 1)
-            printSinglePlayerFinish(score);
-        else {
-            printMultiplayerFinish(score);
-        }
     }
 
     private int numberOfSnakes(Score score) {
@@ -122,6 +124,14 @@ public class MessageController extends AbstractController {
             printWinner(winners.get(0));
     }
 
+    public void print(GameplayCreator.Error error) {
+        messageLabel.setText(error.toString().replace("_", " "));
+    }
+
+    void snakeNameUpdated(SnakeNameUpdated event) {
+        nicknames.put(event.getPlayerNumber(), event.getNewName());
+    }
+
     private List<Score.Snake> getWinners(Score score) {
         return score
                 .getEntries()
@@ -145,10 +155,6 @@ public class MessageController extends AbstractController {
 
     private void printDrawBetween(List<Score.Snake> winners) {
         Platform.runLater(() -> messageLabel.setText("GAME FINISHED WITH DRAW"));
-    }
-
-    public void updateSnakeName(String newName, PlayerNumber playerNumber) {
-        nicknames.put(playerNumber, newName);
     }
 
     private Map<PlayerNumber, String> defaultNickNames() {
