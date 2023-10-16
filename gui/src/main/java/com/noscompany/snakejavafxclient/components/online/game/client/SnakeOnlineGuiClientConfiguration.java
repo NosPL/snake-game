@@ -12,7 +12,7 @@ import com.noscompany.snake.game.online.gui.commons.KeyPressedHandler;
 import com.noscompany.snake.game.online.seats.gui.SeatsController;
 import com.noscompany.snake.game.test.client.SnakeOnlineTestClientConfiguration;
 import com.noscompany.snakejavafxclient.ApplicationProfile;
-import com.noscompany.snakejavafxclient.components.local.game.buttons.ScprButtonsController;
+import com.noscompany.snake.game.online.local.game.scpr.buttons.ScprButtonsController;
 import com.noscompany.snake.game.online.gui.commons.Controllers;
 
 public class SnakeOnlineGuiClientConfiguration {

@@ -41,6 +41,7 @@
         <module>users-registry-gui</module>
         <module>failure-message-gui</module>
         <module>server-gui</module>
+        <module>local-game-gui</module>
     </modules>
 
     <dependencies>
