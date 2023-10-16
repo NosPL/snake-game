@@ -36,6 +36,7 @@
         <module>chat-gui</module>
         <module>gameplay-gui</module>
         <module>game-options-setter</module>
+        <module>game-options-gui</module>
     </modules>
 
     <dependencies>

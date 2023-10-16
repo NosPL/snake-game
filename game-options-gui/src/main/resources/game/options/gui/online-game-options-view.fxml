@@ -39,7 +39,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="vBox" prefHeight="184.0" prefWidth="204.0" style="-fx-border-color: black;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.components.online.game.commons.OnlineGameOptionsController">
+<VBox fx:id="vBox" prefHeight="184.0" prefWidth="204.0" style="-fx-border-color: black;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snake.game.online.game.options.gui.OnlineGameOptionsController">
     <children>
         <AnchorPane prefHeight="66.0" prefWidth="144.0">
             <children>

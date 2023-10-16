@@ -5,6 +5,7 @@ import com.noscompany.message.publisher.MessagePublisherCreator;
 import com.noscompany.snake.game.online.chat.gui.ChatController;
 import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import com.noscompany.snake.game.online.client.SnakeOnlineClientConfiguration;
+import com.noscompany.snake.game.online.game.options.gui.OnlineGameOptionsController;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import com.noscompany.snake.game.test.client.SnakeOnlineTestClientConfiguration;
 import com.noscompany.snakejavafxclient.ApplicationProfile;

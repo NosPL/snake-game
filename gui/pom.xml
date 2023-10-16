@@ -47,6 +47,11 @@
             <artifactId>gameplay-gui</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.noscompany</groupId>
+            <artifactId>game-options-gui</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
