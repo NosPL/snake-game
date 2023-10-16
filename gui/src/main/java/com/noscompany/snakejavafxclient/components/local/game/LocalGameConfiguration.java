@@ -2,11 +2,9 @@ package com.noscompany.snakejavafxclient.components.local.game;
 
 import com.noscompany.message.publisher.MessagePublisher;
 import com.noscompany.message.publisher.MessagePublisherCreator;
-import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import com.noscompany.snake.game.online.gui.commons.Controllers;
-import com.noscompany.snakejavafxclient.components.commons.message.MessageController;
-import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
+import com.noscompany.snakejavafxclient.components.local.game.buttons.ScprButtonsController;
 import com.noscompany.snakejavafxclient.components.local.game.edit.snake.name.EditSnakeNameController;
 import com.noscompany.snakejavafxclient.components.local.game.edit.snake.name.EditSnakeNameStage;
 import com.noscompany.snakejavafxclient.components.mode.selection.GameModeSelectionStage;

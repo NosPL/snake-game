@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.components.commons.scpr.buttons;
+package com.noscompany.snakejavafxclient.components.local.game.buttons;
 
 import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;

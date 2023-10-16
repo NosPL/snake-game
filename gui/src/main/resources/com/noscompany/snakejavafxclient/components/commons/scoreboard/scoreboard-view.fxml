@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="117.0" prefWidth="637.0" xmlns="http://javafx.com/javafx/17"
-            fx:controller="com.noscompany.snakejavafxclient.components.commons.scoreboard.ScoreboardController">
+            fx:controller="com.noscompany.snakejavafxclient.components.local.game.scoreboard.ScoreboardController">
     <children>
         <VBox fx:id="vBox" prefHeight="97.0" prefWidth="607.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="20.0">
             <children>

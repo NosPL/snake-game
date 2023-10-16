@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.components.commons.scoreboard;
+package com.noscompany.snakejavafxclient.components.local.game.scoreboard;
 
 import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;

@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.components.commons.scoreboard;
+package com.noscompany.snakejavafxclient.components.local.game.scoreboard;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

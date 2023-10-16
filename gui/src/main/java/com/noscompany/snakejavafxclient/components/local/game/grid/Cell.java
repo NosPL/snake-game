@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.components.commons.game.grid;
+package com.noscompany.snakejavafxclient.components.local.game.grid;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -11,7 +11,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Position;
 
-import static com.noscompany.snakejavafxclient.components.commons.game.grid.GameGridSigns.EMPTY_CELL;
+import static com.noscompany.snakejavafxclient.components.local.game.grid.GameGridSigns.EMPTY_CELL;
 
 class Cell extends Label {
     private static final String FONT_FAMILY = "Serif";

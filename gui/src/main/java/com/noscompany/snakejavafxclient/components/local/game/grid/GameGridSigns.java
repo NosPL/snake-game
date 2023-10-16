@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.components.commons.game.grid;
+package com.noscompany.snakejavafxclient.components.local.game.grid;
 
 class GameGridSigns {
     static final String EMPTY_CELL           = "     ";

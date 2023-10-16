@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="123.0" prefWidth="172.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController">
+<AnchorPane prefHeight="123.0" prefWidth="172.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.components.local.game.buttons.ScprButtonsController">
     <children>
         <VBox layoutX="21.0" layoutY="12.0">
             <children>

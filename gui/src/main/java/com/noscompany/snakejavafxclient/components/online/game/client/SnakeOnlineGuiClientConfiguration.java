@@ -8,10 +8,9 @@ import com.noscompany.snake.game.online.client.SnakeOnlineClientConfiguration;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import com.noscompany.snake.game.test.client.SnakeOnlineTestClientConfiguration;
 import com.noscompany.snakejavafxclient.ApplicationProfile;
-import com.noscompany.snakejavafxclient.components.commons.scpr.buttons.ScprButtonsController;
+import com.noscompany.snakejavafxclient.components.local.game.buttons.ScprButtonsController;
 import com.noscompany.snakejavafxclient.components.online.game.commons.*;
 import com.noscompany.snake.game.online.gui.commons.Controllers;
-import javafx.stage.Stage;
 
 public class SnakeOnlineGuiClientConfiguration {
 

@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.components.commons.game.grid;
+package com.noscompany.snakejavafxclient.components.local.game.grid;
 
 import javafx.scene.paint.Color;
 import lombok.Value;

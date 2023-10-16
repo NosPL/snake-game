@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.components.commons.game.grid;
+package com.noscompany.snakejavafxclient.components.local.game.grid;
 
 import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;

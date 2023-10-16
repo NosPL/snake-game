@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.components.commons.scoreboard;
+package com.noscompany.snakejavafxclient.components.local.game.scoreboard;
 
 import io.vavr.control.Option;
 import javafx.scene.layout.GridPane;

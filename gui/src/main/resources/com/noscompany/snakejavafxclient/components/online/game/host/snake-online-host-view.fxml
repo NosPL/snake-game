@@ -11,7 +11,7 @@
                 <fx:include fx:id="gameOptions" source="../commons/online-game-options-view.fxml" />
             <Pane prefHeight="132.0" prefWidth="194.0" style="-fx-border-color: black;">
                <children>
-                      <fx:include fx:id="buttons" source="../../../commons/scpr/buttons/game-buttons-view.fxml" />
+                      <fx:include fx:id="buttons" source="/gameplay.gui/game-buttons-view.fxml" />
                </children>
             </Pane>
 
@@ -25,11 +25,11 @@
          </VBox>
             <HBox minHeight="164.0" minWidth="560.0" prefHeight="164.0" prefWidth="563.0">
                 <children>
-                    <fx:include fx:id="scoreboard" source="../../../commons/scoreboard/scoreboard-view.fxml" />
+                    <fx:include fx:id="scoreboard" source="/gameplay.gui/scoreboard-view.fxml" />
                 </children>
             </HBox>
-            <fx:include fx:id="message" source="../../../commons/message/game-message-view.fxml" />
-            <fx:include fx:id="gameGrid" source="../../../commons/game/grid/game-grid-view.fxml" />
+            <fx:include fx:id="message" source="/gameplay.gui/game-message-view.fxml" />
+            <fx:include fx:id="gameGrid" source="/gameplay.gui/game-grid-view.fxml" />
             <opaqueInsets>
                 <Insets bottom="3.0" />
             </opaqueInsets>

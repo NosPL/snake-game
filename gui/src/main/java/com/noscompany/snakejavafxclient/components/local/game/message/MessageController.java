@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.components.commons.message;
+package com.noscompany.snakejavafxclient.components.local.game.message;
 
 import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;

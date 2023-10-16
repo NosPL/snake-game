@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.components.commons.scoreboard;
+package com.noscompany.snakejavafxclient.components.local.game.scoreboard;
 
 public class ScoreboardCreator {
     private static final String PLACE_HEADER = "PLACE  ";

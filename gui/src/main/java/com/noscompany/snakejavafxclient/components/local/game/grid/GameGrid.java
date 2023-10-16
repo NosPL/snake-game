@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.components.commons.game.grid;
+package com.noscompany.snakejavafxclient.components.local.game.grid;
 
 import io.vavr.control.Option;
 import javafx.scene.layout.GridPane;
