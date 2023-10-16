@@ -34,6 +34,7 @@
         <module>seats</module>
         <module>gui-commons</module>
         <module>chat-gui</module>
+        <module>gameplay-gui</module>
     </modules>
 
     <dependencies>
