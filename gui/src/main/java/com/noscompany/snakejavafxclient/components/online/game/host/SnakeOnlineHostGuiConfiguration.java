@@ -7,6 +7,7 @@ import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.game.options.gui.OnlineGameOptionsController;
 import com.noscompany.snake.game.online.gameplay.gui.buttons.ScprButtonsController;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
+import com.noscompany.snake.game.online.gui.commons.KeyPressedHandler;
 import com.noscompany.snake.game.online.host.dependency.configurator.SnakeOnlineHostDependencyConfigurator;
 import com.noscompany.snake.game.online.seats.gui.SeatsController;
 import com.noscompany.snakejavafxclient.components.mode.selection.GameModeSelectionStage;

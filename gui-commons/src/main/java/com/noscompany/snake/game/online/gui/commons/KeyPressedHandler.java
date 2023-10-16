@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.components.online.game.commons;
+package com.noscompany.snake.game.online.gui.commons;
 
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import javafx.event.EventHandler;
