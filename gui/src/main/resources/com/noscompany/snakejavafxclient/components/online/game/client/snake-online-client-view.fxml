@@ -8,7 +8,7 @@
     <children>
         <VBox fx:id="vBox1" prefHeight="779.0" prefWidth="217.0">
             <children>
-                <fx:include fx:id="lobbySeats" source="../commons/lobby-seats-view.fxml" />
+                <fx:include fx:id="lobbySeats" source="/seats/gui/seats-view.fxml" />
                 <fx:include fx:id="gameOptions" source="/game/options/gui/online-game-options-view.fxml" />
                 <fx:include fx:id="buttons" source="/gameplay.gui/game-buttons-view.fxml" />
 

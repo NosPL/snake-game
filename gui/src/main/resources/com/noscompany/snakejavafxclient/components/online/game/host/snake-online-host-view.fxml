@@ -7,7 +7,7 @@
         <VBox fx:id="vBox1" prefHeight="769.0" prefWidth="300.0">
             <children>
                 <fx:include fx:id="ipAddress" source="server-view.fxml" />
-                <fx:include fx:id="lobbySeats" source="../commons/lobby-seats-view.fxml" />
+                <fx:include fx:id="lobbySeats" source="/seats/gui/seats-view.fxml" />
                 <fx:include fx:id="gameOptions" source="/game/options/gui/online-game-options-view.fxml" />
             <Pane prefHeight="132.0" prefWidth="194.0" style="-fx-border-color: black;">
                <children>

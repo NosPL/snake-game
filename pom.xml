@@ -37,6 +37,7 @@
         <module>gameplay-gui</module>
         <module>game-options-setter</module>
         <module>game-options-gui</module>
+        <module>seats-gui</module>
     </modules>
 
     <dependencies>

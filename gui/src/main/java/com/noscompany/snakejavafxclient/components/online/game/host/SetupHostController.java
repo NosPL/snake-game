@@ -113,6 +113,7 @@ public class SetupHostController extends AbstractController {
     protected void doInitialize(URL location, ResourceBundle resources) {
         super.doInitialize(location, resources);
         getAvailableIpV4Addresses().forEach(this::addToChoiceBox);
+        ipAddressesChoiceBox.getSelectionModel().selectFirst();
         isServerStarted = new AtomicBoolean(false);
     }
 
