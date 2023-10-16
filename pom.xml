@@ -45,6 +45,7 @@
         <module>main-menu</module>
         <module>remote-client-gui</module>
         <module>host-gui</module>
+        <module>remote-client-test-launcher</module>
     </modules>
 
     <dependencies>

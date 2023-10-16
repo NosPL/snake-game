@@ -4,7 +4,7 @@ import com.noscompany.snake.game.online.gui.commons.Stages;
 import javafx.stage.Stage;
 
 public class JoinGameStage {
-    private static final String JOIN_GAME_VIEW = "join-game-view.fxml";
+    private static final String JOIN_GAME_VIEW = "/remote/client/gui/join-game-view.fxml";
 
     public static Stage get() {
         Stage stage = Stages.getOrCreate(JoinGameController.class, JOIN_GAME_VIEW);

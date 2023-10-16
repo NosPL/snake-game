@@ -15,9 +15,18 @@ import com.noscompany.snake.game.online.gui.commons.KeyPressedHandler;
 import com.noscompany.snake.game.online.seats.gui.SeatsController;
 import com.noscompany.snake.game.test.client.SnakeOnlineTestClientConfiguration;
 
+import java.util.function.Function;
+
 public class SnakeOnlineGuiClientConfiguration {
 
     public void configure(Runnable onCloseAction) {
+        configure(
+                onCloseAction,
+                messagePublisher -> new SnakeOnlineClientConfiguration().create(messagePublisher));
+    }
+
+
+    public void configure(Runnable onCloseAction, Function<MessagePublisher, SnakeOnlineClient> onlineClientCreator) {
         var joinGameStage = JoinGameStage.get();
         joinGameStage.setOnCloseRequest(e -> {
             Controllers.get(JoinGameController.class).disconnect();
@@ -25,13 +34,14 @@ public class SnakeOnlineGuiClientConfiguration {
         });
         var snakeOnlineClientStage = SnakeOnlineClientStage.get();
         var messagePublisher = new MessagePublisherCreator().create();
-        var snakeOnlineClient = getSnakeOnlineClient(messagePublisher);
+        var snakeOnlineClient = onlineClientCreator.apply(messagePublisher);
         snakeOnlineClientStage.getScene()
                 .setOnKeyPressed(e -> new KeyPressedHandler(snakeOnlineClient::changeSnakeDirection));
         snakeOnlineClientStage.setOnCloseRequest(e -> {
             Controllers.get(OnlineClientController.class).disconnectClient();
             SnakeOnlineClientStage.remove();
             JoinGameStage.remove();
+            snakeOnlineClient.disconnect();
             onCloseAction.run();
         });
         setControllers(snakeOnlineClient);
@@ -45,13 +55,6 @@ public class SnakeOnlineGuiClientConfiguration {
                 .stream()
                 .map(AbstractController::getSubscription)
                 .forEach(messagePublisher::subscribe);
-    }
-
-    private SnakeOnlineClient getSnakeOnlineClient(MessagePublisher messagePublisher) {
-        if (ApplicationProfile.profile == ApplicationProfile.Profile.PROD)
-            return new SnakeOnlineClientConfiguration().create(messagePublisher);
-        else
-            return new SnakeOnlineTestClientConfiguration().snakeOnlineTestClient();
     }
 
     private static void setControllers(SnakeOnlineClient snakeOnlineClient) {
