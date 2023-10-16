@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.components.online.game.commons;
+package com.noscompany.snake.game.online.user.registry.gui;
 
 import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
@@ -10,7 +10,7 @@ import javafx.scene.control.Label;
 
 import java.util.Collection;
 
-public class JoinedUsersController extends AbstractController {
+public class UsersRegistryController extends AbstractController {
     @FXML
     private Label usersListLabel;
 

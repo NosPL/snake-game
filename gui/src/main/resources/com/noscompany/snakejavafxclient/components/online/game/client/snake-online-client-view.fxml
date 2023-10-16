@@ -36,7 +36,7 @@
         </VBox>
         <VBox fx:id="vBox3" prefHeight="670.0" prefWidth="319.0">
             <children>
-                <fx:include fx:id="joinedPlayers" source="../commons/joined-users-view.fxml" />
+                <fx:include fx:id="joinedPlayers" source="/user/registry/gui/users-registry-view.fxml" />
                 <fx:include fx:id="chat" source="/chat/chat-view.fxml" />
             </children>
         </VBox>

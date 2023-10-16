@@ -57,6 +57,11 @@
             <artifactId>seats-gui</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.noscompany</groupId>
+            <artifactId>users-registry-gui</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

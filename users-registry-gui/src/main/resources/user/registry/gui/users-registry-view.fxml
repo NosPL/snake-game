@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="270.0" prefWidth="279.0" xmlns="http://javafx.com/javafx/17"
-      fx:controller="com.noscompany.snakejavafxclient.components.online.game.commons.JoinedUsersController">
+      fx:controller="com.noscompany.snake.game.online.user.registry.gui.UsersRegistryController">
     <children>
         <AnchorPane prefHeight="34.0" prefWidth="239.0">
             <children>
