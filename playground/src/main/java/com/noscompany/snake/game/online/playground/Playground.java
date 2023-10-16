@@ -1,18 +1,22 @@
 package com.noscompany.snake.game.online.playground;
 
 
+import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.contract.messages.UserId;
-import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
+import com.noscompany.snake.game.online.contract.messages.gameplay.commands.*;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Direction;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
+import com.noscompany.snake.game.online.contract.messages.host.HostGotShutdown;
 import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
-import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundToRemoteClient;
+import com.noscompany.snake.game.online.contract.messages.playground.InitializeGame;
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.seats.AdminId;
-import io.vavr.control.Either;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
+import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
+import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import snake.game.gameplay.Gameplay;
@@ -21,8 +25,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import static io.vavr.control.Either.left;
-import static io.vavr.control.Either.right;
 import static io.vavr.control.Option.of;
 
 @AllArgsConstructor
@@ -33,8 +35,8 @@ public class Playground {
     private GameOptions gameOptions;
     private Gameplay gameplay;
 
-    public InitializePlaygroundToRemoteClient newUserEnteredRoom(UserId userId) {
-        return new InitializePlaygroundToRemoteClient(userId, getPlaygroundState());
+    public InitializeGame newUserEnteredRoom(UserId userId) {
+        return new InitializeGame(userId, getPlaygroundState());
     }
 
     public GameReinitialized playerTookASeat(UserId userId, PlayerNumber playerNumber, AdminId adminId) {
@@ -53,14 +55,10 @@ public class Playground {
         return new GameReinitialized(gameplay.getGameState());
     }
 
-    public Either<FailedToChangeGameOptions, GameOptionsChanged> changeGameOptions(UserId userId, GameOptions gameOptions) {
-        if (!userIsAdmin(userId))
-            return left(FailedToChangeGameOptions.requesterIsNotAdmin(userId));
-        if (gameplay.isRunning())
-            return left(FailedToChangeGameOptions.gameIsAlreadyRunning(userId));
-        this.gameOptions = gameOptions;
+    public GameReinitialized gameOptionsChanged(GameOptionsChanged event) {
+        this.gameOptions = event.getGameOptions();
         recreateGame();
-        return right(new GameOptionsChanged(getPlaygroundState()));
+        return new GameReinitialized(gameplay.getGameState());
     }
 
     public Option<FailedToStartGame> startGame(UserId userId) {
@@ -140,5 +138,25 @@ public class Playground {
 
     public boolean gameIsRunning() {
         return gameplay.isRunning();
+    }
+    
+    public Subscription getSubscription() {
+        return new Subscription()
+//                user registry events
+                .toMessage(NewUserEnteredRoom.class, (NewUserEnteredRoom event) -> newUserEnteredRoom(event.getUserId()))
+//                seats events
+                .toMessage(PlayerTookASeat.class, (PlayerTookASeat event) -> playerTookASeat(event.getUserId(), event.getPlayerNumber(), event.getAdminId()))
+                .toMessage(PlayerFreedUpASeat.class, (PlayerFreedUpASeat event) -> playerFreedUpASeat(event.getUserId(), event.getAdminId()))
+//                game options commands
+                .toMessage(GameOptionsChanged.class, this::gameOptionsChanged)
+//                gameplay commands
+                .toMessage(StartGame.class, (StartGame msg) -> startGame(msg.getUserId()))
+                .toMessage(ChangeSnakeDirection.class, (ChangeSnakeDirection msg) -> changeSnakeDirection(msg.getUserId(), msg.getDirection()))
+                .toMessage(CancelGame.class, (CancelGame msg) -> cancelGame(msg.getUserId()))
+                .toMessage(PauseGame.class, (PauseGame msg) -> pauseGame(msg.getUserId()))
+                .toMessage(ResumeGame.class, (ResumeGame msg) -> resumeGame(msg.getUserId()))
+//                host events
+                .toMessage(HostGotShutdown.class, (HostGotShutdown msg) -> terminate())
+                .subscriberName("playground");
     }
 }

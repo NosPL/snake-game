@@ -1,4 +1,4 @@
-package com.noscompany.snake.game.online.playground.test.commons;
+package com.noscompany.snake.game.online.game.options.setter.test;
 
 import com.noscompany.message.publisher.utils.NullMessagePublisher;
 import com.noscompany.snake.game.online.contract.messages.UserId;
@@ -8,20 +8,19 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNumber;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Walls;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.FailedToStartGame;
-import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
-import com.noscompany.snake.game.online.playground.Playground;
-import com.noscompany.snake.game.online.playground.PlaygroundConfiguration;
+import com.noscompany.snake.game.online.game.options.setter.GameOptionsSetter;
+import com.noscompany.snake.game.online.game.options.setter.GameOptionsSetterConfiguration;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import org.junit.Before;
 
 import java.util.stream.Stream;
 
-public class PlaygroundTestSetup {
+public class TestSetup {
     protected int userIdCounter;
     protected int userNameCounter;
-    protected Playground playground;
+    protected GameOptionsSetter gameOptionsSetter;
     protected UserId actorId;
     protected UserName actorName;
 
@@ -29,17 +28,10 @@ public class PlaygroundTestSetup {
     public void init() {
         userIdCounter = 0;
         userNameCounter = 0;
-        playground = new PlaygroundConfiguration().createPlayground(new NullMessagePublisher(), new GameRunningEndlesslyAfterStartCreator(), new GameOptions(GridSize._10x10, GameSpeed.x1, Walls.ON));
+        gameOptionsSetter = new GameOptionsSetterConfiguration()
+                .create(new NullMessagePublisher(), new GameOptions(GridSize._10x10, GameSpeed.x1, Walls.ON));
         actorId = UserId.random();
         actorName = UserName.random();
-    }
-
-    protected PlayerNumber anyPlayerNumber() {
-        return Stream.of(PlayerNumber.values()).findAny().get();
-    }
-
-    protected boolean isSuccess(Option<FailedToStartGame> startGameResult) {
-        return startGameResult.isEmpty();
     }
 
     protected <L, R> Either<L, R> failure(L failure) {
@@ -50,12 +42,8 @@ public class PlaygroundTestSetup {
         return Either.right(success);
     }
 
-    protected PlaygroundState playgroundState() {
-        return playground.getPlaygroundState();
-    }
-
     protected GameOptions currentGameOptions() {
-        return playgroundState().getGameOptions();
+        return gameOptionsSetter.getGameOptions();
     }
 
     protected GameOptions newGameOptions() {

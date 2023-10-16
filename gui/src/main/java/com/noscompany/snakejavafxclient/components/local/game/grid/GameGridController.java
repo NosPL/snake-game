@@ -10,7 +10,7 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameSt
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.GameStarted;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.SnakesMoved;
 import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
-import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundToRemoteClient;
+import com.noscompany.snake.game.online.contract.messages.playground.InitializeGame;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -35,7 +35,7 @@ public class GameGridController extends AbstractController {
     @Override
     public Subscription getSubscription() {
         return new Subscription()
-                .toMessage(InitializePlaygroundToRemoteClient.class, this::initializePlayground)
+                .toMessage(InitializeGame.class, this::initializePlayground)
                 .toMessage(GameOptionsChanged.class, this::gameOptionsChanged)
                 .toMessage(GameReinitialized.class, this::gameReinitialized)
                 .toMessage(GameStartCountdown.class, this::gameStartCountdown)
@@ -45,7 +45,7 @@ public class GameGridController extends AbstractController {
                 .subscriberName("gameplay-grid-gui");
     }
 
-    public void initializePlayground(InitializePlaygroundToRemoteClient event) {
+    public void initializePlayground(InitializeGame event) {
         initializeGrid(
                 event.getPlaygroundState().getGameState().getGridSize(),
                 event.getPlaygroundState().getGameState().getWalls());
@@ -55,10 +55,8 @@ public class GameGridController extends AbstractController {
 
     public void gameOptionsChanged(GameOptionsChanged event) {
         initializeGrid(
-                event.getPlaygroundState().getGameState().getGridSize(),
-                event.getPlaygroundState().getGameState().getWalls());
-        Platform
-                .runLater(() -> gameGrid.update(event.getPlaygroundState().getGameState().getSnakes()));
+                event.getGameOptions().getGridSize(),
+                event.getGameOptions().getWalls());
     }
 
     public void gameStartCountdown(GameStartCountdown event) {

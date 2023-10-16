@@ -15,7 +15,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Value
 @NoArgsConstructor(force = true, access = PRIVATE)
 @AllArgsConstructor
-public class InitializeSeatsToRemoteClient implements DedicatedClientMessage {
+public class InitializeSeats implements DedicatedClientMessage {
     MessageType messageType = INITIALIZE_SEATS_TO_REMOTE_CLIENT;
     UserId userId;
     Option<AdminId> adminIdOption;

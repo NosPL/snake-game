@@ -13,5 +13,5 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 public class GameOptionsChanged implements PublicClientMessage {
     MessageType messageType = MessageType.GAME_OPTIONS_CHANGED;
-    PlaygroundState playgroundState;
+    GameOptions gameOptions;
 }

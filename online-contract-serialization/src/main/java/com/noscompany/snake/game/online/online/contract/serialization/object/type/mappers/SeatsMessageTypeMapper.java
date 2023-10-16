@@ -19,7 +19,7 @@ public final class SeatsMessageTypeMapper implements ObjectTypeMapper {
             case FAILED_TO_TAKE_A_SEAT -> Option.of(FailedToTakeASeat.class);
             case FAILED_TO_FREE_UP_A_SEAT -> Option.of(FailedToFreeUpSeat.class);
 
-            case INITIALIZE_SEATS_TO_REMOTE_CLIENT -> Option.of(InitializeSeatsToRemoteClient.class);
+            case INITIALIZE_SEATS_TO_REMOTE_CLIENT -> Option.of(InitializeSeats.class);
             default -> Option.none();
         };
     }

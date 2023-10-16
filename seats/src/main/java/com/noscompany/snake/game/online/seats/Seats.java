@@ -5,7 +5,6 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.dto.PlayerNum
 import com.noscompany.snake.game.online.contract.messages.seats.*;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import com.noscompany.snake.game.online.seats.Seat.UserSuccessfullyTookASeat;
-import io.vavr.API;
 import io.vavr.control.Either;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
@@ -32,9 +31,9 @@ public final class Seats {
         return adminIdOption;
     }
 
-    public InitializeSeatsToRemoteClient newUserEnteredRoom(UserId userId, UserName userName) {
+    public InitializeSeats newUserEnteredRoom(UserId userId, UserName userName) {
         userRegistry.put(userId, userName);
-        return new InitializeSeatsToRemoteClient(userId, adminIdOption, toDto());
+        return new InitializeSeats(userId, adminIdOption, toDto());
     }
 
     public Option<PlayerFreedUpASeat> userLeftRoom(UserId userId) {

@@ -1,10 +1,7 @@
 package com.noscompany.snakejavafxclient.components.online.game.commons;
 
 import com.noscompany.message.publisher.Subscription;
-import com.noscompany.snake.game.online.contract.messages.seats.AdminId;
-import com.noscompany.snake.game.online.contract.messages.seats.PlayerFreedUpASeat;
-import com.noscompany.snake.game.online.contract.messages.seats.PlayerTookASeat;
-import com.noscompany.snake.game.online.contract.messages.seats.Seat;
+import com.noscompany.snake.game.online.contract.messages.seats.*;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import com.noscompany.snake.game.online.gui.commons.SnakesColors;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
@@ -80,6 +77,10 @@ public class SeatsController extends AbstractController {
         freeUpASeatAction.run();
     }
 
+    private void InitializeSeats(InitializeSeats message) {
+        update(message.getSeats(), message.getAdminIdOption());
+    }
+
     public void playerTookASeat(PlayerTookASeat event) {
         Platform.runLater(() -> update(event.getSeats(), Option.of(event.getAdminId())));
     }
@@ -141,6 +142,7 @@ public class SeatsController extends AbstractController {
     @Override
     public Subscription getSubscription() {
         return new Subscription()
+                .toMessage(InitializeSeats.class, this::InitializeSeats)
                 .toMessage(PlayerTookASeat.class, this::playerTookASeat)
                 .toMessage(PlayerFreedUpASeat.class, this::playerFreedUpASeat)
                 .subscriberName("seats-gui");

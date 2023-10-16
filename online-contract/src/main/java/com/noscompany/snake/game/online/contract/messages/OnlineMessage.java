@@ -56,5 +56,6 @@ public interface OnlineMessage {
         FAILED_TO_SEND_CHAT_MESSAGE,
 
         YOUR_ID_GOT_INITIALIZED,
+        INITIALIZE_GAME_OPTIONS
     }
 }

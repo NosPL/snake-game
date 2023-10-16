@@ -6,10 +6,14 @@ import com.noscompany.snake.game.online.client.*;
 import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
+import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameSpeed;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
+import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Walls;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
 import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
-import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundToRemoteClient;
+import com.noscompany.snake.game.online.contract.messages.playground.InitializeGame;
 import com.noscompany.snake.game.online.contract.messages.seats.*;
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerGotShutdown;
 import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
@@ -36,7 +40,7 @@ public class SnakeOnlineTestClientConfiguration {
         new UserRegistryConfiguration().create(new UsersCountLimit(10), hostMessagePublisher);
         new ChatConfiguration().createChat(hostMessagePublisher);
         var gameplayCreator = new GameplayConfiguration().snakeGameplayCreator();
-        new PlaygroundConfiguration().createPlayground(hostMessagePublisher, gameplayCreator);
+        new PlaygroundConfiguration().createPlayground(hostMessagePublisher, gameplayCreator, new GameOptions(GridSize._10x10, GameSpeed.x1, Walls.ON));
         return new SnakeOnlineTestClient(snakeOnlineClient, new Null(), server);
     }
 
@@ -78,7 +82,7 @@ public class SnakeOnlineTestClientConfiguration {
         }
 
         @Override
-        public void initializeSeats(InitializeSeatsToRemoteClient event) {
+        public void initializeSeats(InitializeSeats event) {
 
         }
 
@@ -103,7 +107,7 @@ public class SnakeOnlineTestClientConfiguration {
         }
 
         @Override
-        public void initializePlayground(InitializePlaygroundToRemoteClient event) {
+        public void initializePlayground(InitializeGame event) {
 
         }
 

@@ -2,7 +2,7 @@ package com.noscompany.snakejavafxclient.components.online.game.commons;
 
 import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
-import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundToRemoteClient;
+import com.noscompany.snake.game.online.contract.messages.game.options.InitializeGameOptions;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import com.noscompany.snake.game.online.gui.commons.Consumer3;
 import javafx.fxml.FXML;
@@ -58,11 +58,11 @@ public class OnlineGameOptionsController extends AbstractController {
     }
 
     public void gameOptionsChanged(GameOptionsChanged event) {
-        update(event.getPlaygroundState().getGameOptions());
+        update(event.getGameOptions());
     }
 
-    private void initializePlaygroundState(InitializePlaygroundToRemoteClient command) {
-        update(command.getPlaygroundState().getGameOptions());
+    private void initializeGameOptions(InitializeGameOptions command) {
+        update(command.getGameOptions());
     }
 
     private void update(GameOptions gameOptions) {
@@ -159,7 +159,7 @@ public class OnlineGameOptionsController extends AbstractController {
     public Subscription getSubscription() {
         return new Subscription()
                 .toMessage(GameOptionsChanged.class, this::gameOptionsChanged)
-                .toMessage(InitializePlaygroundToRemoteClient.class, this::initializePlaygroundState)
+                .toMessage(InitializeGameOptions.class, this::initializeGameOptions)
                 .subscriberName("game-options-gui");
     }
 }

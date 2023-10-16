@@ -5,9 +5,8 @@ import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessa
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
-import com.noscompany.snake.game.online.contract.messages.network.YourIdGotInitialized;
 import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
-import com.noscompany.snake.game.online.contract.messages.playground.InitializePlaygroundToRemoteClient;
+import com.noscompany.snake.game.online.contract.messages.playground.InitializeGame;
 import com.noscompany.snake.game.online.contract.messages.seats.*;
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerGotShutdown;
 import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
@@ -30,7 +29,7 @@ public interface ClientEventHandler {
 
     void userLeftRoom(UserLeftRoom event);
 
-    void initializeSeats(InitializeSeatsToRemoteClient event);
+    void initializeSeats(InitializeSeats event);
 
     void playerTookASeat(PlayerTookASeat event);
 
@@ -40,7 +39,7 @@ public interface ClientEventHandler {
 
     void failedToFreeUpASeat(FailedToFreeUpSeat event);
 
-    void initializePlayground(InitializePlaygroundToRemoteClient event);
+    void initializePlayground(InitializeGame event);
 
     void gameReinitialized(GameReinitialized event);
 

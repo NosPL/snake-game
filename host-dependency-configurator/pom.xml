@@ -39,6 +39,11 @@
         </dependency>
         <dependency>
             <groupId>com.noscompany</groupId>
+            <artifactId>game-options-setter</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.noscompany</groupId>
             <artifactId>server-websocket-nettosphere</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
