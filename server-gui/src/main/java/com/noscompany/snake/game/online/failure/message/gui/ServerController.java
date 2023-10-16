@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.components.online.game.host;
+package com.noscompany.snake.game.online.failure.message.gui;
 
 import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
