@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="vBox" prefHeight="283.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.components.online.game.mode.selection.OnlineModeSelectionController">
+<VBox fx:id="vBox" prefHeight="283.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snake.game.online.main.menu.OnlineModeSelectionController">
     <children>
         <AnchorPane prefHeight="82.0" prefWidth="448.0">
             <children>

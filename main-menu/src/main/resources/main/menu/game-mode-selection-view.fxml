@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16"
-      fx:controller="com.noscompany.snakejavafxclient.components.mode.selection.GameModeSelectionController" fx:id="vBox">
+      fx:controller="com.noscompany.snake.game.online.main.menu.GameModeSelectionController" fx:id="vBox">
     <children>
         <AnchorPane prefHeight="82.0" prefWidth="448.0">
             <children>

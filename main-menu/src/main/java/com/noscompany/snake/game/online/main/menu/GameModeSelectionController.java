@@ -1,7 +1,6 @@
-package com.noscompany.snakejavafxclient.components.mode.selection;
+package com.noscompany.snake.game.online.main.menu;
 
 import com.noscompany.message.publisher.Subscription;
-import com.noscompany.snakejavafxclient.components.online.game.mode.selection.OnlineModeSelectionStage;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import com.noscompany.snake.game.online.local.game.LocalGameConfiguration;
 import javafx.fxml.FXML;

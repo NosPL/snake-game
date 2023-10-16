@@ -1,11 +1,10 @@
-package com.noscompany.snakejavafxclient.components.online.game.mode.selection;
+package com.noscompany.snake.game.online.main.menu;
 
-import com.noscompany.snakejavafxclient.components.mode.selection.GameModeSelectionStage;
 import com.noscompany.snake.game.online.gui.commons.Stages;
 import javafx.stage.Stage;
 
 public class OnlineModeSelectionStage {
-    private static final String ONLINE_MODE_SELECTION_VIEW = "online-select-mode-view.fxml";
+    private static final String ONLINE_MODE_SELECTION_VIEW = "/main/menu/online-select-mode-view.fxml";
 
     public static Stage get() {
         Stage stage = Stages.getOrCreate(OnlineModeSelectionController.class, ONLINE_MODE_SELECTION_VIEW);
