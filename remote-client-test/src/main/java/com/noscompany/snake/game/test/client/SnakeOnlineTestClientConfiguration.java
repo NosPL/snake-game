@@ -23,10 +23,9 @@ import com.noscompany.snake.game.online.contract.messages.user.registry.UsersCou
 import com.noscompany.snake.game.online.host.server.ServerConfiguration;
 import com.noscompany.snake.game.online.online.contract.serialization.OnlineMessageDeserializer;
 import com.noscompany.snake.game.online.online.contract.serialization.OnlineMessageSerializer;
-import com.noscompany.snake.game.online.playground.PlaygroundConfiguration;
+import com.noscompany.snake.game.online.gameplay.supervisor.GameplaySupervisorConfiguration;
 import com.noscompany.snake.game.online.websocket.WebsocketConfiguration;
 import com.noscompany.snake.online.user.registry.UserRegistryConfiguration;
-import snake.game.gameplay.GameplayConfiguration;
 
 public class SnakeOnlineTestClientConfiguration {
 
@@ -39,8 +38,8 @@ public class SnakeOnlineTestClientConfiguration {
         var server = new ServerConfiguration().server(websocketCreator, hostMessagePublisher, serializer, deserializer);
         new UserRegistryConfiguration().create(new UsersCountLimit(10), hostMessagePublisher);
         new ChatConfiguration().createChat(hostMessagePublisher);
-        var gameplayCreator = new GameplayConfiguration().snakeGameplayCreator();
-        new PlaygroundConfiguration().createPlayground(hostMessagePublisher, gameplayCreator, new GameOptions(GridSize._10x10, GameSpeed.x1, Walls.ON));
+        var gameplayCreator = new snake.game.gameplay.GameplayConfiguration().snakeGameplayCreator();
+        new GameplaySupervisorConfiguration().createPlayground(hostMessagePublisher, gameplayCreator, new GameOptions(GridSize._10x10, GameSpeed.x1, Walls.ON));
         return new SnakeOnlineTestClient(snakeOnlineClient, new Null(), server);
     }
 

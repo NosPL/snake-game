@@ -30,7 +30,7 @@
         <module>message-publisher</module>
         <module>chat</module>
         <module>user-registry</module>
-        <module>playground</module>
+        <module>gameplay-supervisor</module>
         <module>seats</module>
         <module>gui-commons</module>
         <module>chat-gui</module>
