@@ -39,6 +39,7 @@
         <module>game-options-gui</module>
         <module>seats-gui</module>
         <module>users-registry-gui</module>
+        <module>failure-message-gui</module>
     </modules>
 
     <dependencies>

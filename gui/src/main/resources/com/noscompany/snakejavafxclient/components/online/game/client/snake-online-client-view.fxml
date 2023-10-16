@@ -17,7 +17,7 @@
         <VBox fx:id="vBox2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="563.0">
             <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="530.0">
                 <children>
-                    <fx:include fx:id="fleetingMessage" source="../commons/fleeting-message-view.fxml"/>
+                    <fx:include fx:id="fleetingMessage" source="/failure/message/gui/failure-message-view.fxml"/>
                 </children>
             </VBox>
             <HBox minHeight="164.0" minWidth="560.0" prefHeight="164.0" prefWidth="563.0">
