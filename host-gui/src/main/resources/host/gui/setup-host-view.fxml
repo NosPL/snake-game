@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="vBox" prefHeight="451.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.components.online.game.host.SetupHostController">
+<VBox fx:id="vBox" prefHeight="451.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snake.game.online.host.gui.SetupHostController">
     <children>
         <AnchorPane prefHeight="82.0" prefWidth="448.0">
             <children>

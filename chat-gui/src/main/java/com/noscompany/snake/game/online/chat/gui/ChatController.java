@@ -5,6 +5,7 @@ import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatM
 import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -60,7 +61,7 @@ public class ChatController extends AbstractController {
             messages.pollFirst();
         }
         messages.addLast(text);
-        stringListView.setItems(FXCollections.observableArrayList(messages));
+        Platform.runLater(() -> stringListView.setItems(FXCollections.observableArrayList(messages)));
     }
 
     public ChatController onSendChatMessageButtonPress(Consumer<String> sendChatMessageAction) {

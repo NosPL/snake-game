@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.components.online.game.host;
+package com.noscompany.snake.game.online.host.gui;
 
 import com.noscompany.message.publisher.MessagePublisher;
 import com.noscompany.snake.game.online.contract.messages.UserId;

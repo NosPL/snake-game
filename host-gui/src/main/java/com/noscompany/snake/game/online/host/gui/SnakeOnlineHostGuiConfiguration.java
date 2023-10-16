@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.components.online.game.host;
+package com.noscompany.snake.game.online.host.gui;
 
 import com.noscompany.message.publisher.MessagePublisher;
 import com.noscompany.message.publisher.MessagePublisherCreator;
@@ -8,23 +8,22 @@ import com.noscompany.snake.game.online.failure.message.gui.FleetingMessageContr
 import com.noscompany.snake.game.online.game.options.gui.OnlineGameOptionsController;
 import com.noscompany.snake.game.online.gameplay.gui.buttons.ScprButtonsController;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
+import com.noscompany.snake.game.online.gui.commons.Controllers;
 import com.noscompany.snake.game.online.gui.commons.KeyPressedHandler;
 import com.noscompany.snake.game.online.host.dependency.configurator.SnakeOnlineHostDependencyConfigurator;
 import com.noscompany.snake.game.online.seats.gui.SeatsController;
-import com.noscompany.snakejavafxclient.components.mode.selection.GameModeSelectionStage;
-import com.noscompany.snake.game.online.gui.commons.Controllers;
 import javafx.stage.Stage;
 
 public class SnakeOnlineHostGuiConfiguration {
 
-    public void configure() {
-        SetupHostStage.get();
+    public void configure(Runnable onCloseAction) {
         var snakeOnlineHostStage = SnakeOnlineHostStage.get();
+        SetupHostStage.get();
         var messagePublisher = new MessagePublisherCreator().create();
         var hostId = UserId.random();
         new SnakeOnlineHostDependencyConfigurator().configureDependencies(messagePublisher);
         var msgPubAdapter = new MessagePublisherAdapter(hostId, messagePublisher);
-        setStage(snakeOnlineHostStage, msgPubAdapter);
+        setStage(snakeOnlineHostStage, msgPubAdapter, onCloseAction);
         setActionsInControllers(msgPubAdapter);
         subscribeControllers(messagePublisher);
         SetupHostStage.get().show();
@@ -34,7 +33,7 @@ public class SnakeOnlineHostGuiConfiguration {
         Controllers.getAll().stream().map(AbstractController::getSubscription).forEach(messagePublisher::subscribe);
     }
 
-    private void setStage(Stage snakeOnlineHostStage, MessagePublisherAdapter publisherAdapter) {
+    private void setStage(Stage snakeOnlineHostStage, MessagePublisherAdapter publisherAdapter, Runnable onCloseAction) {
         var keyEventEventHandler = new KeyPressedHandler(publisherAdapter::changeSnakeDirection);
         Controllers.get(HostController.class).set(keyEventEventHandler);
         snakeOnlineHostStage.getScene().setOnKeyPressed(keyEventEventHandler);
@@ -42,8 +41,8 @@ public class SnakeOnlineHostGuiConfiguration {
             Controllers.get(FleetingMessageController.class).shutdown();
             publisherAdapter.shutDownHost();
             SnakeOnlineHostStage.remove();
-            GameModeSelectionStage.get().show();
             SnakeOnlineHostStage.remove();
+            onCloseAction.run();
         });
     }
 

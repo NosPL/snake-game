@@ -2,7 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.*?>
-<HBox fx:id="mainHBox" prefHeight="668.0" prefWidth="1134.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.components.online.game.host.HostController">
+<HBox fx:id="mainHBox" prefHeight="668.0" prefWidth="1134.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snake.game.online.host.gui.HostController">
     <children>
         <VBox fx:id="vBox1" prefHeight="769.0" prefWidth="300.0">
             <children>
