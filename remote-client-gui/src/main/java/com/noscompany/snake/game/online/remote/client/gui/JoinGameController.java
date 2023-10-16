@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.components.online.game.client;
+package com.noscompany.snake.game.online.remote.client.gui;
 
 import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.client.*;
@@ -8,7 +8,6 @@ import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserE
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import io.vavr.control.Either;
-import io.vavr.control.Option;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;

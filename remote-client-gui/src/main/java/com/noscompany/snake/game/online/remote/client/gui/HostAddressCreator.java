@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.components.online.game.client;
+package com.noscompany.snake.game.online.remote.client.gui;
 
 import com.noscompany.snake.game.online.client.HostAddress;
 import io.vavr.control.Either;

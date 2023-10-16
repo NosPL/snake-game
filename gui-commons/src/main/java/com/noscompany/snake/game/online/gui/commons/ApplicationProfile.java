@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient;
+package com.noscompany.snake.game.online.gui.commons;
 
 public class ApplicationProfile {
     public enum Profile {

@@ -42,6 +42,8 @@
         <module>failure-message-gui</module>
         <module>server-gui</module>
         <module>local-game-gui</module>
+        <module>main-menu</module>
+        <module>remote-client-gui</module>
     </modules>
 
     <dependencies>

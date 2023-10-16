@@ -1,8 +1,6 @@
-package com.noscompany.snakejavafxclient.components.online.game.client;
+package com.noscompany.snake.game.online.remote.client.gui;
 
-import com.noscompany.snake.game.online.gui.commons.Controllers;
 import com.noscompany.snake.game.online.gui.commons.Stages;
-import com.noscompany.snakejavafxclient.components.mode.selection.GameModeSelectionStage;
 import javafx.stage.Stage;
 
 public class SnakeOnlineClientStage {
@@ -10,12 +8,6 @@ public class SnakeOnlineClientStage {
 
     public static Stage get() {
         Stage stage = Stages.getOrCreate(OnlineClientController.class, SNAKE_ONLINE_CLIENT_VIEW);
-        stage.setOnCloseRequest(e -> {
-            Controllers.get(OnlineClientController.class).disconnectClient();
-            remove();
-            JoinGameStage.remove();
-            GameModeSelectionStage.get().show();
-        });
         return stage;
     }
 

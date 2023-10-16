@@ -1,4 +1,4 @@
-package com.noscompany.snakejavafxclient.components.online.game.client;
+package com.noscompany.snake.game.online.remote.client.gui;
 
 import com.noscompany.message.publisher.MessagePublisher;
 import com.noscompany.message.publisher.MessagePublisherCreator;
@@ -7,24 +7,33 @@ import com.noscompany.snake.game.online.client.SnakeOnlineClient;
 import com.noscompany.snake.game.online.client.SnakeOnlineClientConfiguration;
 import com.noscompany.snake.game.online.failure.message.gui.FleetingMessageController;
 import com.noscompany.snake.game.online.game.options.gui.OnlineGameOptionsController;
+import com.noscompany.snake.game.online.gameplay.gui.buttons.ScprButtonsController;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
+import com.noscompany.snake.game.online.gui.commons.ApplicationProfile;
+import com.noscompany.snake.game.online.gui.commons.Controllers;
 import com.noscompany.snake.game.online.gui.commons.KeyPressedHandler;
 import com.noscompany.snake.game.online.seats.gui.SeatsController;
 import com.noscompany.snake.game.test.client.SnakeOnlineTestClientConfiguration;
-import com.noscompany.snakejavafxclient.ApplicationProfile;
-import com.noscompany.snake.game.online.local.game.scpr.buttons.ScprButtonsController;
-import com.noscompany.snake.game.online.gui.commons.Controllers;
 
 public class SnakeOnlineGuiClientConfiguration {
 
-    public void configure() {
+    public void configure(Runnable onCloseAction) {
         var joinGameStage = JoinGameStage.get();
+        joinGameStage.setOnCloseRequest(e -> {
+            Controllers.get(JoinGameController.class).disconnect();
+            onCloseAction.run();
+        });
         var snakeOnlineClientStage = SnakeOnlineClientStage.get();
         var messagePublisher = new MessagePublisherCreator().create();
         var snakeOnlineClient = getSnakeOnlineClient(messagePublisher);
-        snakeOnlineClientStage
-                .getScene()
+        snakeOnlineClientStage.getScene()
                 .setOnKeyPressed(e -> new KeyPressedHandler(snakeOnlineClient::changeSnakeDirection));
+        snakeOnlineClientStage.setOnCloseRequest(e -> {
+            Controllers.get(OnlineClientController.class).disconnectClient();
+            SnakeOnlineClientStage.remove();
+            JoinGameStage.remove();
+            onCloseAction.run();
+        });
         setControllers(snakeOnlineClient);
         subscribeControllers(messagePublisher);
         joinGameStage.show();

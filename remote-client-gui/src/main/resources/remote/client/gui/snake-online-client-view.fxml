@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox fx:id="mainHBox" minHeight="680.0" prefHeight="678.0" prefWidth="1136.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snakejavafxclient.components.online.game.client.OnlineClientController">
+<HBox fx:id="mainHBox" minHeight="680.0" prefHeight="678.0" prefWidth="1136.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.noscompany.snake.game.online.remote.client.gui.OnlineClientController">
     <children>
         <VBox fx:id="vBox1" prefHeight="779.0" prefWidth="217.0">
             <children>
