@@ -6,7 +6,7 @@ import com.noscompany.snake.game.online.contract.messages.playground.InitializeG
 import com.noscompany.snake.game.online.online.contract.serialization.ObjectTypeMapper;
 import io.vavr.control.Option;
 
-public final class PlaygroundMessageTypeMapper implements ObjectTypeMapper {
+public final class GameplaySupervisorMessageTypeMapper implements ObjectTypeMapper {
 
     @Override
     public Option<Class<?>> mapToObjectType(OnlineMessage.MessageType messageType) {

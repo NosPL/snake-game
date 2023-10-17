@@ -1,4 +1,4 @@
-package com.noscompany.snake.game.online.online.contract.serialization;
+package com.noscompany.snake.game.onlin.online.contract.serialization.test;
 
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
 import com.noscompany.snake.game.online.contract.messages.UserId;
@@ -11,6 +11,8 @@ import com.noscompany.snake.game.online.contract.messages.gameplay.events.Snakes
 import com.noscompany.snake.game.online.contract.messages.playground.PlaygroundState;
 import com.noscompany.snake.game.online.contract.messages.seats.Seat;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
+import com.noscompany.snake.game.online.online.contract.serialization.OnlineMessageDeserializer;
+import com.noscompany.snake.game.online.online.contract.serialization.OnlineMessageSerializer;
 import io.vavr.control.Option;
 import lombok.SneakyThrows;
 

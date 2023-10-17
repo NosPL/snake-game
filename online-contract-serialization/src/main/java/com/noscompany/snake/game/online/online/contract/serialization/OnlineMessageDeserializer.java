@@ -36,8 +36,7 @@ public final class OnlineMessageDeserializer {
                     .onEmpty(() -> log.warn("failed to deserialize, type mapper not found"))
                     .map(clazz -> mapToObject(serializedMessage, clazz))
                     .map(message -> (OnlineMessage) message)
-                    .peek(message -> log.debug("message successfully deserialized"))
-                    .onEmpty(() -> log.warn("message was not deserialized"));
+                    .peek(message -> log.debug("message successfully deserialized"));
         } catch (Throwable t) {
             log.warn("exception thrown during deserialization, ", t);
             return Option.none();
@@ -70,7 +69,7 @@ public final class OnlineMessageDeserializer {
                 new GameOptionsTypeMapper(),
                 new GameplayTypeMapper(),
                 new IdInitializationTypeMapper(),
-                new PlaygroundMessageTypeMapper(),
+                new GameplaySupervisorMessageTypeMapper(),
                 new SeatsMessageTypeMapper(),
                 new ServerMessageTypeMapper(),
                 new UserRegistryMessageTypeMapper());

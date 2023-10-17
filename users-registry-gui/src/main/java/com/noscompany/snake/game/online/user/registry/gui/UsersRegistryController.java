@@ -5,6 +5,7 @@ import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserE
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserLeftRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
@@ -15,11 +16,11 @@ public class UsersRegistryController extends AbstractController {
     private Label usersListLabel;
 
     public void newUserEnteredRoom(NewUserEnteredRoom event) {
-        usersListLabel.setText(toString(event.getUsersInTheRoom()));
+        Platform.runLater(() -> usersListLabel.setText(toString(event.getUsersInTheRoom())));
     }
 
     private void userLeftRoom(UserLeftRoom event) {
-        usersListLabel.setText(toString(event.getUsersInTheRoom()));
+        Platform.runLater(() -> usersListLabel.setText(toString(event.getUsersInTheRoom())));
     }
 
     private String toString(Collection<UserName> userNames) {

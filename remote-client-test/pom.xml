@@ -39,7 +39,7 @@
         </dependency>
         <dependency>
             <groupId>com.noscompany</groupId>
-            <artifactId>playground</artifactId>
+            <artifactId>gameplay-supervisor</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

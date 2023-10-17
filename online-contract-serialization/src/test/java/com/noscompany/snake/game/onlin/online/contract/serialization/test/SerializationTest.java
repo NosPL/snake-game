@@ -14,7 +14,6 @@ import com.noscompany.snake.game.online.contract.messages.playground.InitializeG
 import com.noscompany.snake.game.online.contract.messages.seats.*;
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerGotShutdown;
 import com.noscompany.snake.game.online.contract.messages.user.registry.*;
-import com.noscompany.snake.game.online.online.contract.serialization.SerializationBaseTestClass;
 import io.vavr.control.Option;
 import lombok.SneakyThrows;
 import org.junit.Test;

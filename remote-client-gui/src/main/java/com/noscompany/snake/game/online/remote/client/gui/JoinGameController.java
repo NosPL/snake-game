@@ -47,30 +47,30 @@ public class JoinGameController extends AbstractController {
     }
 
     private void joinGame(HostAddress hostAddress) {
-        if (!snakeOnlineClient.isConnected())
+        if (!snakeOnlineClient.isConnected()) {
+            printMessage("connecting to the host...");
             snakeOnlineClient.connect(hostAddress);
-        else
+        } else
             enterRoom();
     }
 
     public void connectionEstablished(ConnectionEstablished event) {
-        enterRoom();
-    }
-
-    public void enterRoom() {
         Platform.runLater(() -> {
-            messageLabel.setTextFill(BLACK);
-            messageLabel.setText("entering room...");
+            printMessage("connection established, initializing user id...");
         });
-        var userNameString = playerNameTextField.getText();
-        snakeOnlineClient.enterTheRoom(new UserName(userNameString));
     }
 
     private void yourIdGotInitialized(YourIdGotInitialized event) {
         Platform.runLater(() -> {
-            messageLabel.setTextFill(BLACK);
-            messageLabel.setText("Id got initialized, entering room...");
+            printMessage("user id got initialized, entering room...");
+            enterRoom();
         });
+    }
+
+    public void enterRoom() {
+        Platform.runLater(() -> printMessage("entering room..."));
+        var userNameString = playerNameTextField.getText();
+        snakeOnlineClient.enterTheRoom(new UserName(userNameString));
     }
 
     public void newUserEnteredRoom(NewUserEnteredRoom event) {
@@ -104,10 +104,7 @@ public class JoinGameController extends AbstractController {
     }
 
     public void connectionClosed(ConnectionClosed event) {
-        Platform.runLater(() -> {
-            messageLabel.setTextFill(BLACK);
-            messageLabel.setText("Connection got closed");
-        });
+        Platform.runLater(() -> printMessage("Connection got closed"));
     }
 
     private Either<StartingClientError, HostAddress> getIpAddress() {
@@ -121,6 +118,11 @@ public class JoinGameController extends AbstractController {
 
     private boolean isNumber(String portString) {
         return Try.of(() -> Integer.parseInt(portString)).isSuccess();
+    }
+
+    private void printMessage(String message) {
+        messageLabel.setTextFill(BLACK);
+        messageLabel.setText(message);
     }
 
     private void printError(Enum error) {
