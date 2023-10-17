@@ -8,26 +8,24 @@ import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserE
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import io.vavr.control.Either;
+import io.vavr.control.Try;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import static com.noscompany.snake.game.online.client.StartingClientError.PORT_IS_NOT_A_NUMBER;
+import static com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom.Reason.USER_ALREADY_IN_THE_ROOM;
+
 public class JoinGameController extends AbstractController {
     @FXML
-    private TextField ip1TextField;
-    @FXML
-    private TextField ip2TextField;
-    @FXML
-    private TextField ip3TextField;
-    @FXML
-    private TextField ip4TextField;
+    private TextField ipTextField;
     @FXML
     private TextField portTextField;
     @FXML
     private TextField playerNameTextField;
     @FXML
     private Label errorMessageLabel;
-    private final HostAddressCreator hostAddressCreator = new HostAddressCreator();
     private SnakeOnlineClient snakeOnlineClient;
 
     public void setSnakeOnlineClient(SnakeOnlineClient snakeOnlineClient) {
@@ -77,56 +75,41 @@ public class JoinGameController extends AbstractController {
     }
 
     public void failedToEnterRoom(FailedToEnterRoom event) {
-        String errorMessage = getErrorMessage(event);
-        errorMessageLabel.setText(errorMessage);
-        if (event.getReason() == FailedToEnterRoom.Reason.USER_ALREADY_IN_THE_ROOM) {
+        String errorMessage = asString(event.getReason());
+        Platform.runLater(() -> errorMessageLabel.setText(errorMessage));
+        if (event.getReason() == USER_ALREADY_IN_THE_ROOM) {
             JoinGameStage.get().close();
             SnakeOnlineClientStage.get().show();
         }
     }
 
     public void sendClientMessageError(SendClientMessageError sendClientMessageError) {
-        errorMessageLabel.setText(toErrorMessage(sendClientMessageError));
+        Platform.runLater(() -> errorMessageLabel.setText(asString(sendClientMessageError)));
     }
 
     public void startingClientError(StartingClientError startingClientError) {
-        errorMessageLabel.setText(toErrorMessage(startingClientError));
+        Platform.runLater(() -> errorMessageLabel.setText(asString(startingClientError)));
     }
 
-    private Either<HostAddressCreator.Error, HostAddress> getIpAddress() {
-        return hostAddressCreator
-                .create(
-                        ip1TextField.getText(),
-                        ip2TextField.getText(),
-                        ip3TextField.getText(),
-                        ip4TextField.getText(),
-                        portTextField.getText());
+    private Either<StartingClientError, HostAddress> getIpAddress() {
+        var portString = portTextField.getText();
+        if (!isNumber(portString))
+            return Either.left(PORT_IS_NOT_A_NUMBER);
+        var ipString = ipTextField.getText();
+        int port = Integer.parseInt(portString);
+        return Either.right(new HostAddress(ipString, port));
     }
 
-    private String toErrorMessage(StartingClientError startingClientError) {
-        return startingClientError
-                .toString()
-                .replace("_", " ")
-                .toLowerCase();
+    private boolean isNumber(String portString) {
+        return Try.of(() -> Integer.parseInt(portString)).isSuccess();
     }
 
-    private String toErrorMessage(SendClientMessageError sendClientMessageError) {
-        return sendClientMessageError
-                .toString()
-                .replace("_", " ")
-                .toLowerCase();
+    private void handleError(StartingClientError error) {
+        errorMessageLabel.setText(asString(error));
     }
 
-    private void handleError(HostAddressCreator.Error error) {
-        String message = error
-                .toString()
-                .replace("_", " ")
-                .toLowerCase();
-        errorMessageLabel.setText(message);
-    }
-
-    private String getErrorMessage(FailedToEnterRoom event) {
-        return event.getReason().toString().toLowerCase().replace("_", " ");
+    private String asString(Enum anEnum) {
+        return anEnum.toString().toLowerCase().replace("_", " ");
     }
 
     public void connectionClosed(ConnectionClosed event) {

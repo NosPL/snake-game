@@ -24,8 +24,8 @@ public class Disconnected implements ClientState {
     public ClientState connect(HostAddress hostAddress) {
         return new ConnectedClientCreator()
                 .create(hostAddress, messagePublisher, deserializer, serializer)
-                .onSuccess(connected -> messagePublisher.publishMessage(new ConnectionEstablished()))
-                .onFailure(t -> messagePublisher.publishMessage(FAILED_TO_CONNECT_TO_SERVER))
+                .peek(connected -> messagePublisher.publishMessage(new ConnectionEstablished()))
+                .peekLeft(messagePublisher::publishMessage)
                 .getOrElse(this);
     }
 

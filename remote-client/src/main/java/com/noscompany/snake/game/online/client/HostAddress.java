@@ -5,5 +5,6 @@ import lombok.Value;
 @Value
 public
 class HostAddress {
-    String address;
+    String ipAddress;
+    int port;
 }
