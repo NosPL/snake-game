@@ -1,6 +1,5 @@
 package com.noscompany.snake.game.online.online.contract.serialization;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
 import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
@@ -19,14 +18,14 @@ import java.util.List;
 import java.util.Set;
 
 public class SerializationBaseTestClass {
+    private OnlineMessageDeserializer deserializer = OnlineMessageDeserializer.instance();
+    private OnlineMessageSerializer serializer = OnlineMessageSerializer.instance();
 
     @SneakyThrows
-    protected <T extends OnlineMessage> void testSerializationOf(T onlineMessage) {
-        ObjectMapper objectMapper = ConfiguredObjectMapperCreator.createInstance();
-        String string = objectMapper.writeValueAsString(onlineMessage);
-        Class<T> aClass = (Class<T>) onlineMessage.getClass();
-        T serialized = objectMapper.readValue(string, aClass);
-        assert onlineMessage.equals(serialized);
+    protected void testSerializationOf(OnlineMessage onlineMessage) {
+        var serialized = serializer.serialize(onlineMessage).get();
+        var deserialized = deserializer.deserialize(serialized).get();
+        assert onlineMessage.equals(deserialized);
     }
 
     protected GameStarted gameStarted() {

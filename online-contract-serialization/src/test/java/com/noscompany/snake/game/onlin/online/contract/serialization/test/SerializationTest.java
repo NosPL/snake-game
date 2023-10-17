@@ -4,9 +4,11 @@ import com.noscompany.snake.game.online.contract.messages.UserId;
 import com.noscompany.snake.game.online.contract.messages.game.options.ChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
+import com.noscompany.snake.game.online.contract.messages.game.options.InitializeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.commands.*;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
+import com.noscompany.snake.game.online.contract.messages.network.YourIdGotInitialized;
 import com.noscompany.snake.game.online.contract.messages.playground.GameReinitialized;
 import com.noscompany.snake.game.online.contract.messages.playground.InitializeGame;
 import com.noscompany.snake.game.online.contract.messages.seats.*;
@@ -25,18 +27,24 @@ public class SerializationTest extends SerializationBaseTestClass {
 //        server events
         testSerializationOf(new ServerGotShutdown());
 
+//        remote client id initialization
+        testSerializationOf(new YourIdGotInitialized(UserId.random()));
+
 //        user registry messages
         testSerializationOf(new EnterRoom(UserId.random(), UserName.random()));
         testSerializationOf(new NewUserEnteredRoom(UserId.random(), UserName.random(), randomUserNames()));
         testSerializationOf(FailedToEnterRoom.userNameAlreadyInUse(UserId.random()));
         testSerializationOf(new UserLeftRoom(UserId.random(), UserName.random(), randomUserNames()));
 
-//        playground messages
+//        gameplay supervisor messages
         testSerializationOf(new InitializeGame(UserId.random(), playgroundState()));
+        testSerializationOf(new GameReinitialized(gameState()));
+
+//        game options
+        testSerializationOf(new InitializeGameOptions(UserId.random(), playgroundState().getGameOptions()));
         testSerializationOf(new ChangeGameOptions(UserId.random(), GridSize._10x10, GameSpeed.x1, Walls.OFF));
         testSerializationOf(new GameOptionsChanged(playgroundState().getGameOptions()));
         testSerializationOf(FailedToChangeGameOptions.gameIsAlreadyRunning(UserId.random()));
-        testSerializationOf(new GameReinitialized(gameState()));
 
 //        seats messages
         testSerializationOf(new InitializeSeats(UserId.random(), Option.of(AdminId.random()), randomSeats()));

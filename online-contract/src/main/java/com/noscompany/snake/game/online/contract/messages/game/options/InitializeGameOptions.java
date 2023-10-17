@@ -16,5 +16,4 @@ public class InitializeGameOptions implements DedicatedClientMessage {
     OnlineMessage.MessageType messageType = MessageType.INITIALIZE_GAME_OPTIONS;
     UserId userId;
     GameOptions gameOptions;
-
 }

@@ -29,9 +29,11 @@ public final class OnlineMessageDeserializer {
             log.debug("extracted message type: {}, mapping to object...", messageType);
             return objectTypeMappers
                     .stream()
-                    .map(deserializer -> deserializer.mapToObjectType(messageType))
+                    .map(typeMapper -> tryTyMap(messageType, typeMapper))
+                    .filter(Option::isDefined)
                     .findAny()
                     .orElse(Option.none())
+                    .onEmpty(() -> log.warn("failed to deserialize, type mapper not found"))
                     .map(clazz -> mapToObject(serializedMessage, clazz))
                     .map(message -> (OnlineMessage) message)
                     .peek(message -> log.debug("message successfully deserialized"))
@@ -40,6 +42,10 @@ public final class OnlineMessageDeserializer {
             log.warn("exception thrown during deserialization, ", t);
             return Option.none();
         }
+    }
+
+    private Option<Class<?>> tryTyMap(MessageType messageType, ObjectTypeMapper typeMapper) {
+        return typeMapper.mapToObjectType(messageType);
     }
 
     @SneakyThrows

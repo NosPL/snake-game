@@ -3,6 +3,7 @@ package com.noscompany.snake.game.online.remote.client.gui;
 import com.noscompany.message.publisher.Subscription;
 import com.noscompany.snake.game.online.client.*;
 import com.noscompany.snake.game.online.contract.messages.UserId;
+import com.noscompany.snake.game.online.contract.messages.network.YourIdGotInitialized;
 import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
@@ -16,6 +17,8 @@ import javafx.scene.control.TextField;
 
 import static com.noscompany.snake.game.online.client.StartingClientError.PORT_IS_NOT_A_NUMBER;
 import static com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom.Reason.USER_ALREADY_IN_THE_ROOM;
+import static javafx.scene.paint.Color.BLACK;
+import static javafx.scene.paint.Color.RED;
 
 public class JoinGameController extends AbstractController {
     @FXML
@@ -25,7 +28,7 @@ public class JoinGameController extends AbstractController {
     @FXML
     private TextField playerNameTextField;
     @FXML
-    private Label errorMessageLabel;
+    private Label messageLabel;
     private SnakeOnlineClient snakeOnlineClient;
 
     public void setSnakeOnlineClient(SnakeOnlineClient snakeOnlineClient) {
@@ -40,7 +43,7 @@ public class JoinGameController extends AbstractController {
     public void joinGame() {
         getIpAddress()
                 .peek(this::joinGame)
-                .peekLeft(this::handleError);
+                .peekLeft(this::printError);
     }
 
     private void joinGame(HostAddress hostAddress) {
@@ -55,9 +58,19 @@ public class JoinGameController extends AbstractController {
     }
 
     public void enterRoom() {
-        errorMessageLabel.setText("connection established, entering room...");
+        Platform.runLater(() -> {
+            messageLabel.setTextFill(BLACK);
+            messageLabel.setText("entering room...");
+        });
         var userNameString = playerNameTextField.getText();
         snakeOnlineClient.enterTheRoom(new UserName(userNameString));
+    }
+
+    private void yourIdGotInitialized(YourIdGotInitialized event) {
+        Platform.runLater(() -> {
+            messageLabel.setTextFill(BLACK);
+            messageLabel.setText("Id got initialized, entering room...");
+        });
     }
 
     public void newUserEnteredRoom(NewUserEnteredRoom event) {
@@ -75,28 +88,34 @@ public class JoinGameController extends AbstractController {
     }
 
     public void failedToEnterRoom(FailedToEnterRoom event) {
-        String errorMessage = asString(event.getReason());
-        Platform.runLater(() -> errorMessageLabel.setText(errorMessage));
+        printError(event.getReason());
         if (event.getReason() == USER_ALREADY_IN_THE_ROOM) {
             JoinGameStage.get().close();
             SnakeOnlineClientStage.get().show();
         }
     }
 
-    public void sendClientMessageError(SendClientMessageError sendClientMessageError) {
-        Platform.runLater(() -> errorMessageLabel.setText(asString(sendClientMessageError)));
+    public void sendClientMessageError(SendClientMessageError error) {
+        printError(error);
     }
 
-    public void startingClientError(StartingClientError startingClientError) {
-        Platform.runLater(() -> errorMessageLabel.setText(asString(startingClientError)));
+    public void startingClientError(StartingClientError error) {
+        printError(error);
+    }
+
+    public void connectionClosed(ConnectionClosed event) {
+        Platform.runLater(() -> {
+            messageLabel.setTextFill(BLACK);
+            messageLabel.setText("Connection got closed");
+        });
     }
 
     private Either<StartingClientError, HostAddress> getIpAddress() {
         var portString = portTextField.getText();
         if (!isNumber(portString))
             return Either.left(PORT_IS_NOT_A_NUMBER);
-        var ipString = ipTextField.getText();
         int port = Integer.parseInt(portString);
+        var ipString = ipTextField.getText();
         return Either.right(new HostAddress(ipString, port));
     }
 
@@ -104,21 +123,21 @@ public class JoinGameController extends AbstractController {
         return Try.of(() -> Integer.parseInt(portString)).isSuccess();
     }
 
-    private void handleError(StartingClientError error) {
-        errorMessageLabel.setText(asString(error));
+    private void printError(Enum error) {
+        Platform.runLater(() -> {
+            messageLabel.setTextFill(RED);
+            messageLabel.setText(asString(error));
+        });
     }
 
     private String asString(Enum anEnum) {
         return anEnum.toString().toLowerCase().replace("_", " ");
     }
 
-    public void connectionClosed(ConnectionClosed event) {
-        errorMessageLabel.setText("Connection got closed");
-    }
-
     @Override
     public Subscription getSubscription() {
         return new Subscription()
+                .toMessage(YourIdGotInitialized.class, this::yourIdGotInitialized)
                 .toMessage(NewUserEnteredRoom.class, this::newUserEnteredRoom)
                 .toMessage(FailedToEnterRoom.class, this::failedToEnterRoom)
                 .toMessage(StartingClientError.class, this::startingClientError)

@@ -1,6 +1,7 @@
 package com.noscompany.snake.game.online.client.internal.state.connected;
 
 import com.noscompany.message.publisher.MessagePublisher;
+import com.noscompany.snake.game.online.client.RemoteClientIdHolder;
 import com.noscompany.snake.game.online.client.SendClientMessageError;
 import com.noscompany.snake.game.online.client.HostAddress;
 import com.noscompany.snake.game.online.client.internal.state.ClientState;
@@ -17,6 +18,7 @@ import com.noscompany.snake.game.online.online.contract.serialization.OnlineMess
 import com.noscompany.snake.game.online.online.contract.serialization.OnlineMessageSerializer;
 import lombok.AllArgsConstructor;
 
+import static com.noscompany.snake.game.online.client.SendClientMessageError.USER_ID_IS_NOT_INITIALIZED;
 import static com.noscompany.snake.game.online.client.StartingClientError.CONNECTION_ALREADY_ESTABLISHED;
 import static com.noscompany.snake.game.online.client.RemoteClientIdHolder.userId;
 
@@ -39,80 +41,110 @@ public class Connected implements ClientState {
 
     @Override
     public ClientState enterTheRoom(UserName userName) {
-        return webSocket
-                .send(new EnterRoom(userId().get(), userName))
+        return RemoteClientIdHolder
+                .userId()
+                .map(userId -> new EnterRoom(userId, userName))
+                .onEmpty(() -> handleError(USER_ID_IS_NOT_INITIALIZED))
+                .flatMap(webSocket::send)
                 .map(this::handleError)
                 .getOrElse(this);
     }
 
     @Override
     public ClientState takeASeat(PlayerNumber playerNumber) {
-        return webSocket
-                .send(new TakeASeat(userId().get(), playerNumber))
+        return RemoteClientIdHolder
+                .userId()
+                .map(userId -> new TakeASeat(userId().get(), playerNumber))
+                .onEmpty(() -> handleError(USER_ID_IS_NOT_INITIALIZED))
+                .flatMap(webSocket::send)
                 .map(this::handleError)
                 .getOrElse(this);
     }
 
     @Override
     public ClientState freeUpASeat() {
-        return webSocket
-                .send(new FreeUpASeat(userId().get()))
+        return RemoteClientIdHolder
+                .userId()
+                .map(FreeUpASeat::new)
+                .onEmpty(() -> handleError(USER_ID_IS_NOT_INITIALIZED))
+                .flatMap(webSocket::send)
                 .map(this::handleError)
                 .getOrElse(this);
     }
 
     @Override
     public ClientState changeGameOptions(GridSize gridSize, GameSpeed gameSpeed, Walls walls) {
-        return webSocket
-                .send(new ChangeGameOptions(userId().get(), gridSize, gameSpeed, walls))
+        return RemoteClientIdHolder
+                .userId()
+                .map(userId -> new ChangeGameOptions(userId, gridSize, gameSpeed, walls))
+                .onEmpty(() -> handleError(USER_ID_IS_NOT_INITIALIZED))
+                .flatMap(webSocket::send)
                 .map(this::handleError)
                 .getOrElse(this);
     }
 
     @Override
     public ClientState startGame() {
-        return webSocket
-                .send(new StartGame(userId().get()))
+        return RemoteClientIdHolder
+                .userId()
+                .map(StartGame::new)
+                .onEmpty(() -> handleError(USER_ID_IS_NOT_INITIALIZED))
+                .flatMap(webSocket::send)
                 .map(this::handleError)
                 .getOrElse(this);
     }
 
     @Override
     public ClientState changeSnakeDirection(Direction direction) {
-        return webSocket
-                .send(new ChangeSnakeDirection(userId().get(), direction))
+        return RemoteClientIdHolder
+                .userId()
+                .map(userId -> new ChangeSnakeDirection(userId, direction))
+                .onEmpty(() -> handleError(USER_ID_IS_NOT_INITIALIZED))
+                .flatMap(webSocket::send)
                 .map(this::handleError)
                 .getOrElse(this);
     }
 
     @Override
     public ClientState cancelGame() {
-        return webSocket
-                .send(new CancelGame(userId().get()))
+        return RemoteClientIdHolder
+                .userId()
+                .map(CancelGame::new)
+                .onEmpty(() -> handleError(USER_ID_IS_NOT_INITIALIZED))
+                .flatMap(webSocket::send)
                 .map(this::handleError)
                 .getOrElse(this);
     }
 
     @Override
     public ClientState pauseGame() {
-        return webSocket
-                .send(new PauseGame(userId().get()))
+        return RemoteClientIdHolder
+                .userId()
+                .map(PauseGame::new)
+                .onEmpty(() -> handleError(USER_ID_IS_NOT_INITIALIZED))
+                .flatMap(webSocket::send)
                 .map(this::handleError)
                 .getOrElse(this);
     }
 
     @Override
     public ClientState resumeGame() {
-        return webSocket
-                .send(new ResumeGame(userId().get()))
+        return RemoteClientIdHolder
+                .userId()
+                .map(ResumeGame::new)
+                .onEmpty(() -> handleError(USER_ID_IS_NOT_INITIALIZED))
+                .flatMap(webSocket::send)
                 .map(this::handleError)
                 .getOrElse(this);
     }
 
     @Override
     public ClientState sendChatMessage(String chatMessageContent) {
-        return webSocket
-                .send(new SendChatMessage(userId().get(), chatMessageContent))
+        return RemoteClientIdHolder
+                .userId()
+                .map(userId -> new SendChatMessage(userId, chatMessageContent))
+                .onEmpty(() -> handleError(USER_ID_IS_NOT_INITIALIZED))
+                .flatMap(webSocket::send)
                 .map(this::handleError)
                 .getOrElse(this);
     }

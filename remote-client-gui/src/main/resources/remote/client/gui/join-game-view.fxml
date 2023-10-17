@@ -31,16 +31,16 @@
                                 </Label>
                             </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="97.0" layoutY="31.0" prefHeight="244.0" prefWidth="251.0">
+                  <Label fx:id="messageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="19.0" layoutY="55.0" prefHeight="17.0" prefWidth="410.0" style="-fx-text-fill: red;" />
+                        <AnchorPane layoutX="99.0" layoutY="72.0" prefHeight="270.0" prefWidth="251.0">
                             <children>
-                                <Button fx:id="joinGameButton" layoutX="16.0" layoutY="235.0" mnemonicParsing="false" onAction="#joinGame" prefHeight="47.0" prefWidth="188.0" text="JOIN GAME" />
-                        <Label fx:id="hostAddress" layoutX="16.0" layoutY="61.0" prefHeight="16.0" prefWidth="165.0" text="IP ADDRESS" />
-                        <TextField fx:id="ipTextField" layoutX="16.0" layoutY="78.0" prefHeight="25.0" prefWidth="188.0" />
-                        <TextField fx:id="portTextField" layoutX="18.0" layoutY="132.0" prefHeight="25.0" prefWidth="64.0" />
-                        <Label layoutX="20.0" layoutY="115.0" prefHeight="17.0" prefWidth="165.0" text="PORT" />
-                        <Label fx:id="errorMessageLabel" layoutX="3.0" layoutY="24.0" prefHeight="17.0" prefWidth="245.0" style="-fx-text-fill: red;" />
-                        <Label layoutX="18.0" layoutY="172.0" prefHeight="17.0" prefWidth="165.0" text="PLAYER NAME" />
-                        <TextField fx:id="playerNameTextField" layoutX="14.0" layoutY="189.0" prefHeight="24.0" prefWidth="188.0" />
+                                <Button fx:id="joinGameButton" layoutX="16.0" layoutY="188.0" mnemonicParsing="false" onAction="#joinGame" prefHeight="47.0" prefWidth="188.0" text="JOIN GAME" />
+                        <Label fx:id="hostAddress" layoutX="16.0" layoutY="14.0" prefHeight="16.0" prefWidth="165.0" text="IP ADDRESS" />
+                        <TextField fx:id="ipTextField" layoutX="16.0" layoutY="31.0" prefHeight="25.0" prefWidth="188.0" />
+                        <TextField fx:id="portTextField" layoutX="18.0" layoutY="85.0" prefHeight="25.0" prefWidth="64.0" text="8081" />
+                        <Label layoutX="20.0" layoutY="68.0" prefHeight="17.0" prefWidth="165.0" text="PORT" />
+                        <Label layoutX="18.0" layoutY="125.0" prefHeight="17.0" prefWidth="165.0" text="PLAYER NAME" />
+                        <TextField fx:id="playerNameTextField" layoutX="14.0" layoutY="142.0" prefHeight="24.0" prefWidth="188.0" text="client" />
                             </children>
                         </AnchorPane>
                     </children>
