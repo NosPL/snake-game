@@ -11,7 +11,9 @@ import com.noscompany.snake.game.online.contract.messages.game.options.GameOptio
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GameSpeed;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.GridSize;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Walls;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class OnlineGameOptionsController extends AbstractController {
     @FXML
     private RadioButton gameSpeed1;
@@ -54,28 +56,24 @@ public class OnlineGameOptionsController extends AbstractController {
 
     @FXML
     public void gameOptionsChangedPressed() {
+        log.debug("user changed options in gui");
         gameOptionsChangedAction.accept(gridSize(), gameSpeed(), walls());
     }
 
     public void gameOptionsChanged(GameOptionsChanged event) {
+        log.debug("options got changed");
         update(event.getGameOptions());
     }
 
     private void initializeGameOptions(InitializeGameOptions command) {
+        log.debug("game options got initialized");
         update(command.getGameOptions());
     }
 
     private void update(GameOptions gameOptions) {
-        update(
-                gameOptions.getGameSpeed(),
-                gameOptions.getGridSize(),
-                gameOptions.getWalls());
-    }
-
-    public void update(GameSpeed gameSpeed, GridSize gridSize, Walls walls) {
-        set(gameSpeed);
-        set(gridSize);
-        set(walls);
+        set(gameOptions.getGameSpeed());
+        set(gameOptions.getGridSize());
+        set(gameOptions.getWalls());
     }
 
     public GameSpeed gameSpeed() {

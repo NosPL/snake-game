@@ -16,10 +16,12 @@ import io.vavr.control.Either;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import static io.vavr.control.Either.left;
 import static io.vavr.control.Either.right;
 
+@Slf4j
 @AllArgsConstructor
 public class GameOptionsSetter {
     private Option<AdminId> adminIdOption;
@@ -29,14 +31,17 @@ public class GameOptionsSetter {
     private GameOptions gameOptions;
 
     public InitializeGameOptions newUserEnteredRoom(NewUserEnteredRoom event) {
+        log.info("new user with id {} entered the room, initializing his game options", event.getUserId().getId());
         return new InitializeGameOptions(event.getUserId(), gameOptions);
     }
 
     public void playerTookASeat(PlayerTookASeat event) {
+        log.info("user with id {} took a seat", event.getUserId().getId());
         adminGotSet(event.getAdminId());
     }
 
     public void playerFreedUpASeat(PlayerFreedUpASeat event) {
+        log.info("user with id {} freed up a seat", event.getUserId().getId());
         event
                 .getAdminId()
                 .peek(this::adminGotSet)
@@ -44,15 +49,31 @@ public class GameOptionsSetter {
     }
 
     public void adminWasRemoved() {
-        this.adminIdOption = Option.none();
+        adminIdOption
+                .peek(currentAdminId -> log.info("admin with id {} got removed", currentAdminId.getId()))
+                .peek(currentAdminID -> this.adminIdOption = Option.none())
+                .onEmpty(() -> log.info("cannot remove current admin id because it is not defined"));
     }
 
-    public void adminGotSet(AdminId adminId) {
-        this.adminIdOption = Option.of(adminId);
+    public void adminGotSet(AdminId newAdminId) {
+        adminIdOption
+                .peek(oldAdminId -> logAdminChange(oldAdminId, newAdminId))
+                .onEmpty(() -> log.info("no admin defined, setting admin id to {}", newAdminId.getId()));
+        this.adminIdOption = Option.of(newAdminId);
+    }
+
+    private void logAdminChange(AdminId oldAdminId, AdminId newAdminId) {
+        if (oldAdminId.equals(newAdminId))
+            log.info("admin id did not change");
+        else
+            log.info("changing admin id from {} to {}", oldAdminId.getId(), newAdminId.getId());
     }
 
     public Either<FailedToChangeGameOptions, GameOptionsChanged> changeOptions(ChangeGameOptions command) {
-        return changeGameOptions(command.getUserId(), command.getOptions());
+        log.info("user with id {} tries to change game options", command.getUserId().getId());
+        return changeGameOptions(command.getUserId(), command.getOptions())
+                .peekLeft(failure -> log.info("user failed to change game options, reason: {}", failure.getReason()))
+                .peek(success -> log.info("user changed the options"));
     }
 
     public Either<FailedToChangeGameOptions, GameOptionsChanged> changeGameOptions(UserId userId, GameOptions newOptions) {
@@ -65,10 +86,12 @@ public class GameOptionsSetter {
     }
 
     public void gameIsNowRunning() {
+        log.info("game is now running");
         this.gameRunning = true;
     }
 
     public void gameIsNotRunningAnymore() {
+        log.info("game is not running anymore");
         this.gameRunning = false;
     }
 

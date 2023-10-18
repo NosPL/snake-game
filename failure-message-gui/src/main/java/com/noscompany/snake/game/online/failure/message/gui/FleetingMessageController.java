@@ -13,6 +13,7 @@ import io.vavr.control.Try;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
 import java.time.Duration;
@@ -23,6 +24,7 @@ import java.util.concurrent.Future;
 
 import static java.util.concurrent.CompletableFuture.*;
 
+@Slf4j
 public class FleetingMessageController extends AbstractController {
     @FXML
     private Label messageLabel;
@@ -33,6 +35,8 @@ public class FleetingMessageController extends AbstractController {
     public void print(Enum<?> enumMessage) {
         var stringMsg = asString(enumMessage);
         currentTask.cancel(true);
+        log.debug("cancelling current message");
+        log.debug("printing message: {}", stringMsg);
         currentTask = executorService.submit(() -> printMessage(stringMsg));
     }
 
@@ -43,6 +47,7 @@ public class FleetingMessageController extends AbstractController {
     }
 
     public void shutdown() {
+        log.debug("shutting down executor service");
         executorService.shutdownNow();
     }
 
