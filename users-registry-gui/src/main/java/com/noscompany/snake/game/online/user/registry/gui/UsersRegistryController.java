@@ -8,18 +8,22 @@ import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
 
+@Slf4j
 public class UsersRegistryController extends AbstractController {
     @FXML
     private Label usersListLabel;
 
     public void newUserEnteredRoom(NewUserEnteredRoom event) {
+        log.debug("new user entered the room, updating users list");
         Platform.runLater(() -> usersListLabel.setText(toString(event.getUsersInTheRoom())));
     }
 
     private void userLeftRoom(UserLeftRoom event) {
+        log.debug("user left the room, updating users list");
         Platform.runLater(() -> usersListLabel.setText(toString(event.getUsersInTheRoom())));
     }
 

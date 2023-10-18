@@ -42,17 +42,20 @@ public class ChatController extends AbstractController {
         var message = chatMessageTextField.getText();
         if (message.isBlank())
             return;
+        log.debug("sending chat message: {}", message);
         sendChatMessageAction.accept(message);
         chatMessageTextField.setText("");
     }
 
     public void printChatMessage(UserName messageAuthor, String messageContent) {
         var chatEntry = messageAuthor.getName() + ": " + messageContent;
+        log.debug("printing chat message {}", chatEntry);
         addText(chatEntry);
     }
 
     public void printFailureMessage(Enum<?> e) {
         var string = e.toString().replace("_", " ");
+        log.debug("printing failure message: {}", string);
         addText(string);
     }
 
