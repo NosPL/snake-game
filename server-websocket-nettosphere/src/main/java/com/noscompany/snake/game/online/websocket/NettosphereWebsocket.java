@@ -35,7 +35,9 @@ class NettosphereWebsocket implements Websocket {
     @Override
     public Option<ServerFailedToSendMessageToRemoteClients> sendToAllClients(String message) {
         try {
-            getBroadcaster().peek(broadcaster -> broadcaster.broadcast(message));
+            getBroadcaster()
+                    .map(Broadcaster::getAtmosphereResources)
+                    .peek(resources -> resources.forEach(resource -> resource.write(message)));
             return Option.none();
         } catch (Throwable t) {
             log.error("Failed to send message to all remote clients, cause: ", t);
