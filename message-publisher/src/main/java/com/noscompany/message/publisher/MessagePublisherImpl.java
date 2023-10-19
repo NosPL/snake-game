@@ -22,10 +22,10 @@ final class MessagePublisherImpl implements MessagePublisher {
         }
         try {
             log.trace("received a message: {}, putting it in queue", message);
-            var methodCaller = new MethodCaller();
+            var msgAuthorDetails = new MsgAuthorDetails();
             executorService.submit(() ->
                     subscribers
-                            .forEach(handler -> handler.processMsg(message, methodCaller)));
+                            .forEach(handler -> handler.processMsg(message, msgAuthorDetails)));
         } catch (Throwable t) {
             log.error("Failed to put message in queue, reason: ", t);
         }

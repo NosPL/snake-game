@@ -22,24 +22,24 @@ final class Subscriber {
     private final Collection<MessageHandler> handlersByMsgType;
     private final ExecutorService executorService;
 
-    void processMsg(Object message, MethodCaller methodCaller) {
+    void processMsg(Object message, MsgAuthorDetails msgAuthorDetails) {
         if (executorService.isShutdown()) {
             log.trace("{} is shutdown, ignoring message: {}",subscriberName, message);
             return;
         }
         try {
-            executorService.submit(() -> tryToProcessMessage(message, methodCaller));
+            executorService.submit(() -> tryToProcessMessage(message, msgAuthorDetails));
         } catch (RejectedExecutionException t) {
             log.error("{} failed to put the message in queue, reason: ", subscriberName, t);
-            log.error("{} - message author thread: {}, author stack trace: ", subscriberName, methodCaller.getThreadName(), methodCaller.getStackTrace());
+            log.error("{} - message author thread: {}, author stack trace: ", subscriberName, msgAuthorDetails.getThreadName(), msgAuthorDetails.getStackTrace());
         }
     }
 
-    private void tryToProcessMessage(Object message, MethodCaller methodCaller) {
-        log.trace("{} received a message: {}, type: {}, looking for a handler", subscriberName, message, message.getClass().getName());
+    private void tryToProcessMessage(Object message, MsgAuthorDetails msgAuthorDetails) {
         findHandler(message.getClass())
-                .flatMap(handler -> handler.processMessage(message, methodCaller))
-                .peek(result -> log.trace("{} processed the message with a result: {}, passing the result to the message publisher...", subscriberName, result))
+                .peek(handler -> log.trace("{} received a message: {}, type: {}", subscriberName, message, message.getClass().getName()))
+                .flatMap(handler -> handler.processMessage(message, msgAuthorDetails))
+                .peek(result -> log.trace("{} passes the result to the message publisher...", subscriberName))
                 .peek(messagePublisher::publishMessage);
     }
 
@@ -48,9 +48,7 @@ final class Subscriber {
                 .stream()
                 .filter(messageHandler -> messageHandler.acceptsMessageType(messageType))
                 .findFirst()
-                .map(Option::of).orElse(Option.none())
-                .peek(messageHandler -> log.trace("{} found the handler, processing the message...", subscriberName))
-                .onEmpty(() -> log.trace("{} did not find the handler", subscriberName));
+                .map(Option::of).orElse(Option.none());
     }
 
     void shutdown() {
