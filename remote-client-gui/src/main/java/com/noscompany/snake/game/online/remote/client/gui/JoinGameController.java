@@ -55,9 +55,7 @@ public class JoinGameController extends AbstractController {
     }
 
     public void connectionEstablished(ConnectionEstablished event) {
-        Platform.runLater(() -> {
-            printMessage("connection established, initializing user id...");
-        });
+        Platform.runLater(() -> printMessage("connection established, initializing user id..."));
     }
 
     private void yourIdGotInitialized(YourIdGotInitialized event) {
@@ -75,8 +73,10 @@ public class JoinGameController extends AbstractController {
 
     public void newUserEnteredRoom(NewUserEnteredRoom event) {
         if (itsYourId(event.getUserId())) {
-            JoinGameStage.get().close();
-            SnakeOnlineClientStage.get().show();
+            Platform.runLater(() -> {
+                JoinGameStage.get().close();
+                SnakeOnlineClientStage.get().show();
+            });
         }
     }
 
@@ -125,14 +125,14 @@ public class JoinGameController extends AbstractController {
         messageLabel.setText(message);
     }
 
-    private void printError(Enum error) {
+    private void printError(Enum<?> error) {
         Platform.runLater(() -> {
             messageLabel.setTextFill(RED);
             messageLabel.setText(asString(error));
         });
     }
 
-    private String asString(Enum anEnum) {
+    private String asString(Enum<?> anEnum) {
         return anEnum.toString().toLowerCase().replace("_", " ");
     }
 
