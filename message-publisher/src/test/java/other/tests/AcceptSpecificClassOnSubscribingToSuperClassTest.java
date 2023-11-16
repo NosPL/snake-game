@@ -1,10 +1,8 @@
-package test;
+package other.tests;
 
-import com.noscompany.message.publisher.MessagePublisher;
-import com.noscompany.message.publisher.MessagePublisherCreator;
 import com.noscompany.message.publisher.Subscription;
-import lombok.Value;
-import org.junit.Assert;
+import other.tests.dto.AbstractMessage;
+import other.tests.dto.SpecificMessage;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,14 +10,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.Assert.assertTrue;
 
-public class AcceptSpecificClassOnSubscribingToSuperClassTest {
-    private MessagePublisher messagePublisher;
+public class AcceptSpecificClassOnSubscribingToSuperClassTest extends AbstractTestClass {
     private MessageConsumer messageConsumer;
 
     @Before
     public void init() {
-        messagePublisher = new MessagePublisherCreator().synchronous().create();
-         messageConsumer = new MessageConsumer();
+        messageConsumer = new MessageConsumer();
     }
 
     @Test
@@ -32,7 +28,7 @@ public class AcceptSpecificClassOnSubscribingToSuperClassTest {
 //        and consumer did not receive message yet
         assert !messageConsumer.messageReceived();
 //        when specific message is sent
-        messagePublisher.publishMessage(new SpecificMessage("hi"));
+        messagePublisher.publishMessage(new SpecificMessage());
 //        then consumer received the specific message
         assertTrue(messageConsumer.messageReceived());
     }
@@ -49,11 +45,4 @@ public class AcceptSpecificClassOnSubscribingToSuperClassTest {
         }
     }
 
-    interface AbstractMessage {
-    }
-
-    @Value
-    class SpecificMessage implements AbstractMessage {
-        String value;
-    }
 }

@@ -37,7 +37,7 @@ final class Subscriber {
 
     private void tryToProcessMessage(Object message, MsgAuthorDetails msgAuthorDetails) {
         findHandler(message.getClass())
-                .peek(handler -> log.trace("{} received a message: {}, type: {}", subscriberName, message, message.getClass().getName()))
+                .peek(handler -> log.debug("{} received a message: {}", subscriberName, message))
                 .flatMap(handler -> handler.processMessage(message, msgAuthorDetails))
                 .peek(result -> log.trace("{} passes the result to the message publisher...", subscriberName))
                 .peek(messagePublisher::publishMessage);

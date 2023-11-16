@@ -1,6 +1,7 @@
 package com.noscompany.message.publisher;
 
+import lombok.Value;
 
-enum VoidResult {
-    VOID_RESULT
+@Value
+class Result {
 }

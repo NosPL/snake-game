@@ -21,7 +21,7 @@ final class MessagePublisherImpl implements MessagePublisher {
             return;
         }
         try {
-            log.trace("received a message: {}, putting it in queue", message);
+            log.trace("publisher received a message: {}, passing it to the subscribers", message);
             var msgAuthorDetails = new MsgAuthorDetails();
             executorService.submit(() ->
                     subscribers
@@ -33,24 +33,27 @@ final class MessagePublisherImpl implements MessagePublisher {
 
     @Override
     public void subscribe(@NonNull Subscription subscription) {
+        if (executorService.isShutdown()) {
+            log.trace("publisher is shutdown, ignoring subscription: {}", subscription);
+            return;
+        }
         try {
-            log.trace("putting new subscription in queue: {}", subscription);
             executorService.submit(() -> {
-                log.trace("creating new subscriber: {}", subscription);
+                log.trace("publisher is creating new subscriber: {}", subscription);
                 subscriberCreator
                         .createSubscriber(subscription)
                         .peek(subscribers::add)
-                        .peek(handler -> log.trace("new subscriber created"));
+                        .peek(subscriber -> log.debug("publisher added new subscriber with name: {}", subscriber.getSubscriberName()));
             });
         } catch (Throwable t) {
-            log.error("Failed to add new subscription, reason: ", t);
+            log.error("publisher failed to add new subscription, reason: ", t);
         }
     }
 
     @Override
     public void shutdown() {
         try {
-            log.trace("shutting down executor service");
+            log.trace("publisher is shutting down executor service");
             executorService.submit(() -> {
                 subscribers.forEach(Subscriber::shutdown);
             });

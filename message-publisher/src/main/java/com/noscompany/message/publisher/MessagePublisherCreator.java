@@ -6,17 +6,21 @@ import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public final class MessagePublisherCreator {
+    private final AtomicLong subscriberThreadId;
     private ExecutorService publisherExecutorService;
-    private Supplier<ExecutorService> subscriberExecutorSupplier;
+    private Function<String, ExecutorService> subscriberExecutorCreator;
 
     public MessagePublisherCreator() {
+        this.subscriberThreadId = new AtomicLong(0);
         this.publisherExecutorService = defaultExecutorServiceForPublisher();
-        this.subscriberExecutorSupplier = () -> defaultExecutorServiceForSubscribers();
+        this.subscriberExecutorCreator = this::defaultExecutorForSubscribers;
     }
 
     public MessagePublisherCreator executorServiceForPublisher(@NonNull ExecutorService executorService) {
@@ -25,24 +29,24 @@ public final class MessagePublisherCreator {
     }
 
     public MessagePublisherCreator executorServiceForSubscribers(@NonNull ExecutorService executorService) {
-        this.subscriberExecutorSupplier = () -> executorService;
+        this.subscriberExecutorCreator = str -> executorService;
         return this;
     }
 
     public MessagePublisherCreator executorServicesForSubscribers(@NonNull Supplier<ExecutorService> executorServiceSupplier) {
-        this.subscriberExecutorSupplier = executorServiceSupplier;
+        this.subscriberExecutorCreator = str -> executorServiceSupplier.get();
         return this;
     }
 
     public MessagePublisherCreator synchronous() {
         var synchronousExecutorService = new SynchronousExecutorService();
         this.publisherExecutorService = synchronousExecutorService;
-        this.subscriberExecutorSupplier = () -> synchronousExecutorService;
+        this.subscriberExecutorCreator = str -> synchronousExecutorService;
         return this;
     }
 
     public MessagePublisher create() {
-        var subscriberCreator = new SubscriberCreator(subscriberExecutorSupplier);
+        var subscriberCreator = new SubscriberCreator(subscriberExecutorCreator);
         var messagePublisher = new MessagePublisherImpl(new LinkedList<>(), subscriberCreator, publisherExecutorService);
         subscriberCreator.setMessagePublisher(messagePublisher);
         return messagePublisher;
@@ -57,12 +61,12 @@ public final class MessagePublisherCreator {
                 r -> new Thread(r, "message-publisher-thread"));
     }
 
-    private ExecutorService defaultExecutorServiceForSubscribers() {
+    private ExecutorService defaultExecutorForSubscribers(String subscriberName) {
         return new ThreadPoolExecutor(
                 1,
                 1,
                 0L, MILLISECONDS,
                 new LinkedBlockingQueue<>(1000),
-                r -> new Thread(r, "message-publisher-thread"));
+                r -> new Thread(r, subscriberName + " thread"));
     }
 }
