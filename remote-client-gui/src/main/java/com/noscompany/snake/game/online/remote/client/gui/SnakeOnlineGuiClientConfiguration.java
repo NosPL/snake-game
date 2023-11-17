@@ -26,10 +26,6 @@ public class SnakeOnlineGuiClientConfiguration {
 
     public void configure(Runnable onCloseAction, Function<MessagePublisher, SnakeOnlineClient> onlineClientCreator) {
         var joinGameStage = JoinGameStage.get();
-        joinGameStage.setOnCloseRequest(e -> {
-            Controllers.get(JoinGameController.class).disconnect();
-            onCloseAction.run();
-        });
         var snakeOnlineClientStage = SnakeOnlineClientStage.get();
         var messagePublisher = new MessagePublisherCreator().create();
         var snakeOnlineClient = onlineClientCreator.apply(messagePublisher);
@@ -44,7 +40,14 @@ public class SnakeOnlineGuiClientConfiguration {
         });
         setControllers(snakeOnlineClient);
         subscribeControllers(messagePublisher);
+        snakeOnlineClientStage.setOnCloseRequest(e -> {
+            onCloseAction.run();
+            snakeOnlineClient.disconnect();
+        });
         joinGameStage.show();
+        Controllers
+                .get(JoinGameController.class)
+                .setOnCloseAction(onCloseAction);
     }
 
     private void subscribeControllers(MessagePublisher messagePublisher) {

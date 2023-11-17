@@ -30,13 +30,15 @@ public class JoinGameController extends AbstractController {
     @FXML
     private Label messageLabel;
     private SnakeOnlineClient snakeOnlineClient;
+    private Runnable onCloseClientAction = () -> {
+    };
+
+    public void setOnCloseAction(Runnable onCloseAction) {
+        this.onCloseClientAction = onCloseAction;
+    }
 
     public void setSnakeOnlineClient(SnakeOnlineClient snakeOnlineClient) {
         this.snakeOnlineClient = snakeOnlineClient;
-    }
-
-    public void disconnect() {
-        snakeOnlineClient.disconnect();
     }
 
     @FXML
@@ -76,6 +78,12 @@ public class JoinGameController extends AbstractController {
             Platform.runLater(() -> {
                 JoinGameStage.get().close();
                 SnakeOnlineClientStage.get().show();
+                SnakeOnlineClientStage
+                        .get()
+                        .setOnCloseRequest(e -> {
+                            snakeOnlineClient.disconnect();
+                            onCloseClientAction.run();
+                        });
             });
         }
     }
