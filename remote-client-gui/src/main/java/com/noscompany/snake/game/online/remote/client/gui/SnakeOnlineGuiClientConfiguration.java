@@ -12,6 +12,7 @@ import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import com.noscompany.snake.game.online.gui.commons.Controllers;
 import com.noscompany.snake.game.online.gui.commons.KeyPressedHandler;
 import com.noscompany.snake.game.online.seats.gui.SeatsController;
+import javafx.stage.Stage;
 
 import java.util.function.Function;
 
@@ -26,28 +27,30 @@ public class SnakeOnlineGuiClientConfiguration {
 
     public void configure(Runnable onCloseAction, Function<MessagePublisher, SnakeOnlineClient> onlineClientCreator) {
         var joinGameStage = JoinGameStage.get();
-        var snakeOnlineClientStage = SnakeOnlineClientStage.get();
         var messagePublisher = new MessagePublisherCreator().create();
         var snakeOnlineClient = onlineClientCreator.apply(messagePublisher);
-        snakeOnlineClientStage.getScene()
-                .setOnKeyPressed(e -> new KeyPressedHandler(snakeOnlineClient::changeSnakeDirection));
-        snakeOnlineClientStage.setOnCloseRequest(e -> {
-            Controllers.get(OnlineClientController.class).disconnectClient();
-            SnakeOnlineClientStage.remove();
-            JoinGameStage.remove();
-            snakeOnlineClient.disconnect();
-            onCloseAction.run();
-        });
+        var snakeOnlineClientStage = SnakeOnlineClientStage.get();
         setControllers(snakeOnlineClient);
         subscribeControllers(messagePublisher);
-        snakeOnlineClientStage.setOnCloseRequest(e -> {
-            onCloseAction.run();
+        configureSnakeOnlineClientStage(snakeOnlineClientStage, onCloseAction, messagePublisher, snakeOnlineClient);
+        joinGameStage.setOnCloseRequest(e -> {
             snakeOnlineClient.disconnect();
+            messagePublisher.shutdown();
+            onCloseAction.run();
         });
         joinGameStage.show();
-        Controllers
-                .get(JoinGameController.class)
-                .setOnCloseAction(onCloseAction);
+    }
+
+    private void configureSnakeOnlineClientStage(Stage snakeOnlineClientStage, Runnable onCloseAction, MessagePublisher messagePublisher, SnakeOnlineClient snakeOnlineClient) {
+        snakeOnlineClientStage.getScene().setOnKeyPressed(e -> new KeyPressedHandler(snakeOnlineClient::changeSnakeDirection));
+        snakeOnlineClientStage.setOnCloseRequest(e -> {
+            Controllers.get(FleetingMessageController.class).shutdown();
+            snakeOnlineClient.disconnect();
+            SnakeOnlineClientStage.remove();
+            JoinGameStage.remove();
+            messagePublisher.shutdown();
+            onCloseAction.run();
+        });
     }
 
     private void subscribeControllers(MessagePublisher messagePublisher) {
@@ -81,8 +84,6 @@ public class SnakeOnlineGuiClientConfiguration {
         Controllers
                 .get(OnlineClientController.class)
                 .setSnakeOnlineClient(snakeOnlineClient);
-        SnakeOnlineClientStage
-                .get()
-                .setOnCloseRequest(w -> Controllers.get(FleetingMessageController.class).shutdown());
+
     }
 }

@@ -9,6 +9,8 @@ import io.vavr.control.Either;
 import io.vavr.control.Try;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.routines.InetAddressValidator;
+import org.asynchttpclient.DefaultAsyncHttpClient;
+import org.asynchttpclient.DefaultAsyncHttpClientConfig;
 import org.atmosphere.wasync.*;
 import org.atmosphere.wasync.impl.AtmosphereClient;
 import org.atmosphere.wasync.impl.DefaultOptions;
@@ -54,9 +56,23 @@ final class WebsocketCreator {
     private DefaultOptions socketOptions(AtmosphereClient atmosphereClient) {
         return atmosphereClient
                 .newOptionsBuilder()
+                .runtime(createAsyncHttpClient())
                 .reconnectAttempts(5)
                 .pauseBeforeReconnectInSeconds(2)
+                .runtimeShared(false)
                 .build();
+    }
+
+    private DefaultAsyncHttpClient createAsyncHttpClient() {
+        DefaultAsyncHttpClientConfig config = new DefaultAsyncHttpClientConfig.Builder()
+                .setFollowRedirect(true)
+                .setTcpNoDelay(true)
+                .setKeepAlive(true)
+                .setConnectTimeout(5_000)
+                .setReadTimeout(10_000)
+                .setUserAgent("wAsync/2.0")
+                .build();
+        return new DefaultAsyncHttpClient(config);
     }
 
     private Request createRequest(HostAddress hostAddress, Client client) {

@@ -14,6 +14,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import static com.noscompany.snake.game.online.client.StartingClientError.PORT_IS_NOT_A_NUMBER;
 import static com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom.Reason.USER_ALREADY_IN_THE_ROOM;
@@ -30,15 +31,10 @@ public class JoinGameController extends AbstractController {
     @FXML
     private Label messageLabel;
     private SnakeOnlineClient snakeOnlineClient;
-    private Runnable onCloseClientAction = () -> {
-    };
 
-    public void setOnCloseAction(Runnable onCloseAction) {
-        this.onCloseClientAction = onCloseAction;
-    }
-
-    public void setSnakeOnlineClient(SnakeOnlineClient snakeOnlineClient) {
+    public JoinGameController setSnakeOnlineClient(SnakeOnlineClient snakeOnlineClient) {
         this.snakeOnlineClient = snakeOnlineClient;
+        return this;
     }
 
     @FXML
@@ -77,13 +73,9 @@ public class JoinGameController extends AbstractController {
         if (itsYourId(event.getUserId())) {
             Platform.runLater(() -> {
                 JoinGameStage.get().close();
-                SnakeOnlineClientStage.get().show();
-                SnakeOnlineClientStage
-                        .get()
-                        .setOnCloseRequest(e -> {
-                            snakeOnlineClient.disconnect();
-                            onCloseClientAction.run();
-                        });
+                Stage stage = SnakeOnlineClientStage.get();
+
+                stage.show();
             });
         }
     }

@@ -30,7 +30,7 @@
         <dependency>
             <groupId>org.atmosphere</groupId>
             <artifactId>wasync</artifactId>
-            <version>2.1.7</version>
+            <version>3.0.2</version>
         </dependency>
         <dependency>
             <groupId>commons-validator</groupId>

@@ -17,19 +17,12 @@ public class OnlineClientController extends AbstractController {
     private VBox vBox2;
     @FXML
     private VBox vBox3;
-    private SnakeOnlineClient snakeOnlineClient;
 
     public void setSnakeOnlineClient(SnakeOnlineClient snakeOnlineClient) {
         mainHBox.setOnKeyPressed(new KeyPressedHandler(snakeOnlineClient::changeSnakeDirection));
         vBox1.setOnKeyPressed(new KeyPressedHandler(snakeOnlineClient::changeSnakeDirection));
         vBox2.setOnKeyPressed(new KeyPressedHandler(snakeOnlineClient::changeSnakeDirection));
         vBox3.setOnKeyPressed(new KeyPressedHandler(snakeOnlineClient::changeSnakeDirection));
-        this.snakeOnlineClient = snakeOnlineClient;
-    }
-
-    public void disconnectClient() {
-        if (snakeOnlineClient != null)
-            snakeOnlineClient.disconnect();
     }
 
     @Override
