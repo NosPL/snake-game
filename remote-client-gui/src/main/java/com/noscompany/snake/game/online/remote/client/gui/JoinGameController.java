@@ -90,8 +90,10 @@ public class JoinGameController extends AbstractController {
     public void failedToEnterRoom(FailedToEnterRoom event) {
         printError(event.getReason());
         if (event.getReason() == USER_ALREADY_IN_THE_ROOM) {
-            JoinGameStage.get().close();
-            SnakeOnlineClientStage.get().show();
+            Platform.runLater(() -> {
+                JoinGameStage.get().close();
+                SnakeOnlineClientStage.get().show();
+            });
         }
     }
 
