@@ -3,6 +3,7 @@ package com.noscompany.snake.game.online.online.contract.serialization;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import com.noscompany.snake.game.online.contract.messages.ObjectTypeMapper;
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
 import com.noscompany.snake.game.online.online.contract.serialization.object.type.mappers.*;
 import io.vavr.control.Option;

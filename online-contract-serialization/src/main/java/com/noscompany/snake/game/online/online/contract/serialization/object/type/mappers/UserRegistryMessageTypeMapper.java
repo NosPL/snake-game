@@ -5,7 +5,7 @@ import com.noscompany.snake.game.online.contract.messages.user.registry.EnterRoo
 import com.noscompany.snake.game.online.contract.messages.user.registry.FailedToEnterRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.NewUserEnteredRoom;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserLeftRoom;
-import com.noscompany.snake.game.online.online.contract.serialization.ObjectTypeMapper;
+import com.noscompany.snake.game.online.contract.messages.ObjectTypeMapper;
 import io.vavr.control.Option;
 
 public final class UserRegistryMessageTypeMapper implements ObjectTypeMapper {

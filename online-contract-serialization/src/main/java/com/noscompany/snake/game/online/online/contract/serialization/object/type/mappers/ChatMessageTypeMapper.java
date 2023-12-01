@@ -4,10 +4,8 @@ import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
 import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.chat.SendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
-import com.noscompany.snake.game.online.online.contract.serialization.ObjectTypeMapper;
+import com.noscompany.snake.game.online.contract.messages.ObjectTypeMapper;
 import io.vavr.control.Option;
-
-import static com.noscompany.snake.game.online.contract.messages.OnlineMessage.MessageType.SEND_CHAT_MESSAGE;
 
 public final class ChatMessageTypeMapper implements ObjectTypeMapper {
 

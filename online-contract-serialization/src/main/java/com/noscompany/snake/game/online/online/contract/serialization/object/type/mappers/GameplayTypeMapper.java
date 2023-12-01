@@ -1,11 +1,9 @@
 package com.noscompany.snake.game.online.online.contract.serialization.object.type.mappers;
 
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
-import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.commands.*;
-import com.noscompany.snake.game.online.contract.messages.gameplay.dto.Snake;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;
-import com.noscompany.snake.game.online.online.contract.serialization.ObjectTypeMapper;
+import com.noscompany.snake.game.online.contract.messages.ObjectTypeMapper;
 import io.vavr.control.Option;
 
 public final class GameplayTypeMapper implements ObjectTypeMapper {

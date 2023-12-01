@@ -2,7 +2,7 @@ package com.noscompany.snake.game.online.online.contract.serialization.object.ty
 
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
 import com.noscompany.snake.game.online.contract.messages.seats.*;
-import com.noscompany.snake.game.online.online.contract.serialization.ObjectTypeMapper;
+import com.noscompany.snake.game.online.contract.messages.ObjectTypeMapper;
 import io.vavr.control.Option;
 
 public final class SeatsMessageTypeMapper implements ObjectTypeMapper {
