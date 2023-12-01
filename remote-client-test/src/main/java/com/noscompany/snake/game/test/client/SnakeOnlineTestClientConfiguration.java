@@ -1,10 +1,10 @@
 package com.noscompany.snake.game.test.client;
 
+import chat.messages.FailedToSendChatMessage;
+import chat.messages.UserSentChatMessage;
 import com.noscompany.message.publisher.MessagePublisherCreator;
 import com.noscompany.snake.game.online.chat.ChatConfiguration;
 import com.noscompany.snake.game.online.client.*;
-import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
-import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;

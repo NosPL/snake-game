@@ -1,9 +1,7 @@
 package com.noscompany.snake.game.online.failure.message.gui;
 
 import com.noscompany.message.publisher.Subscription;
-import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerFailedToSendMessageToRemoteClients;
-import com.noscompany.snake.game.online.contract.messages.server.ServerParams;
 import com.noscompany.snake.game.online.contract.messages.server.events.FailedToStartServer;
 import com.noscompany.snake.game.online.contract.messages.server.events.ServerStarted;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;

@@ -1,8 +1,8 @@
 package com.noscompany.snake.game.online.host.gui;
 
+import chat.messages.SendChatMessage;
 import com.noscompany.message.publisher.MessagePublisher;
 import com.noscompany.snake.game.online.contract.messages.UserId;
-import com.noscompany.snake.game.online.contract.messages.chat.SendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.game.options.ChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.gameplay.commands.*;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;

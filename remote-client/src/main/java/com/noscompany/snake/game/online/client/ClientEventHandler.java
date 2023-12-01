@@ -1,7 +1,7 @@
 package com.noscompany.snake.game.online.client;
 
-import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
-import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
+import chat.messages.FailedToSendChatMessage;
+import chat.messages.UserSentChatMessage;
 import com.noscompany.snake.game.online.contract.messages.game.options.FailedToChangeGameOptions;
 import com.noscompany.snake.game.online.contract.messages.game.options.GameOptionsChanged;
 import com.noscompany.snake.game.online.contract.messages.gameplay.events.*;

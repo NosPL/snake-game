@@ -46,6 +46,7 @@
         <module>remote-client-gui</module>
         <module>host-gui</module>
         <module>remote-client-test-launcher</module>
+        <module>chat-messages</module>
     </modules>
 
     <dependencies>

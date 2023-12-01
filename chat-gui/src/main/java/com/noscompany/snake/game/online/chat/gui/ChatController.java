@@ -1,8 +1,8 @@
 package com.noscompany.snake.game.online.chat.gui;
 
+import chat.messages.FailedToSendChatMessage;
+import chat.messages.UserSentChatMessage;
 import com.noscompany.message.publisher.Subscription;
-import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
-import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import com.noscompany.snake.game.online.gui.commons.AbstractController;
 import javafx.application.Platform;

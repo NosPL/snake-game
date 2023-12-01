@@ -1,4 +1,4 @@
-package com.noscompany.snake.game.online.contract.messages.chat;
+package chat.messages;
 
 import com.noscompany.snake.game.online.contract.messages.PublicClientMessage;
 import com.noscompany.snake.game.online.contract.messages.UserId;

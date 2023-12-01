@@ -1,8 +1,8 @@
 package com.noscompany.snake.game.online.chat;
 
+import chat.messages.FailedToSendChatMessage;
+import chat.messages.UserSentChatMessage;
 import com.noscompany.snake.game.online.contract.messages.UserId;
-import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
-import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
 import com.noscompany.snake.game.online.contract.messages.user.registry.UserName;
 import io.vavr.control.Either;
 import io.vavr.control.Option;

@@ -1,5 +1,6 @@
 package com.noscompany.snake.game.online.online.contract.serialization;
 
+import chat.messages.ChatMessageTypeMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;

@@ -1,9 +1,6 @@
-package com.noscompany.snake.game.online.online.contract.serialization.object.type.mappers;
+package chat.messages;
 
 import com.noscompany.snake.game.online.contract.messages.OnlineMessage;
-import com.noscompany.snake.game.online.contract.messages.chat.FailedToSendChatMessage;
-import com.noscompany.snake.game.online.contract.messages.chat.SendChatMessage;
-import com.noscompany.snake.game.online.contract.messages.chat.UserSentChatMessage;
 import com.noscompany.snake.game.online.contract.messages.ObjectTypeMapper;
 import io.vavr.control.Option;
 

@@ -1,11 +1,11 @@
 package com.noscompany.snake.game.online.client.internal.state.connected;
 
+import chat.messages.SendChatMessage;
 import com.noscompany.message.publisher.MessagePublisher;
 import com.noscompany.snake.game.online.client.RemoteClientIdHolder;
 import com.noscompany.snake.game.online.client.SendClientMessageError;
 import com.noscompany.snake.game.online.client.HostAddress;
 import com.noscompany.snake.game.online.client.internal.state.ClientState;
-import com.noscompany.snake.game.online.contract.messages.chat.SendChatMessage;
 import com.noscompany.snake.game.online.contract.messages.gameplay.commands.*;
 import com.noscompany.snake.game.online.contract.messages.gameplay.dto.*;
 import com.noscompany.snake.game.online.contract.messages.game.options.ChangeGameOptions;
